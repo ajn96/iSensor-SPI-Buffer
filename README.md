@@ -52,13 +52,17 @@ The iSensor SPI buffer firmware will utilize two SPI ports (one master and one s
 
 ### Program Flow
 
-The system will be generally interrupt driven for all communication actions
+The system will be interrupt driven for all communications
 
 **User SPI interrupt**
-There will be an ISR to handle user SPI (slave interface) transactions. If the currently selected page is not one of the SPI buffer pages (253 - 255) any read/write will be forwarded to the IMU. A single read request to the user SPI will result in *two* SPI transactions sent to the IMU - one to send to register read request and a second to get the result data back. This result data will be loaded into the user SPI transmit buffer, so that it is available on the next user SPI transaction. For write's, a single write will be performed, and the IMU reponse data during the write loaded into the user SPI transmit buffer.
+
+There will be an ISR to handle user SPI (slave interface) transactions. If the currently selected page is not one of the SPI buffer pages (253 - 255) any read/write will be forwarded to the IMU. A single read request to the user SPI will result in *two* SPI transactions sent to the IMU - one to send the register read request and a second to get the result data back from the IMU. The IMU result data will be loaded into the user SPI transmit buffer, so that it is available on the next user SPI transaction.  For write transactions, a single write command will be sent to the IMU, and the IMU reponse data during the write loaded into the user SPI transmit buffer.
 
 **Autonomous Data Capture**
-When the currently selected page is 255 (buffer output registers), the iSensor SPI Buffer firmware will enable a GPIO interrupt on the selected data ready pin (with the selected data ready polarity). After each data ready interrupt, the firmware will transmit the data entered on the BUF_WRITE registers to the IMU, and place the data received back into a new buffer entry in SRAM. Plan to use DMA and timer peripheral to capture all data with minimal CPU intervention. The GPIO edge will trigger a data capture ISR. The data capture ISR will configure a timer peripheral (which drives SPI word timing) to trigger a DMA between memory and SPI. A DMA done ISR will handle incrementing the buffer pointers following the complete data set aquisition. If the selected page is changed off page 255, the data ready interrupt will be disabled.
+
+When the currently selected page is 255 (buffer output registers), the iSensor SPI Buffer firmware will enable a GPIO interrupt on the selected data ready pin (with the selected data ready polarity). After each data ready interrupt, the firmware will transmit the data entered on the BUF_WRITE registers to the IMU, and place the data received back into a new buffer entry in SRAM. The firmware will use DMA and a timer peripheral to capture all data with minimal CPU intervention, while giving control over the SPI stall time. 
+
+The GPIO edge will trigger a data capture ISR. The data capture ISR will configure a timer peripheral (which drives SPI word transmission timing) to trigger a DMA between memory and SPI. A DMA done ISR will handle incrementing buffer pointers following the complete data set aquisition. If the selected page is changed off page 255, the data ready interrupt will be disabled (can be re-enabled by writing 255 to the page ID register on any page).
 
 ### Register Interface
 
@@ -73,6 +77,12 @@ Page 253 - iSensor SPI buffer configuration
 | Address | Name | Description |
 | --- | --- | --- |
 | 0x00 | PAGE_ID | Page register. Used to change the currently selected register page |
+| 0x02 | BUF_CONFIG | Buffer configuration settings (FIFO/LIFO, SPI word size, overflow behavior) |
+| 0x04 | BUF_LEN | Length (in bytes) of each buffered data capture) |
+| 0x06 | DR_CONFIG | IMU data ready configuration (GPIO number, polarity setting) |
+| 0x08 | IMU_SPI_SCLK | SCLK frequency to the IMU |
+| 0x0A | IMU_SPI_STALL | SPI stall time to the IMU |
+| 0x0C | USER_SPI_CONFIG | User SPI configuration (mode, etc) |
 
 Page 254 - buffer write data
 
@@ -93,5 +103,3 @@ Page 255 - buffer output registers
 | 0x06 | BUF_DATA_0 | First buffer output register (data received from IMU DOUT) |
 | ... | ... | ... |
 | 0x06 + (2N) | BUF_DATA_N | Last buffer output register |
-
-
