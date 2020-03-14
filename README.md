@@ -63,7 +63,7 @@ The iSensor SPI buffer firmware will utilize two SPI ports (one master and one s
 | Name | Address | Description |
 | ---- | ------- | ----------- |
 | 0x00 | PAGE_ID | Page register. Used to change the currently selected register page |
-| 0x02 | BUFF_CNT | The number of samples in buffer. Write 0 to this register to clear buffer |
+| 0x02 | BUF_CNT | The number of samples in buffer. Write 0 to this register to clear buffer |
 | 0x04 | BUF_RETRIEVE | Read this register to dequeue new data from buffer to buffer output registers |
 | 0x06 | BUF_DATA_0 | First buffer output register |
 | ... | ... | ... |
