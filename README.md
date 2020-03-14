@@ -78,7 +78,7 @@ Page 253 - iSensor SPI buffer configuration
 | --- | --- | --- |
 | 0x00 | PAGE_ID | Page register. Used to change the currently selected register page |
 | 0x02 | BUF_CONFIG | Buffer configuration settings (FIFO/LIFO, SPI word size, overflow behavior) |
-| 0x04 | BUF_LEN | Length (in bytes) of each buffered data capture) |
+| 0x04 | BUF_LEN | Length (in bytes) of each buffered data capture |
 | 0x06 | DR_CONFIG | IMU data ready configuration (GPIO number, polarity setting) |
 | 0x08 | IMU_SPI_SCLK | SCLK frequency to the IMU |
 | 0x0A | IMU_SPI_STALL | SPI stall time to the IMU |
