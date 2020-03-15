@@ -8,7 +8,7 @@ Firmware for the STM32F303 (Nucleo-64) to enable full throughput buffered data c
 
 ## Development Environment
 
-The iSensor SPI buffer project can be loaded and built by the free [Keil IDE](http://www2.keil.com/mdk5/)
+The iSensor SPI buffer project can be loaded and built by the free [STM32 Cube IDE](https://my.st.com/content/my_st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-ides/stm32cubeide)
 
 ## Design Requirements
 
@@ -62,7 +62,7 @@ There will be an ISR to handle user SPI (slave interface) transactions. If the c
 
 When the currently selected page is 255 (buffer output registers), the iSensor SPI Buffer firmware will enable a GPIO interrupt on the selected data ready pin (with the selected data ready polarity). After each data ready interrupt, the firmware will transmit the data entered on the BUF_WRITE registers to the IMU, and place the data received back into a new buffer entry in SRAM. The firmware will use DMA and a timer peripheral to capture all data with minimal CPU intervention, while giving control over the SPI stall time. 
 
-The GPIO edge will trigger a data capture ISR. The data capture ISR will configure a timer peripheral (which drives SPI word transmission timing) to trigger a DMA between memory and SPI. A DMA done ISR will handle incrementing buffer pointers following the complete data set aquisition. If the selected page is changed off page 255, the data ready interrupt will be disabled (can be re-enabled by writing 255 to the page ID register on any page).
+The GPIO edge will trigger a data capture ISR. The data capture ISR will configure a timer peripheral (which drives SPI word transmission timing) to trigger a DMA between memory and SPI. A DMA done ISR will handle incrementing buffer pointers following the complete data set aquisition, and will also strobe the SPI buffer data ready signal. If the selected page is changed off page 255, the data ready interrupt will be disabled (can be re-enabled by writing 255 to the page ID register on any page).
 
 ### Register Interface
 
