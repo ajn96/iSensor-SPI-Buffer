@@ -44,6 +44,7 @@ The iSensor SPI buffer project can be loaded and built by the free [STM32 Cube I
 * Data be be dequeued from buffer via read of buffer output registers
 * Option to clear buffer via control register read
 * Buffer count must be easily accessible without dequeuing from buffer
+* Max buffer entry size of 64 bytes -> 512 deep buffer using 32KB SRAM
 
 ## Architecture
 
