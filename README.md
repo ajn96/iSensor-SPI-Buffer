@@ -67,13 +67,20 @@ There will be an ISR to handle user SPI (slave interface) transactions. If the c
 
 When the currently selected page is 255 (buffer output registers), the iSensor SPI Buffer firmware will enable a GPIO interrupt on the selected data ready pin (with the selected data ready polarity). After each data ready interrupt, the firmware will transmit the data entered on the BUF_WRITE registers to the IMU, and place the data received back into a new buffer entry in SRAM. The firmware will use DMA and a timer peripheral to capture all data with minimal CPU intervention, while giving control over the SPI stall time. 
 
-The GPIO edge will trigger a data capture ISR. The data capture ISR will configure a timer peripheral (which drives SPI word transmission timing) to trigger a DMA between memory and SPI. A DMA done ISR will handle cleaning up the DMA transactions and incrementing buffer pointers following a complete data set aquisition from the IMU. If the selected page is changed off page 255, the IMU data ready interrupt will be disabled (can be re-enabled by writing 255 to the page ID register on any page).
+The GPIO edge will trigger a data capture ISR. The data capture ISR will configure a timer peripheral (which drives SPI word transmission timing) to trigger a DMA between memory and SPI. A DMA done ISR will handle cleaning up the DMA transactions and incrementing buffer pointers following a complete data set aquisition from the IMU. If the selected page is changed off page 255, the IMU data ready interrupt data capture functionality will be disabled (can be re-enabled by writing 255 to the page ID register on any page).
 
 **Interrupt Signalling**
 
 The data ready output from the iSensor-SPI-Buffer will be configurable to serve two purposes
 * In "Data Ready" mode, it will pulse each time a new buffer sample is entered into the buffer (same functionality as IMU data ready)
+* If the iSensor-SPI-Buffer firmware is not capturing data from the IMU, the data ready signal will be simply passed through by the GPIO ISR in "Data Ready" mode
 * In interrupt mode, the data ready output will go high once a specified number of samples are available to be dequeued. This allows a master device to simply monitor the data ready signal for a posedge, and then dequeue a large number of IMU data samples
+* When operating in interrupt mode, the data ready output will be updated by the cyclic executive once the buffer count criteria is met. In data ready mode, the data ready output will be toggled by the "DMA Done" ISR.
+
+**Command Execution**
+
+* When a write is issued the USER_COMMAND register, a COMMAND flag will be set and processed by the cyclic executive loop
+* While a command is being executed, the user SPI port will be disabled, and the data ready line will be brought low
 
 ### Register Interface
 
