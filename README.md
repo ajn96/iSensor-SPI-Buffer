@@ -3,7 +3,7 @@ Firmware for the STM32F303 (Nucleo-64) to enable full throughput buffered data c
 
 ## Hardware Platform
 
-* This firmware is designed to run on the Nucleo-F303RE board (based on STM32F303). Once prototpye phase is complete will move to a more permanent solution.
+* This firmware is designed to run on the Nucleo-F303RE board (based on STM32F303). Once prototype phase is complete will move to a more permanent solution based around a custom PCB (can mate with IMU mounting holes / pins).
 
 ![STM Nucleo-64 board](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/stm_nucleo.JPG)
 
