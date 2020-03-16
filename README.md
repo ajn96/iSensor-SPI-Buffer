@@ -95,6 +95,7 @@ Page 253 - iSensor SPI buffer configuration
 | 0x0A | IMU_SPI_STALL | SPI stall time to the IMU |
 | 0x0C | USER_SPI_CONFIG | User SPI configuration (mode, etc) |
 | 0x0E | USER_DR_CONFIG | User interrupt (data ready) config. Will have the mode (Data ready vs interrupt) and the count to trigger interrupt at |
+| 0x10 | USER_COMMAND | Command register (flash update, factory reset, clear buffer, software reset, others?) |
 
 Page 254 - buffer write data
 
