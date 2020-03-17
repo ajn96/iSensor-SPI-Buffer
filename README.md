@@ -1,81 +1,88 @@
-# iSensor-SPI-Buffer
+# diSensor-SPI-Buffer
 Firmware for the STM32F303 (Nucleo-64) to enable full throughput buffered data capture on Analog Devices IMUs
 
 ## Hardware Platform
 
-* This firmware is designed to run on the Nucleo-F303RE board (based on STM32F303). Once prototype phase is complete will move to a more permanent solution based around a custom PCB (can mate with IMU mounting holes / pins).
+* This firmware is designed to run on the Nucleo-F303RE board (based on STM32F303). Once prototype phase is complete will move to a more permanent solution based around a custom PCB that will mate directly with the IMU using its mounting holes
 
 ![STM Nucleo-64 board](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/stm_nucleo.JPG)
 
-* Will be compatible with all modern Analog Devices iSensor IMUs (excluding those which have an automotive SPI interface)
+* The firmware and hardware will be compatible with all modern Analog Devices iSensor IMUs (excluding those which have non-standard SPI interfaces)
 
 ![ADIS1649x IMU](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/adis_imu.JPG)
 
 ## Development Environment
 
-The iSensor SPI buffer project can be loaded and built by the free [STM32 Cube IDE](https://my.st.com/content/my_st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-ides/stm32cubeide)
+The iSensor SPI buffer project can be loaded and built using the free [STM32 Cube IDE](https://my.st.com/content/my_st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-ides/stm32cubeide).
 
 ## Design Requirements
 
 ### IMU Register Interfacing
 
-* "Invisible" SPI pass through to a connected iSensor IMU register map, for all IMU pages
-* SPI buffer configuration registers and buffered data aquisition registers placed on pages not used by IMU (e.g. page 253 - 255)
-* Data ready signal must be passed through by iSensor SPI Buffer firmware, with added phase delay for any autonomous data aquisition
+* "Invisible" SPI pass-through to an iSensor IMU, including modules that implement register pages
+* SPI buffer configuration registers and buffered data acquisition registers will be placed on pages not assigned by any IMU (Pages 253 - 255)
+* The data ready signal must be passed through by iSensor SPI Buffer firmware, with added phase delay to allow for any autonomous data acquisition
 
-### Buffered Data Aquisition
+### Buffered Data Acquisition
 
-* Autonomous IMU data aquisition driven by data ready signal. Data will be stored into a buffer until retrieved by a user
-* Programmable length data aquisition after each IMU data ready signal (number of bytes)
-* Programmable list of MOSI traffic following each IMU data ready signal (can choose what registers to read/write)
-* Programmable data aquisition SPI word size (16 bits default for standard reg reads, gives options for burst reads)
+* Autonomous IMU data acquisition will be driven by the IMU-generated data ready signal. Data will be stored in the SPI buffer SRAM until retrieved by a user
+* Programmable data request message (MOSI) to be transmitted after each data ready signal. Allows users to customize the register writes, contents, and order
+* Programmable data acquisition length after each IMU data ready signal. Allows the user to configure the length of data read back from the IMU
+* Programmable data acquisition SPI word size. The default 16-bit length provides support standard register reads, writes, and burst reads on most IMUs
 
 ### Configuration Options
 
-* Buffer mode (LIFO/FIFO)
+* Buffer operating mode (LIFO/FIFO)
 * Buffer overflow setting (stop sampling vs delete oldest)
 * Data ready input GPIO
-* Data ready trigger polairty
-* Master SPI (interface to IMU) clock freq and stall time
-* Slave SPI (interface to higher level controller) settings
+* IMU Data ready trigger polarity
+* Master SPI (interface between the SPI Buffer and the IMU) 
+  * SCLK Frequency
+  * Stall time
+* Slave SPI (interface between the SPI Buffer and the host processor) 
+  * Standard SPI settings
 
 ### Buffer Design
 
-* Data be be dequeued from buffer via read of buffer output registers
-* Option to clear buffer via control register read
-* Buffer count must be easily accessible without dequeuing from buffer
-* Max buffer entry size of 64 bytes -> 512 deep buffer using 32KB SRAM
+* Reading the buffer output registers will dequeue from the buffer
+* The user will also be able to clear the buffer using a control register
+* A buffer counter will be added to each buffer for the user to keep track of the state of the buffer. This counter must also be accessible without dequeuing data from buffer
+* Using a maximum buffer entry size of 64 bytes, the buffer will provide about 512 frames of buffering using 32KB SRAM
 
 ## Architecture
 
 ### SPI Ports
 
-The iSensor SPI buffer firmware will utilize two SPI ports (one master and one slave)
-* Slave SPI port will expose register interface of IMU + SPI buffer config registers to a higher level controller
-* Slave SPI will have fully configurable interface, to enable interfacing with a variety of microcontrollers
-* Master SPI port will communicate to an Analog Devices IMU using the standard ADIS SPI protocol
-* Master SPI port will have limited handles to set - SCLK frequency, stall time. All other SPI options will be fixed
+The iSensor SPI buffer firmware will utilize two hardware SPI ports. One operating as a master (SPI buffer to IMU communication) and the other as a slave (SPI buffer to host).
+* The slave SPI port will expose the IMU register interface along with the SPI buffer configuration registers to the master.
+* The slave SPI port will support all standard SPI configuration parameters
+* The master SPI port will communicate with the IMU using the standard, iSensor SPI protocol
+* The master SPI port configuration will be limited to customizing SCLK frequency and stall time
 
 ### Program Flow
 
-The system will be interrupt driven for all communications
+The SPI buffer application will be exclusively interrupt-driven to remove as much influence from the ST processor as possible
 
-**User SPI interrupt**
+**User SPI Interrupt**
 
-There will be an ISR to handle user SPI (slave interface) transactions. If the currently selected page is not one of the SPI buffer pages (253 - 255) any read/write will be forwarded to the IMU. A single read request to the user SPI will result in *two* SPI transactions sent to the IMU - one to send the register read request and a second to get the result data back from the IMU. The IMU result data will be loaded into the user SPI transmit buffer, so that it is available on the next user SPI transaction.  For write transactions, a single write command will be sent to the IMU, and the IMU reponse data during the write loaded into the user SPI transmit buffer.
+There will be an ISR to handle user-initiated SPI transactions (slave interface). If the active register page is not one of the SPI buffer pages (253 - 255) all SPI transactions will be forwarded to the IMU downstream. 
+
+SPI transactions will be classified as "read" or "write" by the SPI buffer board the same as the iSensor IMU SPI protocol. A write operation is signaled by setting the MSB of each 16-bit word. The upper 8 bits of the 16-bit transaction contain the register address to be written to as well as the read/write bit. The lower 8 bits of the 16-bit transaction contain the data to be written. 
+
+A single read request transmitted to the SPI buffer on the slave interface will result in *two* SPI transactions sent to the IMU on the master interface. The first transaction sends the register read request to the IMU and the second reads the requested register contents data back from the IMU. The requested IMU register is then loaded into the SPI buffer user SPI transmit buffer so that it is available to the user on the next user SPI transaction.  For write transactions, a single write command will be sent to the IMU. The data resulting from the write transaction is then loaded into the SPI buffer user SPI transmit buffer. Unlike the read operation, a write operation will not automatically generate an additional SPI transaction. 
 
 **Autonomous Data Capture**
 
-When the currently selected page is 255 (buffer output registers), the iSensor SPI Buffer firmware will enable a GPIO interrupt on the selected data ready pin (with the selected data ready polarity). After each data ready interrupt, the firmware will transmit the data entered on the BUF_WRITE registers to the IMU, and place the data received back into a new buffer entry in SRAM. The firmware will use DMA and a timer peripheral to capture all data with minimal CPU intervention, while giving control over the SPI stall time. 
+When the currently selected page is 255 (buffer output register page), the iSensor SPI Buffer firmware will begin to monitor a user-specified GPIO interrupt for data ready signals pulses. Once a data ready pulse is detected, the firmware will transmit the data contained in page 254 (buffer transmit data) in the order specified by the user. Data received from the IMU during each 16-bit transaction will be stored in a new buffer entry in SPI buffer SRAM. The SPI buffer firmware will use DMA and a timer peripherals to perform the SPI transactions with minimal CPU intervention while giving control over the SPI SCLK and stall time. 
 
-The GPIO edge will trigger a data capture ISR. The data capture ISR will configure a timer peripheral (which drives SPI word transmission timing) to trigger a DMA between memory and SPI. A DMA done ISR will handle cleaning up the DMA transactions and incrementing buffer pointers following a complete data set aquisition from the IMU. If the selected page is changed off page 255, the IMU data ready interrupt data capture functionality will be disabled (can be re-enabled by writing 255 to the page ID register on any page).
+The data capture ISR will be triggered by a user-specified GPIO. The data capture ISR will configure a timer peripheral (which drives SPI word transmission timing) to trigger a DMA between memory and SPI. A DMA done ISR will handle cleaning up the DMA transactions and incrementing buffer pointers following a complete data set acquisition from the IMU. If the selected page is changed off page 255, the IMU data ready interrupt data capture functionality will be disabled (can be re-enabled by writing 255 to the page ID register on any page).
 
-**Interrupt Signalling**
+**Interrupt Signaling
 
 The data ready output from the iSensor-SPI-Buffer will be configurable to serve two purposes
 * In "Data Ready" mode, it will pulse each time a new buffer sample is entered into the buffer (same functionality as IMU data ready)
 * If the iSensor-SPI-Buffer firmware is not capturing data from the IMU, the data ready signal will be simply passed through by the GPIO ISR in "Data Ready" mode
-* In interrupt mode, the data ready output will go high once a specified number of samples are available to be dequeued. This allows a master device to simply monitor the data ready signal for a posedge, and then dequeue a large number of IMU data samples
+* In interrupt mode, the data ready output will go high once a specified number of samples are available to be dequeued. This allows a master device to simply monitor the data ready signal for a positive edge, and then dequeue a large number of IMU data samples
 * When operating in interrupt mode, the data ready output will be updated by the cyclic executive once the buffer count criteria is met. In data ready mode, the data ready output will be toggled by the "DMA Done" ISR.
 
 **Command Execution**
@@ -86,7 +93,7 @@ The data ready output from the iSensor-SPI-Buffer will be configurable to serve 
 ### Register Interface
 
 * Configuration registers for iSensor SPI buffer will be available on page 253
-* The data aquisition write data registers (data to transmit per data ready) will be on page 254
+* The data acquisition write data registers (data to transmit per data ready) will be on page 254
 * Buffer output data registers will be on page 255
 
 ### iSensor SPI buffer register structure
@@ -101,8 +108,8 @@ Page 253 - iSensor SPI buffer configuration
 | 0x06 | IMU_DR_CONFIG | IMU data ready configuration (GPIO number, polarity setting) |
 | 0x08 | IMU_SPI_SCLK | SCLK frequency to the IMU |
 | 0x0A | IMU_SPI_STALL | SPI stall time to the IMU |
-| 0x0C | USER_SPI_CONFIG | User SPI configuration (mode, etc) |
-| 0x0E | USER_DR_CONFIG | User interrupt (data ready) config. Will have the mode (Data ready vs interrupt) and the count to trigger interrupt at |
+| 0x0C | USER_SPI_CONFIG | User SPI configuration (mode, etc.) |
+| 0x0E | USER_DR_CONFIG | User interrupt (data ready) configuration. Will have the mode (Data ready vs interrupt) and the count to trigger interrupt at |
 | 0x10 | USER_COMMAND | Command register (flash update, factory reset, clear buffer, software reset, others?) |
 
 Page 254 - buffer write data
