@@ -36,10 +36,10 @@ The iSensor-SPI-Buffer project can be loaded and built using the free [STM32 Cub
 * Buffer overflow setting (stop sampling vs delete oldest)
 * Data ready input GPIO
 * IMU Data ready trigger polarity
-* Master SPI (interface between the SPI Buffer and the IMU) 
+* Master SPI (interface between the iSensor-SPI-Buffer firmware and the IMU) 
   * SCLK Frequency
   * Stall time
-* Slave SPI (interface between the SPI Buffer and the host processor) 
+* Slave SPI (interface between the iSensor-SPI-Buffer firmware and the host processor) 
   * Standard SPI settings
 
 ### Buffer Design
