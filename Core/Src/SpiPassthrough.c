@@ -11,7 +11,7 @@
 #include "SpiPassthrough.h"
 
 /*Get reference to master SPI instance */
-extern SPI_HandleTypeDef masterSpi;
+extern SPI_HandleTypeDef hspi1;
 
 /**
   * @brief Basic IMU SPI data transfer function (protocol agnostic).
@@ -33,7 +33,7 @@ uint16_t ImuSpiTransfer(uint16_t MOSI)
 	txBuf[0] = MOSI & 0xFF;
 	txBuf[1] = (MOSI & 0xFF00) >> 8;
 
-	status = HAL_SPI_TransmitReceive(&masterSpi, txBuf, rxBuf, 2, 0xFFFFFFFF);
+	status = HAL_SPI_TransmitReceive(&hspi1, txBuf, rxBuf, 2, 0xFFFFFFFF);
 
 	if(status != HAL_OK)
 	{

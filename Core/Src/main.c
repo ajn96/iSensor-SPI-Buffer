@@ -41,10 +41,13 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-SPI_HandleTypeDef masterSpi;
-SPI_HandleTypeDef slaveSpi;
+SPI_HandleTypeDef hspi1;
+SPI_HandleTypeDef hspi2;
 
 TIM_HandleTypeDef htim1;
+
+uint8_t userRxBuf[2];
+uint8_t userTxBuf[2];
 
 /* USER CODE BEGIN PV */
 
@@ -100,6 +103,8 @@ int main(void)
 
   /* USER CODE END 2 */
 
+  HAL_SPI_TransmitReceive_IT(&hspi1, userTxBuf, userRxBuf, 1);
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -109,6 +114,33 @@ int main(void)
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
+}
+
+void SPI1_IRQHandler(void)
+{
+	uint16_t transmitData;
+
+	/* Get data from SPI peripheral */
+    HAL_SPI_IRQHandler(&hspi1);
+
+    /* Handle transaction */
+    if(userRxBuf[1] & 0x80)
+    {
+    	/* Write */
+    	transmitData = writeReg(userRxBuf[1] & 0x7F, userRxBuf[0]);
+    }
+    else
+    {
+    	/* Read */
+    	transmitData = readReg(userRxBuf[1]);
+    }
+
+    /* Place transmit data into tx buffer */
+    userTxBuf[0] = transmitData & 0xFF;
+    userTxBuf[1] = (transmitData & 0xFF00) >> 8;
+
+    /* Re-enable SPI */
+    HAL_SPI_TransmitReceive_IT(&hspi1, userTxBuf, userRxBuf, 1);
 }
 
 /**
@@ -153,7 +185,7 @@ void SystemClock_Config(void)
 }
 
 /**
-  * @brief SPI1 (master to IMU) Initialization Function
+  * @brief SPI1 Initialization Function
   * @param None
   * @retval None
   */
@@ -168,32 +200,33 @@ static void MX_SPI1_Init(void)
 
   /* USER CODE END SPI1_Init 1 */
   /* SPI1 parameter configuration*/
-  masterSpi.Instance = SPI1;
-  masterSpi.Init.Mode = SPI_MODE_MASTER;
-  masterSpi.Init.Direction = SPI_DIRECTION_2LINES;
-  masterSpi.Init.DataSize = SPI_DATASIZE_16BIT;
-  masterSpi.Init.CLKPolarity = SPI_POLARITY_HIGH;
-  masterSpi.Init.CLKPhase = SPI_PHASE_2EDGE;
-  masterSpi.Init.NSS = SPI_NSS_SOFT;
-  masterSpi.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-  masterSpi.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  masterSpi.Init.TIMode = SPI_TIMODE_DISABLE;
-  masterSpi.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-  masterSpi.Init.CRCPolynomial = 7;
-  masterSpi.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-  masterSpi.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
-  if (HAL_SPI_Init(&masterSpi) != HAL_OK)
+  hspi1.Instance = SPI1;
+  hspi1.Init.Mode = SPI_MODE_SLAVE;
+  hspi1.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi1.Init.DataSize = SPI_DATASIZE_16BIT;
+  hspi1.Init.CLKPolarity = SPI_POLARITY_HIGH;
+  hspi1.Init.CLKPhase = SPI_PHASE_2EDGE;
+  hspi1.Init.NSS = SPI_NSS_HARD_INPUT;
+  hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi1.Init.CRCPolynomial = 7;
+  hspi1.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+  hspi1.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
+  if (HAL_SPI_Init(&hspi1) != HAL_OK)
   {
     Error_Handler();
   }
   /* USER CODE BEGIN SPI1_Init 2 */
+  HAL_NVIC_SetPriority(SPI1_IRQn, 1, 1);
+  HAL_NVIC_EnableIRQ(SPI1_IRQn);
 
   /* USER CODE END SPI1_Init 2 */
 
 }
 
 /**
-  * @brief SPI2 (slave SPI) Initialization Function
+  * @brief SPI2 Initialization Function
   * @param None
   * @retval None
   */
@@ -208,20 +241,21 @@ static void MX_SPI2_Init(void)
 
   /* USER CODE END SPI2_Init 1 */
   /* SPI2 parameter configuration*/
-  slaveSpi.Instance = SPI2;
-  slaveSpi.Init.Mode = SPI_MODE_SLAVE;
-  slaveSpi.Init.Direction = SPI_DIRECTION_2LINES;
-  slaveSpi.Init.DataSize = SPI_DATASIZE_16BIT;
-  slaveSpi.Init.CLKPolarity = SPI_POLARITY_HIGH;
-  slaveSpi.Init.CLKPhase = SPI_PHASE_2EDGE;
-  slaveSpi.Init.NSS = SPI_NSS_SOFT;
-  slaveSpi.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  slaveSpi.Init.TIMode = SPI_TIMODE_DISABLE;
-  slaveSpi.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-  slaveSpi.Init.CRCPolynomial = 7;
-  slaveSpi.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-  slaveSpi.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
-  if (HAL_SPI_Init(&slaveSpi) != HAL_OK)
+  hspi2.Instance = SPI2;
+  hspi2.Init.Mode = SPI_MODE_MASTER;
+  hspi2.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi2.Init.DataSize = SPI_DATASIZE_16BIT;
+  hspi2.Init.CLKPolarity = SPI_POLARITY_HIGH;
+  hspi2.Init.CLKPhase = SPI_PHASE_2EDGE;
+  hspi2.Init.NSS = SPI_NSS_HARD_OUTPUT;
+  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
+  hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi2.Init.CRCPolynomial = 7;
+  hspi2.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+  hspi2.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
+  if (HAL_SPI_Init(&hspi2) != HAL_OK)
   {
     Error_Handler();
   }

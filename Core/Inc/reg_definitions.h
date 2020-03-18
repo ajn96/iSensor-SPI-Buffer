@@ -2,14 +2,17 @@
   * Copyright (c) Analog Devices Inc, 2020
   * All Rights Reserved.
   *
-  * @file		REG_DEFINES.h
+  * @file		reg_definitions.h
   * @date		3/18/2020
   * @author		A. Nolan (alex.nolan@analog.com)
   * @brief		iSensor-SPI-Buffer registers
  **/
 
-#ifndef INC_REG_DEFINES_H_
-#define INC_REG_DEFINES_H_
+#ifndef INC_REG_DEFINITIONS_H_
+#define INC_REG_DEFINITIONS_H_
+
+/* Number of registers per page */
+#define REG_PER_PAGE			64
 
 /** Page register (0 for all pages) */
 #define PAGE_ID					0
@@ -29,13 +32,13 @@
 /** iSensor-SPI-Buffer buffer Tx data page */
 #define BUF_WRITE_PAGE			254
 
-#define BUF_WRITE_0_REG			0x06
+#define BUF_WRITE_0_REG			0x46
 
 /** iSensor-SPI-Buffer buffer Rx data page */
 #define BUF_READ_PAGE			255
 
-#define BUF_CNT_REG				0x02
-#define BUF_RETRIEVE_REG		0x04
-#define BUF_DATA_0_REG			0x06
+#define BUF_CNT_REG				0x82
+#define BUF_RETRIEVE_REG		0x84
+#define BUF_DATA_0_REG			0x86
 
-#endif /* INC_REG_DEFINES_H_ */
+#endif /* INC_REG_DEFINITIONS_H_ */
