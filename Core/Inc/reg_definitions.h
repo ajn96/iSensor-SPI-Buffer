@@ -28,6 +28,10 @@
 #define USER_SPI_CONFIG_REG		0x0C
 #define USER_DR_CONFIG_REG		0x0E
 #define USER_COMMAND_REG		0x10
+#define USER_SCR_0_REG			0x12
+#define USER_SCR_1_REG			0x14
+#define USER_SCR_2_REG			0x16
+#define USER_SCR_3_REG			0x18
 
 /** iSensor-SPI-Buffer buffer Tx data page */
 #define BUF_WRITE_PAGE			254
