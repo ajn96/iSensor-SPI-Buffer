@@ -8,3 +8,5 @@ EWARM/*
 
 *.o
 .mxproject
+
+Debug/
