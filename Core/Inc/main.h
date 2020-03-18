@@ -29,9 +29,13 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f3xx_hal.h"
+#include "stdint.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+#include "SpiPassthrough.h"
+#include "REG_DEFINES.h"
 
 /* USER CODE END Includes */
 
