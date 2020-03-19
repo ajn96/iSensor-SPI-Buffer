@@ -140,6 +140,21 @@ uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 		/* Buffer output registers / buffer retrieve are read only */
 		if(regIndex > BUF_CNT_REG)
 			return regIndex;
+
+		if(regIndex == BUF_CNT_REG)
+		{
+			if(regValue == 0)
+			{
+				/* Clear buffer for writes of 0 to count */
+				BufReset();
+				return regIndex;
+			}
+			else
+			{
+				/* Ignore non-zero writes */
+				return regIndex;
+			}
+		}
 	}
 	else
 	{
@@ -218,11 +233,6 @@ uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 			/* Reset the buffer after writing upper half of register (applies new settings) */
 			BufReset();
 		}
-	}
-	else if((regIndex == BUF_CNT_REG) && (regValue == 0))
-	{
-		/* Writing zero to buffer count will also reset the buffer */
-		BufReset();
 	}
 
 	return regIndex;
