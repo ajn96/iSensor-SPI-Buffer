@@ -123,7 +123,7 @@ Page 254 - buffer write data
 | 0x00 | PAGE_ID | Page register. Used to change the currently selected register page |
 | 0x06 | BUF_WRITE_0 | First transmit data register (data sent to IMU DIN) |
 | ... | ... | ... |
-| 0x06 + (2N) | BUF_WRITE_N | Last transmit data register |
+| 0x44 | BUF_WRITE_31 | Last transmit data register |
 
 Page 255 - buffer output registers
 
@@ -134,7 +134,7 @@ Page 255 - buffer output registers
 | 0x04 | BUF_RETRIEVE | Read this register to dequeue new data from buffer to buffer output registers |
 | 0x06 | BUF_DATA_0 | First buffer output register (data received from IMU DOUT) |
 | ... | ... | ... |
-| 0x06 + (2N) | BUF_DATA_N | Last buffer output register |
+| 0x44 | BUF_DATA_31 | Last buffer output register |
 
 ### iSensor-SPI-Buffer register bit fields
 
