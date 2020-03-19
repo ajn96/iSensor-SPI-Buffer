@@ -23,7 +23,7 @@ volatile uint32_t buf_tail = 0;
 volatile uint32_t buf_count = 0;
 
 /** The buffer storage */
-uint8_t buf[BUF_SIZE];
+volatile uint8_t buf[BUF_SIZE];
 
 /** Increment per buffer entry */
 uint32_t buf_increment = 64;
@@ -40,9 +40,9 @@ uint32_t buf_maxCount;
 /* position at which buffer needs to wrap around */
 uint32_t buf_lastEntryIndex;
 
-uint8_t* BufTakeElement()
+volatile uint8_t* BufTakeElement()
 {
-	uint8_t* buf_addr = buf;
+	volatile uint8_t* buf_addr = buf;
 	if(buf_LIFOMode)
 	{
 		/* In LIFO mode take from the tail and increment down */
@@ -97,9 +97,9 @@ uint8_t* BufTakeElement()
 	return buf_addr;
 }
 
-uint8_t* BufAddElement()
+volatile uint8_t* BufAddElement()
 {
-	uint8_t* buf_addr = buf;
+	volatile uint8_t* buf_addr = buf;
 	if(buf_count < buf_maxCount)
 	{
 		/* Return pointer to current buffer head */
