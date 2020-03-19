@@ -118,7 +118,7 @@ uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	}
 	else if(selected_page == BUF_READ_PAGE)
 	{
-		if(regIndex > (BUF_READ_0_REG + 31))
+		if(regIndex > (BUF_DATA_0_REG + 31))
 			return regIndex;
 	}
 

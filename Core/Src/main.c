@@ -81,19 +81,19 @@ void SPI1_IRQHandler(void)
         if(userRxBuf[1] & 0x80)
         {
         	/* Write */
-        	transmitData = writeReg(userRxBuf[1] & 0x7F, userRxBuf[0]);
+        	transmitData = WriteReg(userRxBuf[1] & 0x7F, userRxBuf[0]);
         }
         else
         {
         	/* Read */
-        	transmitData = readReg(userRxBuf[1]);
+        	transmitData = ReadReg(userRxBuf[1]);
         }
 
         /* Place transmit data into tx buffer */
         userTxBuf[0] = transmitData & 0xFF;
         userTxBuf[1] = (transmitData & 0xFF00) >> 8;
 
-        writeReg(2, cnt);
+        WriteReg(2, cnt);
         cnt++;
 
     	/* Re-enable SPI */
