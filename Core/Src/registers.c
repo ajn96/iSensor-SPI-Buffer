@@ -27,7 +27,7 @@ volatile uint16_t regs[3 * REG_PER_PAGE] = {
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
-0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0100, 0x0000, 0x0000, /* FW_MONTH_DAY - DEV_SN_HIGH */
 
 /* Page 254 */
 0x00FE, 0x0000, 0x0000, 0x0200, 0x0600, 0x0A00, 0x0E00, 0x1200, /* PAGE_ID - BUF_WRITE_4 */
@@ -278,5 +278,78 @@ void ProcessCommand()
 	{
 		//TODO
 	}
+}
+
+void GetSN()
+{
+
+}
+
+void GetBuildDate()
+{
+	uint8_t date[11] = __DATE__;
+
+	uint16_t year;
+	uint8_t day;
+	uint8_t month;
+
+	/* Pre-process date */
+	for(uint32_t i = 3; i<11; i++)
+	{
+		date[i] = date[i] - '0';
+	}
+
+	/* Get year */
+	year = (date[7] << 12) | (date[8] << 8) | (date[9] << 4) | date[10];
+
+	/* Get day */
+	day = (date[4] << 4) | date[5];
+
+	/* Get month */
+	switch(date[0])
+	{
+	case 'J':
+		if(date[1] == 'a' && date[2] == 'n')
+			month = 0x01;
+		else if(date[1] == 'u' && date[2] == 'n')
+			month = 0x06;
+		else
+			month = 0x07;
+		break;
+	case 'F':
+		month = 0x02;
+		break;
+	case 'M':
+		if(date[2] == 'r')
+			month = 0x03;
+		else
+			month = 0x05;
+		break;
+	case 'A':
+		if(date[1] == 'p')
+			month = 0x04;
+		else
+			month = 0x08;
+		break;
+	case 'S':
+		month = 0x09;
+		break;
+	case 'O':
+		month = 0x10;
+		break;
+	case 'N':
+		month = 0x11;
+		break;
+	case 'D':
+		month = 0x12;
+		break;
+	default:
+		/* shouldnt get here */
+		month = 0x00;
+		break;
+	}
+
+	regs[FW_DAY_MONTH_REG] = (day << 8) | month;
+	regs[FW_YEAR_REG] = year;
 }
 

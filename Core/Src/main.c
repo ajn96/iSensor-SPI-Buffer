@@ -61,8 +61,18 @@ int main(void)
   MX_SPI2_Init();
   MX_TIM1_Init();
 
+  /* Load registers from flash */
+  //TODO
+
   /* Init buffer */
   BufReset();
+
+  /* Config IMU SPI settings */
+  UpdateImuSpiConfig();
+
+  /* Generate all identifier registers */
+  GetBuildDate();
+  GetSN();
 
   /* Start SPI interrupt processing */
   HAL_SPI_TransmitReceive_IT(&hspi1, userTxBuf, userRxBuf, 1);
