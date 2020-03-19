@@ -13,10 +13,10 @@
 
 #include "main.h"
 
-uint16_t readReg(uint8_t regAddr);
+uint16_t ReadReg(uint8_t regAddr);
 
-uint16_t writeReg(uint8_t regAddr, uint8_t regValue);
+uint16_t WriteReg(uint8_t regAddr, uint8_t regValue);
 
-uint16_t processRegWrite(uint8_t regAddr, uint8_t regValue);
+uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue);
 
 #endif /* INC_REGISTERS_H_ */

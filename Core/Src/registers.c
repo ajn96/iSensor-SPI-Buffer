@@ -12,8 +12,8 @@
 #include "registers.h"
 #include "SpiPassthrough.h"
 
-/* Selected page. Starts on 0 (IMU page) */
-volatile uint8_t selected_page = 0;
+/* Selected page. Starts on 253 (config page) */
+volatile uint8_t selected_page = 253;
 
 volatile uint16_t regs[3 * REG_PER_PAGE] = {
 /* Page 253 */
@@ -44,7 +44,7 @@ volatile uint16_t regs[3 * REG_PER_PAGE] = {
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000};
 
-uint16_t readReg(uint8_t regAddr)
+uint16_t ReadReg(uint8_t regAddr)
 {
 	uint16_t regIndex;
 
@@ -63,7 +63,7 @@ uint16_t readReg(uint8_t regAddr)
 	}
 }
 
-uint16_t writeReg(uint8_t regAddr, uint8_t regValue)
+uint16_t WriteReg(uint8_t regAddr, uint8_t regValue)
 {
 	uint16_t regIndex;
 
@@ -81,13 +81,13 @@ uint16_t writeReg(uint8_t regAddr, uint8_t regValue)
 	else
 	{
 		/* Process reg write then return value written */
-		regIndex = processRegWrite(regAddr, regValue);
+		regIndex = ProcessRegWrite(regAddr, regValue);
 		/* get value from reg array */
 		return regs[regIndex];
 	}
 }
 
-uint16_t processRegWrite(uint8_t regAddr, uint8_t regValue)
+uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 {
 	uint16_t regIndex;
 	/* Find offset from page */
@@ -98,6 +98,29 @@ uint16_t processRegWrite(uint8_t regAddr, uint8_t regValue)
 	/* If page register write then ignore (handled higher up) */
 	if(regAddr < 2)
 		return regIndex;
+
+	/* Ignore writes to out of bounds registers */
+	if(selected_page == BUF_CONFIG_PAGE)
+	{
+		/* Last reg on config page */
+		if(regIndex > USER_SCR_3_REG)
+			return regIndex;
+	}
+	else if(selected_page == BUF_WRITE_PAGE)
+	{
+		/* outside writable regs */
+		if(regIndex > (BUF_WRITE_0_REG + 31))
+			return regIndex;
+
+		/* reg 1 and 2 also reserved */
+		if(regIndex == 1 || regIndex == 2)
+			return regIndex;
+	}
+	else if(selected_page == BUF_READ_PAGE)
+	{
+		if(regIndex > (BUF_READ_0_REG + 31))
+			return regIndex;
+	}
 
 	/* Find if writing to upper or lower */
 	uint32_t isUpper = regAddr & 0x1;

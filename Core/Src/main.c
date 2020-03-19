@@ -21,37 +21,15 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
-
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
 /* Private variables ---------------------------------------------------------*/
 SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi2;
 
 TIM_HandleTypeDef htim1;
 
+/* User SPI buffers */
 uint8_t userRxBuf[2];
 uint8_t userTxBuf[2];
-
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
@@ -59,14 +37,6 @@ static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_SPI2_Init(void);
 static void MX_TIM1_Init(void);
-/* USER CODE BEGIN PFP */
-
-/* USER CODE END PFP */
-
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
 
 /**
   * @brief  The application entry point.
@@ -74,73 +44,61 @@ static void MX_TIM1_Init(void);
   */
 int main(void)
 {
-  /* USER CODE BEGIN 1 */
-
-  /* USER CODE END 1 */
-
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
 
-  /* USER CODE BEGIN Init */
-
-  /* USER CODE END Init */
-
   /* Configure the system clock */
   SystemClock_Config();
-
-  /* USER CODE BEGIN SysInit */
-
-  /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_SPI1_Init();
   MX_SPI2_Init();
   MX_TIM1_Init();
-  /* USER CODE BEGIN 2 */
-
-  /* USER CODE END 2 */
 
   HAL_SPI_TransmitReceive_IT(&hspi1, userTxBuf, userRxBuf, 1);
 
   /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
   }
-  /* USER CODE END 3 */
+  return 0;
 }
 
 void SPI1_IRQHandler(void)
 {
 	uint16_t transmitData;
+	static uint8_t cnt = 0;
 
 	/* Get data from SPI peripheral */
-    HAL_SPI_IRQHandler(&hspi1);
+    //HAL_SPI_IRQHandler(&hspi1);
 
-    /* Handle transaction */
-    if(userRxBuf[1] & 0x80)
+    if(hspi1.State == HAL_SPI_STATE_READY)
     {
-    	/* Write */
-    	transmitData = writeReg(userRxBuf[1] & 0x7F, userRxBuf[0]);
-    }
-    else
-    {
-    	/* Read */
-    	transmitData = readReg(userRxBuf[1]);
-    }
+        /* Handle transaction */
+        if(userRxBuf[1] & 0x80)
+        {
+        	/* Write */
+        	transmitData = writeReg(userRxBuf[1] & 0x7F, userRxBuf[0]);
+        }
+        else
+        {
+        	/* Read */
+        	transmitData = readReg(userRxBuf[1]);
+        }
 
-    /* Place transmit data into tx buffer */
-    userTxBuf[0] = transmitData & 0xFF;
-    userTxBuf[1] = (transmitData & 0xFF00) >> 8;
+        /* Place transmit data into tx buffer */
+        userTxBuf[0] = transmitData & 0xFF;
+        userTxBuf[1] = (transmitData & 0xFF00) >> 8;
 
-    /* Re-enable SPI */
-    HAL_SPI_TransmitReceive_IT(&hspi1, userTxBuf, userRxBuf, 1);
+        writeReg(2, cnt);
+        cnt++;
+
+    	/* Re-enable SPI */
+    	HAL_SPI_TransmitReceive_IT(&hspi1, userTxBuf, userRxBuf, 1);
+    }
 }
 
 /**
