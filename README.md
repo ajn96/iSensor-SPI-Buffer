@@ -168,6 +168,15 @@ Page 255 - buffer output registers
 
 | Bit | Name | Description |
 | --- | --- | --- |
+| 7:0 | STALL | Stall time between SPI words (in microseconds). Valid range 2us - 255us |
+| 8 | SCLK_SCALE_2 | Sets SCLK prescaler to 2 (4MHz) |
+| 9 | SCLK_SCALE_4 | Sets SCLK prescaler to 4 (2MHz). Default option selected |
+| 10 | SCLK_SCALE_8 | Sets SCLK prescaler to 8 (1MHz) |
+| 11 | SCLK_SCALE_16 | Sets SCLK prescaler to 16 (500KHz) |
+| 12 | SCLK_SCALE_32 | Sets SCLK prescaler to 32 (250KHz) |
+| 13 | SCLK_SCALE_64 | Sets SCLK prescaler to 64 (125KHz) |
+| 14 | SCLK_SCALE_128 | Sets SCLK prescaler to 128 (62.5KHz) |
+| 15 | SCLK_SCALE_256 | Sets SCLK prescaler to 256 (31.25KHz) |
 
 **USER_DR_CONFIG**
 
@@ -183,11 +192,16 @@ Page 255 - buffer output registers
 
 | Bit | Name | Description |
 | --- | --- | --- |
+| 0 | CLEAR_BUF | Clears buffer contents |
+| 2 | FACTORY_RESET | Restores firmware to a factory default state |
+| 3 | FLASH_UPDATE | Save all non-volatile registers to flash memory |
+| 15 | RESET | Software reset |
 
 **USER_SCR_N**
 
 | Bit | Name | Description |
 | --- | --- | --- |
+| 15:0 | USER_SCR | User scratch value |
 
 **BUF_WRITE_N**
 
@@ -198,13 +212,13 @@ Page 255 - buffer output registers
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 15:0 | CNT | Number of entries currently stored in the buffer |
+| 15:0 | CNT | Number of entries currently stored in the buffer. Write 0 to clear buffer |
 
 **BUF_RETRIEVE**
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 15:0 | RETRIEVE | Read to place a new sample from the buffer into the BUF_READ output registers |
+| 15:0 | RETRIEVE | Read to place a new sample from the buffer into the BUF_READ output registers. Will always contain 0 |
 
 **BUF_READ_N**
 
