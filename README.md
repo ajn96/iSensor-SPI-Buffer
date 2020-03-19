@@ -107,9 +107,9 @@ Page 253 - iSensor-SPI-Buffer configuration
 | 0x02 | BUF_CONFIG | Buffer configuration settings (FIFO/LIFO, SPI word size, overflow behavior) |
 | 0x04 | BUF_LEN | Length (in bytes) of each buffered data capture |
 | 0x06 | IMU_DR_CONFIG | IMU data ready configuration (GPIO number, polarity setting) |
-| 0x08 | IMU_SPI_SCLK | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
-| 0x0C | USER_SPI_CONFIG | User SPI configuration (mode, etc.) |
-| 0x0E | USER_DR_CONFIG | User interrupt (data ready) configuration. Will have the mode (Data ready vs interrupt) and the count to trigger interrupt at |
+| 0x08 | IMU_SPI_CONFIG | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
+| 0x0C | USER_DR_CONFIG | User interrupt (data ready) configuration. Will have the mode (Data ready vs interrupt) and the count to trigger interrupt at |
+| 0x0E | USER_SPI_CONFIG | User SPI configuration (mode, etc.) |
 | 0x10 | USER_COMMAND | Command register (flash update, factory reset, clear buffer, software reset, others?) |
 | 0x12 | USER_SCR_0 | User scratch register |
 | 0x14 | USER_SCR_1 | User scratch register |
@@ -152,14 +152,6 @@ Page 255 - buffer output registers
 | 1 | OVERFLOW | Buffer overflow behavior. 0 stop sampling, 1 replace oldest data |
 | 15:8 | SPIWORDSIZE | SPI word size for buffered capture (in bytes). Valid range 1 - 64 |
 
-**BUF_CONFIG**
-
-| Bit | Name | Description |
-| --- | --- | --- |
-| 0 | MODE | The buffer mode (0 is FIFO mode, 1 is LIFO mode) |
-| 1 | OVERFLOW | Buffer overflow behavior. 0 stop sampling, 1 replace oldest data |
-| 15:8 | SPIWORDSIZE | SPI word size for buffered capture (in bytes). Valid range 1 - 64 |
-
 **BUF_LEN**
 
 | Name | Bits | Description |
@@ -176,12 +168,12 @@ Page 255 - buffer output registers
 | Bit | Name | Description |
 | --- | --- | --- |
 
-**USER_SPI_CONFIG**
+**USER_DR_CONFIG**
 
 | Bit | Name | Description |
 | --- | --- | --- |
 
-**USER_DR_CONFIG**
+**USER_SPI_CONFIG**
 
 | Bit | Name | Description |
 | --- | --- | --- |
