@@ -142,27 +142,27 @@ void UpdateImuSpiConfig()
 	}
 	else if(configReg & (1 << 10))
 	{
-		sclkDividerSetting = SPI_BAUDRATEPRESCALER_4;
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_8;
 	}
 	else if(configReg & (1 << 11))
 	{
-		sclkDividerSetting = SPI_BAUDRATEPRESCALER_4;
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_16;
 	}
 	else if(configReg & (1 << 12))
 	{
-		sclkDividerSetting = SPI_BAUDRATEPRESCALER_4;
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_32;
 	}
 	else if(configReg & (1 << 13))
 	{
-		sclkDividerSetting = SPI_BAUDRATEPRESCALER_4;
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_64;
 	}
 	else if(configReg & (1 << 14))
 	{
-		sclkDividerSetting = SPI_BAUDRATEPRESCALER_4;
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_128;
 	}
 	else if(configReg & (1 << 15))
 	{
-		sclkDividerSetting = SPI_BAUDRATEPRESCALER_4;
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_256;
 	}
 	else
 	{
