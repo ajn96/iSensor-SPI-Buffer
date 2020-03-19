@@ -150,6 +150,12 @@ void BufReset()
 	buf_tail = 0;
 	buf_count = 0;
 
+	/* Enforce min/max settings for buffer increment */
+	if(regs[BUF_LEN_REG] < BUF_MIN_ENTRY)
+		regs[BUF_LEN_REG] = BUF_MIN_ENTRY;
+	if(regs[BUF_LEN_REG] > BUF_MAX_ENTRY)
+		regs[BUF_LEN_REG] = BUF_MAX_ENTRY;
+
 	/* Get the buffer size setting */
 	buf_increment = regs[BUF_LEN_REG];
 

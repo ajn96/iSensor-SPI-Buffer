@@ -63,7 +63,9 @@ int main(void)
   /* Infinite loop */
   while (1)
   {
+
   }
+
   return 0;
 }
 
@@ -73,7 +75,7 @@ void SPI1_IRQHandler(void)
 	static uint8_t cnt = 0;
 
 	/* Get data from SPI peripheral */
-    //HAL_SPI_IRQHandler(&hspi1);
+    HAL_SPI_IRQHandler(&hspi1);
 
     if(hspi1.State == HAL_SPI_STATE_READY)
     {

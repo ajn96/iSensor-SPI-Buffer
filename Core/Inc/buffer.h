@@ -20,4 +20,7 @@ volatile uint8_t* BufAddElement();
 
 #define BUF_SIZE	0x8000
 
+#define BUF_MIN_ENTRY	1
+#define BUF_MAX_ENTRY	64
+
 #endif /* INC_BUFFER_H_ */

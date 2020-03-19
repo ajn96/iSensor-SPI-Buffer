@@ -206,7 +206,7 @@ uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	}
 	regs[regIndex] = regWriteVal;
 
-	/* Check for actions which should be performed in ISR */
+	/* Check for buffer reset actions which should be performed in ISR */
 	if(regIndex == BUF_CONFIG_REG || regIndex == BUF_LEN_REG)
 	{
 		if(isUpper)
