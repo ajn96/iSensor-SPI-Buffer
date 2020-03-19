@@ -34,6 +34,8 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 
 #include "registers.h"
+#include "buffer.h"
+#include "user_interrupt.h"
 
 /* USER CODE END Includes */
 

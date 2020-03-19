@@ -31,6 +31,9 @@ TIM_HandleTypeDef htim1;
 uint8_t userRxBuf[2];
 uint8_t userTxBuf[2];
 
+/* Update processing required */
+volatile extern uint32_t update_flags;
+
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
@@ -58,12 +61,44 @@ int main(void)
   MX_SPI2_Init();
   MX_TIM1_Init();
 
+  /* Init buffer */
+  BufReset();
+
+  /* Start SPI interrupt processing */
   HAL_SPI_TransmitReceive_IT(&hspi1, userTxBuf, userRxBuf, 1);
 
   /* Infinite loop */
   while (1)
   {
+	  /* Process register flags */
+	  if(update_flags & IMU_DR_CONFIG_FLAG)
+	  {
+		  update_flags &= ~IMU_DR_CONFIG_FLAG;
+		  UpdateImuDrConfig();
+	  }
+	  if(update_flags & IMU_SPI_CONFIG_FLAG)
+	  {
+		  update_flags &= ~IMU_SPI_CONFIG_FLAG;
+		  UpdateImuSpiConfig();
+	  }
+	  if(update_flags & USER_DR_CONFIG_FLAG)
+	  {
+		  update_flags &= ~USER_DR_CONFIG_FLAG;
+		  UpdateUserDrConfig();
+	  }
+	  if(update_flags & USER_SPI_CONFIG_FLAG)
+	  {
+		  update_flags &= ~USER_SPI_CONFIG_FLAG;
+		  UpdateUserSpiConfig();
+	  }
+	  if(update_flags & USER_COMMAND_FLAG)
+	  {
+		  update_flags &= ~USER_COMMAND_FLAG;
+		  ProcessCommand();
+	  }
 
+	  /* Check user interrupt generation status */
+	  UpdateUserInterrupt();
   }
 
   return 0;
@@ -72,7 +107,6 @@ int main(void)
 void SPI1_IRQHandler(void)
 {
 	uint16_t transmitData;
-	static uint8_t cnt = 0;
 
 	/* Get data from SPI peripheral */
     HAL_SPI_IRQHandler(&hspi1);
@@ -94,9 +128,6 @@ void SPI1_IRQHandler(void)
         /* Place transmit data into tx buffer */
         userTxBuf[0] = transmitData & 0xFF;
         userTxBuf[1] = (transmitData & 0xFF00) >> 8;
-
-        WriteReg(2, cnt);
-        cnt++;
 
     	/* Re-enable SPI */
     	HAL_SPI_TransmitReceive_IT(&hspi1, userTxBuf, userRxBuf, 1);

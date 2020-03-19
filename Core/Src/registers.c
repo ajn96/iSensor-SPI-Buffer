@@ -223,3 +223,51 @@ uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 
 	return regIndex;
 }
+
+void UpdateImuDrConfig()
+{
+
+}
+
+void UpdateImuSpiConfig()
+{
+
+}
+
+void UpdateUserDrConfig()
+{
+
+}
+
+void UpdateUserSpiConfig()
+{
+
+}
+
+void ProcessCommand()
+{
+	uint16_t command = regs[USER_COMMAND_REG];
+
+	/* Clear command register */
+	regs[USER_COMMAND_REG] = 0;
+
+	//TODO: Disable SPI for duration of command processing
+
+	if(command & SOFTWARE_RESET)
+	{
+		NVIC_SystemReset();
+	}
+	else if(command & CLEAR_BUFFER)
+	{
+		BufReset();
+	}
+	else if(command & FLASH_UPDATE)
+	{
+		//TODO
+	}
+	else if(command & FACTORY_RESET)
+	{
+		//TODO
+	}
+}
+
