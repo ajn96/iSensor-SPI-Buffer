@@ -36,7 +36,7 @@
 /** iSensor-SPI-Buffer buffer Tx data page */
 #define BUF_WRITE_PAGE			254
 
-#define BUF_WRITE_0_REG			0x3
+#define BUF_WRITE_0_REG			0x43
 
 /** iSensor-SPI-Buffer buffer Rx data page */
 #define BUF_READ_PAGE			255
