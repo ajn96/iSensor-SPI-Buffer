@@ -12,7 +12,7 @@
 #define INC_BUFFER_H_
 
 #include "main.h"
-#include "reg_definitions.h"
+#include "registers.h"
 
 void BufReset();
 volatile uint8_t* BufTakeElement();

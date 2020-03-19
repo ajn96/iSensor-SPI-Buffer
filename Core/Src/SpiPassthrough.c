@@ -10,8 +10,17 @@
 
 #include "SpiPassthrough.h"
 
-/*Get reference to master SPI instance */
+/* Get reference to master SPI instance */
 extern SPI_HandleTypeDef hspi1;
+
+/* User register array */
+volatile extern uint16_t regs[];
+
+/** track stall time (microseconds) */
+uint32_t imu_stalltime_us = 25;
+
+/** Track sclk setting (1 bit per setting) */
+uint32_t imu_sclk_divider = SPI_BAUDRATEPRESCALER_4;
 
 /**
   * @brief Basic IMU SPI data transfer function (protocol agnostic).
@@ -38,7 +47,6 @@ uint16_t ImuSpiTransfer(uint16_t MOSI)
 	if(status != HAL_OK)
 	{
 		return 0;
-		//TODO: Maybe something more clever here
 	}
 	else
 	{
@@ -71,6 +79,7 @@ uint16_t ImuReadReg(uint8_t RegAddr)
 	ImuSpiTransfer(readRequest);
 
 	/* Delay for stall time */
+	SleepMicroseconds(imu_stalltime_us);
 
 	/* Return result data on second word */
 	return ImuSpiTransfer(0);
@@ -96,4 +105,80 @@ uint16_t ImuWriteReg(uint8_t RegAddr, uint8_t RegValue)
 
 	/* Perform write and return result */
 	return ImuSpiTransfer(writeRequest);
+}
+
+void SleepMicroseconds(uint32_t microseconds)
+{
+	  uint32_t clk_cycle_start = DWT->CYCCNT;
+
+	  /* Go to number of cycles for system */
+	  microseconds *= (HAL_RCC_GetHCLKFreq() / 1000000);
+
+	  /* Delay till end */
+	  while ((DWT->CYCCNT - clk_cycle_start) < microseconds);
+}
+
+void UpdateImuSpiConfig()
+{
+	uint16_t configReg = regs[IMU_SPI_CONFIG_REG];
+
+	/* Stall time is lower 8 bits */
+	if((configReg & 0xFF) < 2)
+	{
+		configReg &= 0xFF00;
+		configReg |= 2;
+	}
+	imu_stalltime_us = configReg & 0xFF;
+
+	/* Sclk divider setting is upper 8 bits */
+	uint32_t sclkDividerSetting;
+	if(configReg & (1 << 8))
+	{
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_2;
+	}
+	else if(configReg & (1 << 9))
+	{
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_4;
+	}
+	else if(configReg & (1 << 10))
+	{
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_4;
+	}
+	else if(configReg & (1 << 11))
+	{
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_4;
+	}
+	else if(configReg & (1 << 12))
+	{
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_4;
+	}
+	else if(configReg & (1 << 13))
+	{
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_4;
+	}
+	else if(configReg & (1 << 14))
+	{
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_4;
+	}
+	else if(configReg & (1 << 15))
+	{
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_4;
+	}
+	else
+	{
+		configReg |= (1 << 9);
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_4;
+	}
+
+	if(imu_sclk_divider != sclkDividerSetting)
+		ApplySclkDivider(sclkDividerSetting);
+
+	/* Apply value back to IMU SPI config register */
+	regs[IMU_SPI_CONFIG_REG] = configReg;
+}
+
+void ApplySclkDivider(uint32_t preScalerSetting)
+{
+	imu_sclk_divider = preScalerSetting;
+	//TODO: Apply and re-init SPI controller
 }
