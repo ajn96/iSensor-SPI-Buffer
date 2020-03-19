@@ -8,12 +8,13 @@
   * @brief		iSensor-SPI-Buffer register interfacing
  **/
 
-#include "reg_definitions.h"
 #include "registers.h"
-#include "SpiPassthrough.h"
 
 /* Selected page. Starts on 253 (config page) */
 volatile uint8_t selected_page = 253;
+
+/* Register update flags for main loop processing */
+volatile uint32_t update_flags = 0;
 
 volatile uint16_t regs[3 * REG_PER_PAGE] = {
 /* Page 253 */
@@ -58,6 +59,13 @@ uint16_t ReadReg(uint8_t regAddr)
 		regIndex = (selected_page - BUF_CONFIG_PAGE) * REG_PER_PAGE;
 		/* The regAddr will be in range 0 - 127 for register index in range 0 - 63*/
 		regIndex += (regAddr >> 1);
+
+		/* Handler buffer retrieve case */
+		if(regIndex == BUF_RETRIEVE_REG)
+		{
+			//TODO
+		}
+
 		/* get value from reg array */
 		return regs[regIndex];
 	}
@@ -67,7 +75,7 @@ uint16_t WriteReg(uint8_t regAddr, uint8_t regValue)
 {
 	uint16_t regIndex;
 
-	/* Check page first */
+	/* Handle page register writes first */
 	if(regAddr == 0)
 	{
 		selected_page = regValue;
@@ -80,7 +88,7 @@ uint16_t WriteReg(uint8_t regAddr, uint8_t regValue)
 	}
 	else
 	{
-		/* Process reg write then return value written */
+		/* Process reg write then return value from addressed register */
 		regIndex = ProcessRegWrite(regAddr, regValue);
 		/* get value from reg array */
 		return regs[regIndex];
@@ -89,9 +97,12 @@ uint16_t WriteReg(uint8_t regAddr, uint8_t regValue)
 
 uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 {
+	/* Index within the register array */
 	uint16_t regIndex;
+
 	/* Find offset from page */
 	regIndex = (selected_page - BUF_CONFIG_PAGE) * REG_PER_PAGE;
+
 	/* The regAddr will be in range 0 - 127 for register index in range 0 - 63*/
 	regIndex += (regAddr >> 1);
 
@@ -99,9 +110,13 @@ uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	if(regAddr < 2)
 		return regIndex;
 
-	/* Ignore writes to out of bounds registers */
+	/* Ignore writes to out of bound or read only registers */
 	if(selected_page == BUF_CONFIG_PAGE)
 	{
+		/* Max count is read-only */
+		if(regIndex == BUF_MAX_CNT_REG)
+			return regIndex;
+
 		/* Last reg on config page */
 		if(regIndex > USER_SCR_3_REG)
 			return regIndex;
@@ -118,34 +133,93 @@ uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	}
 	else if(selected_page == BUF_READ_PAGE)
 	{
-		if(regIndex > (BUF_DATA_0_REG + 31))
+		/* Buffer output registers / buffer retrieve are read only */
+		if(regIndex > BUF_CNT_REG)
 			return regIndex;
+	}
+	else
+	{
+		/* Block all other pages */
+		return regIndex;
 	}
 
 	/* Find if writing to upper or lower */
 	uint32_t isUpper = regAddr & 0x1;
 
+	/* Any registers which require filtering or special actions in main loop */
+	if(regIndex == IMU_SPI_CONFIG_REG)
+	{
+		if(isUpper)
+		{
+			/* Need to set a flag to update IMU spi config */
+			update_flags |= IMU_SPI_CONFIG_FLAG;
+		}
+	}
+	else if(regIndex == USER_SPI_CONFIG_REG)
+	{
+		if(isUpper)
+		{
+			/* Need to set a flag to update user spi config */
+			update_flags |= USER_SPI_CONFIG_FLAG;
+		}
+	}
+	else if(regIndex == IMU_DR_CONFIG_REG)
+	{
+		if(isUpper)
+		{
+			/* Need to set a flag to update IMU data ready config */
+			update_flags |= IMU_DR_CONFIG_FLAG;
+		}
+	}
+	else if(regIndex == USER_DR_CONFIG_REG)
+	{
+		if(isUpper)
+		{
+			/* Need to set a flag to update user data ready config */
+			update_flags |= USER_DR_CONFIG_FLAG;
+		}
+	}
+	else if(regIndex == USER_COMMAND_REG)
+	{
+		if(isUpper)
+		{
+			/* Need to set a flag to process command */
+			update_flags |= USER_COMMAND_FLAG;
+		}
+	}
+
 	/* Get initial register value */
 	uint16_t regWriteVal = regs[regIndex];
 
-	switch(regIndex)
+	/* Perform write to reg array */
+	if(isUpper)
 	{
-	/* Any registers which require filtering or special actions */
+		/* Write upper reg byte */
+		regWriteVal &= 0x00FF;
+		regWriteVal |= (regValue << 8);
+	}
+	else
+	{
+		/* Write lower reg byte */
+		regWriteVal &= 0xFF00;
+		regWriteVal |= regValue;
+	}
+	regs[regIndex] = regWriteVal;
 
-	/* General registers */
-	default:
+	/* Check for actions which should be performed in ISR */
+	if(regIndex == BUF_CONFIG_REG || regIndex == BUF_LEN_REG)
+	{
 		if(isUpper)
 		{
-			regWriteVal &= 0x00FF;
-			regWriteVal |= (regValue << 8);
+			/* Reset the buffer after writing upper half of register (applies new settings) */
+			BufReset();
 		}
-		else
-		{
-			regWriteVal &= 0xFF00;
-			regWriteVal |= regValue;
-		}
-		regs[regIndex] = regWriteVal;
-		break;
 	}
+	else if((regIndex == BUF_CNT_REG) && (regValue == 0))
+	{
+		/* Writing zero to buffer count will also reset the buffer */
+		BufReset();
+	}
+
 	return regIndex;
 }
