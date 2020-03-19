@@ -22,15 +22,16 @@
 
 #define BUF_CONFIG_REG			0x01
 #define BUF_LEN_REG				0x02
-#define IMU_DR_CONFIG_REG		0x03
-#define IMU_SPI_CONFIG_REG		0x04
-#define USER_DR_CONFIG_REG		0x05
-#define USER_SPI_CONFIG_REG		0x06
-#define USER_COMMAND_REG		0x07
-#define USER_SCR_0_REG			0x08
-#define USER_SCR_1_REG			0x09
-#define USER_SCR_2_REG			0x0A
-#define USER_SCR_3_REG			0x0B
+#define BUF_MAX_CNT_REG			0x03
+#define IMU_DR_CONFIG_REG		0x04
+#define IMU_SPI_CONFIG_REG		0x05
+#define USER_DR_CONFIG_REG		0x06
+#define USER_SPI_CONFIG_REG		0x07
+#define USER_COMMAND_REG		0x08
+#define USER_SCR_0_REG			0x09
+#define USER_SCR_1_REG			0x0A
+#define USER_SCR_2_REG			0x0B
+#define USER_SCR_3_REG			0x0C
 
 /** iSensor-SPI-Buffer buffer Tx data page */
 #define BUF_WRITE_PAGE			254

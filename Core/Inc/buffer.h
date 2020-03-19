@@ -11,6 +11,13 @@
 #ifndef INC_BUFFER_H_
 #define INC_BUFFER_H_
 
+#include "main.h"
+#include "reg_definitions.h"
 
+void BufReset();
+uint8_t* BufTakeElement();
+uint8_t* BufAddElement();
+
+#define BUF_SIZE	0x8000
 
 #endif /* INC_BUFFER_H_ */

@@ -106,15 +106,16 @@ Page 253 - iSensor-SPI-Buffer configuration
 | 0x00 | PAGE_ID | Page register. Used to change the currently selected register page |
 | 0x02 | BUF_CONFIG | Buffer configuration settings (FIFO/LIFO, SPI word size, overflow behavior) |
 | 0x04 | BUF_LEN | Length (in bytes) of each buffered data capture |
-| 0x06 | IMU_DR_CONFIG | IMU data ready configuration (GPIO number, polarity setting) |
-| 0x08 | IMU_SPI_CONFIG | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
-| 0x0A | USER_DR_CONFIG | User interrupt (data ready) configuration. Will have the mode (Data ready vs interrupt) and the count to trigger interrupt at |
-| 0x0C | USER_SPI_CONFIG | User SPI configuration (mode, etc.) |
-| 0x0E | USER_COMMAND | Command register (flash update, factory reset, clear buffer, software reset, others?) |
-| 0x10 | USER_SCR_0 | User scratch register |
-| 0x12 | USER_SCR_1 | User scratch register |
-| 0x14 | USER_SCR_2 | User scratch register |
-| 0x16 | USER_SCR_3 | User scratch register |
+| 0x06 | BUF_MAX_CNT | Maximum entries which can be stored in the buffer. Determined by BUF_LEN. Read-only register |
+| 0x08 | IMU_DR_CONFIG | IMU data ready configuration (GPIO number, polarity setting) |
+| 0x0A | IMU_SPI_CONFIG | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
+| 0x0C | USER_DR_CONFIG | User interrupt (data ready) configuration. Will have the mode (Data ready vs interrupt) and the count to trigger interrupt at |
+| 0x0E | USER_SPI_CONFIG | User SPI configuration (mode, etc.) |
+| 0x10 | USER_COMMAND | Command register (flash update, factory reset, clear buffer, software reset, others?) |
+| 0x12 | USER_SCR_0 | User scratch register |
+| 0x14 | USER_SCR_1 | User scratch register |
+| 0x16 | USER_SCR_2 | User scratch register |
+| 0x18 | USER_SCR_3 | User scratch register |
 
 Page 254 - buffer write data
 
