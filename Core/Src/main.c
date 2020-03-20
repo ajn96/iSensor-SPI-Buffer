@@ -60,6 +60,15 @@ int main(void)
   MX_SPI2_Init();
   MX_TIM1_Init();
 
+  /* Disable TRC */
+  CoreDebug->DEMCR &= ~CoreDebug_DEMCR_TRCENA_Msk; // ~0x01000000;
+  /* Enable TRC */
+  CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk; // 0x01000000;
+  /* Disable clock cycle counter */
+  DWT->CTRL &= ~DWT_CTRL_CYCCNTENA_Msk; //~0x00000001;
+  /* Enable clock cycle counter */
+  DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk; //0x00000001;
+
   /* Load registers from flash */
   //TODO
 
@@ -92,30 +101,25 @@ int main(void)
 	  }
 
 	  /* Process register flags */
-	  if(update_flags & IMU_DR_CONFIG_FLAG)
+	  if(update_flags & USER_COMMAND_FLAG)
 	  {
-		  update_flags &= ~IMU_DR_CONFIG_FLAG;
-		  UpdateImuDrConfig();
+		  update_flags &= ~USER_COMMAND_FLAG;
+		  ProcessCommand();
+	  }
+	  if(update_flags & DIO_CONFIG_FLAG)
+	  {
+		  update_flags &= ~DIO_CONFIG_FLAG;
+		  UpdateDIOConfig();
 	  }
 	  if(update_flags & IMU_SPI_CONFIG_FLAG)
 	  {
 		  update_flags &= ~IMU_SPI_CONFIG_FLAG;
 		  UpdateImuSpiConfig();
 	  }
-	  if(update_flags & USER_DR_CONFIG_FLAG)
-	  {
-		  update_flags &= ~USER_DR_CONFIG_FLAG;
-		  UpdateUserDrConfig();
-	  }
 	  if(update_flags & USER_SPI_CONFIG_FLAG)
 	  {
 		  update_flags &= ~USER_SPI_CONFIG_FLAG;
 		  UpdateUserSpiConfig();
-	  }
-	  if(update_flags & USER_COMMAND_FLAG)
-	  {
-		  update_flags &= ~USER_COMMAND_FLAG;
-		  ProcessCommand();
 	  }
 
 	  /* Check user interrupt generation status */

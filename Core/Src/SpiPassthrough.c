@@ -11,7 +11,7 @@
 #include "SpiPassthrough.h"
 
 /* Get reference to master SPI instance */
-extern SPI_HandleTypeDef hspi1;
+extern SPI_HandleTypeDef hspi2;
 
 /* User register array */
 volatile extern uint16_t regs[];
@@ -42,7 +42,7 @@ uint16_t ImuSpiTransfer(uint16_t MOSI)
 	txBuf[0] = MOSI & 0xFF;
 	txBuf[1] = (MOSI & 0xFF00) >> 8;
 
-	status = HAL_SPI_TransmitReceive(&hspi1, txBuf, rxBuf, 2, 0xFFFFFFFF);
+	status = HAL_SPI_TransmitReceive(&hspi2, txBuf, rxBuf, 2, 0xFFFFFFFF);
 
 	if(status != HAL_OK)
 	{
@@ -73,7 +73,7 @@ uint16_t ImuReadReg(uint8_t RegAddr)
 	readRequest = RegAddr << 8;
 
 	/* Mask out write bit */
-	readRequest &= 0x7F;
+	readRequest &= 0x7FFF;
 
 	/* Perform first transfer */
 	ImuSpiTransfer(readRequest);

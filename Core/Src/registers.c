@@ -209,20 +209,12 @@ uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 			update_flags |= USER_SPI_CONFIG_FLAG;
 		}
 	}
-	else if(regIndex == IMU_DR_CONFIG_REG)
+	else if(regIndex == DIO_CONFIG_REG)
 	{
 		if(isUpper)
 		{
-			/* Need to set a flag to update IMU data ready config */
-			update_flags |= IMU_DR_CONFIG_FLAG;
-		}
-	}
-	else if(regIndex == USER_DR_CONFIG_REG)
-	{
-		if(isUpper)
-		{
-			/* Need to set a flag to update user data ready config */
-			update_flags |= USER_DR_CONFIG_FLAG;
+			/* Need to set a flag to update DIO config */
+			update_flags |= DIO_CONFIG_FLAG;
 		}
 	}
 	else if(regIndex == USER_COMMAND_REG)
@@ -265,17 +257,12 @@ uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	return regIndex;
 }
 
-void UpdateImuDrConfig()
-{
-
-}
-
-void UpdateUserDrConfig()
-{
-
-}
-
 void UpdateUserSpiConfig()
+{
+
+}
+
+void UpdateDIOConfig()
 {
 
 }

@@ -23,8 +23,7 @@ uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue);
 void GetSN();
 void GetBuildDate();
 
-void UpdateImuDrConfig();
-void UpdateUserDrConfig();
+void UpdateDIOConfig();
 void UpdateUserSpiConfig();
 void ProcessCommand();
 
@@ -40,15 +39,14 @@ void ProcessCommand();
 #define BUF_CONFIG_REG			0x01
 #define BUF_LEN_REG				0x02
 #define BUF_MAX_CNT_REG			0x03
-#define IMU_DR_CONFIG_REG		0x04
+#define DIO_CONFIG_REG			0x04
 #define IMU_SPI_CONFIG_REG		0x05
-#define USER_DR_CONFIG_REG		0x06
-#define USER_SPI_CONFIG_REG		0x07
-#define USER_COMMAND_REG		0x08
-#define USER_SCR_0_REG			0x09
-#define USER_SCR_1_REG			0x0A
-#define USER_SCR_2_REG			0x0B
-#define USER_SCR_3_REG			0x0C
+#define USER_SPI_CONFIG_REG		0x06
+#define USER_COMMAND_REG		0x07
+#define USER_SCR_0_REG			0x08
+#define USER_SCR_1_REG			0x09
+#define USER_SCR_2_REG			0x0A
+#define USER_SCR_3_REG			0x0B
 #define STATUS_REG				0x3A
 #define FW_DAY_MONTH_REG		0x3B
 #define FW_YEAR_REG				0x3C
@@ -69,11 +67,10 @@ void ProcessCommand();
 #define BUF_DATA_0_REG			0x83
 
 /* Update flags definitions */
-#define IMU_DR_CONFIG_FLAG		(1 << 0)
+#define DIO_CONFIG_FLAG			(1 << 0)
 #define IMU_SPI_CONFIG_FLAG		(1 << 1)
-#define USER_DR_CONFIG_FLAG 	(1 << 2)
-#define USER_SPI_CONFIG_FLAG	(1 << 3)
-#define USER_COMMAND_FLAG		(1 << 4)
+#define USER_SPI_CONFIG_FLAG	(1 << 2)
+#define USER_COMMAND_FLAG		(1 << 3)
 
 /* Command register bits */
 #define CLEAR_BUFFER			(1 << 0)
