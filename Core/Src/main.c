@@ -30,6 +30,7 @@ TIM_HandleTypeDef htim1;
 /* Update processing required */
 volatile extern uint32_t update_flags;
 
+/* Register array */
 volatile extern uint16_t regs[];
 
 /* Private function prototypes -----------------------------------------------*/
@@ -72,9 +73,24 @@ int main(void)
   GetBuildDate();
   GetSN();
 
+  /* pointer to buffer entry */
+  uint8_t* bufEntry;
+
   /* Infinite loop */
   while (1)
   {
+	  /* Test code to add to FIFO */
+	  if(regs[USER_SCR_0_REG])
+	  {
+		  //for the time being, just add data from write data to FIFO
+		  bufEntry = BufAddElement();
+		  for(int i = 0; i<regs[BUF_LEN_REG]; i++)
+		  {
+			  bufEntry[i] = regs[USER_SCR_0_REG];
+		  }
+		  regs[USER_SCR_0_REG] = 0;
+	  }
+
 	  /* Process register flags */
 	  if(update_flags & IMU_DR_CONFIG_FLAG)
 	  {

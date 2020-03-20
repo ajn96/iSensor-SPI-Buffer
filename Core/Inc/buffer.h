@@ -15,8 +15,8 @@
 #include "registers.h"
 
 void BufReset();
-volatile uint8_t* BufTakeElement();
-volatile uint8_t* BufAddElement();
+uint8_t* BufTakeElement();
+uint8_t* BufAddElement();
 
 #define BUF_SIZE	0xA000
 

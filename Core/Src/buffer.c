@@ -23,7 +23,7 @@ volatile uint32_t buf_tail = 0;
 volatile uint32_t buf_count = 0;
 
 /** The buffer storage */
-volatile uint8_t buf[BUF_SIZE];
+uint8_t buf[BUF_SIZE];
 
 /** Increment per buffer entry */
 uint32_t buf_increment = 64;
@@ -40,38 +40,13 @@ uint32_t buf_maxCount;
 /* position at which buffer needs to wrap around */
 uint32_t buf_lastEntryIndex;
 
-volatile uint8_t* BufTakeElement()
+uint8_t* BufTakeElement()
 {
-	volatile uint8_t* buf_addr = buf;
+	uint8_t* buf_addr = buf;
 	if(buf_LIFOMode)
 	{
-		/* In LIFO mode take from the tail and increment down */
-		if(buf_count > 0)
-		{
-			/*Get pointer to the current tail entry */
-			buf_addr += buf_tail;
-
-			/* Decrement counter and move tail down */
-			buf_count--;
-			buf_tail += buf_increment;
-
-			/* Check that buffer tail hasn't wrapped around */
-			if(buf_tail > buf_lastEntryIndex)
-			{
-				/* reset to 0 */
-				buf_tail = 0;
-			}
-		}
-		else
-		{
-			/*Return pointer to current tail and leave in place */
-			buf_addr += buf_tail;
-		}
-	}
-	else
-	{
-		/* In FIFO mode take from the head and increment up */
-		if(buf_count > 0)
+		/* In LIFO mode take from the head and move it up */
+		if(buf_count > 1)
 		{
 			/*Get pointer to the current head entry */
 			buf_addr += buf_head;
@@ -80,31 +55,65 @@ volatile uint8_t* BufTakeElement()
 			buf_count--;
 			buf_head -= buf_increment;
 
-			/* Check that buffer header hasn't wrapped around
-			 * We can check if greater because buf_head is unsigned, so when it goes negative will become very large */
+			/* Check that buffer tail hasn't wrapped around */
 			if(buf_head > buf_lastEntryIndex)
 			{
-				/* reset to end of buffer */
-				buf_tail = buf_lastEntryIndex;
+				/* reset head to end of buffer */
+				buf_head = buf_lastEntryIndex;
 			}
 		}
 		else
 		{
-			/*Return pointer to current head and leave in place */
+			/*Return pointer to current head and leave in place for 0 and 1 entries */
 			buf_addr += buf_head;
+			buf_count = 0;
 		}
 	}
+	else
+	{
+		/* In FIFO mode take from the tail and move tail down */
+		if(buf_count > 1)
+		{
+			/*Get pointer to the current tail entry */
+			buf_addr += buf_tail;
+
+			/* Decrement counter and move tail down */
+			buf_count--;
+			buf_tail += buf_increment;
+
+			/* Check that buffer header hasn't wrapped around
+			 * We can check if greater because buf_head is unsigned, so when it goes negative will become very large */
+			if(buf_tail > buf_lastEntryIndex)
+			{
+				/* reset to end of buffer */
+				buf_tail = 0;
+			}
+		}
+		else
+		{
+			/*Return pointer to current tail and leave in place for zero and 1 entries */
+			buf_addr += buf_tail;
+			buf_count = 0;
+		}
+	}
+	/* Update buffer count register */
+	regs[BUF_CNT_REG] = buf_count;
+	/* Return pointer to the buffer entry */
 	return buf_addr;
 }
 
-volatile uint8_t* BufAddElement()
+uint8_t* BufAddElement()
 {
-	volatile uint8_t* buf_addr = buf;
-	if(buf_count < buf_maxCount)
+	uint8_t* buf_addr = buf;
+	if(buf_count == 0)
 	{
-		/* Return pointer to current buffer head */
+		/* Increment buffer count */
+		buf_count++;
+		/* Return pointer to current buffer head without moving head */
 		buf_addr += buf_head;
-
+	}
+	else if(buf_count < buf_maxCount)
+	{
 		/* Increment counter and move head down */
 		buf_count++;
 		buf_head += buf_increment;
@@ -114,6 +123,9 @@ volatile uint8_t* BufAddElement()
 		{
 			buf_head = 0;
 		}
+
+		/* Return pointer to current buffer head */
+		buf_addr += buf_head;
 	}
 	else
 	{
@@ -134,12 +146,12 @@ volatile uint8_t* BufAddElement()
 				buf_tail = 0;
 			}
 		}
-		else
-		{
-			/* Keep head and tail in place */
-			buf_addr += buf_head;
-		}
+		/* Return pointer to head */
+		buf_addr += buf_head;
 	}
+	/* Update count register */
+	regs[BUF_CNT_REG] = buf_count;
+	/* Return pointer to write buffer value to */
 	return buf_addr;
 }
 

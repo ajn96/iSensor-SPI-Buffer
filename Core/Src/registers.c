@@ -16,7 +16,7 @@ volatile uint8_t selected_page = 253;
 /* Register update flags for main loop processing */
 volatile uint32_t update_flags = 0;
 
-volatile uint16_t regs[3 * REG_PER_PAGE] = {
+uint16_t regs[3 * REG_PER_PAGE] = {
 /* Page 253 */
 
 /* 0      1        2       3       4       5       6       7 */
@@ -53,6 +53,8 @@ uint16_t ReadReg(uint8_t regAddr)
 {
 	uint16_t regIndex;
 	uint16_t status;
+	uint8_t* bufEntry;
+	uint8_t* bufOutput;
 
 	if(selected_page < BUF_CONFIG_PAGE)
 	{
@@ -68,7 +70,23 @@ uint16_t ReadReg(uint8_t regAddr)
 		/* Handler buffer retrieve case */
 		if(regIndex == BUF_RETRIEVE_REG)
 		{
-			//TODO
+			/* Initial clear */
+			for(uint32_t i = 0; i < 32; i++)
+			{
+				regs[BUF_DATA_0_REG + i] = 0;
+			}
+			/* Check if buf count > 0) */
+			if(regs[BUF_CNT_REG] > 0)
+			{
+				/* Get element from the buffer */
+				bufEntry = BufTakeElement();
+				/* Copy to output registers */
+				bufOutput = (uint8_t *) &regs[BUF_DATA_0_REG];
+				for(uint32_t i = 0; i < regs[BUF_LEN_REG]; i++)
+				{
+					bufOutput[i] = bufEntry[i];
+				}
+			}
 		}
 
 		/* Clear status upon read of upper word */
