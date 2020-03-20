@@ -27,12 +27,10 @@ SPI_HandleTypeDef hspi2;
 
 TIM_HandleTypeDef htim1;
 
-/* User SPI buffers */
-uint8_t userRxBuf[2];
-uint8_t userTxBuf[2];
-
 /* Update processing required */
 volatile extern uint32_t update_flags;
+
+volatile extern uint16_t regs[];
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
@@ -74,9 +72,6 @@ int main(void)
   GetBuildDate();
   GetSN();
 
-  /* Start SPI interrupt processing */
-  HAL_SPI_TransmitReceive_IT(&hspi1, userTxBuf, userRxBuf, 1);
-
   /* Infinite loop */
   while (1)
   {
@@ -116,32 +111,58 @@ int main(void)
 
 void SPI1_IRQHandler(void)
 {
-	uint16_t transmitData;
+	/* Transaction counter */
+	static uint32_t transaction_counter = 0;
 
-	/* Get data from SPI peripheral */
-    HAL_SPI_IRQHandler(&hspi1);
+	uint32_t itflag = hspi1.Instance->SR;
+	uint32_t transmitData;
+	uint32_t rxData;
 
-    if(hspi1.State == HAL_SPI_STATE_READY)
-    {
-        /* Handle transaction */
-        if(userRxBuf[1] & 0x80)
-        {
-        	/* Write */
-        	transmitData = WriteReg(userRxBuf[1] & 0x7F, userRxBuf[0]);
-        }
-        else
-        {
-        	/* Read */
-        	transmitData = ReadReg(userRxBuf[1]);
-        }
+	/* Apply transaction counter to STATUS upper 4 bits and increment */
+	regs[STATUS_REG] &= 0x0FFF;
+	regs[STATUS_REG] |= (transaction_counter << 12);
+	transaction_counter = (transaction_counter + 1) & 0xF;
 
-        /* Place transmit data into tx buffer */
-        userTxBuf[0] = transmitData & 0xFF;
-        userTxBuf[1] = (transmitData & 0xFF00) >> 8;
+	/* Error interrupt source */
+	if(itflag & (SPI_FLAG_OVR | SPI_FLAG_MODF))
+	{
+		/* Set status reg SPI overrun flag */
+		regs[STATUS_REG] |= 0x1;
 
-    	/* Re-enable SPI */
-    	HAL_SPI_TransmitReceive_IT(&hspi1, userTxBuf, userRxBuf, 1);
-    }
+		/* Overrun error, can be cleared by repeatedly reading DR */
+		for(uint32_t i = 0; i < 4; i++)
+		{
+			transmitData = hspi1.Instance->DR;
+		}
+		/* Load zero to output */
+		hspi1.Instance->DR = 0;
+		/* Read status register */
+		itflag = hspi1.Instance->SR;
+		/* Exit ISR */
+		return;
+	}
+
+	/* Rx done interrupt source */
+	if(itflag & SPI_FLAG_RXNE)
+	{
+		/* Get data from FIFO */
+		rxData = hspi1.Instance->DR;
+
+		/* Handle transaction */
+		if(rxData & 0x8000)
+		{
+			/* Write */
+			transmitData = WriteReg((rxData & 0x7F00) >> 8, rxData & 0xFF);
+		}
+		else
+		{
+			/* Read */
+			transmitData = ReadReg(rxData >> 8);
+		}
+
+		/* Transmit data back */
+		hspi1.Instance->DR = transmitData;
+	}
 }
 
 /**
@@ -218,12 +239,28 @@ static void MX_SPI1_Init(void)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN SPI1_Init 2 */
+
+  /* Start user SPI interrupt processing (Rx and error) */
+  __HAL_SPI_ENABLE_IT(&hspi1, (SPI_IT_RXNE | SPI_IT_ERR));
+
+  /* Set threshold for 16 bit mode */
+  CLEAR_BIT(hspi1.Instance->CR2, SPI_RXFIFO_THRESHOLD);
+
+  /* Check if the SPI is already enabled */
+  if ((hspi1.Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
+  {
+    /* Enable SPI peripheral */
+    __HAL_SPI_ENABLE(&hspi1);
+  }
+
+  /* Load output with initial zeros */
+  hspi1.Instance->DR = 0;
+
+  /* Set user SPI interrupt priority */
   HAL_NVIC_SetPriority(SPI1_IRQn, 1, 1);
+
+  /* Enable user SPI interrupts */
   HAL_NVIC_EnableIRQ(SPI1_IRQn);
-
-  /* USER CODE END SPI1_Init 2 */
-
 }
 
 /**

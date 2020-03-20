@@ -48,6 +48,7 @@ void ProcessCommand();
 #define USER_SCR_1_REG			0x0A
 #define USER_SCR_2_REG			0x0B
 #define USER_SCR_3_REG			0x0C
+#define STATUS_REG				0x3A
 #define FW_DAY_MONTH_REG		0x3B
 #define FW_YEAR_REG				0x3C
 #define FW_REV_REG				0x3D

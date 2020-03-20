@@ -27,7 +27,7 @@ volatile uint16_t regs[3 * REG_PER_PAGE] = {
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
-0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0100, 0x0000, 0x0000, /* FW_MONTH_DAY - DEV_SN_HIGH */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0100, 0x0000, 0x0000, /* STATUS - DEV_SN_HIGH */
 
 /* Page 254 */
 0x00FE, 0x0000, 0x0000, 0x0200, 0x0600, 0x0A00, 0x0E00, 0x1200, /* PAGE_ID - BUF_WRITE_4 */
@@ -52,6 +52,7 @@ volatile uint16_t regs[3 * REG_PER_PAGE] = {
 uint16_t ReadReg(uint8_t regAddr)
 {
 	uint16_t regIndex;
+	uint16_t status;
 
 	if(selected_page < BUF_CONFIG_PAGE)
 	{
@@ -68,6 +69,14 @@ uint16_t ReadReg(uint8_t regAddr)
 		if(regIndex == BUF_RETRIEVE_REG)
 		{
 			//TODO
+		}
+
+		/* Clear status upon read of upper word */
+		if(regIndex == STATUS_REG && (regAddr & 0x1))
+		{
+			status = regs[STATUS_REG];
+			regs[STATUS_REG] = 0;
+			return status;
 		}
 
 		/* get value from reg array */
@@ -282,7 +291,10 @@ void ProcessCommand()
 
 void GetSN()
 {
+	uint32_t id = HAL_GetDEVID();
 
+	regs[DEV_SN_LOW_REG] = id & 0xFFFF;
+	regs[DEV_SN_HIGH_REG] = (id & 0xFFFF0000) >> 16;
 }
 
 void GetBuildDate()
