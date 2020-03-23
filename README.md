@@ -107,15 +107,14 @@ Page 253 - iSensor-SPI-Buffer configuration
 | 0x02 | BUF_CONFIG | Buffer configuration settings (FIFO/LIFO, SPI word size, overflow behavior) |
 | 0x04 | BUF_LEN | Length (in bytes) of each buffered data capture |
 | 0x06 | BUF_MAX_CNT | Maximum entries which can be stored in the buffer. Determined by BUF_LEN. Read-only register |
-| 0x08 | IMU_DR_CONFIG | IMU data ready configuration (GPIO number, polarity setting) |
+| 0x08 | DIO_CONFIG | Digital I/O configuration |
 | 0x0A | IMU_SPI_CONFIG | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
-| 0x0C | USER_DR_CONFIG | User interrupt (data ready) configuration. Will have the mode (Data ready vs interrupt) and the count to trigger interrupt at |
-| 0x0E | USER_SPI_CONFIG | User SPI configuration (mode, etc.) |
-| 0x10 | USER_COMMAND | Command register (flash update, factory reset, clear buffer, software reset, others?) |
-| 0x12 | USER_SCR_0 | User scratch register |
-| 0x14 | USER_SCR_1 | User scratch register |
-| 0x16 | USER_SCR_2 | User scratch register |
-| 0x18 | USER_SCR_3 | User scratch register |
+| 0x0C | USER_SPI_CONFIG | User SPI configuration (mode, etc.) |
+| 0x0E | USER_COMMAND | Command register (flash update, factory reset, clear buffer, software reset, others?) |
+| 0x10 | USER_SCR_0 | User scratch register |
+| 0x12 | USER_SCR_1 | User scratch register |
+| 0x14 | USER_SCR_2 | User scratch register |
+| 0x16 | USER_SCR_3 | User scratch register |
 
 Page 254 - buffer write data
 
@@ -151,18 +150,34 @@ Page 255 - buffer output registers
 | --- | --- | --- |
 | 0 | MODE | The buffer mode (0 is FIFO mode, 1 is LIFO mode) |
 | 1 | OVERFLOW | Buffer overflow behavior. 0 stop sampling, 1 replace oldest data |
-| 15:8 | SPIWORDSIZE | SPI word size for buffered capture (in bytes). Valid range 1 - 64 |
+| 15:8 | SPIWORDSIZE | SPI word size for buffered capture (in bytes). Valid range 2 - 64 |
 
 **BUF_LEN**
 
 | Name | Bits | Description |
 | --- | --- | --- |
-| 15:0 | LEN | Length (in bytes) of each buffer entry. Valid range 1 - 64 |
+| 15:0 | LEN | Length (in bytes) of each buffer entry. Valid range 2 - 64 |
 
-**IMU_DR_CONFIG**
+**DIO_CONFIG**
 
 | Bit | Name | Description |
 | --- | --- | --- |
+| 3:0 | DR_SELECT | Select which IMU ouput pin is treated as data ready. Can only select one pin |
+| 7:4 | PIN_PASS | Select which pins are directly connected to IMU vs passing through iSensor-SPI-Buffer firmware |
+| 11:8 | INT_MAP | Select which pins are driven with the buffer data ready interrupt signal from the iSensor-SPI-Buffer firmware |
+| 15:12 | OVERFLOW_MAP | Select which pins are driven with the overflow interrupt signal from the iSensor-SPI-Buffer firmware |
+
+For each field in DIO_CONFIG, the following pin mapping is made:
+* Bit0 -> DIO1
+* Bit1 -> DIO2
+* Bit2 -> DIO3
+* Bit3 -> DIO4
+
+The following default values will be used for DIO_CONFIG:
+* DR_SELECT 0x1. Data ready default input to the iSensor-SPI-Buffer firmware is DIO1
+* PIN_PASS: 0x3. DIO1 (typically acts as IMU data ready) and DIO2 (typically acts as SYNC input) will be passed through using an Analog Switch. This allows for direct sync strobing and reading of the data ready signal
+* INT_MAP: 0x4. The buffer data ready interrupt is applied to DIO3 by default
+* OVERFLOW_MAP: 0x8. The buffer overflow interrupt is applied to DIO4 by default
 
 **IMU_SPI_CONFIG**
 
@@ -177,11 +192,6 @@ Page 255 - buffer output registers
 | 13 | SCLK_SCALE_64 | Sets SCLK prescaler to 64 (125KHz) |
 | 14 | SCLK_SCALE_128 | Sets SCLK prescaler to 128 (62.5KHz) |
 | 15 | SCLK_SCALE_256 | Sets SCLK prescaler to 256 (31.25KHz) |
-
-**USER_DR_CONFIG**
-
-| Bit | Name | Description |
-| --- | --- | --- |
 
 **USER_SPI_CONFIG**
 
