@@ -42,7 +42,11 @@ uint16_t ImuSpiTransfer(uint16_t MOSI)
 	txBuf[0] = MOSI & 0xFF;
 	txBuf[1] = (MOSI & 0xFF00) >> 8;
 
-	status = HAL_SPI_TransmitReceive(&hspi2, txBuf, rxBuf, 2, 0xFFFFFFFF);
+	/* Set F0 (CS) low */
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_0, GPIO_PIN_RESET);
+	status = HAL_SPI_TransmitReceive(&hspi2, txBuf, rxBuf, 1, 0xFFFFFFFF);
+	/* Bring F0 (CS) high */
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_0, GPIO_PIN_SET);
 
 	if(status != HAL_OK)
 	{

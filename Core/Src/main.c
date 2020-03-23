@@ -305,7 +305,7 @@ static void MX_SPI2_Init(void)
   hspi2.Init.DataSize = SPI_DATASIZE_16BIT;
   hspi2.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi2.Init.CLKPhase = SPI_PHASE_2EDGE;
-  hspi2.Init.NSS = SPI_NSS_HARD_OUTPUT;
+  hspi2.Init.NSS = SPI_NSS_SOFT;
   hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
   hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
@@ -318,6 +318,12 @@ static void MX_SPI2_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN SPI2_Init 2 */
+  /* Check if the SPI is already enabled */
+  if ((hspi2.Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
+  {
+    /* Enable SPI peripheral */
+    __HAL_SPI_ENABLE(&hspi2);
+  }
 
   /* USER CODE END SPI2_Init 2 */
 
@@ -390,6 +396,15 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
+  /* Set up master CS as input */
+  GPIO_InitTypeDef cs_settings = {0};
+
+  cs_settings.Mode = GPIO_MODE_OUTPUT_PP; /* Output */
+  cs_settings.Pin = GPIO_PIN_0; /* CS on pin F0 */
+  cs_settings.Pull = GPIO_NOPULL; /* Config as pull up */
+  cs_settings.Speed = GPIO_SPEED_FREQ_LOW;
+  cs_settings.Alternate = 0;
+  HAL_GPIO_Init(GPIOF, &cs_settings);
 }
 
 /* USER CODE BEGIN 4 */
