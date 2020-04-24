@@ -296,10 +296,13 @@ void ProcessCommand()
 
 void GetSN()
 {
-	uint32_t id = HAL_GetDEVID();
-
-	regs[DEV_SN_LOW_REG] = id & 0xFFFF;
-	regs[DEV_SN_HIGH_REG] = (id & 0xFFFF0000) >> 16;
+	uint16_t id;
+	for(uint8_t i = 0; i < 12; i = i + 2)
+	{
+		id = *(volatile uint8_t *)(UID_BASE + i);
+		id |= (*(volatile uint8_t *)(UID_BASE + i + 1)) << 8;
+		regs[DEV_SN_REG + (i >> 1)] = id;
+	}
 }
 
 void GetBuildDate()

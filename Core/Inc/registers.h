@@ -47,12 +47,11 @@ void ProcessCommand();
 #define USER_SCR_1_REG			0x09
 #define USER_SCR_2_REG			0x0A
 #define USER_SCR_3_REG			0x0B
-#define STATUS_REG				0x3A
-#define FW_DAY_MONTH_REG		0x3B
-#define FW_YEAR_REG				0x3C
-#define FW_REV_REG				0x3D
-#define DEV_SN_LOW_REG			0x3E
-#define DEV_SN_HIGH_REG			0x3F
+#define STATUS_REG				0x36
+#define FW_DAY_MONTH_REG		0x37
+#define FW_YEAR_REG				0x38
+#define FW_REV_REG				0x39
+#define DEV_SN_REG				0x3A
 
 /** iSensor-SPI-Buffer buffer Tx data page */
 #define BUF_WRITE_PAGE			254
