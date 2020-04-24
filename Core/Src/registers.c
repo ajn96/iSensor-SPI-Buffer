@@ -89,8 +89,8 @@ uint16_t ReadReg(uint8_t regAddr)
 			}
 		}
 
-		/* Clear status upon read of upper word */
-		if(regIndex == STATUS_REG && (regAddr & 0x1))
+		/* Clear status upon read */
+		if(regIndex == STATUS_REG)
 		{
 			status = regs[STATUS_REG];
 			regs[STATUS_REG] = 0;

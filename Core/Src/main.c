@@ -177,7 +177,7 @@ void SPI2_IRQHandler(void)
 	/* Transaction counter */
 	static uint32_t transaction_counter = 0;
 
-	uint32_t itflag = hspi2.Instance->SR;
+	uint32_t itflag = SPI2->SR;
 	uint32_t transmitData;
 	uint32_t rxData;
 
@@ -189,18 +189,31 @@ void SPI2_IRQHandler(void)
 	/* Error interrupt source */
 	if(itflag & (SPI_FLAG_OVR | SPI_FLAG_MODF))
 	{
-		/* Set status reg SPI overrun flag */
+		/* Set status reg SPI error flag */
 		regs[STATUS_REG] |= 0x1;
 
 		/* Overrun error, can be cleared by repeatedly reading DR */
 		for(uint32_t i = 0; i < 4; i++)
 		{
-			transmitData = hspi2.Instance->DR;
+			transmitData = SPI2->DR;
 		}
 		/* Load zero to output */
-		hspi2.Instance->DR = 0;
+		SPI2->DR = 0;
 		/* Read status register */
-		itflag = hspi2.Instance->SR;
+		itflag = SPI2->SR;
+		/* Exit ISR */
+		return;
+	}
+
+	/* Spi overflow (received transaction while transmit pending) */
+	if(itflag & 0x1000)
+	{
+		/* Get data from FIFO */
+		rxData = SPI2->DR;
+
+		/* Set status reg SPI overflow flag */
+		regs[STATUS_REG] |= 0x2;
+
 		/* Exit ISR */
 		return;
 	}
@@ -209,7 +222,7 @@ void SPI2_IRQHandler(void)
 	if(itflag & SPI_FLAG_RXNE)
 	{
 		/* Get data from FIFO */
-		rxData = hspi2.Instance->DR;
+		rxData = SPI2->DR;
 
 		/* Handle transaction */
 		if(rxData & 0x8000)
@@ -224,7 +237,7 @@ void SPI2_IRQHandler(void)
 		}
 
 		/* Transmit data back */
-		hspi2.Instance->DR = transmitData;
+		SPI2->DR = transmitData;
 	}
 }
 
