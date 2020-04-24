@@ -241,16 +241,42 @@ The following default values will be used for DIO_CONFIG:
 
 | Pin Name | STM32 Pin | Description |
 | --- | --- | --- |
-| SCLK | PA5 | SPI clock signal. This pin is an input for the iSensor-SPI-Buffer |
-| CS | PA4 | Chip select signal. Bring low to select the iSensor-SPI-Buffer for communications. This pin is an input for the iSensor-SPI-Buffer |
-| MISO | PA6 | Master in slave out (MISO) signal. This pin is an output from the iSensor-SPI-Buffer |
-| MOSI | PA7 | Master out slave in (MOSI) signal. This pin is an input for the iSensor-SPI-Buffer |
+| SCLK | PB13 | SPI clock signal. This pin is an input for the iSensor-SPI-Buffer |
+| CS | PB12 | Chip select signal. Bring low to select the iSensor-SPI-Buffer for communications. This pin is an input for the iSensor-SPI-Buffer |
+| MISO | PB14 | Master in slave out (MISO) signal. This pin is an output from the iSensor-SPI-Buffer |
+| MOSI | PB15 | Master out slave in (MOSI) signal. This pin is an input for the iSensor-SPI-Buffer |
 
 **Master SPI Interface (to IMU)**
 
 | Pin Name | STM32 Pin | Description |
 | --- | --- | --- |
-| SCLK | PF1 | SPI clock signal. This pin is an output from the iSensor-SPI-Buffer |
-| CS | PF0 | Chip select signal, used to enable the IMU slave SPI interface. This pin is an output from the iSensor-SPI-Buffer |
-| MISO | PB14 | Master in slave out (MISO) signal. This pin is an input for the iSensor-SPI-Buffer |
-| MOSI | PB15 | Master out slave in (MOSI) signal. This pin is an output from the iSensor-SPI-Buffer |
+| SCLK | PA5 | SPI clock signal. This pin is an output from the iSensor-SPI-Buffer |
+| CS | PA4 | Chip select signal, used to enable the IMU slave SPI interface. This pin is an output from the iSensor-SPI-Buffer |
+| MISO | PA6 | Master in slave out (MISO) signal. This pin is an input for the iSensor-SPI-Buffer |
+| MOSI | PA7 | Master out slave in (MOSI) signal. This pin is an output from the iSensor-SPI-Buffer |
+
+**SPI 3 (master to communicate with SD card/etc)**
+
+| Pin Name | STM32 Pin | Description |
+| --- | --- | --- |
+| SCLK | PC10 | SPI clock signal |
+| CS | PA15 | Chip select signal |
+| MISO | PC11 | Master in slave out (MISO) signal |
+| MOSI | PC12 | Master out slave in (MOSI) signal |
+
+**DIO / ADG1611 Control**
+
+| Pin Name | STM32 Pin | Description |
+| --- | --- | --- |
+| DIO1_Master | PB4 | DIO1 output signal from iSensor-SPI-Buffer |
+| DIO2_Master | PB9 | DIO2 output signal from iSensor-SPI-Buffer |
+| DIO3_Master | PC6 | DIO3 output signal from iSensor-SPI-Buffer |
+| DIO4_Master | PA9 | DIO4 output signal from iSensor-SPI-Buffer |
+| DIO1_Slave | PB5 | DIO1 input signal from master |
+| DIO2_Slave | PB8 | DIO2 input signal from master |
+| DIO3_Slave | PC7 | DIO3 input signal from master |
+| DIO4_Slave | PA8 | DIO4 input signal from master |
+| SW_IN1 | PB6 | Switch control from iSensor-SPI-Buffer. If set DIO1 will be directly passed from master to IMU |
+| SW_IN2 | PB7 | Switch control from iSensor-SPI-Buffer. If set DIO2 will be directly passed from master to IMU |
+| SW_IN3 | PC8 | Switch control from iSensor-SPI-Buffer. If set DIO3 will be directly passed from master to IMU |
+| SW_IN4 | PC9 | Switch control from iSensor-SPI-Buffer. If set DIO4 will be directly passed from master to IMU |
