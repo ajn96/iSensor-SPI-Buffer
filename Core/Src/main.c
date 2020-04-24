@@ -21,11 +21,31 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-/* Private variables ---------------------------------------------------------*/
-SPI_HandleTypeDef hspi1;
-SPI_HandleTypeDef hspi2;
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
 
-TIM_HandleTypeDef htim1;
+/* USER CODE END Includes */
+
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+
+/* USER CODE END PTD */
+
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+SPI_HandleTypeDef hspi1; //IMU master
+SPI_HandleTypeDef hspi2; //Slave
+SPI_HandleTypeDef hspi3; //SD Master
+
+/* USER CODE BEGIN PV */
 
 /* Update processing required */
 volatile extern uint32_t update_flags;
@@ -33,12 +53,22 @@ volatile extern uint32_t update_flags;
 /* Register array */
 volatile extern uint16_t regs[];
 
+/* USER CODE END PV */
+
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_SPI2_Init(void);
-static void MX_TIM1_Init(void);
+static void MX_SPI3_Init(void);
+/* USER CODE BEGIN PFP */
+
+/* USER CODE END PFP */
+
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
+
+/* USER CODE END 0 */
 
 /**
   * @brief  The application entry point.
@@ -46,19 +76,31 @@ static void MX_TIM1_Init(void);
   */
 int main(void)
 {
+  /* USER CODE BEGIN 1 */
+
+  /* USER CODE END 1 */
+
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
 
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
   /* Configure the system clock */
   SystemClock_Config();
+
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_SPI1_Init();
   MX_SPI2_Init();
-  MX_TIM1_Init();
+  MX_SPI3_Init();
 
   /* Disable TRC */
   CoreDebug->DEMCR &= ~CoreDebug_DEMCR_TRCENA_Msk; // ~0x01000000;
@@ -127,9 +169,10 @@ int main(void)
   }
 
   return 0;
+
 }
 
-void SPI1_IRQHandler(void)
+void SPI2_IRQHandler(void)
 {
 	/* Transaction counter */
 	static uint32_t transaction_counter = 0;
@@ -152,12 +195,12 @@ void SPI1_IRQHandler(void)
 		/* Overrun error, can be cleared by repeatedly reading DR */
 		for(uint32_t i = 0; i < 4; i++)
 		{
-			transmitData = hspi1.Instance->DR;
+			transmitData = hspi2.Instance->DR;
 		}
 		/* Load zero to output */
-		hspi1.Instance->DR = 0;
+		hspi2.Instance->DR = 0;
 		/* Read status register */
-		itflag = hspi1.Instance->SR;
+		itflag = hspi2.Instance->SR;
 		/* Exit ISR */
 		return;
 	}
@@ -166,7 +209,7 @@ void SPI1_IRQHandler(void)
 	if(itflag & SPI_FLAG_RXNE)
 	{
 		/* Get data from FIFO */
-		rxData = hspi1.Instance->DR;
+		rxData = hspi2.Instance->DR;
 
 		/* Handle transaction */
 		if(rxData & 0x8000)
@@ -181,7 +224,7 @@ void SPI1_IRQHandler(void)
 		}
 
 		/* Transmit data back */
-		hspi1.Instance->DR = transmitData;
+		hspi2.Instance->DR = transmitData;
 	}
 }
 
@@ -193,7 +236,6 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
   /** Initializes the CPU, AHB and APB busses clocks 
   */
@@ -218,12 +260,6 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_TIM1;
-  PeriphClkInit.Tim1ClockSelection = RCC_TIM1CLK_HCLK;
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
-  {
-    Error_Handler();
-  }
 }
 
 /**
@@ -243,12 +279,13 @@ static void MX_SPI1_Init(void)
   /* USER CODE END SPI1_Init 1 */
   /* SPI1 parameter configuration*/
   hspi1.Instance = SPI1;
-  hspi1.Init.Mode = SPI_MODE_SLAVE;
+  hspi1.Init.Mode = SPI_MODE_MASTER;
   hspi1.Init.Direction = SPI_DIRECTION_2LINES;
   hspi1.Init.DataSize = SPI_DATASIZE_16BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi1.Init.CLKPhase = SPI_PHASE_2EDGE;
-  hspi1.Init.NSS = SPI_NSS_HARD_INPUT;
+  hspi1.Init.NSS = SPI_NSS_SOFT;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -259,28 +296,10 @@ static void MX_SPI1_Init(void)
   {
     Error_Handler();
   }
+  /* USER CODE BEGIN SPI1_Init 2 */
 
-  /* Start user SPI interrupt processing (Rx and error) */
-  __HAL_SPI_ENABLE_IT(&hspi1, (SPI_IT_RXNE | SPI_IT_ERR));
+  /* USER CODE END SPI1_Init 2 */
 
-  /* Set threshold for 16 bit mode */
-  CLEAR_BIT(hspi1.Instance->CR2, SPI_RXFIFO_THRESHOLD);
-
-  /* Check if the SPI is already enabled */
-  if ((hspi1.Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
-  {
-    /* Enable SPI peripheral */
-    __HAL_SPI_ENABLE(&hspi1);
-  }
-
-  /* Load output with initial zeros */
-  hspi1.Instance->DR = 0;
-
-  /* Set user SPI interrupt priority */
-  HAL_NVIC_SetPriority(SPI1_IRQn, 1, 1);
-
-  /* Enable user SPI interrupts */
-  HAL_NVIC_EnableIRQ(SPI1_IRQn);
 }
 
 /**
@@ -300,13 +319,12 @@ static void MX_SPI2_Init(void)
   /* USER CODE END SPI2_Init 1 */
   /* SPI2 parameter configuration*/
   hspi2.Instance = SPI2;
-  hspi2.Init.Mode = SPI_MODE_MASTER;
+  hspi2.Init.Mode = SPI_MODE_SLAVE;
   hspi2.Init.Direction = SPI_DIRECTION_2LINES;
   hspi2.Init.DataSize = SPI_DATASIZE_16BIT;
   hspi2.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi2.Init.CLKPhase = SPI_PHASE_2EDGE;
-  hspi2.Init.NSS = SPI_NSS_SOFT;
-  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
+  hspi2.Init.NSS = SPI_NSS_HARD_INPUT;
   hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -317,7 +335,14 @@ static void MX_SPI2_Init(void)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN SPI2_Init 2 */
+
+  /* USER CODE END SPI2_Init 2 */
+  /* Start user SPI interrupt processing (Rx and error) */
+  __HAL_SPI_ENABLE_IT(&hspi2, (SPI_IT_RXNE | SPI_IT_ERR));
+
+  /* Set threshold for 16 bit mode */
+  CLEAR_BIT(hspi2.Instance->CR2, SPI_RXFIFO_THRESHOLD);
+
   /* Check if the SPI is already enabled */
   if ((hspi2.Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
   {
@@ -325,61 +350,54 @@ static void MX_SPI2_Init(void)
     __HAL_SPI_ENABLE(&hspi2);
   }
 
-  /* USER CODE END SPI2_Init 2 */
+  /* Load output with initial zeros */
+  hspi2.Instance->DR = 0;
+
+  /* Set user SPI interrupt priority */
+  HAL_NVIC_SetPriority(SPI2_IRQn, 1, 1);
+
+  /* Enable user SPI interrupts */
+  HAL_NVIC_EnableIRQ(SPI2_IRQn);
 
 }
 
 /**
-  * @brief TIM1 Initialization Function
+  * @brief SPI3 Initialization Function
   * @param None
   * @retval None
   */
-static void MX_TIM1_Init(void)
+static void MX_SPI3_Init(void)
 {
 
-  /* USER CODE BEGIN TIM1_Init 0 */
+  /* USER CODE BEGIN SPI3_Init 0 */
 
-  /* USER CODE END TIM1_Init 0 */
+  /* USER CODE END SPI3_Init 0 */
 
-  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-  TIM_SlaveConfigTypeDef sSlaveConfig = {0};
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  /* USER CODE BEGIN SPI3_Init 1 */
 
-  /* USER CODE BEGIN TIM1_Init 1 */
-
-  /* USER CODE END TIM1_Init 1 */
-  htim1.Instance = TIM1;
-  htim1.Init.Prescaler = 0;
-  htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = 0;
-  htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim1.Init.RepetitionCounter = 0;
-  htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_Base_Init(&htim1) != HAL_OK)
+  /* USER CODE END SPI3_Init 1 */
+  /* SPI3 parameter configuration*/
+  hspi3.Instance = SPI3;
+  hspi3.Init.Mode = SPI_MODE_MASTER;
+  hspi3.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi3.Init.DataSize = SPI_DATASIZE_4BIT;
+  hspi3.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi3.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi3.Init.NSS = SPI_NSS_HARD_OUTPUT;
+  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi3.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi3.Init.CRCPolynomial = 7;
+  hspi3.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+  hspi3.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
+  if (HAL_SPI_Init(&hspi3) != HAL_OK)
   {
     Error_Handler();
   }
-  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  if (HAL_TIM_ConfigClockSource(&htim1, &sClockSourceConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sSlaveConfig.SlaveMode = TIM_SLAVEMODE_TRIGGER;
-  sSlaveConfig.InputTrigger = TIM_TS_ITR1;
-  if (HAL_TIM_SlaveConfigSynchro(&htim1, &sSlaveConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterOutputTrigger2 = TIM_TRGO2_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN TIM1_Init 2 */
+  /* USER CODE BEGIN SPI3_Init 2 */
 
-  /* USER CODE END TIM1_Init 2 */
+  /* USER CODE END SPI3_Init 2 */
 
 }
 
@@ -390,21 +408,61 @@ static void MX_TIM1_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
 
-  /* Set up master CS as input */
-  GPIO_InitTypeDef cs_settings = {0};
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4|GPIO_PIN_9, GPIO_PIN_RESET);
 
-  cs_settings.Mode = GPIO_MODE_OUTPUT_PP; /* Output */
-  cs_settings.Pin = GPIO_PIN_0; /* CS on pin F0 */
-  cs_settings.Pull = GPIO_NOPULL; /* Config as pull up */
-  cs_settings.Speed = GPIO_SPEED_FREQ_LOW;
-  cs_settings.Alternate = 0;
-  HAL_GPIO_Init(GPIOF, &cs_settings);
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6|GPIO_PIN_8|GPIO_PIN_9, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_9, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : PA4 PA9 */
+  GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_9;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PC6 PC8 PC9 */
+  GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_8|GPIO_PIN_9;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PC7 */
+  GPIO_InitStruct.Pin = GPIO_PIN_7;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PA8 */
+  GPIO_InitStruct.Pin = GPIO_PIN_8;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PB4 PB6 PB7 PB9 */
+  GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_9;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PB5 PB8 */
+  GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_8;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
 }
 
 /* USER CODE BEGIN 4 */

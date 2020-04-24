@@ -11,7 +11,7 @@
 #include "SpiPassthrough.h"
 
 /* Get reference to master SPI instance */
-extern SPI_HandleTypeDef hspi2;
+extern SPI_HandleTypeDef hspi1;
 
 /* User register array */
 volatile extern uint16_t regs[];
@@ -43,10 +43,10 @@ uint16_t ImuSpiTransfer(uint16_t MOSI)
 	txBuf[1] = (MOSI & 0xFF00) >> 8;
 
 	/* Set F0 (CS) low */
-	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_0, GPIO_PIN_RESET);
-	status = HAL_SPI_TransmitReceive(&hspi2, txBuf, rxBuf, 1, 0xFFFFFFFF);
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+	status = HAL_SPI_TransmitReceive(&hspi1, txBuf, rxBuf, 1, 0xFFFFFFFF);
 	/* Bring F0 (CS) high */
-	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_0, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
 
 	if(status != HAL_OK)
 	{
