@@ -20,7 +20,7 @@ volatile extern uint16_t regs[];
 uint32_t imu_stalltime_us = 25;
 
 /** Track sclk setting (1 bit per setting) */
-uint32_t imu_sclk_divider = SPI_BAUDRATEPRESCALER_4;
+uint32_t imu_sclk_divider = SPI_BAUDRATEPRESCALER_64;
 
 /**
   * @brief Basic IMU SPI data transfer function (protocol agnostic).
@@ -161,12 +161,13 @@ void UpdateImuSpiConfig()
 	}
 	else
 	{
-		configReg |= (1 << 9);
-		sclkDividerSetting = SPI_BAUDRATEPRESCALER_4;
+		/* Default to divider of 64 (72MHz / 64 = 1.125MHz SCLK, will work with all iSensors IMU's) */
+		configReg |= (1 << 13);
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_64;
 	}
 
-	if(imu_sclk_divider != sclkDividerSetting)
-		ApplySclkDivider(sclkDividerSetting);
+	/* Apply setting */
+	ApplySclkDivider(sclkDividerSetting);
 
 	/* Apply value back to IMU SPI config register */
 	regs[IMU_SPI_CONFIG_REG] = configReg;
@@ -175,5 +176,10 @@ void UpdateImuSpiConfig()
 void ApplySclkDivider(uint32_t preScalerSetting)
 {
 	imu_sclk_divider = preScalerSetting;
-	//TODO: Apply and re-init SPI controller
+	hspi1.Init.BaudRatePrescaler = preScalerSetting;
+	HAL_SPI_DeInit(&hspi1);
+	HAL_SPI_Init(&hspi1);
+	SPI1->CR2 &= ~(SPI_CR2_FRXTH);
+    /* Enable SPI peripheral */
+    __HAL_SPI_ENABLE(&hspi1);
 }
