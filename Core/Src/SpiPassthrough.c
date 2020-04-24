@@ -10,7 +10,7 @@
 
 #include "SpiPassthrough.h"
 
-/* Get reference to master SPI instance */
+/* Get reference to master SPI instance (SPI1) */
 extern SPI_HandleTypeDef hspi1;
 
 /* User register array */
@@ -32,32 +32,22 @@ uint32_t imu_sclk_divider = SPI_BAUDRATEPRESCALER_4;
   * This function wraps the SPI master HAL layer into something easily usable. All
   * SPI pass through functionality is built on this call.
  **/
-uint16_t ImuSpiTransfer(uint16_t MOSI)
+uint16_t ImuSpiTransfer(uint32_t MOSI)
 {
-	uint8_t txBuf[2];
-	uint8_t rxBuf[2];
-	HAL_StatusTypeDef status;
-	uint16_t retVal;
-
-	txBuf[0] = MOSI & 0xFF;
-	txBuf[1] = (MOSI & 0xFF00) >> 8;
-
 	/* Set A4 (CS) low */
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
 	GPIOA->ODR &= ~GPIO_PIN_4;
-	status = HAL_SPI_TransmitReceive(&hspi1, txBuf, rxBuf, 1, 0xFFFFFFFF);
+
+	/* Load data to SPI1 tx */
+	SPI1->DR = MOSI;
+
+	/* Wait for rx done */
+	while(!(SPI1->SR & SPI_SR_RXNE));
+
 	/* Bring A4 (CS) high */
 	GPIOA->ODR |= GPIO_PIN_4;
 
-	if(status != HAL_OK)
-	{
-		return 0;
-	}
-	else
-	{
-		retVal = rxBuf[0] | (rxBuf[1] << 8);
-		return retVal;
-	}
+	/* Return data reg */
+	return SPI1->DR;
 }
 
 /**
@@ -72,7 +62,7 @@ uint16_t ImuSpiTransfer(uint16_t MOSI)
  **/
 uint16_t ImuReadReg(uint8_t RegAddr)
 {
-	uint16_t readRequest;
+	uint32_t readRequest;
 
 	/* shift address to correct position */
 	readRequest = RegAddr << 8;
@@ -103,7 +93,7 @@ uint16_t ImuReadReg(uint8_t RegAddr)
  **/
 uint16_t ImuWriteReg(uint8_t RegAddr, uint8_t RegValue)
 {
-	uint16_t writeRequest;
+	uint32_t writeRequest;
 
 	/* Build write request */
 	writeRequest = (0x8000 | (RegAddr << 8) | RegValue);

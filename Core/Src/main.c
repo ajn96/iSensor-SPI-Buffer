@@ -311,7 +311,15 @@ static void MX_SPI1_Init(void)
   }
   /* USER CODE BEGIN SPI1_Init 2 */
 
+  SPI1->CR2 &= ~(SPI_CR2_FRXTH);
+
   /* USER CODE END SPI1_Init 2 */
+  /* Check if the SPI is already enabled */
+  if ((hspi1.Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
+  {
+    /* Enable SPI peripheral */
+    __HAL_SPI_ENABLE(&hspi1);
+  }
 
 }
 
@@ -367,7 +375,7 @@ static void MX_SPI2_Init(void)
   hspi2.Instance->DR = 0;
 
   /* Set user SPI interrupt priority */
-  HAL_NVIC_SetPriority(SPI2_IRQn, 1, 1);
+  HAL_NVIC_SetPriority(SPI2_IRQn, 0, 0);
 
   /* Enable user SPI interrupts */
   HAL_NVIC_EnableIRQ(SPI2_IRQn);

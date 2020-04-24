@@ -14,7 +14,7 @@
 #include "main.h"
 #include "registers.h"
 
-uint16_t ImuSpiTransfer(uint16_t MOSI);
+uint16_t ImuSpiTransfer(uint32_t MOSI);
 
 uint16_t ImuReadReg(uint8_t RegAddr);
 
