@@ -115,6 +115,16 @@ Page 253 - iSensor-SPI-Buffer configuration
 | 0x12 | USER_SCR_1 | User scratch register |
 | 0x14 | USER_SCR_2 | User scratch register |
 | 0x16 | USER_SCR_3 | User scratch register |
+| 0x6C | STATUS | Device status register. Clears on read |
+| 0x6E | FW_DAY_MONTH | Firmware build date |
+| 0x70 | FW_YEAR | Firmware build year |
+| 0x72 | FW_REV | Firmware revision |
+| 0x74 | DEV_SN_0 | Processor core serial number register, word 0 |
+| 0x76 | DEV_SN_1 | Processor core serial number register, word 1 |
+| 0x78 | DEV_SN_2 | Processor core serial number register, word 2 |
+| 0x7A | DEV_SN_3 | Processor core serial number register, word 3 |
+| 0x7C | DEV_SN_4 | Processor core serial number register, word 4 |
+| 0x7E | DEV_SN_5 | Processor core serial number register, word 5 |
 
 Page 254 - buffer write data
 
@@ -212,6 +222,49 @@ The following default values will be used for DIO_CONFIG:
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | USER_SCR | User scratch value |
+
+**STATUS**
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 15:12 | TC | User SPI transaction counter. Increments by one with each SPI transaction |
+| 2 | BUF_FULL | Set when buffer is full |
+| 1 | SPI_OVERFLOW | User SPI data overflow (min stall time violated) |
+| 0 | SPI_ERR | User SPI error reported by the SPI peripheral |
+
+With the exception of the transaction counter field, this register clears on read.
+
+**FW_DAY_MONTH**
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 15:8 | DAY | Firmware program day, in BCD |
+| 7:0 | MONTH | Firmware program month, in BCD |
+
+For example, April 24th would be represented by 0x2404.
+
+**FW_YEAR**
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 15:0 | YEAR | Firmware program year, in BCD |
+
+For example, the year 2020 would be represented by 0x2020.
+
+**FW_REV**
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 15:8 | MAJOR | Major firmware revision number, in BCD |
+| 7:0 | MINOR | Minor firmware revision number, in BCD |
+
+This rev corresponds to the release tag for the firmware. For example, rev 1.15 would be represented by 0x0115 in FW_REV.
+
+**DEV_SN_N**
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 15:0 | SN | These six registers contain the 96 bit unique serial number in the STM32F303 |
 
 **BUF_WRITE_N**
 
