@@ -2,14 +2,14 @@
   * Copyright (c) Analog Devices Inc, 2020
   * All Rights Reserved.
   *
-  * @file		SpiPassthrough.h
+  * @file		spi_passthrough.h
   * @date		3/18/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		Header file for the iSensor-SPI-Buffer SPI pass through module
+  * @brief		Header file for the iSensor-SPI-Buffer SPI pass through (to IMU) module
  **/
 
-#ifndef INC_SPIPASSTHROUGH_H_
-#define INC_SPIPASSTHROUGH_H_
+#ifndef INC_SPI_PASSTHROUGH_H_
+#define INC_SPI_PASSTHROUGH_H_
 
 #include "main.h"
 #include "registers.h"

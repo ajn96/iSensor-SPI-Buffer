@@ -11,10 +11,10 @@
 #ifndef INC_REGISTERS_H_
 #define INC_REGISTERS_H_
 
+#include <spi_passthrough.h>
 #include "main.h"
-#include "SpiPassthrough.h"
 #include "buffer.h"
-#include <string.h>
+#include "flash.h"
 
 uint16_t ReadReg(uint8_t regAddr);
 uint16_t WriteReg(uint8_t regAddr, uint8_t regValue);
@@ -23,7 +23,6 @@ uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue);
 void GetSN();
 void GetBuildDate();
 
-void UpdateDIOConfig();
 void UpdateUserSpiConfig();
 void ProcessCommand();
 

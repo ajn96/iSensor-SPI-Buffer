@@ -19,3 +19,8 @@ void UpdateUserInterrupt()
 {
 
 }
+
+void UpdateDIOConfig()
+{
+
+}

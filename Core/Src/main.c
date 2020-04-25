@@ -21,31 +21,10 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
-
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
 /* Private variables ---------------------------------------------------------*/
 SPI_HandleTypeDef hspi1; //IMU master
 SPI_HandleTypeDef hspi2; //Slave
 SPI_HandleTypeDef hspi3; //SD Master
-
-/* USER CODE BEGIN PV */
 
 /* Update processing required */
 volatile extern uint32_t update_flags;
@@ -53,22 +32,12 @@ volatile extern uint32_t update_flags;
 /* Register array */
 volatile extern uint16_t regs[];
 
-/* USER CODE END PV */
-
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_SPI2_Init(void);
 static void MX_SPI3_Init(void);
-/* USER CODE BEGIN PFP */
-
-/* USER CODE END PFP */
-
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
 
 /**
   * @brief  The application entry point.
@@ -76,25 +45,11 @@ static void MX_SPI3_Init(void);
   */
 int main(void)
 {
-  /* USER CODE BEGIN 1 */
-
-  /* USER CODE END 1 */
-
-  /* MCU Configuration--------------------------------------------------------*/
-
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
 
-  /* USER CODE BEGIN Init */
-
-  /* USER CODE END Init */
-
   /* Configure the system clock */
   SystemClock_Config();
-
-  /* USER CODE BEGIN SysInit */
-
-  /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
@@ -112,7 +67,7 @@ int main(void)
   DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk; //0x00000001;
 
   /* Load registers from flash */
-  //TODO
+  LoadRegsFlash();
 
   /* Init buffer */
   BufReset();
@@ -124,24 +79,9 @@ int main(void)
   GetBuildDate();
   GetSN();
 
-  /* pointer to buffer entry */
-  uint8_t* bufEntry;
-
   /* Infinite loop */
   while (1)
   {
-	  /* Test code to add to FIFO */
-	  if(regs[USER_SCR_0_REG])
-	  {
-		  //for the time being, just add data from write data to FIFO
-		  bufEntry = BufAddElement();
-		  for(int i = 0; i<regs[BUF_LEN_REG]; i++)
-		  {
-			  bufEntry[i] = regs[USER_SCR_0_REG];
-		  }
-		  regs[USER_SCR_0_REG] = 0;
-	  }
-
 	  /* Process register flags */
 	  if(update_flags & USER_COMMAND_FLAG)
 	  {
@@ -285,14 +225,6 @@ void SystemClock_Config(void)
   */
 static void MX_SPI1_Init(void)
 {
-
-  /* USER CODE BEGIN SPI1_Init 0 */
-
-  /* USER CODE END SPI1_Init 0 */
-
-  /* USER CODE BEGIN SPI1_Init 1 */
-
-  /* USER CODE END SPI1_Init 1 */
   /* SPI1 parameter configuration*/
   hspi1.Instance = SPI1;
   hspi1.Init.Mode = SPI_MODE_MASTER;
@@ -312,11 +244,9 @@ static void MX_SPI1_Init(void)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN SPI1_Init 2 */
 
   SPI1->CR2 &= ~(SPI_CR2_FRXTH);
 
-  /* USER CODE END SPI1_Init 2 */
   /* Check if the SPI is already enabled */
   if ((hspi1.Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
   {
@@ -333,14 +263,6 @@ static void MX_SPI1_Init(void)
   */
 static void MX_SPI2_Init(void)
 {
-
-  /* USER CODE BEGIN SPI2_Init 0 */
-
-  /* USER CODE END SPI2_Init 0 */
-
-  /* USER CODE BEGIN SPI2_Init 1 */
-
-  /* USER CODE END SPI2_Init 1 */
   /* SPI2 parameter configuration*/
   hspi2.Instance = SPI2;
   hspi2.Init.Mode = SPI_MODE_SLAVE;
@@ -360,7 +282,6 @@ static void MX_SPI2_Init(void)
     Error_Handler();
   }
 
-  /* USER CODE END SPI2_Init 2 */
   /* Start user SPI interrupt processing (Rx and error) */
   __HAL_SPI_ENABLE_IT(&hspi2, (SPI_IT_RXNE | SPI_IT_ERR));
 
@@ -392,14 +313,6 @@ static void MX_SPI2_Init(void)
   */
 static void MX_SPI3_Init(void)
 {
-
-  /* USER CODE BEGIN SPI3_Init 0 */
-
-  /* USER CODE END SPI3_Init 0 */
-
-  /* USER CODE BEGIN SPI3_Init 1 */
-
-  /* USER CODE END SPI3_Init 1 */
   /* SPI3 parameter configuration*/
   hspi3.Instance = SPI3;
   hspi3.Init.Mode = SPI_MODE_MASTER;
@@ -419,10 +332,6 @@ static void MX_SPI3_Init(void)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN SPI3_Init 2 */
-
-  /* USER CODE END SPI3_Init 2 */
-
 }
 
 /**
@@ -489,20 +398,15 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 }
 
-/* USER CODE BEGIN 4 */
-
-/* USER CODE END 4 */
-
 /**
   * @brief  This function is executed in case of error occurrence.
   * @retval None
   */
 void Error_Handler(void)
 {
-  /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-
-  /* USER CODE END Error_Handler_Debug */
+	/* Reboot */
+	regs[USER_COMMAND_REG] = SOFTWARE_RESET;
+	ProcessCommand();
 }
 
 #ifdef  USE_FULL_ASSERT

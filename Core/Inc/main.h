@@ -36,6 +36,7 @@ extern "C" {
 #include "registers.h"
 #include "buffer.h"
 #include "user_interrupt.h"
+#include "flash.h"
 
 /* USER CODE END Includes */
 

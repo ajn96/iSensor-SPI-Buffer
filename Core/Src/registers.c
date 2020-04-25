@@ -26,8 +26,8 @@ uint16_t regs[3 * REG_PER_PAGE] = {
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
-0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
-0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0100, 0x0000, 0x0000, /* STATUS - DEV_SN_HIGH */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* STATUS - FW_DAY_MONTH */
+0x0000, 0x0100, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* FW_YEAR - DEV_SN_5 */
 
 /* Page 254 */
 0x00FE, 0x0000, 0x0000, 0x0200, 0x0600, 0x0A00, 0x0E00, 0x1200, /* PAGE_ID - BUF_WRITE_4 */
@@ -262,11 +262,6 @@ void UpdateUserSpiConfig()
 
 }
 
-void UpdateDIOConfig()
-{
-
-}
-
 void ProcessCommand()
 {
 	uint16_t command = regs[USER_COMMAND_REG];
@@ -274,7 +269,8 @@ void ProcessCommand()
 	/* Clear command register */
 	regs[USER_COMMAND_REG] = 0;
 
-	//TODO: Disable SPI for duration of command processing
+	/* Disable SPI for duration of command processing */
+	SPI2->CR1 &= ~SPI_CR1_SPE;
 
 	if(command & SOFTWARE_RESET)
 	{
@@ -286,12 +282,15 @@ void ProcessCommand()
 	}
 	else if(command & FLASH_UPDATE)
 	{
-		//TODO
+		FlashUpdate();
 	}
 	else if(command & FACTORY_RESET)
 	{
-		//TODO
+		FactoryReset();
 	}
+
+	/* Re-enable SPI */
+	SPI2->CR1 |= SPI_CR1_SPE;
 }
 
 void GetSN()

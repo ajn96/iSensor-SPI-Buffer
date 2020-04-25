@@ -8,7 +8,7 @@
   * @brief		iSensor-SPI-Buffer SPI pass through (to IMU) module
  **/
 
-#include "SpiPassthrough.h"
+#include <spi_passthrough.h>
 
 /* Get reference to master SPI instance (SPI1) */
 extern SPI_HandleTypeDef hspi1;

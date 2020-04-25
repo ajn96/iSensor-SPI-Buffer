@@ -13,5 +13,6 @@
 #define INC_USER_INTERRUPT_H_
 
 void UpdateUserInterrupt();
+void UpdateDIOConfig();
 
 #endif /* INC_USER_INTERRUPT_H_ */
