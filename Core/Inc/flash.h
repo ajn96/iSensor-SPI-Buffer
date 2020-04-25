@@ -12,6 +12,7 @@
 #define INC_FLASH_H_
 
 #include "stdint.h"
+#include "registers.h"
 
 void FlashUpdate();
 void LoadRegsFlash();

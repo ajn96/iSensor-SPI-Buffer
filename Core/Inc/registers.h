@@ -56,6 +56,7 @@ void ProcessCommand();
 #define BUF_WRITE_PAGE			254
 
 #define BUF_WRITE_0_REG			0x43
+#define FLASH_SIG				0x7F
 
 /** iSensor-SPI-Buffer buffer Rx data page */
 #define BUF_READ_PAGE			255
