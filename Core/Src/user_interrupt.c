@@ -99,13 +99,13 @@ void ValidateDIOConfig()
 		config.drPins = 0x1;
 
 	/* Any pins set as pass pins cannot also be set as int/overflow pins */
-	config.overflowPins = config.overflowPins ^ config.passPins;
-	config.intPins = config.intPins ^ config.passPins;
+	config.overflowPins &= ~config.passPins;
+	config.intPins &= ~config.passPins;
 
 	/* Pin set as DR pin cannot be set as int/overflow pin */
-	config.overflowPins = config.overflowPins ^ config.drPins;
-	config.intPins = config.intPins ^ config.drPins;
+	config.overflowPins &= ~config.drPins;
+	config.intPins &= ~config.drPins;
 
 	/* Any pins set as interrupt pins cannot be set as overflow pins */
-	config.overflowPins = config.overflowPins ^ config.intPins;
+	config.overflowPins &= ~config.intPins;
 }
