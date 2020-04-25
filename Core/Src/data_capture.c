@@ -8,3 +8,14 @@
   * @brief		iSensor-SPI-Buffer autonomous IMU data acquisition functions.
  **/
 
+#include "data_capture.h"
+
+void EnableDataCapture()
+{
+
+}
+
+void DisableDataCapture()
+{
+
+}

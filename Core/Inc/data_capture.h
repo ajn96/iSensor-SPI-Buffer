@@ -12,6 +12,7 @@
 #ifndef INC_DATA_CAPTURE_H_
 #define INC_DATA_CAPTURE_H_
 
-
+void EnableDataCapture();
+void DisableDataCapture();
 
 #endif /* INC_DATA_CAPTURE_H_ */

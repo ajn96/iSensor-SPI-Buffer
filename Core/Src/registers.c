@@ -137,9 +137,16 @@ uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	/* The regAddr will be in range 0 - 127 for register index in range 0 - 63*/
 	regIndex += (regAddr >> 1);
 
-	/* If page register write then ignore (handled higher up) */
+	/* If page register write then enable/disable capture as needed */
 	if(regAddr < 2)
+	{
+		if(selected_page == BUF_READ_PAGE)
+			EnableDataCapture();
+		else
+			DisableDataCapture();
+		/* Return reg index (points to page reg instance) */
 		return regIndex;
+	}
 
 	/* Ignore writes to out of bound or read only registers */
 	if(selected_page == BUF_CONFIG_PAGE)

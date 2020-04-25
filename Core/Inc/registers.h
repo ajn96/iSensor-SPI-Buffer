@@ -15,6 +15,7 @@
 #include "main.h"
 #include "buffer.h"
 #include "flash.h"
+#include "data_capture.h"
 
 uint16_t ReadReg(uint8_t regAddr);
 uint16_t WriteReg(uint8_t regAddr, uint8_t regValue);

@@ -75,6 +75,9 @@ int main(void)
   /* Config IMU SPI settings */
   UpdateImuSpiConfig();
 
+  /* Init DIOs*/
+  UpdateDIOConfig();
+
   /* Generate all identifier registers */
   GetBuildDate();
   GetSN();
