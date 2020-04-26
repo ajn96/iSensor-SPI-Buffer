@@ -321,14 +321,14 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 
 | Pin Name | STM32 Pin | Description |
 | --- | --- | --- |
-| DIO1_Master | PB4 | DIO1 output signal from iSensor-SPI-Buffer |
-| DIO2_Master | PB9 | DIO2 output signal from iSensor-SPI-Buffer |
-| DIO3_Master | PC6 | DIO3 output signal from iSensor-SPI-Buffer |
-| DIO4_Master | PA9 | DIO4 output signal from iSensor-SPI-Buffer |
-| DIO1_Slave | PB5 | DIO1 input signal from master |
-| DIO2_Slave | PB8 | DIO2 input signal from master |
-| DIO3_Slave | PC7 | DIO3 input signal from master |
-| DIO4_Slave | PA8 | DIO4 input signal from master |
+| DIO1_Master | PB4 | DIO1 input signal from IMU to iSensor-SPI-Buffer |
+| DIO2_Master | PB9 | DIO2 input signal from IMU to iSensor-SPI-Buffer |
+| DIO3_Master | PC6 | DIO3 input signal from IMU to iSensor-SPI-Buffer |
+| DIO4_Master | PA9 | DIO4 input signal from IMU to iSensor-SPI-Buffer |
+| DIO1_Slave | PB5 | DIO1 output signal from iSensor-SPI-Buffer to master |
+| DIO2_Slave | PB8 | DIO2 output signal from iSensor-SPI-Buffer to master |
+| DIO3_Slave | PC7 | DIO3 output signal from iSensor-SPI-Buffer to master |
+| DIO4_Slave | PA8 | DIO4 output signal from iSensor-SPI-Buffer to master |
 | SW_IN1 | PB6 | Switch control from iSensor-SPI-Buffer. If set DIO1 will be directly passed from master to IMU |
 | SW_IN2 | PB7 | Switch control from iSensor-SPI-Buffer. If set DIO2 will be directly passed from master to IMU |
 | SW_IN3 | PC8 | Switch control from iSensor-SPI-Buffer. If set DIO3 will be directly passed from master to IMU |
