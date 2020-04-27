@@ -11,7 +11,7 @@
 #include "registers.h"
 
 /** Selected page. Starts on 253 (config page) */
-volatile uint8_t selected_page = 253;
+volatile uint8_t selected_page = BUF_CONFIG_PAGE;
 
 /** Register update flags for main loop processing */
 volatile uint32_t update_flags = 0;
@@ -20,19 +20,18 @@ volatile uint32_t update_flags = 0;
 uint16_t regs[3 * REG_PER_PAGE] = {
 /* Page 253 */
 
-/* 0      1        2       3       4       5       6       7 */
-0x00FD, 0x0000, 0x0014, 0x0000, 0x0011, 0x0843, 0x2014, 0x0000, /* PAGE_ID - USER_COMMAND */
-0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* USER_SCR_0 - USER_SCR_3 */
+BUF_CONFIG_PAGE, BUF_CONFIG_DEFAULT, BUF_LEN_DEFAULT, 0x0000, DR_CONFIG_DEFAULT, DIO_CONFIG_DEFAULT, IMU_SPI_CONFIG_DEFAULT, USER_SPI_CONFIG_DEFAULT, /* PAGE_ID - USER_SPI_CONFIG */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* USER_COMMAND - USER_SCR_3 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* STATUS - FW_DAY_MONTH */
-0x0000, 0x0100, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* FW_YEAR - DEV_SN_5 */
+0x0000, FW_REV_DEFAULT, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* FW_YEAR - DEV_SN_5 */
 
 /* Page 254 */
-0x00FE, 0x0000, 0x0000, 0x0200, 0x0600, 0x0A00, 0x0E00, 0x1200, /* PAGE_ID - BUF_WRITE_4 */
-0x1600, 0x1A00, 0x1C00, 0x2200, 0x0000, 0x0000, 0x0000, 0x0000, /* BUF_WRITE_5 - BUF_WRITE_12 */
+BUF_WRITE_PAGE, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* PAGE_ID - BUF_WRITE_4 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* BUF_WRITE_5 - BUF_WRITE_12 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* BUF_WRITE_13 - BUF_WRITE_20 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* BUF_WRITE_21 - BUF_WRITE_28 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* BUF_WRITE_29 - BUF_WRITE_31 */
@@ -41,7 +40,7 @@ uint16_t regs[3 * REG_PER_PAGE] = {
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* FLASH_SIG at end */
 
 /* Page 255 */
-0x00FF, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* PAGE_ID - BUF_DATA_4 */
+BUF_READ_PAGE, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* PAGE_ID - BUF_DATA_4 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* BUF_DATA_5 - BUF_DATA_12 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* BUF_DATA_13 - BUF_DATA_20 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* BUF_DATA_13 - BUF_DATA_20 */
@@ -106,7 +105,7 @@ uint16_t ReadReg(uint8_t regAddr)
 		if(regIndex == STATUS_REG)
 		{
 			status = regs[STATUS_REG];
-			regs[STATUS_REG] = 0;
+			regs[STATUS_REG] &= STATUS_CLEAR_MASK;
 			return status;
 		}
 
@@ -357,6 +356,56 @@ void ProcessCommand()
 
 	/* Re-enable SPI */
 	SPI2->CR1 |= SPI_CR1_SPE;
+}
+
+/**
+  * @brief Load factory default values for all registers, and applies any settings changes.
+  *
+  * @return void
+  *
+  * This is accomplished in "lazy" manner via #define for each register
+  * default value (defaults are stored in program memory, storage is managed
+  * by compiler). This function only changes values in SRAM, does not change
+  * flash contents (registers will reset on next re-boot).
+  */
+void FactoryReset()
+{
+	/* Disable data capture from IMU (shouldn't be running, but better safe than sorry) */
+	DisableDataCapture();
+
+	/* Reset selected page */
+	selected_page = BUF_CONFIG_PAGE;
+
+	/* Reset all registers to 0 */
+	for(int i = 0; i < (3 * REG_PER_PAGE); i++)
+	{
+		regs[i] = 0;
+	}
+
+	/* Restore page number registers (addr 0 on each page) */
+	regs[0 * REG_PER_PAGE] = BUF_CONFIG_PAGE;
+	regs[1 * REG_PER_PAGE] = BUF_WRITE_PAGE;
+	regs[2 * REG_PER_PAGE] = BUF_READ_PAGE;
+
+	/* Restore all non-zero default values */
+	regs[BUF_CONFIG_REG] = BUF_CONFIG_DEFAULT;
+	regs[BUF_LEN_REG] = BUF_LEN_DEFAULT;
+	regs[DR_CONFIG_REG] = DR_CONFIG_DEFAULT;
+	regs[DIO_CONFIG_REG] = DIO_CONFIG_DEFAULT;
+	regs[IMU_SPI_CONFIG_REG] = IMU_SPI_CONFIG_DEFAULT;
+	regs[USER_SPI_CONFIG_REG] = USER_SPI_CONFIG_DEFAULT;
+	regs[FW_REV_REG] = FW_REV_DEFAULT;
+
+	/* Populate SN and build date */
+	GetSN();
+	GetBuildDate();
+
+	/* Apply all settings and reset buffer */
+	UpdateImuSpiConfig();
+	UpdateUserSpiConfig();
+	UpdateDIOConfig();
+	UpdateDRConfig();
+	BufReset();
 }
 
 /**

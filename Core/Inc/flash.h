@@ -16,10 +16,11 @@
 
 void FlashUpdate();
 void LoadRegsFlash();
-void FactoryReset();
 
 void PrepareRegsForFlash();
 uint32_t CalcRegSig(uint16_t * regs, uint32_t count);
 
+/** Flash reg base address */
+#define FLASH_REG_ADDR			0x0
 
 #endif /* INC_FLASH_H_ */

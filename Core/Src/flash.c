@@ -39,21 +39,9 @@ void FlashUpdate()
   */
 void LoadRegsFlash()
 {
+	uint32_t expectedSig;
+	uint32_t storedSig;
 
-}
-
-/**
-  * @brief Load factory default values for all registers.
-  *
-  * @return void
-  *
-  * This is accomplished in "lazy" manner via #define for each register
-  * default value (defaults are stored in program memory, storage is managed
-  * by compiler). This function only changes values in SRAM, does not change
-  * flash contents (registers will reset on next re-boot).
-  */
-void FactoryReset()
-{
 
 }
 

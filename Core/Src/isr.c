@@ -43,14 +43,14 @@ void SPI2_IRQHandler(void)
 
 	/* Apply transaction counter to STATUS upper 4 bits and increment */
 	regs[STATUS_REG] &= 0x0FFF;
-	regs[STATUS_REG] |= (transaction_counter << 12);
-	transaction_counter = (transaction_counter + 1) & 0xF;
+	regs[STATUS_REG] |= transaction_counter;
+	transaction_counter += 0x1000;
 
 	/* Error interrupt source */
 	if(itflag & (SPI_FLAG_OVR | SPI_FLAG_MODF))
 	{
 		/* Set status reg SPI error flag */
-		regs[STATUS_REG] |= 0x1;
+		regs[STATUS_REG] |= STATUS_SPI_ERROR;
 
 		/* Overrun error, can be cleared by repeatedly reading DR */
 		for(uint32_t i = 0; i < 4; i++)
@@ -72,7 +72,7 @@ void SPI2_IRQHandler(void)
 		rxData = SPI2->DR;
 
 		/* Set status reg SPI overflow flag */
-		regs[STATUS_REG] |= 0x2;
+		regs[STATUS_REG] |= STATUS_SPI_OVERFLOW;
 
 		/* Exit ISR */
 		return;
