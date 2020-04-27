@@ -39,14 +39,15 @@ void ProcessCommand();
 #define BUF_CONFIG_REG			0x01
 #define BUF_LEN_REG				0x02
 #define BUF_MAX_CNT_REG			0x03
-#define DIO_CONFIG_REG			0x04
-#define IMU_SPI_CONFIG_REG		0x05
-#define USER_SPI_CONFIG_REG		0x06
-#define USER_COMMAND_REG		0x07
-#define USER_SCR_0_REG			0x08
-#define USER_SCR_1_REG			0x09
-#define USER_SCR_2_REG			0x0A
-#define USER_SCR_3_REG			0x0B
+#define DR_CONFIG_REG			0x04
+#define DIO_CONFIG_REG			0x05
+#define IMU_SPI_CONFIG_REG		0x06
+#define USER_SPI_CONFIG_REG		0x07
+#define USER_COMMAND_REG		0x08
+#define USER_SCR_0_REG			0x09
+#define USER_SCR_1_REG			0x0A
+#define USER_SCR_2_REG			0x0B
+#define USER_SCR_3_REG			0x0C
 #define STATUS_REG				0x36
 #define FW_DAY_MONTH_REG		0x37
 #define FW_YEAR_REG				0x38
@@ -71,6 +72,7 @@ void ProcessCommand();
 #define IMU_SPI_CONFIG_FLAG		(1 << 1)
 #define USER_SPI_CONFIG_FLAG	(1 << 2)
 #define USER_COMMAND_FLAG		(1 << 3)
+#define DR_CONFIG_FLAG			(1 << 4)
 
 /* Command register bits */
 #define CLEAR_BUFFER			(1 << 0)

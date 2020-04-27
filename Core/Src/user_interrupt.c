@@ -67,44 +67,26 @@ void ParseDIOConfig()
 	/* Get current config value */
 	uint32_t configReg = regs[DIO_CONFIG_REG];
 
-	config.drPins = configReg & 0xF;
-	config.passPins = (configReg >> 4) & 0xF;
-	config.intPins = (configReg >> 8) & 0xF;
-	config.overflowPins = (configReg >> 12) & 0xF;
+	config.passPins = (configReg) & 0xF;
+	config.intPins = (configReg >> 4) & 0xF;
+	config.overflowPins = (configReg >> 8) & 0xF;
 }
 
 uint16_t BuildDIOConfigReg()
 {
-	return (config.drPins) | (config.passPins << 4) | (config.intPins << 8) | (config.overflowPins << 12);
+	return config.passPins | (config.intPins << 4) | (config.overflowPins << 8);
 }
 
 void ValidateDIOConfig()
 {
 	/* Clear upper bits in each */
-	config.drPins &= 0xF;
 	config.passPins &= 0xF;
 	config.intPins &= 0xF;
 	config.overflowPins &= 0xF;
 
-	/* Must be one, and only one bit set in drPins. If none, defaults to DIO1 set */
-	if(config.drPins & 0x1)
-		config.drPins = 0x1;
-	else if(config.drPins & 0x2)
-		config.drPins = 0x2;
-	else if(config.drPins & 0x4)
-		config.drPins = 0x4;
-	else if(config.drPins & 0x8)
-		config.drPins = 0x8;
-	else
-		config.drPins = 0x1;
-
 	/* Any pins set as pass pins cannot also be set as int/overflow pins */
 	config.overflowPins &= ~config.passPins;
 	config.intPins &= ~config.passPins;
-
-	/* Pin set as DR pin cannot be set as int/overflow pin */
-	config.overflowPins &= ~config.drPins;
-	config.intPins &= ~config.drPins;
 
 	/* Any pins set as interrupt pins cannot be set as overflow pins */
 	config.overflowPins &= ~config.intPins;

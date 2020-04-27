@@ -91,6 +91,11 @@ int main(void)
 		  update_flags &= ~USER_COMMAND_FLAG;
 		  ProcessCommand();
 	  }
+	  if(update_flags & DR_CONFIG_FLAG)
+	  {
+		  update_flags &= ~DR_CONFIG_FLAG;
+		  UpdateDRConfig();
+	  }
 	  if(update_flags & DIO_CONFIG_FLAG)
 	  {
 		  update_flags &= ~DIO_CONFIG_FLAG;

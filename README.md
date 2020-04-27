@@ -107,14 +107,15 @@ Page 253 - iSensor-SPI-Buffer configuration
 | 0x02 | BUF_CONFIG | Buffer configuration settings (FIFO/LIFO, SPI word size, overflow behavior) |
 | 0x04 | BUF_LEN | Length (in bytes) of each buffered data capture |
 | 0x06 | BUF_MAX_CNT | Maximum entries which can be stored in the buffer. Determined by BUF_LEN. Read-only register |
-| 0x08 | DIO_CONFIG | Digital I/O configuration |
-| 0x0A | IMU_SPI_CONFIG | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
-| 0x0C | USER_SPI_CONFIG | User SPI configuration (mode, etc.) |
-| 0x0E | USER_COMMAND | Command register (flash update, factory reset, clear buffer, software reset, others?) |
-| 0x10 | USER_SCR_0 | User scratch register |
-| 0x12 | USER_SCR_1 | User scratch register |
-| 0x14 | USER_SCR_2 | User scratch register |
-| 0x16 | USER_SCR_3 | User scratch register |
+| 0x08 | DR_CONFIG | Data ready input (IMU to iSensor-SPI-Buffer) configuration |
+| 0x0A | DIO_CONFIG | DIO configuration. Sets up pin pass-through and assigns interrupts |
+| 0x0C | IMU_SPI_CONFIG | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
+| 0x0E | USER_SPI_CONFIG | User SPI configuration (mode, etc.) |
+| 0x10 | USER_COMMAND | Command register (flash update, factory reset, clear buffer, software reset, others?) |
+| 0x12 | USER_SCR_0 | User scratch register |
+| 0x14 | USER_SCR_1 | User scratch register |
+| 0x16 | USER_SCR_2 | User scratch register |
+| 0x18 | USER_SCR_3 | User scratch register |
 | 0x6C | STATUS | Device status register. Clears on read |
 | 0x6E | FW_DAY_MONTH | Firmware build date |
 | 0x70 | FW_YEAR | Firmware build year |
@@ -168,14 +169,19 @@ Page 255 - buffer output registers
 | --- | --- | --- |
 | 15:0 | LEN | Length (in bytes) of each buffer entry. Valid range 2 - 64 |
 
+**DR_CONFIG**
+| Bit | Name | Description |
+| --- | --- | --- |
+| 3:0 | DR_SELECT | Select which IMU ouput pin is treated as data ready. Can only select one pin |
+| 4 | POLARITY | Data ready trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge. Default 1 |
+
 **DIO_CONFIG**
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 3:0 | DR_SELECT | Select which IMU ouput pin is treated as data ready. Can only select one pin |
-| 7:4 | PIN_PASS | Select which pins are directly connected to IMU vs passing through iSensor-SPI-Buffer firmware |
-| 11:8 | INT_MAP | Select which pins are driven with the buffer data ready interrupt signal from the iSensor-SPI-Buffer firmware |
-| 15:12 | OVERFLOW_MAP | Select which pins are driven with the overflow interrupt signal from the iSensor-SPI-Buffer firmware |
+| 0:3 | PIN_PASS | Select which pins are directly connected to IMU vs passing through iSensor-SPI-Buffer firmware |
+| 7:4 | INT_MAP | Select which pins are driven with the buffer data ready interrupt signal from the iSensor-SPI-Buffer firmware |
+| 11:8 | OVERFLOW_MAP | Select which pins are driven with the overflow interrupt signal from the iSensor-SPI-Buffer firmware |
 
 For each field in DIO_CONFIG, the following pin mapping is made:
 * Bit0 -> DIO1
@@ -227,10 +233,10 @@ The following default values will be used for DIO_CONFIG:
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 15:12 | TC | User SPI transaction counter. Increments by one with each SPI transaction |
-| 2 | BUF_FULL | Set when buffer is full |
-| 1 | SPI_OVERFLOW | User SPI data overflow (min stall time violated) |
 | 0 | SPI_ERR | User SPI error reported by the SPI peripheral |
+| 1 | SPI_OVERFLOW | User SPI data overflow (min stall time violated) |
+| 2 | BUF_FULL | Set when buffer is full |
+| 15:12 | TC | User SPI transaction counter. Increments by one with each SPI transaction |
 
 With the exception of the transaction counter field, this register clears on read.
 
@@ -238,8 +244,8 @@ With the exception of the transaction counter field, this register clears on rea
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 15:8 | DAY | Firmware program day, in BCD |
 | 7:0 | MONTH | Firmware program month, in BCD |
+| 15:8 | DAY | Firmware program day, in BCD |
 
 For example, April 24th would be represented by 0x2404.
 
@@ -255,8 +261,8 @@ For example, the year 2020 would be represented by 0x2020.
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 15:8 | MAJOR | Major firmware revision number, in BCD |
 | 7:0 | MINOR | Minor firmware revision number, in BCD |
+| 15:8 | MAJOR | Major firmware revision number, in BCD |
 
 This rev corresponds to the release tag for the firmware. For example, rev 1.15 would be represented by 0x0115 in FW_REV.
 
@@ -270,6 +276,7 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 
 | Bit | Name | Description |
 | --- | --- | --- |
+| 15:0 | WRITE_N | Write data to transmit on MOSI line while capturing a buffered data entry |
 
 **BUF_CNT**
 
@@ -287,6 +294,7 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 
 | Bit | Name | Description |
 | --- | --- | --- |
+| 15:0 | READ_N | Read data received on the MISO line while capturing a buffered data entry |
 
 # iSensor-SPI-Buffer Pin Mapping
 

@@ -23,7 +23,6 @@ uint16_t BuildDIOConfigReg();
 
 typedef struct DIOConfig
 {
-	uint32_t drPins;
 	uint32_t passPins;
 	uint32_t intPins;
 	uint32_t overflowPins;
