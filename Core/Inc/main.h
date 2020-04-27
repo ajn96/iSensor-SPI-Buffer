@@ -23,5 +23,6 @@
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
+void EnableUserSPI();
 
 #endif /* __MAIN_H */

@@ -78,8 +78,8 @@ void FactoryReset();
 #define DIO_CONFIG_DEFAULT			0x0843
 #define INT_CONFIG_DEFAULT			0x0020
 #define IMU_SPI_CONFIG_DEFAULT		0x2014
-#define USER_SPI_CONFIG_DEFAULT		0x0003
-#define FLASH_SIG_DEFAULT			0x2d9a
+#define USER_SPI_CONFIG_DEFAULT		0x0007
+#define FLASH_SIG_DEFAULT			0x2d9e
 
 /* Update flags definitions */
 #define DIO_CONFIG_FLAG				(1 << 0)

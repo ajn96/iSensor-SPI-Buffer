@@ -10,6 +10,9 @@
 
 #include "registers.h"
 
+/* User SPI handle (from main) */
+extern SPI_HandleTypeDef hspi2;
+
 /** Selected page. Starts on 253 (config page) */
 volatile uint8_t selected_page = BUF_CONFIG_PAGE;
 
@@ -315,7 +318,50 @@ uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
   */
 void UpdateUserSpiConfig()
 {
+	uint16_t config = regs[USER_SPI_CONFIG_REG];
 
+	/* mask unused bits */
+	config = config & 0x7;
+
+	/* CPHA */
+	if(config & 0x1)
+		hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
+	else
+		hspi2.Init.CLKPhase = SPI_PHASE_2EDGE;
+
+	/* CPOL */
+	if(config & 0x2)
+		hspi2.Init.CLKPolarity = SPI_POLARITY_HIGH;
+	else
+		hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
+
+	/* Bit order */
+	if(config & 0x4)
+		hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
+	else
+		hspi2.Init.FirstBit = SPI_FIRSTBIT_LSB;
+
+	/* Reset all immutable settings */
+	hspi2.Instance = SPI2;
+	hspi2.Init.Mode = SPI_MODE_SLAVE;
+	hspi2.Init.Direction = SPI_DIRECTION_2LINES;
+	hspi2.Init.DataSize = SPI_DATASIZE_16BIT;
+	hspi2.Init.NSS = SPI_NSS_HARD_INPUT;
+	hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
+	hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
+	hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+	hspi2.Init.CRCPolynomial = 7;
+	hspi2.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+	hspi2.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
+
+	/* De-init SPI */
+	HAL_SPI_DeInit(&hspi2);
+
+	/* Init */
+	EnableUserSPI();
+
+	/* Apply config value in use back */
+	regs[USER_SPI_CONFIG_REG] = config;
 }
 
 /**

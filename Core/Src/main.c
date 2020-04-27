@@ -214,33 +214,38 @@ static void MX_SPI2_Init(void)
   hspi2.Init.CRCPolynomial = 7;
   hspi2.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
   hspi2.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
-  if (HAL_SPI_Init(&hspi2) != HAL_OK)
-  {
-    Error_Handler();
-  }
 
-  /* Start user SPI interrupt processing (Rx and error) */
-  __HAL_SPI_ENABLE_IT(&hspi2, (SPI_IT_RXNE | SPI_IT_ERR));
+  EnableUserSPI();
+}
 
-  /* Set threshold for 16 bit mode */
-  CLEAR_BIT(hspi2.Instance->CR2, SPI_RXFIFO_THRESHOLD);
+void EnableUserSPI()
+{
+	  if (HAL_SPI_Init(&hspi2) != HAL_OK)
+	  {
+	    Error_Handler();
+	  }
 
-  /* Check if the SPI is already enabled */
-  if ((hspi2.Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
-  {
-    /* Enable SPI peripheral */
-    __HAL_SPI_ENABLE(&hspi2);
-  }
+	  /* Start user SPI interrupt processing (Rx and error) */
+	  __HAL_SPI_ENABLE_IT(&hspi2, (SPI_IT_RXNE | SPI_IT_ERR));
 
-  /* Load output with initial zeros */
-  hspi2.Instance->DR = 0;
+	  /* Set threshold for 16 bit mode */
+	  CLEAR_BIT(hspi2.Instance->CR2, SPI_RXFIFO_THRESHOLD);
 
-  /* Set user SPI interrupt priority */
-  HAL_NVIC_SetPriority(SPI2_IRQn, 0, 0);
+	  /* Check if the SPI is already enabled */
+	  if ((hspi2.Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
+	  {
+	    /* Enable SPI peripheral */
+	    __HAL_SPI_ENABLE(&hspi2);
+	  }
 
-  /* Enable user SPI interrupts */
-  HAL_NVIC_EnableIRQ(SPI2_IRQn);
+	  /* Load output with initial zeros */
+	  hspi2.Instance->DR = 0;
 
+	  /* Set user SPI interrupt priority */
+	  HAL_NVIC_SetPriority(SPI2_IRQn, 0, 0);
+
+	  /* Enable user SPI interrupts */
+	  HAL_NVIC_EnableIRQ(SPI2_IRQn);
 }
 
 /**

@@ -111,7 +111,7 @@ Page 253 - iSensor-SPI-Buffer configuration
 | 0x0A | DIO_CONFIG | 0x0843 | DIO configuration. Sets up pin pass-through and assigns interrupts |
 | 0x0C | INT_CONFIG | 0x0020 | Interrupt configuration register |
 | 0x0E | IMU_SPI_CONFIG | 0x2014 | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
-| 0x10 | USER_SPI_CONFIG | 0x0003 | User SPI configuration (mode, etc.) |
+| 0x10 | USER_SPI_CONFIG | 0x0007 | User SPI configuration (mode, etc.) |
 | 0x12 | USER_COMMAND | N/A | Command register (flash update, factory reset, clear buffer, software reset, others?) |
 | 0x14 | USER_SCR_0 | 0x0000 | User scratch register |
 | 0x16 | USER_SCR_1 | 0x0000 | User scratch register |
@@ -220,8 +220,9 @@ The following default values will be used for DIO_CONFIG:
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 0 | CPOL | SPI clock polarity |
-| 1 | CPHA | SPI clock phase |
+| 0 | CPHA | SPI clock phase |
+| 1 | CPOL | SPI clock polarity |
+| 2 | MSB_FIRST | 1 = transmit MSB first, 0 = transmit LSB first |
 
 **USER_COMMAND**
 
