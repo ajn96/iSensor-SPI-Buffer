@@ -173,7 +173,9 @@ Page 255 - buffer output registers
 | Bit | Name | Description |
 | --- | --- | --- |
 | 3:0 | DR_SELECT | Select which IMU ouput pin is treated as data ready. Can only select one pin |
-| 4 | POLARITY | Data ready trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge. Default 1 |
+| 4 | POLARITY | Data ready trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge |
+
+Default value: 0x11 (Data ready positive edge triggering, on DIO1)
 
 **DIO_CONFIG**
 
@@ -190,7 +192,6 @@ For each field in DIO_CONFIG, the following pin mapping is made:
 * Bit3 -> DIO4
 
 The following default values will be used for DIO_CONFIG:
-* DR_SELECT 0x1. Data ready default input to the iSensor-SPI-Buffer firmware is DIO1
 * PIN_PASS: 0x3. DIO1 (typically acts as IMU data ready) and DIO2 (typically acts as SYNC input) will be passed through using an Analog Switch. This allows for direct sync strobing and reading of the data ready signal
 * INT_MAP: 0x4. The buffer data ready interrupt is applied to DIO3 by default
 * OVERFLOW_MAP: 0x8. The buffer overflow interrupt is applied to DIO4 by default
@@ -200,14 +201,14 @@ The following default values will be used for DIO_CONFIG:
 | Bit | Name | Description |
 | --- | --- | --- |
 | 7:0 | STALL | Stall time between SPI words (in microseconds). Valid range 2us - 255us |
-| 8 | SCLK_SCALE_2 | Sets SCLK prescaler to 2 (4MHz) |
-| 9 | SCLK_SCALE_4 | Sets SCLK prescaler to 4 (2MHz). Default option selected |
-| 10 | SCLK_SCALE_8 | Sets SCLK prescaler to 8 (1MHz) |
-| 11 | SCLK_SCALE_16 | Sets SCLK prescaler to 16 (500KHz) |
-| 12 | SCLK_SCALE_32 | Sets SCLK prescaler to 32 (250KHz) |
-| 13 | SCLK_SCALE_64 | Sets SCLK prescaler to 64 (125KHz) |
-| 14 | SCLK_SCALE_128 | Sets SCLK prescaler to 128 (62.5KHz) |
-| 15 | SCLK_SCALE_256 | Sets SCLK prescaler to 256 (31.25KHz) |
+| 8 | SCLK_SCALE_2 | Sets SCLK prescaler to 2 (18MHz) |
+| 9 | SCLK_SCALE_4 | Sets SCLK prescaler to 4 (9MHz). Default option selected |
+| 10 | SCLK_SCALE_8 | Sets SCLK prescaler to 8 (4.5MHz) |
+| 11 | SCLK_SCALE_16 | Sets SCLK prescaler to 16 (2.25MHz) |
+| 12 | SCLK_SCALE_32 | Sets SCLK prescaler to 32 (1.125MHz) |
+| 13 | SCLK_SCALE_64 | Sets SCLK prescaler to 64 (562.5KHz) |
+| 14 | SCLK_SCALE_128 | Sets SCLK prescaler to 128 (281.25KHz) |
+| 15 | SCLK_SCALE_256 | Sets SCLK prescaler to 256 (140.625KHz) |
 
 **USER_SPI_CONFIG**
 

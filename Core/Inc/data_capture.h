@@ -14,7 +14,6 @@
 
 void EnableDataCapture();
 void DisableDataCapture();
-
 void UpdateDRConfig();
 
 #endif /* INC_DATA_CAPTURE_H_ */
