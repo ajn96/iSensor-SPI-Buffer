@@ -39,6 +39,12 @@ void UpdateUserInterrupt()
 		regs[STATUS_REG] |= STATUS_BUF_FULL;
 	}
 
+	/* Apply interrupt to status reg */
+	if(interrupt)
+	{
+		regs[STATUS_REG] |= STATUS_BUF_INT;
+	}
+
 	/* Apply interrupt values to pins */
 	if(config.intPins & 0x1)
 	{

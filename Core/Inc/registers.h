@@ -97,8 +97,9 @@ void FactoryReset();
 /* Status register bits */
 #define STATUS_SPI_ERROR			(1 << 0)
 #define STATUS_SPI_OVERFLOW			(1 << 1)
-#define STATUS_BUF_FULL				(1 << 2)
-#define STATUS_FLASH_ERROR			(1 << 3)
+#define STATUS_FLASH_ERROR			(1 << 2)
+#define STATUS_BUF_FULL				(1 << 3)
+#define STATUS_BUF_INT				(1 << 4)
 
 #define STATUS_CLEAR_MASK			(STATUS_FLASH_ERROR)
 

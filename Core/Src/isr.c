@@ -13,6 +13,8 @@
 /* Register array */
 volatile extern uint16_t regs[];
 
+extern uint32_t imu_stalltime_us;
+
 /**
   * @brief Data ready ISR
   *
@@ -22,6 +24,9 @@ volatile extern uint16_t regs[];
   */
 void EXTI9_5_IRQHandler()
 {
+	/* Clear interrupt first */
+	EXTI->PR |= (0x1F << 5);
+
 	/* Handle to element to add */
 	uint8_t* elementHandle;
 
@@ -39,6 +44,7 @@ void EXTI9_5_IRQHandler()
 	{
 		mosi = regs[BUF_WRITE_0_REG + i];
 		miso = ImuSpiTransfer(mosi);
+		SleepMicroseconds(imu_stalltime_us);
 		elementHandle[index] = miso & 0xFF;
 		elementHandle[index + 1] = (miso >> 8);
 		index += 2;
