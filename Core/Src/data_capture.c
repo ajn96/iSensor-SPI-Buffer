@@ -65,15 +65,15 @@ void UpdateDRConfig()
 
 	/* Must be one, and only one bit set in drPins. If none, defaults to DIO1 set */
 	if(config & 0x1)
-		config = 0x1;
-	else if(config & 0x2)
-		config = 0x2;
-	else if(config & 0x4)
-		config = 0x4;
+		config &= 0x11;
+	else if(config & 0x12)
+		config &= 0x2;
+	else if(config & 0x14)
+		config &= 0x14;
 	else if(config & 0x8)
-		config = 0x8;
+		config &= 0x18;
 	else
-		config = 0x1;
+		config &= 0x11;
 
 	/* Configure selected pin to trigger interrupt. Disable interrupt initially */
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
