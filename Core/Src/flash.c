@@ -13,21 +13,55 @@
 /* Register array */
 volatile extern uint16_t regs[];
 
+/**
+  * @brief Flash update command handler
+  *
+  * @return void
+  *
+  * Saves all non-volatile registers to flash memory. They will be retrieved
+  * on the next system boot. Also saves a signature of the registers, which
+  * is used for register contents validation on the next boot.
+  */
 void FlashUpdate()
 {
 
 }
 
+/**
+  * @brief Load register values from flash memory to SRAM
+  *
+  * @return void
+  *
+  * After loading registers from flash, the signature of the
+  * loaded registers is compared to the signature stored in
+  * flash. If there is a mis-match, the STATUS FLASH_ERROR bit
+  * is set.
+  */
 void LoadRegsFlash()
 {
 
 }
 
+/**
+  * @brief Load factory default values for all registers.
+  *
+  * @return void
+  *
+  * This is accomplished in "lazy" manner via #define for each register
+  * default value (defaults are stored in program memory, storage is managed
+  * by compiler). This function only changes values in SRAM, does not change
+  * flash contents (registers will reset on next re-boot).
+  */
 void FactoryReset()
 {
 
 }
 
+/**
+  * @brief Clears all non-volatile registers in RAM
+  *
+  * @return void
+  */
 void PrepareRegsForFlash()
 {
 	/* Goes through pages 253 and 254 to clear all volatile reg values */
@@ -37,6 +71,11 @@ void PrepareRegsForFlash()
 	}
 }
 
+/**
+  * @brief Calculate a signature of all register contents in RAM.
+  *
+  * @return void
+  */
 uint32_t CalcRegSig(uint16_t * regs, uint32_t count)
 {
 	/* Sig is just a sum (should more or less work for verifying flash contents) */

@@ -102,6 +102,15 @@ uint16_t ImuWriteReg(uint8_t RegAddr, uint8_t RegValue)
 	return ImuSpiTransfer(writeRequest);
 }
 
+/**
+  * @brief Blocking sleep function call
+  *
+  * @param microseconds The number of microseconds to sleep
+  *
+  * @return void
+  *
+  * This function uses DWT peripheral (data watchpoint and trace) cycle counter to perform delay.
+ **/
 void SleepMicroseconds(uint32_t microseconds)
 {
 	  uint32_t clk_cycle_start = DWT->CYCCNT;
@@ -113,6 +122,16 @@ void SleepMicroseconds(uint32_t microseconds)
 	  while ((DWT->CYCCNT - clk_cycle_start) < microseconds);
 }
 
+/**
+ * @brief Processes any changes to IMU_SPI_CONFIG reg and applies
+ *
+ * @return void
+ *
+ * Sets the stall time (in microseconds) based on lower byte of the
+ * IMU_SPI_CONFIG register. Sets the SPI clock frequency divider based
+ * on the upper 8 bits. See register documentation for details of what
+ * target SCLK frequencies are achievable.
+ */
 void UpdateImuSpiConfig()
 {
 	uint16_t configReg = regs[IMU_SPI_CONFIG_REG];
@@ -173,6 +192,13 @@ void UpdateImuSpiConfig()
 	regs[IMU_SPI_CONFIG_REG] = configReg;
 }
 
+/**
+  * @brief Applies baud rate divider setting to master SPI port (to IMU)
+  *
+  * @param preScalerSetting The SCLK pre-scaler setting to apply.
+  *
+  * @return void
+  */
 void ApplySclkDivider(uint32_t preScalerSetting)
 {
 	imu_sclk_divider = preScalerSetting;

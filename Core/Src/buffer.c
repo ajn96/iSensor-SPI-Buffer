@@ -28,18 +28,28 @@ uint8_t buf[BUF_SIZE];
 /** Increment per buffer entry */
 uint32_t buf_increment = 64;
 
-/* Buffer mode ( 0 -> FIFO, 1 -> LIFO) */
+/** Buffer mode ( 0 -> FIFO, 1 -> LIFO) */
 uint32_t buf_LIFOMode = 0;
 
-/* Buffer full setting (0 -> stop adding, 1 -> replace oldest) */
+/** Buffer full setting (0 -> stop adding, 1 -> replace oldest) */
 uint32_t buf_replaceOldest = 0;
 
-/* Buffer max count */
+/** Buffer max count */
 uint32_t buf_maxCount;
 
-/* position at which buffer needs to wrap around */
+/** position at which buffer needs to wrap around */
 uint32_t buf_lastEntryIndex;
 
+/**
+  * @brief Take a single element from the buffer
+  *
+  * @return Pointer to the element retrieved from the buffer
+  *
+  * When running in LIFO mode (stack) this function takes from the head
+  * of the buffer and moves the header pointer up. When running in FIFO
+  * mode (queue) this function takes from the tail and moves the tail
+  * pointer down.
+  */
 uint8_t* BufTakeElement()
 {
 	uint8_t* buf_addr = buf;
@@ -102,6 +112,17 @@ uint8_t* BufTakeElement()
 	return buf_addr;
 }
 
+/**
+  * @brief Add an element to the buffer
+  *
+  * @return Pointer to the new element added to the buffer
+  *
+  * New elements always get added to the head of the buffer, in
+  * both buffer modes. If the buffer is full and ReplaceOldest is set
+  * to true, then the head continues moving through the buffer memory.
+  * If replace oldest is set to false, the head stays still when the
+  * buffer data structure reaches capacity.
+  */
 uint8_t* BufAddElement()
 {
 	uint8_t* buf_addr = buf;
@@ -155,6 +176,14 @@ uint8_t* BufAddElement()
 	return buf_addr;
 }
 
+/**
+  * @brief Clears the buffer data structure
+  *
+  * @return void
+  *
+  * This function resets the buffer to its default state. All
+  * stored buffer entries are discarded.
+  */
 void BufReset()
 {
 	/* Reset head/tail and count to 0 */

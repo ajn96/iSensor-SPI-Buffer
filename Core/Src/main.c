@@ -1,36 +1,29 @@
-/* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
+  * Copyright (c) Analog Devices Inc, 2020
+  * All Rights Reserved.
   *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
-  ******************************************************************************
-  */
-/* USER CODE END Header */
+  * @file		main.c
+  * @date		3/14/2020
+  * @author		A. Nolan (alex.nolan@analog.com)
+  * @brief		iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.
+ **/
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
 /* Private variables ---------------------------------------------------------*/
-SPI_HandleTypeDef hspi1; //IMU master
-SPI_HandleTypeDef hspi2; //Slave
-SPI_HandleTypeDef hspi3; //SD Master
+
+/** SPI handle for IMU master port */
+SPI_HandleTypeDef hspi1;
+
+/** SPI handle for slave port (from master controller) */
+SPI_HandleTypeDef hspi2;
+
+/** SPI handle for SD card master port */
+SPI_HandleTypeDef hspi3;
 
 /* Update processing required */
 volatile extern uint32_t update_flags;
-
-/* Register array */
-volatile extern uint16_t regs[];
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
@@ -41,7 +34,8 @@ static void MX_SPI3_Init(void);
 
 /**
   * @brief  The application entry point.
-  * @retval int
+  *
+  * @return main status code. Should not return.
   */
 int main(void)
 {
@@ -120,78 +114,10 @@ int main(void)
 
 }
 
-void SPI2_IRQHandler(void)
-{
-	/* Transaction counter */
-	static uint32_t transaction_counter = 0;
-
-	uint32_t itflag = SPI2->SR;
-	uint32_t transmitData;
-	uint32_t rxData;
-
-	/* Apply transaction counter to STATUS upper 4 bits and increment */
-	regs[STATUS_REG] &= 0x0FFF;
-	regs[STATUS_REG] |= (transaction_counter << 12);
-	transaction_counter = (transaction_counter + 1) & 0xF;
-
-	/* Error interrupt source */
-	if(itflag & (SPI_FLAG_OVR | SPI_FLAG_MODF))
-	{
-		/* Set status reg SPI error flag */
-		regs[STATUS_REG] |= 0x1;
-
-		/* Overrun error, can be cleared by repeatedly reading DR */
-		for(uint32_t i = 0; i < 4; i++)
-		{
-			transmitData = SPI2->DR;
-		}
-		/* Load zero to output */
-		SPI2->DR = 0;
-		/* Read status register */
-		itflag = SPI2->SR;
-		/* Exit ISR */
-		return;
-	}
-
-	/* Spi overflow (received transaction while transmit pending) */
-	if(itflag & 0x1000)
-	{
-		/* Get data from FIFO */
-		rxData = SPI2->DR;
-
-		/* Set status reg SPI overflow flag */
-		regs[STATUS_REG] |= 0x2;
-
-		/* Exit ISR */
-		return;
-	}
-
-	/* Rx done interrupt source */
-	if(itflag & SPI_FLAG_RXNE)
-	{
-		/* Get data from FIFO */
-		rxData = SPI2->DR;
-
-		/* Handle transaction */
-		if(rxData & 0x8000)
-		{
-			/* Write */
-			transmitData = WriteReg((rxData & 0x7F00) >> 8, rxData & 0xFF);
-		}
-		else
-		{
-			/* Read */
-			transmitData = ReadReg(rxData >> 8);
-		}
-
-		/* Transmit data back */
-		SPI2->DR = transmitData;
-	}
-}
-
 /**
   * @brief System Clock Configuration
-  * @retval None
+  *
+  * @return void
   */
 void SystemClock_Config(void)
 {
@@ -227,9 +153,11 @@ void SystemClock_Config(void)
 }
 
 /**
-  * @brief SPI1 Initialization Function
+  * @brief SPI1 Initialization Function (master SPI port)
+  *
   * @param None
-  * @retval None
+  *
+  * @return void
   */
 static void MX_SPI1_Init(void)
 {
@@ -265,9 +193,11 @@ static void MX_SPI1_Init(void)
 }
 
 /**
-  * @brief SPI2 Initialization Function
+  * @brief SPI2 Initialization Function (slave SPI port)
+  *
   * @param None
-  * @retval None
+  *
+  * @return void
   */
 static void MX_SPI2_Init(void)
 {
@@ -315,9 +245,11 @@ static void MX_SPI2_Init(void)
 }
 
 /**
-  * @brief SPI3 Initialization Function
+  * @brief SPI3 Initialization Function (SD card master SPI port)
+  *
   * @param None
-  * @retval None
+  *
+  * @return void
   */
 static void MX_SPI3_Init(void)
 {
@@ -344,8 +276,10 @@ static void MX_SPI3_Init(void)
 
 /**
   * @brief GPIO Initialization Function
+  *
   * @param None
-  * @retval None
+  *
+  * @return void
   */
 static void MX_GPIO_Init(void)
 {
@@ -414,30 +348,14 @@ static void MX_GPIO_Init(void)
 
 /**
   * @brief  This function is executed in case of error occurrence.
-  * @retval None
+  *
+  * @return void
+  *
+  * Errors will force a system reset. Might add some sort of flag here to indicate an error
+  * occurred. Would need to write to flash for persistence.
   */
 void Error_Handler(void)
 {
 	/* Reboot */
-	regs[USER_COMMAND_REG] = SOFTWARE_RESET;
-	ProcessCommand();
+	NVIC_SystemReset();
 }
-
-#ifdef  USE_FULL_ASSERT
-/**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
-void assert_failed(uint8_t *file, uint32_t line)
-{ 
-  /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-  /* USER CODE END 6 */
-}
-#endif /* USE_FULL_ASSERT */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

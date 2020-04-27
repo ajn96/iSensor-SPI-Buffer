@@ -10,12 +10,13 @@
 
 #include "registers.h"
 
-/* Selected page. Starts on 253 (config page) */
+/** Selected page. Starts on 253 (config page) */
 volatile uint8_t selected_page = 253;
 
-/* Register update flags for main loop processing */
+/** Register update flags for main loop processing */
 volatile uint32_t update_flags = 0;
 
+/** iSensor-SPI-Buffer global register array (read-able via SPI) */
 uint16_t regs[3 * REG_PER_PAGE] = {
 /* Page 253 */
 
@@ -49,6 +50,18 @@ uint16_t regs[3 * REG_PER_PAGE] = {
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000};
 
+/**
+  * @brief Process a register read request (from master)
+  *
+  * @param regAddr The byte address of the register to read
+  *
+  * @return Value of register requested
+  *
+  * For selected pages not addressed by iSensor-SPI-Buffer, the read is
+  * passed through to the connected IMU, using the spi_passthrough module.
+  * If the selected page is [253 - 255] this read request is processed
+  * directly.
+  */
 uint16_t ReadReg(uint8_t regAddr)
 {
 	uint16_t regIndex;
@@ -67,7 +80,7 @@ uint16_t ReadReg(uint8_t regAddr)
 		/* The regAddr will be in range 0 - 127 for register index in range 0 - 63*/
 		regIndex += (regAddr >> 1);
 
-		/* Handler buffer retrieve case */
+		/* Handler buffer retrieve case (todo: something faster/safer here) */
 		if(regIndex == BUF_RETRIEVE_REG)
 		{
 			/* Initial clear */
@@ -102,6 +115,21 @@ uint16_t ReadReg(uint8_t regAddr)
 	}
 }
 
+/**
+  * @brief Process a register write request (from master)
+  *
+  * @param regAddr The address of the register to write to
+  *
+  * @param regValue The value to write to the register
+  *
+  * @return The contents of the register being written, after write is processed
+  *
+  * For selected pages not addressed by iSensor-SPI-Buffer, the write is
+  * passed through to the connected IMU, using the spi_passthrough module.
+  * If the selected page is [253 - 255] this write request is processed
+  * directly. The firmware echoes back the processed write value so that
+  * the master can verify the write contents on the next SPI transaction.
+  */
 uint16_t WriteReg(uint8_t regAddr, uint8_t regValue)
 {
 	uint16_t regIndex;
@@ -126,6 +154,15 @@ uint16_t WriteReg(uint8_t regAddr, uint8_t regValue)
 	}
 }
 
+/**
+  * @brief Process a write to the iSensor-SPI-Buffer registers
+  *
+  * @return The index to the register within the global register array
+  *
+  * This function handles filtering for read-only registers. It also handles
+  * setting the deferred processing flags as needed for any config/command register
+  * writes. This are processed on the next pass of the main loop.
+  */
 uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 {
 	/* Index within the register array */
@@ -272,11 +309,25 @@ uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	return regIndex;
 }
 
+/**
+  * @brief Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register
+  *
+  * @return void
+  */
 void UpdateUserSpiConfig()
 {
 
 }
 
+/**
+  * @brief Processes a command register write. This function is called from main loop.
+  *
+  * @return void
+  *
+  * Only one command can be executed per write to the USER_COMMAND register.
+  * Command execution priority is determined by the order in which the command
+  * flags are checked.
+  */
 void ProcessCommand()
 {
 	uint16_t command = regs[USER_COMMAND_REG];
@@ -308,6 +359,13 @@ void ProcessCommand()
 	SPI2->CR1 |= SPI_CR1_SPE;
 }
 
+/**
+  * @brief Populates the six SN registers automatically
+  *
+  * @return void
+  *
+  * The SN registers are populated from the 96-bit unique ID (UID)
+  */
 void GetSN()
 {
 	uint16_t id;
@@ -319,6 +377,14 @@ void GetSN()
 	}
 }
 
+/**
+  * @brief Populates the firmware date registers automatically
+  *
+  * @return void
+  *
+  * Registers are populated by parsing the __DATE__ macro result, which
+  * is set at compile time
+  */
 void GetBuildDate()
 {
 	uint8_t date[11] = __DATE__;
