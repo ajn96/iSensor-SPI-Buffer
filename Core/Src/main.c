@@ -72,8 +72,8 @@ int main(void)
   GetBuildDate();
   GetSN();
 
-  /* Set DR int priority (lower than user SPI) */
-  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 1, 1);
+  /* Set DR int priority (same as user SPI) */
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
 
   /* Infinite loop */
   while (1)

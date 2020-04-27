@@ -22,7 +22,27 @@ volatile extern uint16_t regs[];
   */
 void EXTI9_5_IRQHandler()
 {
+	/* Handle to element to add */
+	uint8_t* elementHandle;
 
+	/* Get element handle */
+	elementHandle = BufAddElement();
+
+	//TODO: DMA based implementation
+
+	/* Get number of 16 bit words to transfer*/
+	uint32_t numWords = regs[BUF_LEN_REG] >> 1;
+
+	uint32_t index = 0;
+	uint32_t mosi, miso;
+	for(int i = 0; i < numWords; i++)
+	{
+		mosi = regs[BUF_WRITE_0_REG + i];
+		miso = ImuSpiTransfer(mosi);
+		elementHandle[index] = miso & 0xFF;
+		elementHandle[index + 1] = (miso >> 8);
+		index += 2;
+	}
 }
 
 /**
