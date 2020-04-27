@@ -25,9 +25,87 @@ DIOConfig config;
  **/
 void UpdateUserInterrupt()
 {
+	uint32_t overflow, interrupt;
+
 	/* Get overflow status */
+	overflow = (regs[BUF_CNT_REG] >= regs[BUF_MAX_CNT_REG]);
 
 	/* Get interrupt status */
+	interrupt = (regs[BUF_CNT_REG] >= regs[INT_CONFIG_REG]);
+
+	/* Apply overflow to status reg. Don't clear because user must read to clear */
+	if(overflow)
+	{
+		regs[STATUS_REG] |= STATUS_BUF_FULL;
+	}
+
+	/* Apply interrupt values to pins */
+	if(config.intPins & 0x1)
+	{
+		/* PB4 */
+		if(interrupt)
+			GPIOB->ODR |= GPIO_PIN_4;
+		else
+			GPIOB->ODR &= ~GPIO_PIN_4;
+	}
+	if(config.intPins & 0x2)
+	{
+		/* PB8 */
+		if(interrupt)
+			GPIOB->ODR |= GPIO_PIN_8;
+		else
+			GPIOB->ODR &= ~GPIO_PIN_8;
+	}
+	if(config.intPins & 0x4)
+	{
+		/* PC7 */
+		if(interrupt)
+			GPIOC->ODR |= GPIO_PIN_7;
+		else
+			GPIOC->ODR &= ~GPIO_PIN_7;
+	}
+	if(config.intPins & 0x8)
+	{
+		/* PA8 */
+		if(interrupt)
+			GPIOA->ODR |= GPIO_PIN_8;
+		else
+			GPIOA->ODR &= ~GPIO_PIN_8;
+	}
+
+	/* Apply overflow values to pins */
+	if(config.overflowPins & 0x1)
+	{
+		/* PB4 */
+		if(overflow)
+			GPIOB->ODR |= GPIO_PIN_4;
+		else
+			GPIOB->ODR &= ~GPIO_PIN_4;
+	}
+	if(config.overflowPins & 0x2)
+	{
+		/* PB8 */
+		if(overflow)
+			GPIOB->ODR |= GPIO_PIN_8;
+		else
+			GPIOB->ODR &= ~GPIO_PIN_8;
+	}
+	if(config.overflowPins & 0x4)
+	{
+		/* PC7 */
+		if(overflow)
+			GPIOC->ODR |= GPIO_PIN_7;
+		else
+			GPIOC->ODR &= ~GPIO_PIN_7;
+	}
+	if(config.overflowPins & 0x8)
+	{
+		/* PA8 */
+		if(overflow)
+			GPIOA->ODR |= GPIO_PIN_8;
+		else
+			GPIOA->ODR &= ~GPIO_PIN_8;
+	}
 }
 
 /**
@@ -55,7 +133,8 @@ void UpdateDIOConfig()
 	/* Write back */
 	regs[DIO_CONFIG_REG] = BuildDIOConfigReg();
 
-	//TODO: Apply parsed settings
+	/* Apply parsed settings. Set any pass pins as inputs on DIO slave. Set
+	 * any overflow or interrupt pins as output */
 }
 
 /**

@@ -42,24 +42,26 @@ void FactoryReset();
 #define BUF_MAX_CNT_REG				0x03
 #define DR_CONFIG_REG				0x04
 #define DIO_CONFIG_REG				0x05
-#define IMU_SPI_CONFIG_REG			0x06
-#define USER_SPI_CONFIG_REG			0x07
-#define USER_COMMAND_REG			0x08
-#define USER_SCR_0_REG				0x09
-#define USER_SCR_1_REG				0x0A
-#define USER_SCR_2_REG				0x0B
-#define USER_SCR_3_REG				0x0C
-#define STATUS_REG					0x36
-#define FW_DAY_MONTH_REG			0x37
-#define FW_YEAR_REG					0x38
-#define FW_REV_REG					0x39
+#define INT_CONFIG_REG				0x06
+#define IMU_SPI_CONFIG_REG			0x07
+#define USER_SPI_CONFIG_REG			0x08
+#define USER_COMMAND_REG			0x09
+#define USER_SCR_0_REG				0x0A
+#define USER_SCR_1_REG				0x0B
+#define USER_SCR_2_REG				0x0C
+#define USER_SCR_3_REG				0x0D
+#define FW_REV_REG					0x35
+#define ENDURANCE_REG				0x36
+#define STATUS_REG					0x37
+#define FW_DAY_MONTH_REG			0x38
+#define FW_YEAR_REG					0x39
 #define DEV_SN_REG					0x3A
 
 /** iSensor-SPI-Buffer buffer Tx data page */
 #define BUF_WRITE_PAGE				254
 
 #define BUF_WRITE_0_REG				0x43
-#define FLASH_SIG					0x7F
+#define FLASH_SIG_REG				0x7F
 
 /** iSensor-SPI-Buffer buffer Rx data page */
 #define BUF_READ_PAGE				255
@@ -74,8 +76,10 @@ void FactoryReset();
 #define BUF_LEN_DEFAULT				0x0014
 #define DR_CONFIG_DEFAULT			0x0011
 #define DIO_CONFIG_DEFAULT			0x0843
+#define INT_CONFIG_DEFAULT			0x0020
 #define IMU_SPI_CONFIG_DEFAULT		0x2014
 #define USER_SPI_CONFIG_DEFAULT		0x0003
+#define FLASH_SIG_DEFAULT			0x2d9a
 
 /* Update flags definitions */
 #define DIO_CONFIG_FLAG				(1 << 0)

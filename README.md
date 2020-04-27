@@ -109,17 +109,19 @@ Page 253 - iSensor-SPI-Buffer configuration
 | 0x06 | BUF_MAX_CNT | N/A | Maximum entries which can be stored in the buffer. Determined by BUF_LEN. Read-only register |
 | 0x08 | DR_CONFIG | 0x0011 | Data ready input (IMU to iSensor-SPI-Buffer) configuration |
 | 0x0A | DIO_CONFIG | 0x0843 | DIO configuration. Sets up pin pass-through and assigns interrupts |
-| 0x0C | IMU_SPI_CONFIG | 0x2014 | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
-| 0x0E | USER_SPI_CONFIG | 0x0003 | User SPI configuration (mode, etc.) |
-| 0x10 | USER_COMMAND | N/A | Command register (flash update, factory reset, clear buffer, software reset, others?) |
-| 0x12 | USER_SCR_0 | 0x0000 | User scratch register |
-| 0x14 | USER_SCR_1 | 0x0000 | User scratch register |
-| 0x16 | USER_SCR_2 | 0x0000 | User scratch register |
-| 0x18 | USER_SCR_3 | 0x0000 | User scratch register |
-| 0x6C | STATUS | N/A | Device status register. Clears on read |
-| 0x6E | FW_DAY_MONTH | N/A | Firmware build date |
-| 0x70 | FW_YEAR | N/A | Firmware build year |
-| 0x72 | FW_REV | N/A | Firmware revision |
+| 0x0C | INT_CONFIG | 0x0020 | Interrupt configuration register |
+| 0x0E | IMU_SPI_CONFIG | 0x2014 | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
+| 0x10 | USER_SPI_CONFIG | 0x0003 | User SPI configuration (mode, etc.) |
+| 0x12 | USER_COMMAND | N/A | Command register (flash update, factory reset, clear buffer, software reset, others?) |
+| 0x14 | USER_SCR_0 | 0x0000 | User scratch register |
+| 0x16 | USER_SCR_1 | 0x0000 | User scratch register |
+| 0x18 | USER_SCR_2 | 0x0000 | User scratch register |
+| 0x1A | USER_SCR_3 | 0x0000 | User scratch register |
+| 0x6A | FW_REV | N/A | Firmware revision |
+| 0x6C | ENDURANCE | N/A | Flash update counter |
+| 0x6E | STATUS | N/A | Device status register. Clears on read |
+| 0x70 | FW_DAY_MONTH | N/A | Firmware build date |
+| 0x72 | FW_YEAR | N/A | Firmware build year |
 | 0x74 | DEV_SN_0 | N/A | Processor core serial number register, word 0 |
 | 0x76 | DEV_SN_1 | N/A | Processor core serial number register, word 1 |
 | 0x78 | DEV_SN_2 | N/A | Processor core serial number register, word 2 |
@@ -193,6 +195,12 @@ The following default values will be used for DIO_CONFIG:
 * PIN_PASS: 0x3. DIO1 (typically acts as IMU data ready) and DIO2 (typically acts as SYNC input) will be passed through using an Analog Switch. This allows for direct sync strobing and reading of the data ready signal
 * INT_MAP: 0x4. The buffer data ready interrupt is applied to DIO3 by default
 * OVERFLOW_MAP: 0x8. The buffer overflow interrupt is applied to DIO4 by default
+
+**INT_CONFIG**
+
+| Name | Bits | Description |
+| --- | --- | --- |
+| 15:0 | WATERMARK | Number of elements stored in buffer before asserting the iSensor-SPI-Buffer data ready interrupt. Range 0 - BUF_MAX_CNT |
 
 **IMU_SPI_CONFIG**
 

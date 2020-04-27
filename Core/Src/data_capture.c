@@ -50,8 +50,13 @@ void DisableDataCapture()
   */
 void UpdateDRConfig()
 {
+	/* Disable ISR */
+	DisableDataCapture();
+
 	/* Get current config value */
 	uint32_t config = regs[DR_CONFIG_REG];
+
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
 	/* Clear unused bits */
 	config &= 0x1F;
@@ -69,6 +74,72 @@ void UpdateDRConfig()
 		config = 0x1;
 
 	/* Configure selected pin to trigger interrupt. Disable interrupt initially */
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+
+	/* DIO1 master (PB5) */
+	HAL_GPIO_DeInit(GPIOB, GPIO_PIN_5);
+	GPIO_InitStruct.Pin = GPIO_PIN_5;
+	if(config & 0x1)
+	{
+		/* This is DR pin */
+		if(config & 0x10)
+			GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+		else
+			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+	}
+	else
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	/* Apply settings */
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+	/* DIO2 master (PB9) */
+	HAL_GPIO_DeInit(GPIOB, GPIO_PIN_9);
+	GPIO_InitStruct.Pin = GPIO_PIN_9;
+	if(config & 0x2)
+	{
+		/* This is DR pin */
+		if(config & 0x10)
+			GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+		else
+			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+	}
+	else
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	/* Apply settings */
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+	/* DIO3 master (PC6) */
+	HAL_GPIO_DeInit(GPIOC, GPIO_PIN_6);
+	GPIO_InitStruct.Pin = GPIO_PIN_6;
+	if(config & 0x4)
+	{
+		/* This is DR pin */
+		if(config & 0x10)
+			GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+		else
+			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+	}
+	else
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	/* Apply settings */
+	HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+	/* DIO4 master (PA9) */
+	HAL_GPIO_DeInit(GPIOA, GPIO_PIN_9);
+	GPIO_InitStruct.Pin = GPIO_PIN_9;
+	if(config & 0x8)
+	{
+		/* This is DR pin */
+		if(config & 0x10)
+			GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+		else
+			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+	}
+	else
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	/* Apply settings */
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 	/* Apply modified settings back to reg */
 	regs[DR_CONFIG_REG] = config;

@@ -170,7 +170,7 @@ uint8_t* BufAddElement()
 		/* Return pointer to head */
 		buf_addr += buf_head;
 	}
-	/* Update count register */
+	/* Update count register (might want to move elsewhere?) */
 	regs[BUF_CNT_REG] = buf_count;
 	/* Return pointer to write buffer value to */
 	return buf_addr;

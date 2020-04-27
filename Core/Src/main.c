@@ -72,6 +72,9 @@ int main(void)
   /* Init DIOs*/
   UpdateDIOConfig();
 
+  /* Init data ready */
+  UpdateDRConfig();
+
   /* Generate all identifier registers */
   GetBuildDate();
   GetSN();
@@ -110,8 +113,8 @@ int main(void)
 	  UpdateUserInterrupt();
   }
 
+  /* Should never get here */
   return 0;
-
 }
 
 /**
