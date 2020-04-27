@@ -23,6 +23,9 @@ extern volatile uint16_t regs[];
   */
 void EnableDataCapture()
 {
+	/* Clear pending interrupts */
+	EXTI->PR |= (0x1F << 5);
+
 	/* Enable data ready interrupts */
 	HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 }
@@ -39,6 +42,9 @@ void DisableDataCapture()
 {
 	/* Disable data ready interrupts */
 	HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
+
+	/* Clear pending interrupts */
+	EXTI->PR |= (0x1F << 5);
 }
 
 /**
@@ -66,9 +72,9 @@ void UpdateDRConfig()
 	/* Must be one, and only one bit set in drPins. If none, defaults to DIO1 set */
 	if(config & 0x1)
 		config &= 0x11;
-	else if(config & 0x12)
-		config &= 0x2;
-	else if(config & 0x14)
+	else if(config & 0x2)
+		config &= 0x12;
+	else if(config & 0x4)
 		config &= 0x14;
 	else if(config & 0x8)
 		config &= 0x18;
