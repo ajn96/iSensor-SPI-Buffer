@@ -10,6 +10,9 @@
 
 #include "data_capture.h"
 
+/* register array */
+extern volatile uint16_t regs[];
+
 void EnableDataCapture()
 {
 

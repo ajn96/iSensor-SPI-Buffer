@@ -8,9 +8,10 @@
   * @brief		iSensor-SPI-Buffer autonomous IMU data acquisition header file.
  **/
 
-
 #ifndef INC_DATA_CAPTURE_H_
 #define INC_DATA_CAPTURE_H_
+
+#include "registers.h"
 
 void EnableDataCapture();
 void DisableDataCapture();
