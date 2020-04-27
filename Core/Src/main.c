@@ -31,6 +31,7 @@ static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_SPI2_Init(void);
 static void MX_SPI3_Init(void);
+static void DWT_Init();
 
 /**
   * @brief  The application entry point.
@@ -50,15 +51,7 @@ int main(void)
   MX_SPI1_Init();
   MX_SPI2_Init();
   MX_SPI3_Init();
-
-  /* Disable TRC */
-  CoreDebug->DEMCR &= ~CoreDebug_DEMCR_TRCENA_Msk; // ~0x01000000;
-  /* Enable TRC */
-  CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk; // 0x01000000;
-  /* Disable clock cycle counter */
-  DWT->CTRL &= ~DWT_CTRL_CYCCNTENA_Msk; //~0x00000001;
-  /* Enable clock cycle counter */
-  DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk; //0x00000001;
+  DWT_Init();
 
   /* Load registers from flash */
   LoadRegsFlash();
@@ -78,6 +71,9 @@ int main(void)
   /* Generate all identifier registers */
   GetBuildDate();
   GetSN();
+
+  /* Set DR int priority (lower than user SPI) */
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 1, 1);
 
   /* Infinite loop */
   while (1)
@@ -306,7 +302,7 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_8;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PC6 */
@@ -319,7 +315,7 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pin = GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PA9 */
@@ -332,7 +328,7 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PB5 */
@@ -346,7 +342,23 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+}
 
+/**
+  * @brief  Init DWT peripheral.
+  *
+  * @return void
+  */
+static void DWT_Init()
+{
+  /* Disable TRC */
+  CoreDebug->DEMCR &= ~CoreDebug_DEMCR_TRCENA_Msk; // ~0x01000000;
+  /* Enable TRC */
+  CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk; // 0x01000000;
+  /* Disable clock cycle counter */
+  DWT->CTRL &= ~DWT_CTRL_CYCCNTENA_Msk; //~0x00000001;
+  /* Enable clock cycle counter */
+  DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk; //0x00000001;
 }
 
 /**

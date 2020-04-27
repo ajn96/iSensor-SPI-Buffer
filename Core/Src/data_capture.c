@@ -23,7 +23,8 @@ extern volatile uint16_t regs[];
   */
 void EnableDataCapture()
 {
-
+	/* Enable data ready interrupts */
+	HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 }
 
 /**
@@ -36,7 +37,8 @@ void EnableDataCapture()
   */
 void DisableDataCapture()
 {
-
+	/* Disable data ready interrupts */
+	HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
 }
 
 /**
