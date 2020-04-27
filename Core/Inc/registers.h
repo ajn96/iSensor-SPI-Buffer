@@ -49,9 +49,10 @@ void FactoryReset();
 #define USER_SCR_1_REG				0x0B
 #define USER_SCR_2_REG				0x0C
 #define USER_SCR_3_REG				0x0D
-#define FW_REV_REG					0x35
-#define ENDURANCE_REG				0x36
-#define STATUS_REG					0x37
+#define FW_REV_REG					0x34
+#define ENDURANCE_REG				0x35
+#define STATUS_0_REG				0x36
+#define BUF_CNT_0_REG				0x37
 #define FW_DAY_MONTH_REG			0x38
 #define FW_YEAR_REG					0x39
 #define DEV_SN_REG					0x3A
@@ -59,15 +60,16 @@ void FactoryReset();
 /** iSensor-SPI-Buffer buffer Tx data page */
 #define BUF_WRITE_PAGE				254
 
-#define BUF_WRITE_0_REG				0x43
+#define BUF_WRITE_0_REG				0x44
 #define FLASH_SIG_REG				0x7F
 
 /** iSensor-SPI-Buffer buffer Rx data page */
 #define BUF_READ_PAGE				255
 
-#define BUF_CNT_REG					0x81
-#define BUF_RETRIEVE_REG			0x82
-#define BUF_DATA_0_REG				0x83
+#define STATUS_1_REG				0x81
+#define BUF_CNT_1_REG				0x82
+#define BUF_RETRIEVE_REG			0x83
+#define BUF_DATA_0_REG				0x84
 
 /* Register (non-zero) default values */
 #define FW_REV_DEFAULT				0x0100

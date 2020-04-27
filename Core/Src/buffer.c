@@ -107,7 +107,8 @@ uint8_t* BufTakeElement()
 		}
 	}
 	/* Update buffer count register */
-	regs[BUF_CNT_REG] = buf_count;
+	regs[BUF_CNT_0_REG] = buf_count;
+	regs[BUF_CNT_1_REG] = regs[BUF_CNT_0_REG];
 	/* Return pointer to the buffer entry */
 	return buf_addr;
 }
@@ -171,7 +172,8 @@ uint8_t* BufAddElement()
 		buf_addr += buf_head;
 	}
 	/* Update count register (might want to move elsewhere?) */
-	regs[BUF_CNT_REG] = buf_count;
+	regs[BUF_CNT_0_REG] = buf_count;
+	regs[BUF_CNT_1_REG] = regs[BUF_CNT_0_REG];
 	/* Return pointer to write buffer value to */
 	return buf_addr;
 }
@@ -211,7 +213,8 @@ void BufReset()
 	buf_lastEntryIndex = (buf_maxCount - 1) * buf_increment;
 
 	/* Update buffer count register */
-	regs[BUF_CNT_REG] = buf_count;
+	regs[BUF_CNT_0_REG] = buf_count;
+	regs[BUF_CNT_1_REG] = regs[BUF_CNT_0_REG];
 
 	/* Update buffer max count register */
 	regs[BUF_MAX_CNT_REG] = buf_maxCount;

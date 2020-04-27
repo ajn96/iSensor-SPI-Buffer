@@ -33,21 +33,23 @@ void UpdateUserInterrupt()
 	uint32_t overflow, interrupt;
 
 	/* Get overflow status */
-	overflow = (regs[BUF_CNT_REG] >= regs[BUF_MAX_CNT_REG]);
+	overflow = (regs[BUF_CNT_0_REG] >= regs[BUF_MAX_CNT_REG]);
 
 	/* Get interrupt status */
-	interrupt = (regs[BUF_CNT_REG] >= regs[INT_CONFIG_REG]);
+	interrupt = (regs[BUF_CNT_0_REG] >= regs[INT_CONFIG_REG]);
 
 	/* Apply overflow to status reg. Don't clear because user must read to clear */
 	if(overflow)
 	{
-		regs[STATUS_REG] |= STATUS_BUF_FULL;
+		regs[STATUS_0_REG] |= STATUS_BUF_FULL;
+		regs[STATUS_1_REG] = regs[STATUS_0_REG];
 	}
 
 	/* Apply interrupt to status reg */
 	if(interrupt)
 	{
-		regs[STATUS_REG] |= STATUS_BUF_INT;
+		regs[STATUS_0_REG] |= STATUS_BUF_INT;
+		regs[STATUS_1_REG] = regs[STATUS_0_REG];
 	}
 
 	UpdateOutputPins(interrupt, overflow);

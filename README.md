@@ -134,7 +134,7 @@ Page 254 - buffer write data
 | Address | Register Name | Description |
 | --- | --- | --- |
 | 0x00 | PAGE_ID | 0x00FE | Page register. Used to change the currently selected register page |
-| 0x06 | BUF_WRITE_0 | 0x0000 | First transmit data register (data sent to IMU DIN) |
+| 0x08 | BUF_WRITE_0 | 0x0000 | First transmit data register (data sent to IMU DIN) |
 | ... | ... | ... |
 | 0x44 | BUF_WRITE_31 | 0x0000 | Last transmit data register |
 
@@ -143,9 +143,10 @@ Page 255 - buffer output registers
 | Address | Register Name | Description |
 | --- | --- | --- |
 | 0x00 | PAGE_ID | 0x00FF | Page register. Used to change the currently selected register page |
-| 0x02 | BUF_CNT | 0x0000 | The number of samples in buffer. Write 0 to this register to clear buffer |
-| 0x04 | BUF_RETRIEVE | 0x0000 | Read this register to dequeue new data from buffer to buffer output registers |
-| 0x06 | BUF_DATA_0 | 0x0000 | First buffer output register (data received from IMU DOUT) |
+| 0x02 | STATUS_1 | 0x0000 | The number of samples in buffer. Write 0 to this register to clear buffer |
+| 0x04 | BUF_CNT_1 | 0x0000 | The number of samples in buffer. Write 0 to this register to clear buffer |
+| 0x06 | BUF_RETRIEVE | 0x0000 | Read this register to dequeue new data from buffer to buffer output registers |
+| 0x08 | BUF_DATA_0 | 0x0000 | First buffer output register (data received from IMU DOUT) |
 | ... | ... | ... |
 | 0x44 | BUF_DATA_31 | 0x0000 | Last buffer output register |
 
@@ -314,8 +315,8 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 
 | Pin Name | STM32 Pin | Description |
 | --- | --- | --- |
-| SCLK | PB13 | SPI clock signal. This pin is an input for the iSensor-SPI-Buffer |
 | CS | PB12 | Chip select signal. Bring low to select the iSensor-SPI-Buffer for communications. This pin is an input for the iSensor-SPI-Buffer |
+| SCLK | PB13 | SPI clock signal. This pin is an input for the iSensor-SPI-Buffer |
 | MISO | PB14 | Master in slave out (MISO) signal. This pin is an output from the iSensor-SPI-Buffer |
 | MOSI | PB15 | Master out slave in (MOSI) signal. This pin is an input for the iSensor-SPI-Buffer |
 
@@ -323,8 +324,8 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 
 | Pin Name | STM32 Pin | Description |
 | --- | --- | --- |
-| SCLK | PA5 | SPI clock signal. This pin is an output from the iSensor-SPI-Buffer |
 | CS | PA4 | Chip select signal, used to enable the IMU slave SPI interface. This pin is an output from the iSensor-SPI-Buffer |
+| SCLK | PA5 | SPI clock signal. This pin is an output from the iSensor-SPI-Buffer |
 | MISO | PA6 | Master in slave out (MISO) signal. This pin is an input for the iSensor-SPI-Buffer |
 | MOSI | PA7 | Master out slave in (MOSI) signal. This pin is an output from the iSensor-SPI-Buffer |
 
@@ -332,8 +333,8 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 
 | Pin Name | STM32 Pin | Description |
 | --- | --- | --- |
-| SCLK | PC10 | SPI clock signal |
 | CS | PA15 | Chip select signal |
+| SCLK | PC10 | SPI clock signal |
 | MISO | PC11 | Master in slave out (MISO) signal |
 | MOSI | PC12 | Master out slave in (MOSI) signal |
 

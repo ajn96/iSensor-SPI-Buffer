@@ -31,6 +31,8 @@ void FlashUpdate()
 	PrepareRegsForFlash();
 
 	/* Write register values to flash */
+	HAL_FLASH_Unlock();
+
 }
 
 /**
@@ -58,7 +60,10 @@ void LoadRegsFlash()
 
 	/* Alert user of potential flash error */
 	if(storedSig != expectedSig)
-		regs[STATUS_REG] |= STATUS_FLASH_ERROR;
+	{
+		regs[STATUS_0_REG] |= STATUS_FLASH_ERROR;
+		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+	}
 }
 
 /**
@@ -85,7 +90,7 @@ uint32_t CalcRegSig(uint16_t * regs, uint32_t count)
 static void PrepareRegsForFlash()
 {
 	/* Goes through pages 253 to clear all volatile reg values, starting at STATUS */
-	for(int addr = STATUS_REG; addr < REG_PER_PAGE; addr++)
+	for(int addr = STATUS_0_REG; addr < REG_PER_PAGE; addr++)
 	{
 		regs[addr] = 0;
 	}
