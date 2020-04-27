@@ -244,7 +244,9 @@ The following default values will be used for DIO_CONFIG:
 | --- | --- | --- |
 | 0 | SPI_ERR | User SPI error reported by the SPI peripheral |
 | 1 | SPI_OVERFLOW | User SPI data overflow (min stall time violated) |
-| 2 | BUF_FULL | Set when buffer is full |
+| 2 | FLASH_ERROR | Set when the flash register signature stored does not match signature calculated from SRAM register contents at initialization. Sticky |
+| 3 | BUF_FULL | Set when buffer is full |
+| 4 | BUF_INTERRUPT | Set when buffer data ready interrupt condition is met |
 | 15:12 | TC | User SPI transaction counter. Increments by one with each SPI transaction |
 
 With the exception of the transaction counter field, this register clears on read.
