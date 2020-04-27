@@ -11,19 +11,15 @@
 #ifndef INC_SPI_PASSTHROUGH_H_
 #define INC_SPI_PASSTHROUGH_H_
 
+/* Includes */
 #include "main.h"
 #include "registers.h"
 
+/* Public function prototypes */
 uint16_t ImuSpiTransfer(uint32_t MOSI);
-
 uint16_t ImuReadReg(uint8_t RegAddr);
-
 uint16_t ImuWriteReg(uint8_t RegAddr, uint8_t RegValue);
-
 void UpdateImuSpiConfig();
-
-void ApplySclkDivider(uint32_t preScalerSetting);
-
 void SleepMicroseconds(uint32_t microseconds);
 
 #endif

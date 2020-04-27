@@ -11,13 +11,13 @@
 #ifndef INC_FLASH_H_
 #define INC_FLASH_H_
 
+/* Includes */
 #include "stdint.h"
 #include "registers.h"
 
+/* Public function prototypes */
 void FlashUpdate();
 void LoadRegsFlash();
-
-void PrepareRegsForFlash();
 uint32_t CalcRegSig(uint16_t * regs, uint32_t count);
 
 /** Flash reg base address */

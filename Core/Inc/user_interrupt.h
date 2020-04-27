@@ -8,10 +8,10 @@
   * @brief		iSensor-SPI-Buffer user interrupt (data ready) config and generation functions header
  **/
 
-
 #ifndef INC_USER_INTERRUPT_H_
 #define INC_USER_INTERRUPT_H_
 
+/* Includes */
 #include "registers.h"
 
 /* Public function prototypes */
@@ -19,6 +19,7 @@ void UpdateUserInterrupt();
 void UpdateDIOConfig();
 void UpdateOutputPins(uint32_t interrupt, uint32_t overflow);
 
+/** Struct representing DIO configuration settings */
 typedef struct DIOConfig
 {
 	uint32_t passPins;

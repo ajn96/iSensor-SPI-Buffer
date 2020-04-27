@@ -8,7 +8,10 @@
   * @brief		iSensor-SPI-Buffer SPI pass through (to IMU) module
  **/
 
-#include <spi_passthrough.h>
+#include "spi_passthrough.h"
+
+/* Local function prototypes */
+static void ApplySclkDivider(uint32_t preScalerSetting);
 
 /* Get reference to master SPI instance (SPI1) */
 extern SPI_HandleTypeDef hspi1;
@@ -199,7 +202,7 @@ void UpdateImuSpiConfig()
   *
   * @return void
   */
-void ApplySclkDivider(uint32_t preScalerSetting)
+static void ApplySclkDivider(uint32_t preScalerSetting)
 {
 	imu_sclk_divider = preScalerSetting;
 	hspi1.Init.BaudRatePrescaler = preScalerSetting;

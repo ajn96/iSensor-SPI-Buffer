@@ -8,7 +8,7 @@
   * @brief		iSensor-SPI-Buffer interrupt service routines (user provided)
  **/
 
-#include "main.h"
+#include "isr.h"
 
 /* Register array */
 volatile extern uint16_t regs[];

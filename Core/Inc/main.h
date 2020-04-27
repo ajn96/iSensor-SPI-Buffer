@@ -12,16 +12,14 @@
 #ifndef __MAIN_H
 #define __MAIN_H
 
-/* Includes ------------------------------------------------------------------*/
+/* Includes */
 #include "stm32f3xx_hal.h"
-
-/* Private includes ----------------------------------------------------------*/
 #include "registers.h"
 #include "buffer.h"
 #include "user_interrupt.h"
 #include "flash.h"
 
-/* Exported functions prototypes ---------------------------------------------*/
+/* Public function prototypes */
 void Error_Handler(void);
 void EnableUserSPI();
 

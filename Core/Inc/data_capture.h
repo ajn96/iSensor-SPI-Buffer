@@ -11,8 +11,10 @@
 #ifndef INC_DATA_CAPTURE_H_
 #define INC_DATA_CAPTURE_H_
 
+/* Includes */
 #include "registers.h"
 
+/* Public function prototypes */
 void EnableDataCapture();
 void DisableDataCapture();
 void UpdateDRConfig();

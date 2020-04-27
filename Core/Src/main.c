@@ -8,10 +8,7 @@
   * @brief		iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.
  **/
 
-/* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
-/* Private variables ---------------------------------------------------------*/
 
 /** SPI handle for IMU master port */
 SPI_HandleTypeDef hspi1;
@@ -25,8 +22,8 @@ SPI_HandleTypeDef hspi3;
 /* Update processing required */
 volatile extern uint32_t update_flags;
 
-/* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
+/* Local function prototypes */
+static void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_SPI2_Init(void);
@@ -114,16 +111,65 @@ int main(void)
 }
 
 /**
+  * @brief Init and enable the user SPI (hspi2). Also sets up interrupts.
+  *
+  * @return void
+  */
+void EnableUserSPI()
+{
+	  if (HAL_SPI_Init(&hspi2) != HAL_OK)
+	  {
+	    Error_Handler();
+	  }
+
+	  /* Start user SPI interrupt processing (Rx and error) */
+	  __HAL_SPI_ENABLE_IT(&hspi2, (SPI_IT_RXNE | SPI_IT_ERR));
+
+	  /* Set threshold for 16 bit mode */
+	  CLEAR_BIT(hspi2.Instance->CR2, SPI_RXFIFO_THRESHOLD);
+
+	  /* Check if the SPI is already enabled */
+	  if ((hspi2.Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
+	  {
+	    /* Enable SPI peripheral */
+	    __HAL_SPI_ENABLE(&hspi2);
+	  }
+
+	  /* Load output with initial zeros */
+	  hspi2.Instance->DR = 0;
+
+	  /* Set user SPI interrupt priority */
+	  HAL_NVIC_SetPriority(SPI2_IRQn, 0, 0);
+
+	  /* Enable user SPI interrupts */
+	  HAL_NVIC_EnableIRQ(SPI2_IRQn);
+}
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  *
+  * @return void
+  *
+  * Errors will force a system reset. Might add some sort of flag here to indicate an error
+  * occurred. Would need to write to flash for persistence.
+  */
+void Error_Handler(void)
+{
+	/* Reboot */
+	NVIC_SystemReset();
+}
+
+/**
   * @brief System Clock Configuration
   *
   * @return void
   */
-void SystemClock_Config(void)
+static void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-  /** Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
@@ -136,7 +182,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /** Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
@@ -216,36 +262,6 @@ static void MX_SPI2_Init(void)
   hspi2.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
 
   EnableUserSPI();
-}
-
-void EnableUserSPI()
-{
-	  if (HAL_SPI_Init(&hspi2) != HAL_OK)
-	  {
-	    Error_Handler();
-	  }
-
-	  /* Start user SPI interrupt processing (Rx and error) */
-	  __HAL_SPI_ENABLE_IT(&hspi2, (SPI_IT_RXNE | SPI_IT_ERR));
-
-	  /* Set threshold for 16 bit mode */
-	  CLEAR_BIT(hspi2.Instance->CR2, SPI_RXFIFO_THRESHOLD);
-
-	  /* Check if the SPI is already enabled */
-	  if ((hspi2.Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
-	  {
-	    /* Enable SPI peripheral */
-	    __HAL_SPI_ENABLE(&hspi2);
-	  }
-
-	  /* Load output with initial zeros */
-	  hspi2.Instance->DR = 0;
-
-	  /* Set user SPI interrupt priority */
-	  HAL_NVIC_SetPriority(SPI2_IRQn, 0, 0);
-
-	  /* Enable user SPI interrupts */
-	  HAL_NVIC_EnableIRQ(SPI2_IRQn);
 }
 
 /**
@@ -364,18 +380,4 @@ static void DWT_Init()
   DWT->CTRL &= ~DWT_CTRL_CYCCNTENA_Msk; //~0x00000001;
   /* Enable clock cycle counter */
   DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk; //0x00000001;
-}
-
-/**
-  * @brief  This function is executed in case of error occurrence.
-  *
-  * @return void
-  *
-  * Errors will force a system reset. Might add some sort of flag here to indicate an error
-  * occurred. Would need to write to flash for persistence.
-  */
-void Error_Handler(void)
-{
-	/* Reboot */
-	NVIC_SystemReset();
 }

@@ -10,6 +10,9 @@
 
 #include "flash.h"
 
+/* Local function prototypes */
+static void PrepareRegsForFlash();
+
 /* Register array */
 volatile extern uint16_t regs[];
 
@@ -59,26 +62,6 @@ void LoadRegsFlash()
 }
 
 /**
-  * @brief Clears all non-volatile registers in RAM and updates reg signature
-  *
-  * @return void
-  */
-void PrepareRegsForFlash()
-{
-	/* Goes through pages 253 to clear all volatile reg values, starting at STATUS */
-	for(int addr = STATUS_REG; addr < REG_PER_PAGE; addr++)
-	{
-		regs[addr] = 0;
-	}
-
-	/* Increment endurance counter */
-	regs[ENDURANCE_REG] = regs[ENDURANCE_REG] + 1;
-
-	/* Calc sig and store back to SRAM */
-	regs[FLASH_SIG_REG] = CalcRegSig((uint16_t*)regs, FLASH_SIG_REG - 1);
-}
-
-/**
   * @brief Calculate a signature of a block of RAM. Used for verifying flash memory contents
   *
   * @return void
@@ -92,4 +75,24 @@ uint32_t CalcRegSig(uint16_t * regs, uint32_t count)
 		sig += regs[i];
 	}
 	return sig;
+}
+
+/**
+  * @brief Clears all non-volatile registers in RAM and updates reg signature
+  *
+  * @return void
+  */
+static void PrepareRegsForFlash()
+{
+	/* Goes through pages 253 to clear all volatile reg values, starting at STATUS */
+	for(int addr = STATUS_REG; addr < REG_PER_PAGE; addr++)
+	{
+		regs[addr] = 0;
+	}
+
+	/* Increment endurance counter */
+	regs[ENDURANCE_REG] = regs[ENDURANCE_REG] + 1;
+
+	/* Calc sig and store back to SRAM */
+	regs[FLASH_SIG_REG] = CalcRegSig((uint16_t*)regs, FLASH_SIG_REG - 1);
 }

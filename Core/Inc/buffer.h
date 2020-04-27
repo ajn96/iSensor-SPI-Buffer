@@ -11,9 +11,11 @@
 #ifndef INC_BUFFER_H_
 #define INC_BUFFER_H_
 
+/* Includes */
 #include "main.h"
 #include "registers.h"
 
+/* Public function prototypes */
 void BufReset();
 uint8_t* BufTakeElement();
 uint8_t* BufAddElement();
