@@ -14,12 +14,10 @@
 
 #include "registers.h"
 
+/* Public function prototypes */
 void UpdateUserInterrupt();
-
 void UpdateDIOConfig();
-void ValidateDIOConfig();
-void ParseDIOConfig();
-uint16_t BuildDIOConfigReg();
+void UpdateOutputPins(uint32_t interrupt, uint32_t overflow);
 
 typedef struct DIOConfig
 {

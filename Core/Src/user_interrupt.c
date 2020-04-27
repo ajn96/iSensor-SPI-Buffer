@@ -13,7 +13,12 @@
 /* Register array */
 volatile extern uint16_t regs[];
 
-/** Track config */
+/* Local function prototypes */
+static void ValidateDIOConfig();
+static void ParseDIOConfig();
+static uint16_t BuildDIOConfigReg();
+
+/** Struct to track config */
 DIOConfig config;
 
 /**
@@ -45,6 +50,20 @@ void UpdateUserInterrupt()
 		regs[STATUS_REG] |= STATUS_BUF_INT;
 	}
 
+	UpdateOutputPins(interrupt, overflow);
+}
+
+/**
+  * @brief Updates the output pins based on given interrupt/overflow status
+  *
+  * @param interrupt The buffer data ready interrupt status
+  *
+  * @param overflow The buffer overflow interrupt status
+  *
+  * @return void
+ **/
+void UpdateOutputPins(uint32_t interrupt, uint32_t overflow)
+{
 	/* Apply interrupt values to pins */
 	if(config.intPins & 0x1)
 	{
@@ -148,7 +167,7 @@ void UpdateDIOConfig()
   *
   * @return void
   */
-void ParseDIOConfig()
+static void ParseDIOConfig()
 {
 	/* Get current config value */
 	uint32_t configReg = regs[DIO_CONFIG_REG];
@@ -163,7 +182,7 @@ void ParseDIOConfig()
   *
   * @return void
   */
-uint16_t BuildDIOConfigReg()
+static uint16_t BuildDIOConfigReg()
 {
 	return config.passPins | (config.intPins << 4) | (config.overflowPins << 8);
 }
@@ -173,7 +192,7 @@ uint16_t BuildDIOConfigReg()
   *
   * @return void
   */
-void ValidateDIOConfig()
+static void ValidateDIOConfig()
 {
 	/* Clear upper bits in each */
 	config.passPins &= 0xF;
