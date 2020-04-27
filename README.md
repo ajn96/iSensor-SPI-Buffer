@@ -101,51 +101,51 @@ The data ready output from the iSensor-SPI-Buffer will be configurable to serve 
 
 Page 253 - iSensor-SPI-Buffer configuration
 
-| Address | Register Name | Description |
-| --- | --- | --- |
-| 0x00 | PAGE_ID | Page register. Used to change the currently selected register page |
-| 0x02 | BUF_CONFIG | Buffer configuration settings (FIFO/LIFO, SPI word size, overflow behavior) |
-| 0x04 | BUF_LEN | Length (in bytes) of each buffered data capture |
-| 0x06 | BUF_MAX_CNT | Maximum entries which can be stored in the buffer. Determined by BUF_LEN. Read-only register |
-| 0x08 | DR_CONFIG | Data ready input (IMU to iSensor-SPI-Buffer) configuration |
-| 0x0A | DIO_CONFIG | DIO configuration. Sets up pin pass-through and assigns interrupts |
-| 0x0C | IMU_SPI_CONFIG | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
-| 0x0E | USER_SPI_CONFIG | User SPI configuration (mode, etc.) |
-| 0x10 | USER_COMMAND | Command register (flash update, factory reset, clear buffer, software reset, others?) |
-| 0x12 | USER_SCR_0 | User scratch register |
-| 0x14 | USER_SCR_1 | User scratch register |
-| 0x16 | USER_SCR_2 | User scratch register |
-| 0x18 | USER_SCR_3 | User scratch register |
-| 0x6C | STATUS | Device status register. Clears on read |
-| 0x6E | FW_DAY_MONTH | Firmware build date |
-| 0x70 | FW_YEAR | Firmware build year |
-| 0x72 | FW_REV | Firmware revision |
-| 0x74 | DEV_SN_0 | Processor core serial number register, word 0 |
-| 0x76 | DEV_SN_1 | Processor core serial number register, word 1 |
-| 0x78 | DEV_SN_2 | Processor core serial number register, word 2 |
-| 0x7A | DEV_SN_3 | Processor core serial number register, word 3 |
-| 0x7C | DEV_SN_4 | Processor core serial number register, word 4 |
-| 0x7E | DEV_SN_5 | Processor core serial number register, word 5 |
+| Address | Register Name | Default  | Description |
+| --- | --- | --- | --- |
+| 0x00 | PAGE_ID | 0x00FD | Page register. Used to change the currently selected register page |
+| 0x02 | BUF_CONFIG | 0x0200 | Buffer configuration settings (FIFO/LIFO, SPI word size, overflow behavior) |
+| 0x04 | BUF_LEN | 0x0014 | Length (in bytes) of each buffered data capture |
+| 0x06 | BUF_MAX_CNT | N/A | Maximum entries which can be stored in the buffer. Determined by BUF_LEN. Read-only register |
+| 0x08 | DR_CONFIG | 0x0011 | Data ready input (IMU to iSensor-SPI-Buffer) configuration |
+| 0x0A | DIO_CONFIG | 0x0843 | DIO configuration. Sets up pin pass-through and assigns interrupts |
+| 0x0C | IMU_SPI_CONFIG | 0x2014 | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
+| 0x0E | USER_SPI_CONFIG | 0x0003 | User SPI configuration (mode, etc.) |
+| 0x10 | USER_COMMAND | N/A | Command register (flash update, factory reset, clear buffer, software reset, others?) |
+| 0x12 | USER_SCR_0 | 0x0000 | User scratch register |
+| 0x14 | USER_SCR_1 | 0x0000 | User scratch register |
+| 0x16 | USER_SCR_2 | 0x0000 | User scratch register |
+| 0x18 | USER_SCR_3 | 0x0000 | User scratch register |
+| 0x6C | STATUS | N/A | Device status register. Clears on read |
+| 0x6E | FW_DAY_MONTH | N/A | Firmware build date |
+| 0x70 | FW_YEAR | N/A | Firmware build year |
+| 0x72 | FW_REV | N/A | Firmware revision |
+| 0x74 | DEV_SN_0 | N/A | Processor core serial number register, word 0 |
+| 0x76 | DEV_SN_1 | N/A | Processor core serial number register, word 1 |
+| 0x78 | DEV_SN_2 | N/A | Processor core serial number register, word 2 |
+| 0x7A | DEV_SN_3 | N/A | Processor core serial number register, word 3 |
+| 0x7C | DEV_SN_4 | N/A | Processor core serial number register, word 4 |
+| 0x7E | DEV_SN_5 | N/A | Processor core serial number register, word 5 |
 
 Page 254 - buffer write data
 
 | Address | Register Name | Description |
 | --- | --- | --- |
-| 0x00 | PAGE_ID | Page register. Used to change the currently selected register page |
-| 0x06 | BUF_WRITE_0 | First transmit data register (data sent to IMU DIN) |
+| 0x00 | PAGE_ID | 0x00FE | Page register. Used to change the currently selected register page |
+| 0x06 | BUF_WRITE_0 | 0x0000 | First transmit data register (data sent to IMU DIN) |
 | ... | ... | ... |
-| 0x44 | BUF_WRITE_31 | Last transmit data register |
+| 0x44 | BUF_WRITE_31 | 0x0000 | Last transmit data register |
 
 Page 255 - buffer output registers
 
 | Address | Register Name | Description |
 | --- | --- | --- |
-| 0x00 | PAGE_ID | Page register. Used to change the currently selected register page |
-| 0x02 | BUF_CNT | The number of samples in buffer. Write 0 to this register to clear buffer |
-| 0x04 | BUF_RETRIEVE | Read this register to dequeue new data from buffer to buffer output registers |
-| 0x06 | BUF_DATA_0 | First buffer output register (data received from IMU DOUT) |
+| 0x00 | PAGE_ID | 0x00FF | Page register. Used to change the currently selected register page |
+| 0x02 | BUF_CNT | 0x0000 | The number of samples in buffer. Write 0 to this register to clear buffer |
+| 0x04 | BUF_RETRIEVE | 0x0000 | Read this register to dequeue new data from buffer to buffer output registers |
+| 0x06 | BUF_DATA_0 | 0x0000 | First buffer output register (data received from IMU DOUT) |
 | ... | ... | ... |
-| 0x44 | BUF_DATA_31 | Last buffer output register |
+| 0x44 | BUF_DATA_31 | 0x0000 | Last buffer output register |
 
 ### iSensor-SPI-Buffer register bit fields
 
@@ -174,8 +174,6 @@ Page 255 - buffer output registers
 | --- | --- | --- |
 | 3:0 | DR_SELECT | Select which IMU ouput pin is treated as data ready. Can only select one pin |
 | 4 | POLARITY | Data ready trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge |
-
-Default value: 0x11 (Data ready positive edge triggering, on DIO1)
 
 **DIO_CONFIG**
 
@@ -214,6 +212,8 @@ The following default values will be used for DIO_CONFIG:
 
 | Bit | Name | Description |
 | --- | --- | --- |
+| 0 | CPOL | SPI clock polarity |
+| 1 | CPHA | SPI clock phase |
 
 **USER_COMMAND**
 
