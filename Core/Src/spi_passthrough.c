@@ -22,9 +22,6 @@ volatile extern uint16_t regs[];
 /** track stall time (microseconds) */
 uint32_t imu_stalltime_us = 25;
 
-/** Track sclk setting (1 bit per setting) */
-uint32_t imu_sclk_divider = SPI_BAUDRATEPRESCALER_64;
-
 /**
   * @brief Basic IMU SPI data transfer function (protocol agnostic).
   *
@@ -137,6 +134,10 @@ void SleepMicroseconds(uint32_t microseconds)
  */
 void UpdateImuSpiConfig()
 {
+	/* SCLK divider setting (format to be passed to HAL) */
+	uint32_t sclkDividerSetting;
+
+	/* Get the config register value from reg array */
 	uint16_t configReg = regs[IMU_SPI_CONFIG_REG];
 
 	/* Stall time is lower 8 bits */
@@ -148,7 +149,6 @@ void UpdateImuSpiConfig()
 	imu_stalltime_us = configReg & 0xFF;
 
 	/* Sclk divider setting is upper 8 bits */
-	uint32_t sclkDividerSetting;
 	if(configReg & (1 << 8))
 	{
 		sclkDividerSetting = SPI_BAUDRATEPRESCALER_2;
@@ -204,7 +204,6 @@ void UpdateImuSpiConfig()
   */
 static void ApplySclkDivider(uint32_t preScalerSetting)
 {
-	imu_sclk_divider = preScalerSetting;
 	hspi1.Init.BaudRatePrescaler = preScalerSetting;
 	HAL_SPI_DeInit(&hspi1);
 	HAL_SPI_Init(&hspi1);
