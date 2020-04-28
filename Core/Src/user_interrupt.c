@@ -26,7 +26,9 @@ DIOConfig config;
   *
   * @return void
   *
-  * This function is called periodically from the main loop.
+  * This function is called periodically from the main loop. It
+  * clears or sets the selected interrupt and overflow notification pins
+  * (DIOx_Slave) and also updates the STATUS register flags
  **/
 void UpdateUserInterrupt()
 {
@@ -52,6 +54,7 @@ void UpdateUserInterrupt()
 		regs[STATUS_1_REG] = regs[STATUS_0_REG];
 	}
 
+	/* Update pins */
 	UpdateOutputPins(interrupt, overflow);
 }
 
@@ -143,16 +146,21 @@ void UpdateOutputPins(uint32_t interrupt, uint32_t overflow)
   * passPins
   * Set SW_IN1 - SW_IN4 output values based on passPins. These act as inputs
   * to the ADG1611 analog switch. For each bit set in passPins, configure the
-  * corresponding DIOn_master signal as an input (tristate).
+  * corresponding DIOx_Slave signal as an input (tristate).
   *
   * intPins
   * Configure selected interrupt pins as output GPIO
   *
   * overflowPins
   * Configure selected overflow interrupt pins as output GPIO
+  *
+  * Any pins which are unused will be configured as inputs.
  **/
 void UpdateDIOConfig()
 {
+	/* Struct to configure GPIO pins */
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+
 	/* Parse reg value */
 	ParseDIOConfig();
 	/* Validate settings */
@@ -160,8 +168,93 @@ void UpdateDIOConfig()
 	/* Write back */
 	regs[DIO_CONFIG_REG] = BuildDIOConfigReg();
 
-	/* Apply parsed settings. Set any pass pins as inputs on DIO slave. Set
-	 * any overflow or interrupt pins as output */
+	/* All SW_INx pins are driven as outputs */
+
+	/* SW_IN1 (PB6) */
+	if(config.passPins & 0x1)
+		GPIOB->ODR |= GPIO_PIN_6;
+	else
+		GPIOB->ODR &= ~GPIO_PIN_6;
+
+	/* SW_IN2 (PB7) */
+	if(config.passPins & 0x2)
+		GPIOB->ODR |= GPIO_PIN_7;
+	else
+		GPIOB->ODR &= ~GPIO_PIN_7;
+
+	/* SW_IN3 (PC8) */
+	if(config.passPins & 0x4)
+		GPIOC->ODR |= GPIO_PIN_8;
+	else
+		GPIOC->ODR &= ~GPIO_PIN_8;
+
+	/* SW_IN4 (PC9) */
+	if(config.passPins & 0x8)
+		GPIOC->ODR |= GPIO_PIN_9;
+	else
+		GPIOC->ODR &= ~GPIO_PIN_9;
+
+	/* For each DIOx_Slave pin, set as input if not used as overflow/interrupt */
+
+	/* DIO1_Slave (PB4) */
+	HAL_GPIO_DeInit(GPIOB, GPIO_PIN_4);
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+	GPIO_InitStruct.Pin = GPIO_PIN_4;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	if((config.intPins & 0x1) || (config.overflowPins & 0x1))
+	{
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	}
+	else
+	{
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	}
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+	/* DIO2_Slave (PB8) */
+	HAL_GPIO_DeInit(GPIOB, GPIO_PIN_8);
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+	GPIO_InitStruct.Pin = GPIO_PIN_8;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	if((config.intPins & 0x2) || (config.overflowPins & 0x2))
+	{
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	}
+	else
+	{
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	}
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+	/* DIO3_Slave (PC7) */
+	HAL_GPIO_DeInit(GPIOC, GPIO_PIN_7);
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+	GPIO_InitStruct.Pin = GPIO_PIN_7;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	if((config.intPins & 0x4) || (config.overflowPins & 0x4))
+	{
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	}
+	else
+	{
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	}
+	HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+	/* DIO4_Slave (PA8) */
+	HAL_GPIO_DeInit(GPIOA, GPIO_PIN_8);
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+	GPIO_InitStruct.Pin = GPIO_PIN_8;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	if((config.intPins & 0x8) || (config.overflowPins & 0x8))
+	{
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	}
+	else
+	{
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	}
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 }
 
 /**
