@@ -89,8 +89,8 @@ uint32_t CalcRegSig(uint16_t * regs, uint32_t count)
   */
 static void PrepareRegsForFlash()
 {
-	/* Goes through pages 253 to clear all volatile reg values, starting at STATUS */
-	for(int addr = STATUS_0_REG; addr < REG_PER_PAGE; addr++)
+	/* Clear all volatile regs (STATUS, BUF_CNT, day/year, dev SN regs) */
+	for(int addr = STATUS_0_REG; addr <= (DEV_SN_REG + 5); addr++)
 	{
 		regs[addr] = 0;
 	}

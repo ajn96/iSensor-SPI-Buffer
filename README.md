@@ -120,6 +120,7 @@ Page 253 - iSensor-SPI-Buffer configuration
 | 0x6A | FW_REV | N/A | Firmware revision |
 | 0x6C | ENDURANCE | N/A | Flash update counter |
 | 0x6E | STATUS | N/A | Device status register. Clears on read |
+| 0x04 | BUF_CNT | 0x0000 | The number of samples in buffer |
 | 0x70 | FW_DAY_MONTH | N/A | Firmware build date |
 | 0x72 | FW_YEAR | N/A | Firmware build year |
 | 0x74 | DEV_SN_0 | N/A | Processor core serial number register, word 0 |
@@ -143,7 +144,7 @@ Page 255 - buffer output registers
 | Address | Register Name | Description |
 | --- | --- | --- |
 | 0x00 | PAGE_ID | 0x00FF | Page register. Used to change the currently selected register page |
-| 0x02 | STATUS_1 | 0x0000 | The number of samples in buffer. Write 0 to this register to clear buffer |
+| 0x02 | STATUS_1 | 0x0000 | Mirror of the STATUS register. Clears on read |
 | 0x04 | BUF_CNT_1 | 0x0000 | The number of samples in buffer. Write 0 to this register to clear buffer |
 | 0x06 | BUF_RETRIEVE | 0x0000 | Read this register to dequeue new data from buffer to buffer output registers |
 | 0x08 | BUF_DATA_0 | 0x0000 | First buffer output register (data received from IMU DOUT) |

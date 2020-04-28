@@ -174,9 +174,9 @@ void UpdateUserSpiConfig()
 
 	/* CPHA */
 	if(config & 0x1)
-		hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
-	else
 		hspi2.Init.CLKPhase = SPI_PHASE_2EDGE;
+	else
+		hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
 
 	/* CPOL */
 	if(config & 0x2)
@@ -440,7 +440,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 		if(regIndex == BUF_MAX_CNT_REG)
 			return regIndex;
 
-		/* Last reg on config page */
+		/* Last writable reg on config page */
 		if(regIndex > USER_SCR_3_REG)
 			return regIndex;
 	}
@@ -451,7 +451,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 			return regIndex;
 
 		/* reg 1, 2, 3 also reserved */
-		if(regIndex == 1 || regIndex == 2 || regIndex == 3)
+		if(regIndex <= 3)
 			return regIndex;
 	}
 	else if(selected_page == BUF_READ_PAGE)
@@ -472,7 +472,10 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 			}
 		}
 		else
+		{
+			/* Can't write any other registers on page */
 			return regIndex;
+		}
 	}
 	else
 	{
