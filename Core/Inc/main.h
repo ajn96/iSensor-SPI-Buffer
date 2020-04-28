@@ -18,6 +18,7 @@
 #include "buffer.h"
 #include "user_interrupt.h"
 #include "flash.h"
+#include "led.h"
 
 /* Public function prototypes */
 void Error_Handler(void);

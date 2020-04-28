@@ -70,7 +70,7 @@ int main(void)
   /* Set DR int priority (same as user SPI) */
   HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
 
-  /* Clear all update flags */
+  /* Clear all update flags (shouldn't be set anyways, but it doesn't hurt) */
   update_flags = 0;
 
   /* Configure and enable user SPI port (based on loaded register values) */
@@ -108,6 +108,8 @@ int main(void)
 
 	  /* Check user interrupt generation status */
 	  UpdateUserInterrupt();
+	  /* Check if red LED needs to be set (status error) */
+	  UpdateLEDStatus();
   }
 
   /* Should never get here */

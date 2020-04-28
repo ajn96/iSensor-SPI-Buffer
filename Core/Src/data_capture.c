@@ -27,7 +27,10 @@ void EnableDataCapture()
 	EXTI->PR |= (0x1F << 5);
 
 	/* Enable data ready interrupts */
-	HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+	NVIC_EnableIRQ(EXTI9_5_IRQn);
+
+	/* Turn on green LED */
+	TurnOnLED(Green);
 }
 
 /**
@@ -41,10 +44,13 @@ void EnableDataCapture()
 void DisableDataCapture()
 {
 	/* Disable data ready interrupts */
-	HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
+	NVIC_DisableIRQ(EXTI9_5_IRQn);
 
 	/* Clear pending interrupts */
 	EXTI->PR |= (0x1F << 5);
+
+	/* Turn off green LED */
+	TurnOffLED(Green);
 }
 
 /**

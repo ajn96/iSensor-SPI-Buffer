@@ -74,6 +74,7 @@ uint16_t ReadReg(uint8_t regAddr)
 	uint16_t status;
 	uint8_t* bufEntry;
 	uint8_t* bufOutput;
+	uint32_t* outputRegs;
 
 	if(selected_page < BUF_CONFIG_PAGE)
 	{
@@ -89,11 +90,6 @@ uint16_t ReadReg(uint8_t regAddr)
 		/* Handler buffer retrieve case (todo: something faster/safer here) */
 		if(regIndex == BUF_RETRIEVE_REG)
 		{
-			/* Initial clear */
-			for(uint32_t i = 0; i < 32; i++)
-			{
-				regs[BUF_DATA_0_REG + i] = 0;
-			}
 			/* Check if buf count > 0) */
 			if(regs[BUF_CNT_0_REG] > 0)
 			{
@@ -104,6 +100,15 @@ uint16_t ReadReg(uint8_t regAddr)
 				for(uint32_t i = 0; i < regs[BUF_LEN_REG]; i++)
 				{
 					bufOutput[i] = bufEntry[i];
+				}
+			}
+			else
+			{
+				/* Clear regs */
+				outputRegs = (uint32_t *) &regs[BUF_DATA_0_REG];
+				for(uint32_t i = 0; i < 16; i++)
+				{
+					outputRegs[i] = 0;
 				}
 			}
 		}

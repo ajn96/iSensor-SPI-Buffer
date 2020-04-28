@@ -13,6 +13,7 @@
 
 /* Includes */
 #include "registers.h"
+#include "led.h"
 
 /* Public function prototypes */
 void EnableDataCapture();

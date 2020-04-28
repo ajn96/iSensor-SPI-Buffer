@@ -11,7 +11,8 @@
 #ifndef INC_LED_H_
 #define INC_LED_H_
 
-#include "main.h"
+#include "stm32f3xx_hal.h"
+#include "registers.h"
 
 /** Enum for available LED's */
 typedef enum LED
@@ -21,7 +22,8 @@ typedef enum LED
 }LED;
 
 /* Public function prototypes */
-void LEDOn(LED light);
-void LEDOff(LED light);
+void TurnOnLED(LED light);
+void TurnOffLED(LED light);
+void UpdateLEDStatus();
 
 #endif /* INC_LED_H_ */

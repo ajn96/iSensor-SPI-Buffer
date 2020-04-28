@@ -10,6 +10,9 @@
 
 #include "led.h"
 
+/* register array */
+extern volatile uint16_t regs[];
+
 /**
   * @brief Turn on a selected LED
   *
@@ -17,7 +20,7 @@
   *
   * @return void
   */
-void LEDOn(LED light)
+void TurnOnLED(LED light)
 {
 	switch(light)
 	{
@@ -42,7 +45,7 @@ void LEDOn(LED light)
   *
   * @return void
   */
-void LEDOff(LED light)
+void TurnOffLED(LED light)
 {
 	switch(light)
 	{
@@ -57,5 +60,27 @@ void LEDOff(LED light)
 	default:
 		/* Not an LED, shouldn't get here */
 		return;
+	}
+}
+
+/**
+  * @brief Updates the red LED based on STATUS error bits
+  *
+  * @return void
+  *
+  * This function is called periodically from the main loop
+  */
+void UpdateLEDStatus()
+{
+	uint16_t status = regs[STATUS_0_REG];
+	/* Mask out upper 6 bits (not error indicators) */
+	status &= 0x03FF;
+	if(status)
+	{
+		TurnOnLED(Red);
+	}
+	else
+	{
+		TurnOffLED(Red);
 	}
 }
