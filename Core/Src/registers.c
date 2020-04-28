@@ -171,7 +171,7 @@ void UpdateUserSpiConfig()
 	uint16_t config = regs[USER_SPI_CONFIG_REG];
 
 	/* mask unused bits */
-	config = config & 0x7;
+	config = config & 0x8007;
 
 	/* CPHA */
 	if(config & 0x1)

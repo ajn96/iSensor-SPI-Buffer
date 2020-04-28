@@ -225,6 +225,7 @@ The following default values will be used for DIO_CONFIG:
 | 0 | CPHA | SPI clock phase |
 | 1 | CPOL | SPI clock polarity |
 | 2 | MSB_FIRST | 1 = transmit MSB first, 0 = transmit LSB first |
+| 15 | BUF_BURST | Enable burst read of buffered data, using SPI DMA |
 
 **USER_COMMAND**
 
