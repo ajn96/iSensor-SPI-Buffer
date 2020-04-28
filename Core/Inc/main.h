@@ -22,5 +22,6 @@
 /* Public function prototypes */
 void Error_Handler(void);
 void EnableUserSPI();
+uint32_t GetHardwareID();
 
 #endif /* __MAIN_H */
