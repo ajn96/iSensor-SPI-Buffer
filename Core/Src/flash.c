@@ -37,7 +37,7 @@ void FlashUpdate()
 	/* Addr to write in flash */
 	uint32_t flashAddr;
 
-	/* Unlock flash */
+	/* Unlock flash. If fails abort the flash update */
 	if(HAL_FLASH_Unlock() != HAL_OK)
 	{
 		regs[STATUS_0_REG] |= STATUS_FLASH_UPDATE;
@@ -54,6 +54,14 @@ void FlashUpdate()
 	EraseInitStruct.NbPages = 1;
 	HAL_FLASHEx_Erase(&EraseInitStruct, &error);
 
+	/* Check error code */
+	if(error != 0xFFFFFFFF)
+	{
+		/* Flag error and try to finish flash write */
+		regs[STATUS_0_REG] |= STATUS_FLASH_UPDATE;
+		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+	}
+
 	/* Write all values */
 	flashAddr = FLASH_BASE_ADDR;
 	for(int regAddr = 0; regAddr <= FLASH_SIG_REG; regAddr++)
@@ -64,6 +72,14 @@ void FlashUpdate()
 
 	/* Lock the flash */
 	HAL_FLASH_Lock();
+
+	/* Restore SN/Date register values in SRAM */
+	GetSN();
+	GetBuildDate();
+
+	/* Copy BUF_CNT and STATUS from last page (not stored to flash) */
+	regs[STATUS_0_REG] = regs[STATUS_1_REG];
+	regs[BUF_CNT_0_REG] = regs[BUF_CNT_1_REG];
 }
 
 /**

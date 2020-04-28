@@ -238,7 +238,7 @@ void ProcessCommand()
 	/* Disable SPI for duration of command processing */
 	SPI2->CR1 &= ~SPI_CR1_SPE;
 
-	/**/
+	/* Set output pins low while running command */
 	UpdateOutputPins(0, 0);
 
 	if(command & SOFTWARE_RESET)
