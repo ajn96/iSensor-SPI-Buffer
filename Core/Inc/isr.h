@@ -16,4 +16,6 @@
 #include "buffer.h"
 #include "spi_passthrough.h"
 
+/* Define fault codes */
+
 #endif /* INC_ISR_H_ */

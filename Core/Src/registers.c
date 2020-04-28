@@ -368,6 +368,9 @@ void GetBuildDate()
   * @brief Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register
   *
   * @return void
+  *
+  * This function performs all needed initialization for the slave SPI port, and should
+  * be called as start of the firmware start up process.
   */
 void UpdateUserSpiConfig()
 {

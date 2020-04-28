@@ -130,3 +130,44 @@ void SPI2_IRQHandler(void)
 		SPI2->DR = transmitData;
 	}
 }
+
+/**
+  * @brief This function handles a hard fault event.
+  *
+  * @return void
+  */
+void HardFault_Handler()
+{
+
+}
+
+
+/**
+  * @brief This function handles Memory management fault.
+  *
+  * @return void
+  */
+void MemManage_Handler(void)
+{
+
+}
+
+/**
+  * @brief This function handles Pre-fetch fault, memory access fault.
+  *
+  * @return void
+  */
+void BusFault_Handler(void)
+{
+
+}
+
+/**
+  * @brief This function handles Undefined instruction or illegal state.
+  *
+  * @return void
+  */
+void UsageFault_Handler(void)
+{
+
+}

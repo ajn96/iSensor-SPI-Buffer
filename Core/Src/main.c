@@ -136,11 +136,12 @@ uint32_t GetHardwareID()
   *
   * @return void
   *
-  * Errors will force a system reset. Might add some sort of flag here to indicate an error
-  * occurred. Would need to write to flash for persistence.
+  * Errors will force a system reset
   */
 void Error_Handler(void)
 {
+	//TODO: Flag error in flash
+
 	/* Reboot */
 	NVIC_SystemReset();
 }
