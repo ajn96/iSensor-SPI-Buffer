@@ -95,6 +95,13 @@ void FactoryReset();
 #define FLASH_UPDATE				(1 << 3)
 #define SOFTWARE_RESET				(1 << 15)
 
+/* User SPI config register bits */
+#define SPI_CONF_CPHA				(1 << 0)
+#define SPI_CONF_CPOL				(1 << 1)
+#define SPI_CONF_MSB_FIRST			(1 << 2)
+#define SPI_CONF_BURST_RD			(1 << 15)
+#define SPI_CONF_MASK				(SPI_CONF_CPHA|SPI_CONF_CPOL|SPI_CONF_MSB_FIRST|SPI_CONF_BURST_RD)
+
 /* Status register bits */
 #define STATUS_SPI_ERROR			(1 << 0)
 #define STATUS_SPI_OVERFLOW			(1 << 1)
@@ -103,7 +110,6 @@ void FactoryReset();
 #define STATUS_DMA_ERROR			(1 << 4)
 #define STATUS_BUF_FULL				(1 << 8)
 #define STATUS_BUF_INT				(1 << 9)
-
 #define STATUS_CLEAR_MASK			(STATUS_FLASH_ERROR)
 
 #endif /* INC_REGISTERS_H_ */

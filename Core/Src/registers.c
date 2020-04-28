@@ -176,22 +176,22 @@ void UpdateUserSpiConfig()
 	uint16_t config = regs[USER_SPI_CONFIG_REG];
 
 	/* mask unused bits */
-	config = config & 0x8007;
+	config &= SPI_CONF_MASK;
 
 	/* CPHA */
-	if(config & 0x1)
+	if(config & SPI_CONF_CPHA)
 		hspi2.Init.CLKPhase = SPI_PHASE_2EDGE;
 	else
 		hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
 
 	/* CPOL */
-	if(config & 0x2)
+	if(config & SPI_CONF_CPOL)
 		hspi2.Init.CLKPolarity = SPI_POLARITY_HIGH;
 	else
 		hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
 
 	/* Bit order */
-	if(config & 0x4)
+	if(config & SPI_CONF_MSB_FIRST)
 		hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
 	else
 		hspi2.Init.FirstBit = SPI_FIRSTBIT_LSB;
