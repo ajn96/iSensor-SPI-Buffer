@@ -113,13 +113,14 @@ uint16_t ImuWriteReg(uint8_t RegAddr, uint8_t RegValue)
  **/
 void SleepMicroseconds(uint32_t microseconds)
 {
-	  uint32_t clk_cycle_start = DWT->CYCCNT;
+	/* Get the start time */
+	uint32_t clk_cycle_start = DWT->CYCCNT;
 
-	  /* Go to number of cycles for system */
-	  microseconds *= (HAL_RCC_GetHCLKFreq() / 1000000);
+	/* Go to number of cycles for system */
+	microseconds *= (HAL_RCC_GetHCLKFreq() / 1000000);
 
-	  /* Delay till end */
-	  while ((DWT->CYCCNT - clk_cycle_start) < microseconds);
+	/* Delay till end */
+	while ((DWT->CYCCNT - clk_cycle_start) < microseconds);
 }
 
 /**
@@ -146,7 +147,8 @@ void UpdateImuSpiConfig()
 		configReg &= 0xFF00;
 		configReg |= 2;
 	}
-	imu_stalltime_us = configReg & 0xFF;
+	/* set the stall time used to 2us less than the stall time setting (account for function overhead) */
+	imu_stalltime_us = (configReg & 0xFF) - 2;
 
 	/* Sclk divider setting is upper 8 bits */
 	if(configReg & (1 << 8))
