@@ -73,8 +73,8 @@ void TurnOffLED(LED light)
 void UpdateLEDStatus()
 {
 	uint16_t status = regs[STATUS_0_REG];
-	/* Mask out upper 6 bits (not error indicators) */
-	status &= 0x03FF;
+	/* Mask out upper 8 bits (not error indicators) */
+	status &= 0x00FF;
 	if(status)
 	{
 		TurnOnLED(Red);

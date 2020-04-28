@@ -23,9 +23,9 @@ uint16_t ReadReg(uint8_t regAddr);
 uint16_t WriteReg(uint8_t regAddr, uint8_t regValue);
 void GetSN();
 void GetBuildDate();
-void UpdateUserSpiConfig();
 void ProcessCommand();
 void FactoryReset();
+void UpdateUserSpiConfig();
 
 /* Number of registers per page */
 #define REG_PER_PAGE				64

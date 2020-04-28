@@ -167,59 +167,6 @@ uint16_t WriteReg(uint8_t regAddr, uint8_t regValue)
 }
 
 /**
-  * @brief Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register
-  *
-  * @return void
-  */
-void UpdateUserSpiConfig()
-{
-	uint16_t config = regs[USER_SPI_CONFIG_REG];
-
-	/* mask unused bits */
-	config &= SPI_CONF_MASK;
-
-	/* CPHA */
-	if(config & SPI_CONF_CPHA)
-		hspi2.Init.CLKPhase = SPI_PHASE_2EDGE;
-	else
-		hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
-
-	/* CPOL */
-	if(config & SPI_CONF_CPOL)
-		hspi2.Init.CLKPolarity = SPI_POLARITY_HIGH;
-	else
-		hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
-
-	/* Bit order */
-	if(config & SPI_CONF_MSB_FIRST)
-		hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
-	else
-		hspi2.Init.FirstBit = SPI_FIRSTBIT_LSB;
-
-	/* Reset all immutable settings */
-	hspi2.Instance = SPI2;
-	hspi2.Init.Mode = SPI_MODE_SLAVE;
-	hspi2.Init.Direction = SPI_DIRECTION_2LINES;
-	hspi2.Init.DataSize = SPI_DATASIZE_16BIT;
-	hspi2.Init.NSS = SPI_NSS_HARD_INPUT;
-	hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
-	hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
-	hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-	hspi2.Init.CRCPolynomial = 7;
-	hspi2.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-	hspi2.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
-
-	/* De-init SPI */
-	HAL_SPI_DeInit(&hspi2);
-
-	/* Init */
-	EnableUserSPI();
-
-	/* Apply config value in use back */
-	regs[USER_SPI_CONFIG_REG] = config;
-}
-
-/**
   * @brief Processes a command register write. This function is called from main loop.
   *
   * @return void
@@ -415,6 +362,84 @@ void GetBuildDate()
 
 	regs[FW_DAY_MONTH_REG] = (day << 8) | month;
 	regs[FW_YEAR_REG] = year;
+}
+
+/**
+  * @brief Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register
+  *
+  * @return void
+  */
+void UpdateUserSpiConfig()
+{
+	uint16_t config = regs[USER_SPI_CONFIG_REG];
+
+	/* mask unused bits */
+	config &= SPI_CONF_MASK;
+
+	/* CPHA */
+	if(config & SPI_CONF_CPHA)
+		hspi2.Init.CLKPhase = SPI_PHASE_2EDGE;
+	else
+		hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
+
+	/* CPOL */
+	if(config & SPI_CONF_CPOL)
+		hspi2.Init.CLKPolarity = SPI_POLARITY_HIGH;
+	else
+		hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
+
+	/* Bit order */
+	if(config & SPI_CONF_MSB_FIRST)
+		hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
+	else
+		hspi2.Init.FirstBit = SPI_FIRSTBIT_LSB;
+
+	/* Reset all immutable settings */
+	hspi2.Instance = SPI2;
+	hspi2.Init.Mode = SPI_MODE_SLAVE;
+	hspi2.Init.Direction = SPI_DIRECTION_2LINES;
+	hspi2.Init.DataSize = SPI_DATASIZE_16BIT;
+	hspi2.Init.NSS = SPI_NSS_HARD_INPUT;
+	hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
+	hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
+	hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+	hspi2.Init.CRCPolynomial = 7;
+	hspi2.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+	hspi2.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
+
+	/* De-init SPI */
+	HAL_SPI_DeInit(&hspi2);
+
+	/* Init */
+	if (HAL_SPI_Init(&hspi2) != HAL_OK)
+	{
+		Error_Handler();
+	}
+
+	/* Start user SPI interrupt processing (Rx and error) */
+	__HAL_SPI_ENABLE_IT(&hspi2, (SPI_IT_RXNE | SPI_IT_ERR));
+
+	/* Set threshold for 16 bit mode */
+	CLEAR_BIT(hspi2.Instance->CR2, SPI_RXFIFO_THRESHOLD);
+
+	/* Check if the SPI is already enabled */
+	if ((hspi2.Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
+	{
+		/* Enable SPI peripheral */
+		__HAL_SPI_ENABLE(&hspi2);
+	}
+
+	/* Load output with initial zeros */
+	hspi2.Instance->DR = 0;
+
+	/* Set user SPI interrupt priority */
+	HAL_NVIC_SetPriority(SPI2_IRQn, 0, 0);
+
+	/* Enable user SPI interrupts */
+	HAL_NVIC_EnableIRQ(SPI2_IRQn);
+
+	/* Apply config value in use back */
+	regs[USER_SPI_CONFIG_REG] = config;
 }
 
 /**
