@@ -357,3 +357,17 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 | SW_IN2 | PB7 | Switch control from iSensor-SPI-Buffer. If set DIO2 will be directly passed from master to IMU |
 | SW_IN3 | PC8 | Switch control from iSensor-SPI-Buffer. If set DIO3 will be directly passed from master to IMU |
 | SW_IN4 | PC9 | Switch control from iSensor-SPI-Buffer. If set DIO4 will be directly passed from master to IMU |
+
+**LED Control**
+
+| Pin Name | STM32 Pin | Description |
+| --- | --- | --- |
+| LED_RED | PC0 | Output signal from iSensor-SPI-Buffer which drives a red LED |
+| LED_GREEN | PC1 | Output signal from iSensor-SPI-Buffer which drives a green LED |
+
+**ID Pins**
+
+| Pin Name | STM32 Pin | Description |
+| --- | --- | --- |
+| ID0 | PC2 | Identifier pin 0. These pins can be populated with a pull up/down to differentiate between different hardware configuations (e.g. SD card, etc) |
+| ID1 | PC3 | Identifier pin 1 |
