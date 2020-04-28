@@ -19,7 +19,6 @@
 /* Public function prototypes */
 void FlashUpdate();
 void LoadRegsFlash();
-uint16_t CalcRegSig(uint16_t * regs, uint32_t count);
 
 /** Flash reg base address */
 #define FLASH_BASE_ADDR 		0x0800F800

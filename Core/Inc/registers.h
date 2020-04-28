@@ -17,6 +17,7 @@
 #include "buffer.h"
 #include "flash.h"
 #include "data_capture.h"
+#include "burst.h"
 
 /* Public function prototypes */
 uint16_t ReadReg(uint8_t regAddr);

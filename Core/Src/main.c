@@ -19,6 +19,10 @@ SPI_HandleTypeDef hspi2;
 /** SPI handle for SD card master port */
 SPI_HandleTypeDef hspi3;
 
+/* User SPI DMA handles */
+DMA_HandleTypeDef hdma_spi2_rx;
+DMA_HandleTypeDef hdma_spi2_tx;
+
 /* Update processing required */
 volatile extern uint32_t update_flags;
 
@@ -28,6 +32,7 @@ static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_SPI3_Init(void);
 static void DWT_Init();
+static void MX_DMA_Init(void);
 
 /**
   * @brief  The application entry point.
@@ -76,6 +81,9 @@ int main(void)
   /* Configure and enable user SPI port (based on loaded register values) */
   UpdateUserSpiConfig();
 
+  /* Enable DMA channels associated with user SPI */
+  MX_DMA_Init();
+
   /* Infinite loop */
   while (1)
   {
@@ -108,6 +116,7 @@ int main(void)
 
 	  /* Check user interrupt generation status */
 	  UpdateUserInterrupt();
+
 	  /* Check if red LED needs to be set (status error) */
 	  UpdateLEDStatus();
   }
@@ -144,6 +153,57 @@ void Error_Handler(void)
 
 	/* Reboot */
 	NVIC_SystemReset();
+}
+
+/**
+  * @brief Enable DMA channels in use
+  *
+  * @return void
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* SPI2 DMA Init */
+  /* SPI2_RX Init */
+  hdma_spi2_rx.Instance = DMA1_Channel4;
+  hdma_spi2_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+  hdma_spi2_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+  hdma_spi2_rx.Init.MemInc = DMA_MINC_ENABLE;
+  hdma_spi2_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+  hdma_spi2_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+  hdma_spi2_rx.Init.Mode = DMA_NORMAL;
+  hdma_spi2_rx.Init.Priority = DMA_PRIORITY_VERY_HIGH;
+  if (HAL_DMA_Init(&hdma_spi2_rx) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  __HAL_LINKDMA(&hspi2,hdmarx,hdma_spi2_rx);
+
+  /* SPI2_TX Init */
+  hdma_spi2_tx.Instance = DMA1_Channel5;
+  hdma_spi2_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
+  hdma_spi2_tx.Init.PeriphInc = DMA_PINC_DISABLE;
+  hdma_spi2_tx.Init.MemInc = DMA_MINC_ENABLE;
+  hdma_spi2_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+  hdma_spi2_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+  hdma_spi2_tx.Init.Mode = DMA_NORMAL;
+  hdma_spi2_tx.Init.Priority = DMA_PRIORITY_VERY_HIGH;
+  if (HAL_DMA_Init(&hdma_spi2_tx) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  __HAL_LINKDMA(&hspi2,hdmatx,hdma_spi2_tx);
+
+  /* DMA interrupt init */
+  /* DMA1_Channel4_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel4_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel4_IRQn);
+  /* DMA1_Channel5_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
 }
 
 /**

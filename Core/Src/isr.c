@@ -16,6 +16,9 @@ volatile extern uint16_t regs[];
 /* IMU stall time (from passthrough module) */
 extern uint32_t imu_stalltime_us;
 
+extern DMA_HandleTypeDef hdma_spi2_rx;
+extern DMA_HandleTypeDef hdma_spi2_tx;
+
 /**
   * @brief Data ready ISR
   *
@@ -132,42 +135,21 @@ void SPI2_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles a hard fault event.
+  * @brief This function handles DMA1 channel4 global interrupt (spi2 RX done).
   *
   * @return void
   */
-void HardFault_Handler()
+void DMA1_Channel4_IRQHandler(void)
 {
-
-}
-
-
-/**
-  * @brief This function handles Memory management fault.
-  *
-  * @return void
-  */
-void MemManage_Handler(void)
-{
-
+	HAL_DMA_IRQHandler(&hdma_spi2_rx);
 }
 
 /**
-  * @brief This function handles Pre-fetch fault, memory access fault.
+  * @brief This function handles DMA1 channel5 global interrupt (spi2 TX done).
   *
   * @return void
   */
-void BusFault_Handler(void)
+void DMA1_Channel5_IRQHandler(void)
 {
-
-}
-
-/**
-  * @brief This function handles Undefined instruction or illegal state.
-  *
-  * @return void
-  */
-void UsageFault_Handler(void)
-{
-
+	HAL_DMA_IRQHandler(&hdma_spi2_tx);
 }

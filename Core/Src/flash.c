@@ -12,6 +12,7 @@
 
 /* Local function prototypes */
 static void PrepareRegsForFlash();
+static uint16_t CalcRegSig(uint16_t * regs, uint32_t count);
 
 /* Register array */
 volatile extern uint16_t regs[];
@@ -77,7 +78,7 @@ void FlashUpdate()
 	GetSN();
 	GetBuildDate();
 
-	/* Copy BUF_CNT and STATUS from last page (not stored to flash) */
+	/* Copy BUF_CNT and STATUS from last page to config page (last page not stored to flash) */
 	regs[STATUS_0_REG] = regs[STATUS_1_REG];
 	regs[BUF_CNT_0_REG] = regs[BUF_CNT_1_REG];
 }
@@ -125,7 +126,7 @@ void LoadRegsFlash()
   *
   * @return void
   */
-uint16_t CalcRegSig(uint16_t * regs, uint32_t count)
+static uint16_t CalcRegSig(uint16_t * regs, uint32_t count)
 {
 	/* Sig is just a sum (should more or less work for verifying flash contents) */
 	uint16_t sig = 0;

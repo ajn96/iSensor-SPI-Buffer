@@ -95,11 +95,18 @@ uint16_t ReadReg(uint8_t regAddr)
 			{
 				/* Get element from the buffer */
 				bufEntry = BufTakeElement();
-				/* Copy to output registers */
+
+				/* Copy buffer data to output registers */
 				bufOutput = (uint8_t *) &regs[BUF_DATA_0_REG];
 				for(uint32_t i = 0; i < regs[BUF_LEN_REG]; i++)
 				{
 					bufOutput[i] = bufEntry[i];
+				}
+
+				/* Burst read mode is enabled */
+				if(regs[USER_SPI_CONFIG_REG] & SPI_CONF_BURST_RD)
+				{
+					BurstReadSetup();
 				}
 			}
 			else
@@ -600,4 +607,3 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	}
 	return regIndex;
 }
-
