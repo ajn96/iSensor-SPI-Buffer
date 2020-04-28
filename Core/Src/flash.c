@@ -23,16 +23,47 @@ volatile extern uint16_t regs[];
   *
   * Saves all non-volatile registers to flash memory. They will be retrieved
   * on the next system boot. Also saves a signature of the registers, which
-  * is used for register contents validation on the next boot.
+  * is used for register contents validation on the next boot. Registers are
+  * backed up to flash starting at an offset of 62KB in flash memory
   */
 void FlashUpdate()
 {
-	/* Prepare for flash */
+	/* Error code from flash erase page */
+	uint32_t error;
+
+	/* struct to erase flash page through HAL */
+	FLASH_EraseInitTypeDef EraseInitStruct;
+
+	/* Addr to write in flash */
+	uint32_t flashAddr;
+
+	/* Unlock flash */
+	if(HAL_FLASH_Unlock() != HAL_OK)
+	{
+		regs[STATUS_0_REG] |= STATUS_FLASH_UPDATE;
+		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+		return;
+	}
+
+	/* Prepare registers for write */
 	PrepareRegsForFlash();
 
-	/* Write register values to flash */
-	HAL_FLASH_Unlock();
+	/* Erase page */
+	EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
+	EraseInitStruct.PageAddress = FLASH_BASE_ADDR;
+	EraseInitStruct.NbPages = 1;
+	HAL_FLASHEx_Erase(&EraseInitStruct, &error);
 
+	/* Write all values */
+	flashAddr = FLASH_BASE_ADDR;
+	for(int regAddr = 0; regAddr <= FLASH_SIG_REG; regAddr++)
+	{
+		HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, flashAddr, regs[regAddr]);
+		flashAddr += 2;
+	}
+
+	/* Lock the flash */
+	HAL_FLASH_Lock();
 }
 
 /**
@@ -51,6 +82,12 @@ void LoadRegsFlash()
 	uint32_t storedSig;
 
 	/* Load regs to SRAM */
+	uint16_t * flashAddr = (uint16_t *) FLASH_BASE_ADDR;
+	for(int regAddr = 0; regAddr <= FLASH_SIG_REG; regAddr++)
+	{
+		regs[regAddr] = (*flashAddr) & 0xFFFF;
+		flashAddr++;
+	}
 
 	/* Calc expected sig (stop before flash signature register) */
 	expectedSig = CalcRegSig((uint16_t*)regs, FLASH_SIG_REG - 1);
@@ -58,9 +95,10 @@ void LoadRegsFlash()
 	/* Read flash sig value which was loaded */
 	storedSig = regs[FLASH_SIG_REG];
 
-	/* Alert user of potential flash error */
+	/* Perform factory reset and alert user of flash error in case of sig mis-match */
 	if(storedSig != expectedSig)
 	{
+		FactoryReset();
 		regs[STATUS_0_REG] |= STATUS_FLASH_ERROR;
 		regs[STATUS_1_REG] = regs[STATUS_0_REG];
 	}
@@ -71,10 +109,10 @@ void LoadRegsFlash()
   *
   * @return void
   */
-uint32_t CalcRegSig(uint16_t * regs, uint32_t count)
+uint16_t CalcRegSig(uint16_t * regs, uint32_t count)
 {
 	/* Sig is just a sum (should more or less work for verifying flash contents) */
-	uint32_t sig = 0;
+	uint16_t sig = 0;
 	for(int i = 0; i<count; i++)
 	{
 		sig += regs[i];
@@ -96,7 +134,7 @@ static void PrepareRegsForFlash()
 	}
 
 	/* Increment endurance counter */
-	regs[ENDURANCE_REG] = regs[ENDURANCE_REG] + 1;
+	regs[ENDURANCE_REG]++;
 
 	/* Calc sig and store back to SRAM */
 	regs[FLASH_SIG_REG] = CalcRegSig((uint16_t*)regs, FLASH_SIG_REG - 1);

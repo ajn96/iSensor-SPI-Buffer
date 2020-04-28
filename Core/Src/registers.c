@@ -268,11 +268,17 @@ void ProcessCommand()
   */
 void FactoryReset()
 {
+	/* Store endurance count during factory reset */
+	uint16_t endurance;
+
 	/* Disable data capture from IMU (shouldn't be running, but better safe than sorry) */
 	DisableDataCapture();
 
 	/* Reset selected page */
 	selected_page = BUF_CONFIG_PAGE;
+
+	/* Save endurance */
+	endurance = regs[ENDURANCE_REG];
 
 	/* Reset all registers to 0 */
 	for(int i = 0; i < (3 * REG_PER_PAGE); i++)
@@ -295,6 +301,9 @@ void FactoryReset()
 	regs[USER_SPI_CONFIG_REG] = USER_SPI_CONFIG_DEFAULT;
 	regs[FW_REV_REG] = FW_REV_DEFAULT;
 	regs[FLASH_SIG_REG] = FLASH_SIG_DEFAULT;
+
+	/* Apply endurance back */
+	regs[ENDURANCE_REG] = endurance;
 
 	/* Populate SN and build date */
 	GetSN();

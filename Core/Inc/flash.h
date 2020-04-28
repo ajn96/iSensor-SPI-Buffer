@@ -14,13 +14,17 @@
 /* Includes */
 #include "stdint.h"
 #include "registers.h"
+#include "stm32f3xx_hal.h"
 
 /* Public function prototypes */
 void FlashUpdate();
 void LoadRegsFlash();
-uint32_t CalcRegSig(uint16_t * regs, uint32_t count);
+uint16_t CalcRegSig(uint16_t * regs, uint32_t count);
 
 /** Flash reg base address */
-#define FLASH_REG_ADDR			0x0
+#define FLASH_BASE_ADDR 		0x0800F800
+
+/** Flash page */
+#define FLASH_PAGE				31
 
 #endif /* INC_FLASH_H_ */
