@@ -118,11 +118,12 @@ Page 253 - iSensor-SPI-Buffer configuration
 | 0x12 | USER_COMMAND | N/A | W | T | Command register (flash update, factory reset, clear buffer, software reset) |
 | 0x14 | USER_SCR_0 | 0x0000 | R/W | T | User scratch 0 register |
 | ... | ... | ... | ... | ... | ... |
-| 0x1A | USER_SCR_3 | 0x0000 | R/W | T | User scratch 3 register |
-| 0x6A | FW_REV | N/A | R | T | Firmware revision |
-| 0x6C | ENDURANCE | N/A | R | T | Flash update counter |
-| 0x6E | STATUS | N/A | R | F | Device status register. Clears on read |
-| 0x04 | BUF_CNT | 0x0000 | R | F | The number of samples in buffer |
+| 0x22 | USER_SCR_7 | 0x0000 | R/W | T | User scratch 7 register |
+| 0x28 | FW_REV | N/A | R | T | Firmware revision |
+| 0x2A | ENDURANCE | N/A | R | T | Flash update counter |
+| 0x6A | FAULT_CODE | 0x0000 | R | N/A | Fault code, stored in case of a hard fault exception. This register is stored on a separate flash page from the primary register array |
+| 0x6C | STATUS | N/A | R | F | Device status register. Clears on read |
+| 0x6E | BUF_CNT | 0x0000 | R | F | The number of samples in buffer |
 | 0x70 | FW_DAY_MONTH | N/A | R | T | Firmware build date |
 | 0x72 | FW_YEAR | N/A | R | T | Firmware build year |
 | 0x74 | DEV_SN_0 | N/A | R | T | Processor core serial number register, word 0 |
@@ -243,7 +244,8 @@ The following default values will be used for DIO_CONFIG:
 | 0 | CLEAR_BUF | Clears buffer contents |
 | 2 | FACTORY_RESET | Restores firmware to a factory default state |
 | 3 | FLASH_UPDATE | Save all non-volatile registers to flash memory |
-| 14:4 | RESERVED | Currently unused |
+| 4 | CLEAR_FAULT | Clears any fault data logged in flash memory. Until this command is run, status FAULT bit will never clear |
+| 14:5 | RESERVED | Currently unused |
 | 15 | RESET | Software reset |
 
 **USER_SCR_N**
@@ -263,7 +265,7 @@ The following default values will be used for DIO_CONFIG:
 | 5:4 | RESERVED | Currently unused |
 | 6 | FLASH_ERROR | Set when the flash register signature stored does not match signature calculated from SRAM register contents at initialization. This condition will cause a factory reset, to reach a known good state. Sticky |
 | 7 | FLASH_UPDATE_ERROR | Set when the flash update routine fails. Sticky |
-| 8 | FAULT | Set when the processor core generates a fault exception (bus fault, memory fault, hard fault). Fault exceptions will force a system reset. Sticky |
+| 8 | FAULT | Set when the processor core generates a fault exception (bus fault, memory fault, hard fault, initialization error). Fault exceptions will force a system reset. Sticky |
 | 9 | WATCHDOG | Set when the processor has reset due to a watchdog timeout. Sticky |
 | 10 | BUF_FULL | Set when buffer is full (overflow interrupt) |
 | 11 | BUF_INTERRUPT | Set when buffer data ready interrupt condition is met (data ready interrupt) |
@@ -386,3 +388,5 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 | --- | --- | --- |
 | ID0 | PC2 | Identifier pin 0. These pins can be populated with a pull up/down to differentiate between different hardware configurations (e.g. SD card, etc) |
 | ID1 | PC3 | Identifier pin 1 |
+
+![Dev Board Pin Map](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/Nucleo_F303_Pins.JPG)
