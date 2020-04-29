@@ -13,6 +13,9 @@
 /* register array */
 extern volatile uint16_t regs[];
 
+/* Track if a capture is currently running */
+volatile uint32_t capture_running = 0;
+
 /**
   * @brief Enables autonomous data capture by enabling DR ISR in NVIC.
   *

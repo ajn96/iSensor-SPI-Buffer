@@ -13,7 +13,7 @@
 /* Register array */
 volatile extern uint16_t regs[];
 
-/* IMU stall time (from passthrough module) */
+/* IMU stall time (from pass through module) */
 extern uint32_t imu_stalltime_us;
 
 extern DMA_HandleTypeDef hdma_spi2_rx;

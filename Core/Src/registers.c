@@ -17,7 +17,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue);
 extern SPI_HandleTypeDef hspi2;
 
 /** Selected page. Starts on 253 (config page) */
-volatile uint8_t selected_page = BUF_CONFIG_PAGE;
+volatile uint32_t selected_page = BUF_CONFIG_PAGE;
 
 /** Register update flags for main loop processing */
 volatile uint32_t update_flags = 0;
@@ -464,7 +464,13 @@ void UpdateUserSpiConfig()
 static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 {
 	/* Index within the register array */
-	uint16_t regIndex;
+	uint32_t regIndex;
+
+	/* Value to write to the register */
+	uint16_t regWriteVal;
+
+	/* Track if write is to the upper word of register */
+	uint32_t isUpper;
 
 	/* Find offset from page */
 	regIndex = (selected_page - BUF_CONFIG_PAGE) * REG_PER_PAGE;
@@ -534,7 +540,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	}
 
 	/* Find if writing to upper or lower */
-	uint32_t isUpper = regAddr & 0x1;
+	isUpper = regAddr & 0x1;
 
 	/* Any registers which require filtering or special actions in main loop */
 	if(regIndex == IMU_SPI_CONFIG_REG)
@@ -579,7 +585,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	}
 
 	/* Get initial register value */
-	uint16_t regWriteVal = regs[regIndex];
+	regWriteVal = regs[regIndex];
 
 	/* Perform write to reg array */
 	if(isUpper)

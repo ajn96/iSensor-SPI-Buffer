@@ -184,7 +184,9 @@ uint8_t* BufAddElement()
   * @return void
   *
   * This function resets the buffer to its default state. All
-  * stored buffer entries are discarded.
+  * stored buffer entries are discarded. The buffer control registers
+  * (buffer length, buffer config) are both validated to ensure the
+  * buffer is initialized to a valid state.
   */
 void BufReset()
 {
@@ -202,6 +204,9 @@ void BufReset()
 	/* Get the buffer size setting */
 	buf_increment = regs[BUF_LEN_REG];
 
+	/* Mask out unused bits in BUF_CONFIG */
+	regs[BUF_CONFIG_REG] &= 0xFF03;
+
 	/* Get the mode setting */
 	buf_LIFOMode = regs[BUF_CONFIG_REG] & 0x1;
 
@@ -213,8 +218,8 @@ void BufReset()
 	buf_lastEntryIndex = (buf_maxCount - 1) * buf_increment;
 
 	/* Update buffer count register */
-	regs[BUF_CNT_0_REG] = buf_count;
-	regs[BUF_CNT_1_REG] = regs[BUF_CNT_0_REG];
+	regs[BUF_CNT_0_REG] = 0;
+	regs[BUF_CNT_1_REG] = 0;
 
 	/* Update buffer max count register */
 	regs[BUF_MAX_CNT_REG] = buf_maxCount;
