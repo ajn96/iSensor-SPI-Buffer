@@ -115,11 +115,10 @@ Page 253 - iSensor-SPI-Buffer configuration
 | 0x0C | INT_CONFIG | 0x0020 | R/W | T | Interrupt configuration register |
 | 0x0E | IMU_SPI_CONFIG | 0x2014 | R/W | T | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
 | 0x10 | USER_SPI_CONFIG | 0x0007 | R/W | T | User SPI configuration (mode, etc.) |
-| 0x12 | USER_COMMAND | N/A | R/W | T | Command register (flash update, factory reset, clear buffer, software reset, others?) |
-| 0x14 | USER_SCR_0 | 0x0000 | R/W | T | User scratch register |
-| 0x16 | USER_SCR_1 | 0x0000 | R/W | T | User scratch register |
-| 0x18 | USER_SCR_2 | 0x0000 | R/W | T | User scratch register |
-| 0x1A | USER_SCR_3 | 0x0000 | R/W | T | User scratch register |
+| 0x12 | USER_COMMAND | N/A | W | T | Command register (flash update, factory reset, clear buffer, software reset) |
+| 0x14 | USER_SCR_0 | 0x0000 | R/W | T | User scratch 0 register |
+| ... | ... | ... | ... | ... | ... |
+| 0x1A | USER_SCR_3 | 0x0000 | R/W | T | User scratch 3 register |
 | 0x6A | FW_REV | N/A | R | T | Firmware revision |
 | 0x6C | ENDURANCE | N/A | R | T | Flash update counter |
 | 0x6E | STATUS | N/A | R | F | Device status register. Clears on read |
