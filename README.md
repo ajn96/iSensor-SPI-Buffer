@@ -62,7 +62,7 @@ The iSensor-SPI-Buffer firmware will utilize two hardware SPI ports. One operati
 
 ### Program Flow
 
-The iSensor-SPIBuffer application will be exclusively interrupt-driven to remove as much influence from the ST processor as possible
+The iSensor-SPI-Buffer application will be exclusively interrupt-driven to remove as much influence from the ST processor as possible
 
 **User SPI Interrupt**
 
@@ -82,16 +82,17 @@ The data capture ISR will be triggered by a user-specified GPIO, corresponding t
 
 **Interrupt Signaling**
 
-The data ready output from the iSensor-SPI-Buffer will be configurable to serve two purposes
-* In "Data Ready" mode, it will pulse each time a new buffer sample is entered into the buffer (same functionality as IMU data ready)
-* If the iSensor-SPI-Buffer firmware is not capturing data from the IMU, the data ready signal will be simply passed through by the GPIO ISR in "Data Ready" mode
-* In interrupt mode, the data ready output will go high once a specified number of samples are available to be dequeued. This allows a master device to simply monitor the data ready signal for a positive edge, and then dequeue a large number of IMU data samples
-* When operating in interrupt mode, the data ready output will be updated by the cyclic executive once the buffer count criteria is met. In data ready mode, the data ready output will be toggled by the "DMA Done" ISR
+Each of the four DIO lines from the iSensor-SPI-Buffer to the master device can be configured to operate in one of three modes
+* Data Ready Interrupt Mode: The selected DIO will go high when a specified number of samples are available to be dequeued. This allows a master device to simply monitor the data ready interrupt signal for a positive edge, and then dequeue a large number of IMU data samples
+* Buffer Full Interrupt Mode: The selected DIO will go high when the buffer is full
+* Pin Pass-Through Mode: The DIO output from the IMU (e.g. a data ready signal or sync signal) will be directly connected to the master device, using an ADG1611 switch. When a DIO is configured in pin pass-through mode it cannot be used for interrupt signalling
+
+The state of each interrupt signal is checked and updated on each iteration of the main cyclic executive loop. This insures quick response time to changes in the buffer state while maintaining a simple program flow.
 
 **Command Execution**
 
 * When a write is issued the USER_COMMAND register, a COMMAND flag will be set and processed by the cyclic executive loop
-* While a command is being executed, the user SPI port will be disabled, and the data ready line will be brought low
+* While a command is being executed, the user SPI port will be disabled, and any interrupt lines (data ready or buffer full) will be brought low
 
 ### Register Interface
 
@@ -175,6 +176,12 @@ Page 255 - buffer output registers
 | --- | --- | --- |
 | 15:0 | LEN | Length (in bytes) of each buffer entry. Valid range 2 - 64 |
 
+**BUF_MAX_CNT**
+
+| Name | Bits | Description |
+| --- | --- | --- |
+| 15:0 | LEN | Length (in bytes) of each buffer entry. Valid range 2 - 64 |
+
 **DR_CONFIG**
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -248,20 +255,20 @@ The following default values will be used for DIO_CONFIG:
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 0 | SPI_ERR | User SPI error reported by the SPI peripheral |
+| 0 | SPI_ERROR | SPI error reported by the user SPI or IMU SPI peripheral |
 | 1 | SPI_OVERFLOW | User SPI data overflow (min stall time violated) |
-| 2 | OVERRUN | Set when processor receives an IMU data ready interrupt and has not finished the previous capture |
-| 3 | DMA_ERROR | Set when processor DMA reports an error (user SPI DMA for burst read or IMU SPI DMA) |
+| 2 | OVERRUN | Data capture overrun. Set when processor receives an IMU data ready interrupt and has not finished the previous capture |
+| 3 | DMA_ERROR | Set when processor DMA peripheral reports an error (user SPI DMA for burst read or IMU SPI DMA) |
 | 5:4 | Reserved | Currently unused bits |
 | 6 | FLASH_ERROR | Set when the flash register signature stored does not match signature calculated from SRAM register contents at initialization. This condition will cause a factory reset, to reach a known good state. Sticky |
 | 7 | FLASH_UPDATE_ERROR | Set when the flash update routine fails. Sticky |
 | 8 | FAULT | Set when the processor core generates a fault exception (bus fault, memory fault, hard fault). Fault exceptions will force a system reset. Sticky |
 | 9 | WATCHDOG | Set when the processor has reset due to a watchdog timeout. Sticky |
-| 10 | BUF_FULL | Set when buffer is full |
-| 11 | BUF_INTERRUPT | Set when buffer data ready interrupt condition is met |
+| 10 | BUF_FULL | Set when buffer is full (overflow interrupt) |
+| 11 | BUF_INTERRUPT | Set when buffer data ready interrupt condition is met (data ready interrupt) |
 | 15:12 | TC | User SPI transaction counter. Increments by one with each SPI transaction |
 
-With the exception of the transaction counter field, this register clears on read.
+With the exception of the transaction counter field and bits identified as sticky, this register clears on read.
 
 **FW_DAY_MONTH**
 
