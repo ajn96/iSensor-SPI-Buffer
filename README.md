@@ -78,7 +78,7 @@ When the currently selected page is 255 (buffer output register page), the iSens
 
 The data capture ISR will be triggered by a user-specified GPIO, corresponding to the IMU data ready signal. The data capture ISR will configure a timer peripheral (which drives SPI word transmission timing) to trigger a DMA between memory and SPI. A DMA done ISR will handle cleaning up the DMA transactions and incrementing buffer pointers following a complete data set acquisition from the IMU. If the selected page is changed off page 255, the IMU data ready interrupt data capture functionality will be disabled (can be re-enabled by writing 255 to the page ID register on any page).
 
-![Buffered Capture Data Flow](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/Data_Capture_Flow.JPG)
+![Buffered Capture Data Flow](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/Data_Capture_Flow.jpg)
 
 **Interrupt Signaling**
 
