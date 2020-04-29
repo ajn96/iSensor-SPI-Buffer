@@ -492,7 +492,8 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 		if(selected_page == BUF_READ_PAGE)
 			update_flags |= ENABLE_CAPTURE_FLAG;
 		else
-			update_flags |= DISABLE_CAPTURE_FLAG;
+			DisableDataCapture();
+
 		/* Return reg index (points to page reg instance) */
 		return regIndex;
 	}

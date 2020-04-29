@@ -116,12 +116,6 @@ int main(void)
 		  update_flags &= ~USER_SPI_CONFIG_FLAG;
 		  UpdateUserSpiConfig();
 	  }
-	  if(update_flags & DISABLE_CAPTURE_FLAG)
-	  {
-		  /* Clear the disable capture flag and any pending enable capture flag */
-		  update_flags &= ~(DISABLE_CAPTURE_FLAG|ENABLE_CAPTURE_FLAG);
-		  DisableDataCapture();
-	  }
 	  if(update_flags & ENABLE_CAPTURE_FLAG)
 	  {
 		  update_flags &= ~ENABLE_CAPTURE_FLAG;
