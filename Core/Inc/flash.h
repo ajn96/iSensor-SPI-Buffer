@@ -21,7 +21,10 @@ void FlashUpdate();
 void LoadRegsFlash();
 
 /** Flash reg base address */
-#define FLASH_BASE_ADDR 		0x0800F800
+#define FLASH_BASE_ADDR 		0x08000000
+
+/** Address for flash register storage (2KB pages, put on page 62) */
+#define FLASH_REG_ADDR			FLASH_BASE_ADDR + (62 * FLASH_PAGE_SIZE)
 
 /** Flash page */
 #define FLASH_PAGE				31

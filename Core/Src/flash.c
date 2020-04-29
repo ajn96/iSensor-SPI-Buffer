@@ -51,7 +51,7 @@ void FlashUpdate()
 
 	/* Erase page */
 	EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
-	EraseInitStruct.PageAddress = FLASH_BASE_ADDR;
+	EraseInitStruct.PageAddress = FLASH_REG_ADDR;
 	EraseInitStruct.NbPages = 1;
 	HAL_FLASHEx_Erase(&EraseInitStruct, &error);
 
@@ -64,7 +64,7 @@ void FlashUpdate()
 	}
 
 	/* Write all values */
-	flashAddr = FLASH_BASE_ADDR;
+	flashAddr = FLASH_REG_ADDR;
 	for(int regAddr = 0; regAddr <= FLASH_SIG_REG; regAddr++)
 	{
 		HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, flashAddr, regs[regAddr]);
@@ -99,7 +99,7 @@ void LoadRegsFlash()
 	uint32_t storedSig;
 
 	/* Load regs to SRAM */
-	uint16_t * flashAddr = (uint16_t *) FLASH_BASE_ADDR;
+	uint16_t * flashAddr = (uint16_t *) FLASH_REG_ADDR;
 	for(int regAddr = 0; regAddr <= FLASH_SIG_REG; regAddr++)
 	{
 		regs[regAddr] = (*flashAddr) & 0xFFFF;
