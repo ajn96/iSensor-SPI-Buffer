@@ -250,11 +250,15 @@ The following default values will be used for DIO_CONFIG:
 | --- | --- | --- |
 | 0 | SPI_ERR | User SPI error reported by the SPI peripheral |
 | 1 | SPI_OVERFLOW | User SPI data overflow (min stall time violated) |
-| 2 | FLASH_ERROR | Set when the flash register signature stored does not match signature calculated from SRAM register contents at initialization. Sticky |
-| 3 | FLASH_UPDATE_ERROR | Set when the flash update routine fails. Sticky |
-| 4 | DMA_ERROR | Set processor DMA reports an error |
-| 8 | BUF_FULL | Set when buffer is full |
-| 9 | BUF_INTERRUPT | Set when buffer data ready interrupt condition is met |
+| 2 | OVERRUN | Set when processor receives an IMU data ready interrupt and has not finished the previous capture |
+| 3 | DMA_ERROR | Set when processor DMA reports an error (user SPI DMA for burst read or IMU SPI DMA) |
+| 5:4 | Reserved | Currently unused bits |
+| 6 | FLASH_ERROR | Set when the flash register signature stored does not match signature calculated from SRAM register contents at initialization. This condition will cause a factory reset, to reach a known good state. Sticky |
+| 7 | FLASH_UPDATE_ERROR | Set when the flash update routine fails. Sticky |
+| 8 | FAULT | Set when the processor core generates a fault exception (bus fault, memory fault, hard fault). Fault exceptions will force a system reset. Sticky |
+| 9 | WATCHDOG | Set when the processor has reset due to a watchdog timeout. Sticky |
+| 10 | BUF_FULL | Set when buffer is full |
+| 11 | BUF_INTERRUPT | Set when buffer data ready interrupt condition is met |
 | 15:12 | TC | User SPI transaction counter. Increments by one with each SPI transaction |
 
 With the exception of the transaction counter field, this register clears on read.
