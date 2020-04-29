@@ -10,8 +10,8 @@
 
 #include "user_interrupt.h"
 
-/* Register array */
-volatile extern uint16_t regs[];
+/* Global register array */
+volatile extern uint16_t regs[3 * REG_PER_PAGE];
 
 /* Local function prototypes */
 static void ValidateDIOConfig();

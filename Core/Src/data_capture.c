@@ -10,8 +10,8 @@
 
 #include "data_capture.h"
 
-/* register array */
-extern volatile uint16_t regs[];
+/* Global register array */
+volatile extern uint16_t regs[3 * REG_PER_PAGE];
 
 /* Track if a capture is currently running */
 volatile uint32_t capture_running = 0;

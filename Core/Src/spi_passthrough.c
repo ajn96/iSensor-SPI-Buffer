@@ -16,8 +16,8 @@ static void ApplySclkDivider(uint32_t preScalerSetting);
 /* Get reference to master SPI instance (SPI1) */
 extern SPI_HandleTypeDef hspi1;
 
-/* User register array */
-volatile extern uint16_t regs[];
+/* Global register array */
+volatile extern uint16_t regs[3 * REG_PER_PAGE];
 
 /** track stall time (microseconds) */
 uint32_t imu_stalltime_us = 25;

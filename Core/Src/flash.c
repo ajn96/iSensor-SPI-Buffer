@@ -14,8 +14,8 @@
 static void PrepareRegsForFlash();
 static uint16_t CalcRegSig(uint16_t * regs, uint32_t count);
 
-/* Register array */
-volatile extern uint16_t regs[];
+/* Global register array */
+volatile extern uint16_t regs[3 * REG_PER_PAGE];
 
 /**
   * @brief Flash update command handler
@@ -81,6 +81,9 @@ void FlashUpdate()
 	/* Copy BUF_CNT and STATUS from last page to config page (last page not stored to flash) */
 	regs[STATUS_0_REG] = regs[STATUS_1_REG];
 	regs[BUF_CNT_0_REG] = regs[BUF_CNT_1_REG];
+
+	/* Restore fault code register */
+	FlashCheckLoggedError();
 }
 
 /**
@@ -99,7 +102,7 @@ void LoadRegsFlash()
 	uint32_t storedSig;
 
 	/* Load regs to SRAM */
-	uint16_t * flashAddr = (uint16_t *) FLASH_REG_ADDR;
+	uint16_t* flashAddr = (uint16_t *) FLASH_REG_ADDR;
 	for(int regAddr = 0; regAddr <= FLASH_SIG_REG; regAddr++)
 	{
 		regs[regAddr] = (*flashAddr) & 0xFFFF;
@@ -118,6 +121,113 @@ void LoadRegsFlash()
 		FactoryReset();
 		regs[STATUS_0_REG] |= STATUS_FLASH_ERROR;
 		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+	}
+
+	/* Make sure endurance loads as 0 */
+	if(regs[ENDURANCE_REG] == 0xFFFF)
+	{
+		regs[ENDURANCE_REG] = 0;
+	}
+
+	FlashCheckLoggedError();
+}
+
+/**
+  * @brief Checks for error codes which may have been logged to flash, and sets the status register bit
+  *
+  * @return void
+  *
+  * Loads the previously stored error code from flash memory to the designated
+  * flash error register. If the error code is non-zero, sets the status register fault bit.
+  */
+void FlashCheckLoggedError()
+{
+	/* Load error code from flash */
+	uint16_t errorCode = (*(uint16_t *) FLASH_ERROR_ADDR) & 0x001F;
+
+	regs[FAULT_CODE_REG] = errorCode;
+	if(regs[FAULT_CODE_REG] != 0)
+	{
+		regs[STATUS_0_REG] |= STATUS_FAULT;
+		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+	}
+	else
+	{
+		regs[STATUS_0_REG] &= ~STATUS_FAULT;
+		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+	}
+}
+
+/**
+  * @brief Stores an error code to flash memory
+  *
+  * @param faultCode The error code to store. Should be one of the defined fault types
+  *
+  * @return void
+  *
+  * This function is called when a fatal error is encountered by the system. Data is logged
+  * about the source of the error, and then a system reset is triggered. Once an error has
+  * been logged, it will be persistent until a fault code clear command is executed. We also
+  * don't care about error handling within this routine - as soon as it returns, the system will
+  * be reset.
+  */
+void FlashLogError(uint32_t faultCode)
+{
+	/* struct to erase flash page through HAL */
+	FLASH_EraseInitTypeDef EraseInitStruct;
+
+	/* error code from page erase */
+	uint32_t error;
+
+	/* Initial error code */
+	uint16_t errorCode = (*(uint16_t *) FLASH_ERROR_ADDR) & 0x001F;
+
+	/* Add in fault code (if non-zero) */
+	if(faultCode)
+	{
+		errorCode |= faultCode;
+	}
+	else
+	{
+		errorCode = 0;
+	}
+
+	/* Unlock flash */
+	HAL_FLASH_Unlock();
+
+	/* Erase error page */
+	EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
+	EraseInitStruct.PageAddress = FLASH_ERROR_ADDR;
+	EraseInitStruct.NbPages = 1;
+	HAL_FLASHEx_Erase(&EraseInitStruct, &error);
+
+	/* write the error code */
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, FLASH_ERROR_ADDR, errorCode);
+
+	/* Lock flash */
+	HAL_FLASH_Lock();
+
+	/* Goodbye, cruel world... */
+}
+
+/**
+  * @brief Initialize flash error logging
+  *
+  * @return void
+  *
+  * This function is intended to be called as part of the initialization process. It checks
+  * the validity of stored error log. If the log is invalid, error logging has not
+  * been initialized, and the log is cleared. Updates the FAULT_CODE and STATUS registers.
+  */
+void FlashInitErrorLog()
+{
+	/* Initial error code */
+	uint16_t errorCode = (*(uint16_t *) FLASH_ERROR_ADDR) & 0xFFFF;
+
+	if(errorCode & 0xFFE0)
+	{
+		/* Unused bits are set in the error code. Probably hasn't been initialized properly */
+		FlashLogError(ERROR_NONE);
 	}
 }
 
@@ -145,7 +255,7 @@ static uint16_t CalcRegSig(uint16_t * regs, uint32_t count)
 static void PrepareRegsForFlash()
 {
 	/* Clear all volatile regs (STATUS, BUF_CNT, day/year, dev SN regs) */
-	for(int addr = STATUS_0_REG; addr <= (DEV_SN_REG + 5); addr++)
+	for(int addr = STATUS_0_REG; addr < (DEV_SN_REG + 6); addr++)
 	{
 		regs[addr] = 0;
 	}

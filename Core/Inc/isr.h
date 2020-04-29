@@ -16,6 +16,20 @@
 #include "buffer.h"
 #include "spi_passthrough.h"
 
-/* Define fault codes */
+/* User SPI port related interrupts */
+void SPI2_IRQHandler(void);
+void DMA1_Channel4_IRQHandler(void);
+void DMA1_Channel5_IRQHandler(void);
+
+/* Slave SPI port related interrupts */
+
+/* Data ready related interrupts */
+void EXTI9_5_IRQHandler();
+
+/* Fault exceptions */
+void HardFault_Handler(void);
+void MemManage_Handler(void);
+void BusFault_Handler(void);
+void UsageFault_Handler(void);
 
 #endif /* INC_ISR_H_ */

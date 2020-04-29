@@ -10,8 +10,8 @@
 
 #include "isr.h"
 
-/* Register array */
-volatile extern uint16_t regs[];
+/* Global register array */
+volatile extern uint16_t regs[3 * REG_PER_PAGE];
 
 /* IMU stall time (from pass through module) */
 extern uint32_t imu_stalltime_us;
@@ -20,11 +20,12 @@ extern DMA_HandleTypeDef hdma_spi2_rx;
 extern DMA_HandleTypeDef hdma_spi2_tx;
 
 /**
-  * @brief Data ready ISR
+  * @brief IMU data ready ISR. Kicks off data capture process.
   *
   * @return void
   *
-  * All four DIOn_Master pins map to this interrupt handler.
+  * All four DIOx_Master pins map to this interrupt handler. Only one
+  * should be enabled as an interrupt source at a time though.
   */
 void EXTI9_5_IRQHandler()
 {
@@ -152,4 +153,52 @@ void DMA1_Channel4_IRQHandler(void)
 void DMA1_Channel5_IRQHandler(void)
 {
 	HAL_DMA_IRQHandler(&hdma_spi2_tx);
+}
+
+/**
+  * @brief This function handles Hard fault interrupt.
+  *
+  * @return void
+  */
+void HardFault_Handler(void)
+{
+	/* Store error message for future retrieval and reboot */
+	FlashLogError(ERROR_HARDFAULT);
+	NVIC_SystemReset();
+}
+
+/**
+  * @brief This function handles Memory management fault.
+  *
+  * @return void
+  */
+void MemManage_Handler(void)
+{
+	/* Store error message for future retrieval and reboot */
+	FlashLogError(ERROR_MEM);
+	NVIC_SystemReset();
+}
+
+/**
+  * @brief This function handles Pre-fetch fault, memory access fault.
+  *
+  * @return void
+  */
+void BusFault_Handler(void)
+{
+	/* Store error message for future retrieval and reboot */
+	FlashLogError(ERROR_BUS);
+	NVIC_SystemReset();
+}
+
+/**
+  * @brief This function handles Undefined instruction or illegal state.
+  *
+  * @return void
+  */
+void UsageFault_Handler(void)
+{
+	/* Store error message for future retrieval and reboot */
+	FlashLogError(ERROR_USAGE);
+	NVIC_SystemReset();
 }

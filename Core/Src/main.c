@@ -47,6 +47,9 @@ int main(void)
   /* Configure the system clock */
   SystemClock_Config();
 
+  /* Check if system had previously encountered an unexpected fault */
+  FlashInitErrorLog();
+
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_SPI1_Init();
@@ -160,9 +163,9 @@ uint32_t GetHardwareID()
   */
 void Error_Handler(void)
 {
-	//TODO: Flag error in flash
-
-	/* Reboot */
+	/* Log error for future retrieval */
+	FlashLogError(ERROR_INIT);
+	/* Reset system */
 	NVIC_SystemReset();
 }
 

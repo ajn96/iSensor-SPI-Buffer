@@ -47,13 +47,12 @@ void UpdateUserSpiConfig();
 #define USER_SPI_CONFIG_REG			0x08
 #define USER_COMMAND_REG			0x09
 #define USER_SCR_0_REG				0x0A
-#define USER_SCR_1_REG				0x0B
-#define USER_SCR_2_REG				0x0C
-#define USER_SCR_3_REG				0x0D
-#define FW_REV_REG					0x34
-#define ENDURANCE_REG				0x35
-#define STATUS_0_REG				0x36
-#define BUF_CNT_0_REG				0x37
+#define USER_SCR_7_REG				0x11
+#define FW_REV_REG					0x14
+#define ENDURANCE_REG				0x15
+#define STATUS_0_REG				0x35
+#define BUF_CNT_0_REG				0x36
+#define FAULT_CODE_REG				0x37
 #define FW_DAY_MONTH_REG			0x38
 #define FW_YEAR_REG					0x39
 #define DEV_SN_REG					0x3A
@@ -96,6 +95,7 @@ void UpdateUserSpiConfig();
 #define CLEAR_BUFFER				(1 << 0)
 #define FACTORY_RESET				(1 << 1)
 #define FLASH_UPDATE				(1 << 3)
+#define CLEAR_FAULT					(1 << 4)
 #define SOFTWARE_RESET				(1 << 15)
 
 /* User SPI config register bits */

@@ -211,6 +211,11 @@ void ProcessCommand()
 	{
 		FactoryReset();
 	}
+	else if(command & CLEAR_FAULT)
+	{
+		FlashLogError(ERROR_NONE);
+		FlashCheckLoggedError();
+	}
 
 	/* Re-enable SPI */
 	SPI2->CR1 |= SPI_CR1_SPE;
@@ -275,6 +280,9 @@ void FactoryReset()
 	UpdateDIOConfig();
 	UpdateDRConfig();
 	BufReset();
+
+	/* Load logged error status from flash */
+	FlashCheckLoggedError();
 }
 
 /**
@@ -497,7 +505,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 			return regIndex;
 
 		/* Last writable reg on config page */
-		if(regIndex > USER_SCR_3_REG)
+		if(regIndex > USER_SCR_7_REG)
 			return regIndex;
 	}
 	else if(selected_page == BUF_WRITE_PAGE)
