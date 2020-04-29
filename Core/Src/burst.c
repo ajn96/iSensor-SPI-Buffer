@@ -10,9 +10,6 @@
 
 #include "burst.h"
 
-/* Private function prototypes */
-static void RestoreStandardSPI();
-
 /* User SPI handle (from main) */
 extern SPI_HandleTypeDef hspi2;
 
@@ -33,15 +30,5 @@ uint8_t burstRxData[64] = {0};
 void BurstReadSetup()
 {
 	HAL_SPI_TransmitReceive_DMA(&hspi2, (uint8_t*) &regs[BUF_DATA_0_REG], burstRxData, regs[BUF_LEN_REG]);
-}
-
-/**
-  * @brief Restore "standard" operating mode for slave SPI, allowing register read/writes
-  *
-  * @return void
-  */
-static void RestoreStandardSPI()
-{
-
 }
 

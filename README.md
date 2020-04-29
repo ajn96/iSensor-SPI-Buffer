@@ -190,7 +190,7 @@ Page 255 - Buffer output registers
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 0:3 | PIN_PASS | Select which pins are directly connected to IMU vs passing through iSensor-SPI-Buffer firmware |
+| 3:0 | PIN_PASS | Select which pins are directly connected to IMU vs passing through iSensor-SPI-Buffer firmware |
 | 7:4 | INT_MAP | Select which pins are driven with the buffer data ready interrupt signal from the iSensor-SPI-Buffer firmware |
 | 11:8 | OVERFLOW_MAP | Select which pins are driven with the overflow interrupt signal from the iSensor-SPI-Buffer firmware |
 | 15:12 | RESERVED | Currently unused |
