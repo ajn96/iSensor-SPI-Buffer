@@ -87,7 +87,7 @@ Each of the four DIO lines from the iSensor-SPI-Buffer to the master device can 
 * Buffer Full Interrupt Mode: The selected DIO will go high when the buffer is full
 * Pin Pass-Through Mode: The DIO output from the IMU (e.g. a data ready signal or sync signal) will be directly connected to the master device, using an ADG1611 switch. When a DIO is configured in pin pass-through mode it cannot be used for interrupt signalling
 
-The state of each interrupt signal is checked and updated on each iteration of the main cyclic executive loop. This insures quick response time to changes in the buffer state while maintaining a simple program flow.
+The state of each interrupt signal is checked and updated on each iteration of the main cyclic executive loop. This ensures quick response time to changes in the buffer state while maintaining a simple program flow.
 
 **Command Execution**
 
@@ -270,7 +270,7 @@ The following default values will be used for DIO_CONFIG:
 | 11 | BUF_INTERRUPT | Set when buffer data ready interrupt condition is met (data ready interrupt) |
 | 15:12 | TC | User SPI transaction counter. Increments by one with each SPI transaction |
 
-With the exception of the transaction counter field and bits identified as sticky, this register clears on read.
+Excluding the transaction counter field and bits identified as sticky, this register clears on read.
 
 **FW_DAY_MONTH**
 
@@ -385,5 +385,5 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 
 | Pin Name | STM32 Pin | Description |
 | --- | --- | --- |
-| ID0 | PC2 | Identifier pin 0. These pins can be populated with a pull up/down to differentiate between different hardware configuations (e.g. SD card, etc) |
+| ID0 | PC2 | Identifier pin 0. These pins can be populated with a pull up/down to differentiate between different hardware configurations (e.g. SD card, etc) |
 | ID1 | PC3 | Identifier pin 1 |
