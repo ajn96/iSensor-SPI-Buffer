@@ -50,6 +50,9 @@ int main(void)
   /* Check if system had previously encountered an unexpected fault */
   FlashInitErrorLog();
 
+  /* Check if system previously reset due to watch dog */
+  CheckWatchDogStatus();
+
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_SPI1_Init();
@@ -58,6 +61,13 @@ int main(void)
 
   /* Load registers from flash */
   LoadRegsFlash();
+
+  /* Generate all identifier registers */
+  GetBuildDate();
+  GetSN();
+
+  /* Check for logged error codes and update FAULT_CODE */
+  FlashCheckLoggedError();
 
   /* Init buffer */
   BufReset();
@@ -71,21 +81,20 @@ int main(void)
   /* Init data ready */
   UpdateDRConfig();
 
-  /* Generate all identifier registers */
-  GetBuildDate();
-  GetSN();
-
   /* Set DR int priority (same as user SPI) */
   HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
 
-  /* Clear all update flags (shouldn't be set anyways, but it doesn't hurt) */
-  update_flags = 0;
+  /* Enable watch dog timer (2 seconds period) */
+  EnableWatchDog(2000);
 
   /* Configure and enable user SPI port (based on loaded register values) */
   UpdateUserSpiConfig();
 
   /* Enable DMA channels associated with user SPI */
   MX_DMA_Init();
+
+  /* Clear all update flags before entering loop (shouldn't be set anyways, but it doesn't hurt) */
+  update_flags = 0;
 
   /* Infinite loop */
   while (1)
@@ -127,6 +136,9 @@ int main(void)
 
 	  /* Check if red LED needs to be set (status error) */
 	  UpdateLEDStatus();
+
+	  /* Feed watch dog timer */
+	  FeedWatchDog();
   }
 
   /* Should never get here */

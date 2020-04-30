@@ -10,8 +10,8 @@
 
 #include "led.h"
 
-/* register array */
-extern volatile uint16_t regs[];
+/* Global register array */
+volatile extern uint16_t regs[3 * REG_PER_PAGE];
 
 /**
   * @brief Turn on a selected LED
