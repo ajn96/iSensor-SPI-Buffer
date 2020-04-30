@@ -414,4 +414,7 @@ static void DWT_Init()
   DWT->CTRL &= ~DWT_CTRL_CYCCNTENA_Msk; //~0x00000001;
   /* Enable clock cycle counter */
   DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk; //0x00000001;
+
+  /* Enable watch dog debug freeze */
+  DBGMCU->APB1FZ |= DBGMCU_APB1_FZ_DBG_IWDG_STOP;
 }

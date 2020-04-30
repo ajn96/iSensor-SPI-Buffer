@@ -12,9 +12,6 @@
 #include "watchdog.h"
 #include "registers.h"
 
-/* Local function prototypes */
-static uint32_t EnableWatchDog(uint32_t timeout);
-
 /** Watchdog timer re-load value */
 uint32_t watchdog_reset = 0;
 
@@ -28,7 +25,7 @@ volatile extern uint16_t regs[3 * REG_PER_PAGE];
   */
 void FeedWatchDog()
 {
-	IWDG_KR
+	IWDG->KR = WATCHDOG_RELOAD_KEY;
 }
 
 /**
@@ -48,63 +45,88 @@ void CheckWatchDogStatus()
 /**
   * @brief Enables watch dog reset functionality
   *
-  * @param timeout The watch dog reset time (in ms)
+  * @param timeout_ms The watch dog reset time (in ms)
   *
   * This functions calculates the watch dog time base based on
-  * desired timeout, to give the best granularity. PCLK1 runs at 36MHz,
-  * watchdog base freq is PCLK1 / 4096 = 8.789KHz. The max reset value
-  * for the watchdog counter is 2^7 - 1 (127). The watchdog forces a reset
-  * when the timer reaches 1/2 the max value. Therefore, for each divider
-  * setting, the max watchdog reset period is:
+  * desired timeout, to give the best granularity. The STM32
+  * independent watch dog peripheral runs on a 40KHz RC oscillator.
+  * This 40KHz clock can be divided down in range 4 - 256. The
+  * watchdog itself resets the system when the watchdog timer reaches
+  * a value of 0 (12 bit counter).
   *
-  * Div 1: 64 ticks / 8789Hz -> 7.2ms
+  * Min timeout (highest resolution): 4095 / (40KHz / 4) -> 0.410s
   *
-  * Div 2: 64 ticks / (8789Hz / 2) -> 14.45ms
-  *
-  * Div 4: 64 ticks / (8789Hz / 4) -> 28.9ms
-  *
-  * Div 4: 64 ticks / (8789Hz / 8) -> 57.8ms
+  * Max timeout: 4095 / (40KHz / 256) -> 26.2s
   */
-static void EnableWatchDog(uint32_t timeout)
+void EnableWatchDog(uint32_t timeout_ms)
 {
 	/* Watchdog scaled freq */
 	uint32_t scaledFreq;
 
 	/* Reg values to write */
-	uint32_t controlReg, configReg;
+	uint32_t scale, reloadVal;
 
-	/* Starting timer bits all F */
-	configReg = 0x7F;
+	/* cap at 26.2 s*/
+	if(timeout_ms > 26200)
+	{
+		timeout_ms = 26200;
+	}
 
 	/* Set scaler value based on timeout */
-	if(timeout < 8)
-	{
-		scaledFreq = WATCHDOG_BASE_FREQ;
-	}
-	else if(timeout < 15)
-	{
-		scaledFreq = WATCHDOG_BASE_FREQ / 2;
-		configReg |= 0x80;
-	}
-	else if(timeout < 29)
+	if(timeout_ms < 490)
 	{
 		scaledFreq = WATCHDOG_BASE_FREQ / 4;
-		configReg |= 0x100;
+		scale = 0;
 	}
-	else if(timeout < 58)
+	else if(timeout_ms < 819)
 	{
 		scaledFreq = WATCHDOG_BASE_FREQ / 8;
-		configReg |= 0x180;
+		scale = 1;
 	}
-	else
+	else if(timeout_ms < 1638)
 	{
-		scaledFreq = WATCHDOG_BASE_FREQ / 8;
-		configReg |= 0x180;
-		timeout = 58;
+		scaledFreq = WATCHDOG_BASE_FREQ / 16;
+		scale = 2;
+	}
+	else if(timeout_ms < 3276)
+	{
+		scaledFreq = WATCHDOG_BASE_FREQ / 32;
+		scale = 3;
+	}
+	else if(timeout_ms < 6552)
+	{
+		scaledFreq = WATCHDOG_BASE_FREQ / 64;
+		scale = 4;
+	}
+	else if(timeout_ms < 13104)
+	{
+		scaledFreq = WATCHDOG_BASE_FREQ / 128;
+		scale = 5;
+	}
+	else if(timeout_ms < 26208)
+	{
+		scaledFreq = WATCHDOG_BASE_FREQ / 256;
+		scale = 6;
 	}
 
-	/* Initially set bit 6 */
-	watchdog_reset = 0x20;
+	/* Set reload value based on freq times timeout */
+	reloadVal = ((scaledFreq * timeout_ms) / 1000) + 1;
 
+	/* Enable watchdog */
+	IWDG->KR = WATCHDOG_START_KEY;
 
+	/* Unlock watchdog peripheral writes */
+	IWDG->KR = WATCHDOG_UNLOCK_KEY;
+
+	/* Set period scaler register */
+	IWDG->PR = scale;
+
+	/* Set reload register */
+	IWDG->RLR = reloadVal;
+
+	/* Wait for done */
+	while(IWDG->SR);
+
+	/* Initial clear */
+	FeedWatchDog();
 }

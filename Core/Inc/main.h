@@ -19,6 +19,7 @@
 #include "user_interrupt.h"
 #include "flash.h"
 #include "led.h"
+#include "watchdog.h"
 
 /* Public function prototypes */
 void Error_Handler(void);
