@@ -1,9 +1,9 @@
 # iSensor-SPI-Buffer
 Firmware for the STM32F303 (Nucleo-64) to enable full throughput buffered data capture on Analog Devices IMUs
 
-[Detailed Register Map](REGISTER_DEFINITION.MD)
+[Detailed Register Map](REGISTER_DEFINITION.md)
 
-[Hardware Pin Map](PIN_MAP.MD)
+[Hardware Pin Map](PIN_MAP.md)
 
 ## Hardware Platform
 
