@@ -140,9 +140,9 @@ The following default values will be used for DIO_CONFIG:
 | Bit | Name | Description |
 | --- | --- | --- |
 | 0 | CLEAR_BUF | Clears buffer contents |
+| 1 | CLEAR_FAULT | Clears any fault data logged in flash memory. Until this command is run, status FAULT bit will never clear |
 | 2 | FACTORY_RESET | Restores firmware to a factory default state |
 | 3 | FLASH_UPDATE | Save all non-volatile registers to flash memory |
-| 4 | CLEAR_FAULT | Clears any fault data logged in flash memory. Until this command is run, status FAULT bit will never clear |
 | 14:5 | RESERVED | Currently unused |
 | 15 | RESET | Software reset |
 
