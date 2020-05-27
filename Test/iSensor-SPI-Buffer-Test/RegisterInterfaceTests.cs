@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace iSensor_SPI_Buffer_Test
 {
-    class Program
+    public class RegisterInterfaceTests : TestBase
     {
-        static void Main(string[] args)
-        {
-        }
     }
 }
