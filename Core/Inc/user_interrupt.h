@@ -5,7 +5,7 @@
   * @file		user_interrupt.h
   * @date		3/18/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		iSensor-SPI-Buffer user interrupt (data ready) config and generation functions header
+  * @brief		Header file for iSensor-SPI-Buffer user interrupt (data ready) config and generation functions
  **/
 
 #ifndef INC_USER_INTERRUPT_H_

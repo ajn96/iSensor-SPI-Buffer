@@ -5,7 +5,7 @@
   * @file		data_capture.h
   * @date		4/24/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		iSensor-SPI-Buffer autonomous IMU data acquisition header file.
+  * @brief		Header file for iSensor-SPI-Buffer autonomous IMU data acquisition module
  **/
 
 #ifndef INC_DATA_CAPTURE_H_
@@ -20,5 +20,6 @@ void EnableDataCapture();
 void DisableDataCapture();
 void UpdateDRConfig();
 void EnableSampleTimer(uint32_t timerfreq);
+uint32_t GetCurrentSampleTime();
 
 #endif /* INC_DATA_CAPTURE_H_ */

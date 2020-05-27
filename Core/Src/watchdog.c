@@ -5,7 +5,7 @@
   * @file		watchdog.c
   * @date		4/30/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		Header file for iSensor-SPI-Buffer watchdog timer module
+  * @brief		iSensor-SPI-Buffer watchdog timer module implementation
  **/
 
 

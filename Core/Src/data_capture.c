@@ -57,6 +57,31 @@ void DisableDataCapture()
 }
 
 /**
+  * @brief Enables IMU sample timestamp timer
+  *
+  * @param timerfreq The desired timer freq (in Hz)
+  *
+  * @return void
+  *
+  * This function should be called as part of the buffered data
+  * acquisition startup process.
+  */
+void EnableSampleTimer(uint32_t timerfreq)
+{
+
+}
+
+/**
+  * @brief Gets the current 32-bit value from the IMU sample timestamp timer
+  *
+  * @return The timer value
+  */
+uint32_t GetCurrentSampleTime()
+{
+
+}
+
+/**
   * @brief Updates the data ready input configuration based on DR_CONFIG
   *
   * @return void

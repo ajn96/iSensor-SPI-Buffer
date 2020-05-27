@@ -5,7 +5,7 @@
   * @file		led.c
   * @date		4/28/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		LED control module for iSensor-SPI-Buffer
+  * @brief		iSensor-SPI-Buffer LED control module
  **/
 
 #include "led.h"

@@ -5,7 +5,7 @@
   * @file		buffer.h
   * @date		3/19/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		iSensor-SPI-Buffer buffer implementation
+  * @brief		Header file for iSensor-SPI-Buffer buffer data structure module
  **/
 
 #ifndef INC_BUFFER_H_

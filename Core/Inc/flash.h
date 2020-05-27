@@ -5,7 +5,7 @@
   * @file		flash.h
   * @date		4/24/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		iSensor-SPI-Buffer flash memory interfacing functions.
+  * @brief		Header file for iSensor-SPI-Buffer flash memory interfacing functions
  **/
 
 #ifndef INC_FLASH_H_
