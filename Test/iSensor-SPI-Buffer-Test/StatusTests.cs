@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace iSensor_SPI_Buffer_Test
 {
-    class BufferTests : TestBase
+    class StatusTests : TestBase
     {
     }
 }

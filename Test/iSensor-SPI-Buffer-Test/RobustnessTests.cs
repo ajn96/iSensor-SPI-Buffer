@@ -8,27 +8,16 @@ using FX3Api;
 using System.IO;
 using System.Reflection;
 
+
 namespace iSensor_SPI_Buffer_Test
 {
-    public class RegisterInterfaceTests : TestBase
+    class RobustnessTests : TestBase
     {
         [Test]
-        public void ReadOnlyRegsTest()
+        public void InvalidSpiTrafficTest()
         {
             InitializeTestCase();
-        }
 
-        [Test]
-        public void ReservedBitsTest()
-        {
-            InitializeTestCase();
         }
-
-        [Test]
-        public void PageRegisterTest()
-        {
-            InitializeTestCase();
-        }
-
     }
 }

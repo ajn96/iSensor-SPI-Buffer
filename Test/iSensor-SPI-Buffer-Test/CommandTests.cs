@@ -10,22 +10,34 @@ using System.Reflection;
 
 namespace iSensor_SPI_Buffer_Test
 {
-    public class RegisterInterfaceTests : TestBase
+    class CommandTests : TestBase
     {
         [Test]
-        public void ReadOnlyRegsTest()
+        public void SoftwareResetTest()
         {
             InitializeTestCase();
         }
 
         [Test]
-        public void ReservedBitsTest()
+        public void FlashUpdateTest()
         {
             InitializeTestCase();
         }
 
         [Test]
-        public void PageRegisterTest()
+        public void FactoryResetTest()
+        {
+            InitializeTestCase();
+        }
+
+        [Test]
+        public void ClearBufferTest()
+        {
+            InitializeTestCase();
+        }
+
+        [Test]
+        public void ClearFaultTest()
         {
             InitializeTestCase();
         }
