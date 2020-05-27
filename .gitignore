@@ -8,6 +8,8 @@ EWARM/*
 Test/iSensor-SPI-Buffer-Test/bin/
 Test/iSensor-SPI-Buffer-Test/obj/
 
+*.suo
+
 *.o
 .mxproject
 
