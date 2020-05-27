@@ -92,9 +92,9 @@ void UpdateUserSpiConfig();
 
 /* Command register bits */
 #define CLEAR_BUFFER				(1 << 0)
-#define FACTORY_RESET				(1 << 1)
+#define CLEAR_FAULT					(1 << 1)
+#define FACTORY_RESET				(1 << 2)
 #define FLASH_UPDATE				(1 << 3)
-#define CLEAR_FAULT					(1 << 4)
 #define SOFTWARE_RESET				(1 << 15)
 
 /* User SPI config register bits */
