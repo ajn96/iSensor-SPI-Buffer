@@ -25,12 +25,12 @@ void TurnOnLED(LED light)
 	switch(light)
 	{
 	case Red:
-		/*PC0 high */
-		GPIOC->ODR |= GPIO_PIN_0;
+		/*PC0 low */
+		GPIOC->ODR &= ~GPIO_PIN_0;
 		break;
 	case Green:
-		/*PC1 high */
-		GPIOC->ODR |= GPIO_PIN_1;
+		/*PC1 low */
+		GPIOC->ODR &= ~GPIO_PIN_1;
 		break;
 	default:
 		/* Not an LED, shouldn't get here */
@@ -50,12 +50,12 @@ void TurnOffLED(LED light)
 	switch(light)
 	{
 	case Red:
-		/*PC0 low */
-		GPIOC->ODR &= ~GPIO_PIN_0;
+		/*PC0 high */
+		GPIOC->ODR |= GPIO_PIN_0;
 		break;
 	case Green:
-		/*PC1 low */
-		GPIOC->ODR &= ~GPIO_PIN_1;
+		/*PC1 high */
+		GPIOC->ODR |= GPIO_PIN_1;
 		break;
 	default:
 		/* Not an LED, shouldn't get here */
