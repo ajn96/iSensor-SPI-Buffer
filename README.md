@@ -5,6 +5,8 @@ Firmware for the STM32F303 (Nucleo-64) to enable full throughput buffered data c
 
 [Hardware Pin Map](PIN_MAP.md)
 
+[Firmware Documentation](https://ajn96.github.io/iSensor-SPI-Buffer/files.html)
+
 ## Hardware Platform
 
 * This firmware is designed to run on the Nucleo-F303RE board (based on STM32F303). Once prototype phase is complete will move to a more permanent solution based around a custom PCB that will mate directly with the IMU using its mounting holes
