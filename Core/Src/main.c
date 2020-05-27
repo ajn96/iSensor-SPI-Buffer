@@ -97,7 +97,7 @@ int main(void)
   update_flags = 0;
 
   /* Infinite loop */
-  while (1)
+  while(1)
   {
 	  /* Process register flags */
 	  if(update_flags & USER_COMMAND_FLAG)

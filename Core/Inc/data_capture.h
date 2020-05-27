@@ -19,5 +19,6 @@
 void EnableDataCapture();
 void DisableDataCapture();
 void UpdateDRConfig();
+void EnableSampleTimer(uint32_t timerfreq);
 
 #endif /* INC_DATA_CAPTURE_H_ */
