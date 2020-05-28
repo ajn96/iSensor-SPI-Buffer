@@ -13,9 +13,9 @@ In order for all test cases to function as expected, the iSensor-SPI-Buffer DUT 
 * iSensor-Buffer-SPI Slave SPI port connected to iSensor FX3 master SPI port
 * iSensor FX3 DIO1 - DIO4 connected to corresponding iSensor-SPI-Buffer slave DIO1 - DIO4
 * iSensor-SPI-Buffer IMU SPI MOSI connected to IMU SPI MISO (for loop back)
-* iSensor-SPI-Buffer master DIO1 (woult typically be connected to IMU DIO1) connected to FX3_GPIO1 
+* iSensor-SPI-Buffer master DIO1 (would typically be connected to IMU DIO1) connected to FX3_GPIO1 
 
-It is recomended to use an iSensor FX3 eval board with a programable power supply
+It is recommended to use an iSensor FX3 eval board with a programable power supply
 
 ## Running Tests
 
