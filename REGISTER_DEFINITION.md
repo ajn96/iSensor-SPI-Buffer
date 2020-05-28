@@ -33,9 +33,9 @@
 | Address | Register Name | Default | R/W | Flash Backup | Description |
 | --- | --- | --- | --- | --- | --- |
 | 0x00 | PAGE_ID | 0x00FE | R/W | T | Page register. Used to change the currently selected register page |
-| 0x08 | BUF_WRITE_0 | 0x0000 | R/W | T | First transmit data register (data sent to IMU DIN) |
+| 0x0C | BUF_WRITE_0 | 0x0000 | R/W | T | First transmit data register (data sent to IMU DIN) |
 | ... | ... | ... | ... | ... | ... |
-| 0x44 | BUF_WRITE_31 | 0x0000 | R/W | T | Last transmit data register |
+| 0x4A | BUF_WRITE_31 | 0x0000 | R/W | T | Last transmit data register |
 
 ## Page 255 - Buffer output registers
 
@@ -45,9 +45,11 @@
 | 0x02 | STATUS_1 | 0x0000 | R | F | Mirror of the STATUS register. Clears on read |
 | 0x04 | BUF_CNT_1 | 0x0000 | R/W | F | The number of samples in buffer. Write 0 to this register to clear buffer. Other writes are ignored |
 | 0x06 | BUF_RETRIEVE | 0x0000 | R | F | Read this register to dequeue new data from buffer to buffer output registers |
-| 0x08 | BUF_DATA_0 | 0x0000 | R | F | First buffer output register (data received from IMU DOUT) |
+| 0x08 | BUF_TIMESTAMP_LWR | 0x0000 | R | F | Lower 16 bits of buffer entry timestamp |
+| 0x0A | BUF_TIMESTAMP_UPR | 0x0000 | R | F | Upper 16 bits of buffer entry timestamp |
+| 0x0C | BUF_DATA_0 | 0x0000 | R | F | First buffer output register (data received from IMU DOUT) |
 | ... | ... | ... | ... | ... | ... |
-| 0x44 | BUF_DATA_31 | 0x0000 | R | F | Last buffer output register |
+| 0x4A | BUF_DATA_31 | 0x0000 | R | F | Last buffer output register |
 
 # iSensor-SPI-Buffer register bit fields
 
@@ -213,7 +215,7 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 15:0 | CNT | Number of entries currently stored in the buffer. Write 0 to clear buffer |
+| 15:0 | CNT | Number of entries currently stored in the buffer. Write 0 to clear buffer. All other writes ignored |
 
 **BUF_RETRIEVE**
 
@@ -221,7 +223,19 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 | --- | --- | --- |
 | 15:0 | RETRIEVE | Read to place a new sample from the buffer into the BUF_READ output registers. Will always contain 0 |
 
-**BUF_READ_N**
+**BUF_TIMESTAMP_LWR**
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 15:0 | TIMESTAMP | Lower 16 bits of a 32-bit buffer entry timestamp value which is stored at the start of each data capture. Resolution: 1LSB = 1us |
+
+**BUF_TIMESTAMP_UPR**
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 15:0 | TIMESTAMP | Upper 16 bits of a 32-bit buffer entry timestamp. |
+
+**BUF_DATA_N**
 
 | Bit | Name | Description |
 | --- | --- | --- |
