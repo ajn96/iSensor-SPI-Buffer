@@ -64,11 +64,22 @@ void DisableDataCapture()
   * @return void
   *
   * This function should be called as part of the buffered data
-  * acquisition startup process.
+  * acquisition startup process. The enabled timer is TIM2 (32 bit)
   */
 void EnableSampleTimer(uint32_t timerfreq)
 {
-
+	TIM_Base_InitTypeDef timeBase;
+	/* TIM2 clock enable */
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+	/* Set prescaler to give desired timer freq */
+	timeBase.TIM_Prescaler = ((SystemCoreClock / timerfreq) / 2) - 1;
+	/* Max reload period */
+	timeBase.TIM_Period = 0xFFFFFFFF;
+	timeBase.TIM_ClockDivision = 0;
+	timeBase.TIM_CounterMode = TIM_CounterMode_Up;
+	TIM_TimeBaseInit(TIM2, &timeBase);
+	/* enable */
+	TIM_Cmd(TIM2, ENABLE);
 }
 
 /**

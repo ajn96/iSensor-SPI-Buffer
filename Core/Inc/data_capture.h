@@ -14,6 +14,7 @@
 /* Includes */
 #include "registers.h"
 #include "led.h"
+#include "stm32f3xx_hal.h"
 
 /* Public function prototypes */
 void EnableDataCapture();
