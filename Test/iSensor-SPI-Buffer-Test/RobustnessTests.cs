@@ -21,6 +21,35 @@ namespace iSensor_SPI_Buffer_Test
         }
 
         [Test]
+        public void SclkFreqTest()
+        {
+            InitializeTestCase();
+
+            int freq = 10000;
+            bool goodFreq = true;
+            uint readVal, expectedVal;
+
+            while(goodFreq)
+            {
+                Console.WriteLine("Testing SCLK freq of " + freq.ToString() + "Hz");
+                FX3.SclkFrequency = freq;
+                expectedVal = (uint)(freq & 0xFFFF);
+                WriteUnsigned("USER_SCR_1", expectedVal, false);
+                readVal = ReadUnsigned("USER_SCR_1");
+                if (readVal != expectedVal)
+                {
+                    goodFreq = false;
+                    Console.WriteLine("ERROR: Invalid read back data. Expected 0x" + expectedVal.ToString("X4") + " received: 0x" + readVal.ToString("X4"));
+                }
+
+                if (goodFreq)
+                    freq += 10000;
+            }
+
+            Assert.GreaterOrEqual(freq, 10000000, "ERROR: Expected supported SCLK freq of > 10MHz");
+        }
+
+        [Test]
         public void StallTimeTest()
         {
             InitializeTestCase();

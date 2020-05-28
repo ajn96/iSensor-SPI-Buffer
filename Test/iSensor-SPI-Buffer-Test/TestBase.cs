@@ -113,8 +113,28 @@ namespace iSensor_SPI_Buffer_Test
             }
         }
 
+        private void RestoreFX3State()
+        {
+            FX3.RestoreHardwareSpi();
+            foreach (PropertyInfo prop in FX3.GetType().GetProperties())
+            {
+                if (prop.PropertyType == typeof(AdisApi.IPinObject))
+                {
+                    /* Disable PWM if running */
+                    if (FX3.isPWMPin((AdisApi.IPinObject)prop.GetValue(FX3)))
+                        FX3.StopPWM((AdisApi.IPinObject)prop.GetValue(FX3));
+                }
+            }
+            FX3.SclkFrequency = 8000000;
+            FX3.StallTime = 25;
+            FX3.DrActive = false;
+        }
+
         public void InitializeTestCase()
         {
+            /* Restore FX3 state */
+            RestoreFX3State();
+
             /* Reset DUT */
             ResetDUT();
 
