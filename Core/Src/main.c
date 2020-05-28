@@ -20,7 +20,7 @@ SPI_HandleTypeDef hspi2;
 SPI_HandleTypeDef hspi3;
 
 /** TIM2 handle */
-TIM_HandleTypeDef tim2;
+TIM_HandleTypeDef htim2;
 
 /* User SPI DMA handles */
 DMA_HandleTypeDef hdma_spi2_rx;

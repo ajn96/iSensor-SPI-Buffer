@@ -15,6 +15,7 @@
 #include "registers.h"
 #include "buffer.h"
 #include "spi_passthrough.h"
+#include "data_capture.h"
 
 /* User SPI port related interrupts */
 void SPI2_IRQHandler(void);
