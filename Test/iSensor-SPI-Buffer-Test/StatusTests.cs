@@ -12,5 +12,18 @@ namespace iSensor_SPI_Buffer_Test
 {
     class StatusTests : TestBase
     {
+        [Test]
+        public void StatusClearTest()
+        {
+            InitializeTestCase();
+        }
+
+        [Test]
+        public void StatusTCTest()
+        {
+            InitializeTestCase();
+        }
+
+
     }
 }

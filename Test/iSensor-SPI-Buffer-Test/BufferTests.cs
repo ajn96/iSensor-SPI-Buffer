@@ -12,5 +12,31 @@ namespace iSensor_SPI_Buffer_Test
 {
     class BufferTests : TestBase
     {
+        [Test]
+        public void BufferRetrieveTimeTest()
+        {
+            InitializeTestCase();
+        }
+
+        [Test]
+        public void BufferClearTest()
+        {
+            InitializeTestCase();
+        }
+
+        [Test]
+        public void BufferTimestampTest()
+        {
+            InitializeTestCase();
+        }
+
+        [Test]
+        public void BufferCountTest()
+        {
+            InitializeTestCase();
+        }
+
+
+
     }
 }

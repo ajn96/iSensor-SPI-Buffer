@@ -21,6 +21,9 @@ namespace iSensor_SPI_Buffer_Test
 
         public RegMapCollection RegMap;
 
+        public List<RegClass> WriteDataRegs;
+        public List<RegClass> ReadDataRegs;
+
         /* Command bits */
         public const int COMMAND_CLEAR_BUFFER = 0;
         public const int COMMAND_CLEAR_FAULT = 1;
@@ -69,6 +72,16 @@ namespace iSensor_SPI_Buffer_Test
             Dut = new adbfInterface(FX3, null);
 
             Console.WriteLine("Test fixture setup complete");
+
+            ReadDataRegs = new List<RegClass>();
+            WriteDataRegs = new List<RegClass>();
+            foreach (RegClass reg in RegMap)
+            {
+                if ((reg.Page == 255) && (reg.Address >= 6))
+                    ReadDataRegs.Add(reg);
+                if ((reg.Page == 254) && (reg.Address != 0))
+                    WriteDataRegs.Add(reg);
+            }
         }
 
         [TestFixtureTearDown()]
