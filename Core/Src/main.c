@@ -195,13 +195,12 @@ void Error_Handler(void)
 static void EnableSampleTimer(uint32_t timerfreq)
 {
 	TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-	TIM_MasterConfigTypeDef sMasterConfig = {0};
 
 	htim2.Instance = TIM2;
 	/* Set prescaler to give desired timer freq */
-	htim2.Init.Prescaler = ((SystemCoreClock / timerfreq) / 2) - 1;;
+	htim2.Init.Prescaler = (SystemCoreClock / timerfreq) - 1;
 	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim2.Init.Period = 0;
+	htim2.Init.Period = 0xFFFFFFFF;
 	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 	HAL_TIM_Base_Init(&htim2);
@@ -209,9 +208,8 @@ static void EnableSampleTimer(uint32_t timerfreq)
 	sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
 	HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig);
 
-	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-	HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig);
+	/* Enable timer */
+	TIM2->CR1 = 0x1;
 }
 
 /**

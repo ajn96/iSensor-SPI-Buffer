@@ -46,7 +46,7 @@ void EXTI9_5_IRQHandler()
 	/* Get number of 16 bit words to transfer*/
 	uint32_t numWords = regs[BUF_LEN_REG] >> 1;
 
-	uint32_t index = 0;
+	uint32_t index = 4;
 	uint32_t mosi, miso;
 	for(int i = 0; i < numWords; i++)
 	{
@@ -58,8 +58,10 @@ void EXTI9_5_IRQHandler()
 		index += 2;
 	}
 	/* Add timestamp */
-	regs[BUF_TIMESTAMP_REG] = timestamp & 0xFFFF;
-	regs[BUF_TIMESTAMP_REG + 1] = (timestamp >> 16);
+	elementHandle[0] = timestamp & 0xFF;
+	elementHandle[1] = (timestamp >> 8) & 0xFF;
+	elementHandle[2] = (timestamp >> 16) & 0xFF;
+	elementHandle[3] = (timestamp >> 24) & 0xFF;
 }
 
 /**
