@@ -19,6 +19,9 @@ SPI_HandleTypeDef hspi2;
 /** SPI handle for SD card master port */
 SPI_HandleTypeDef hspi3;
 
+/** TIM2 handle */
+TIM_HandleTypeDef tim2;
+
 /* User SPI DMA handles */
 DMA_HandleTypeDef hdma_spi2_rx;
 DMA_HandleTypeDef hdma_spi2_tx;
@@ -33,6 +36,7 @@ static void MX_SPI1_Init(void);
 static void MX_SPI3_Init(void);
 static void DWT_Init();
 static void MX_DMA_Init(void);
+static void EnableSampleTimer(uint32_t timerfreq);
 
 /**
   * @brief  The application entry point.
@@ -80,6 +84,9 @@ int main(void)
 
   /* Init data ready */
   UpdateDRConfig();
+
+  /* Init sample timer */
+  EnableSampleTimer(1000000);
 
   /* Set DR int priority (same as user SPI) */
   HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
@@ -173,6 +180,38 @@ void Error_Handler(void)
 	FlashLogError(ERROR_INIT);
 	/* Reset system */
 	NVIC_SystemReset();
+}
+
+/**
+  * @brief Enables IMU sample timestamp timer
+  *
+  * @param timerfreq The desired timer freq (in Hz)
+  *
+  * @return void
+  *
+  * This function should be called as part of the buffered data
+  * acquisition startup process. The enabled timer is TIM2 (32 bit)
+  */
+static void EnableSampleTimer(uint32_t timerfreq)
+{
+	TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+	TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+	htim2.Instance = TIM2;
+	/* Set prescaler to give desired timer freq */
+	htim2.Init.Prescaler = ((SystemCoreClock / timerfreq) / 2) - 1;;
+	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim2.Init.Period = 0;
+	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+	HAL_TIM_Base_Init(&htim2);
+
+	sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+	HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig);
+
+	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+	HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig);
 }
 
 /**
