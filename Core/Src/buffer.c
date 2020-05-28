@@ -201,8 +201,8 @@ void BufReset()
 	if(regs[BUF_LEN_REG] > BUF_MAX_ENTRY)
 		regs[BUF_LEN_REG] = BUF_MAX_ENTRY;
 
-	/* Get the buffer size setting */
-	buf_increment = regs[BUF_LEN_REG];
+	/* Get the buffer size setting (4 bytes added per buffer for time stamp) */
+	buf_increment = regs[BUF_LEN_REG] + 4;
 
 	/* Mask out unused bits in BUF_CONFIG */
 	regs[BUF_CONFIG_REG] &= 0xFF03;

@@ -60,7 +60,7 @@ void UpdateUserSpiConfig();
 /** iSensor-SPI-Buffer buffer Tx data page */
 #define BUF_WRITE_PAGE				254
 
-#define BUF_WRITE_0_REG				0x44
+#define BUF_WRITE_0_REG				0x46
 #define FLASH_SIG_REG				0x7F
 
 /** iSensor-SPI-Buffer buffer Rx data page */
@@ -69,7 +69,8 @@ void UpdateUserSpiConfig();
 #define STATUS_1_REG				0x81
 #define BUF_CNT_1_REG				0x82
 #define BUF_RETRIEVE_REG			0x83
-#define BUF_DATA_0_REG				0x84
+#define BUF_TIMESTAMP_REG			0x84
+#define BUF_DATA_0_REG				0x86
 
 /* Register (non-zero) default values */
 #define FW_REV_DEFAULT				0x0100
