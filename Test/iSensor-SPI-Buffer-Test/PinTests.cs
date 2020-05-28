@@ -10,34 +10,34 @@ using System.Reflection;
 
 namespace iSensor_SPI_Buffer_Test
 {
-    public class RegisterInterfaceTests : TestBase
+    class PinTests : TestBase
     {
         [Test]
-        public void ReadOnlyRegsTest()
+        public void DrPinAssignmentTest()
         {
             InitializeTestCase();
         }
 
         [Test]
-        public void ReservedBitsTest()
+        public void DrPolarityTest()
         {
             InitializeTestCase();
         }
 
         [Test]
-        public void PageRegisterTest()
+        public void DIOConfigTest()
         {
             InitializeTestCase();
         }
 
         [Test]
-        public void ScratchRegsTest()
+        public void OverflowInterruptTest()
         {
             InitializeTestCase();
         }
 
         [Test]
-        public void SerialNumberRegsTest()
+        public void WatermarkInterruptTest()
         {
             InitializeTestCase();
         }

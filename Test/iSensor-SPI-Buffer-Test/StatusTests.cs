@@ -22,6 +22,17 @@ namespace iSensor_SPI_Buffer_Test
         public void StatusTCTest()
         {
             InitializeTestCase();
+
+            uint oldTc, expectedTc;
+
+            oldTc = (ReadUnsigned("STATUS") >> 12);
+            for (int trial = 0; trial < 32; trial++)
+            {
+                expectedTc = (oldTc + 3) & 0xF;
+                oldTc = (ReadUnsigned("STATUS") >> 12);
+                Console.WriteLine("Status TC: " + oldTc.ToString());
+                Assert.AreEqual(expectedTc, oldTc, "ERROR: Invalid TC");
+            }
         }
 
 

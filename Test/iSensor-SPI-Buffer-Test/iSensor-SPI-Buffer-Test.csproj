@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="BufferTests.cs" />
     <Compile Include="CommandTests.cs" />
+    <Compile Include="PinTests.cs" />
     <Compile Include="RegisterInterfaceTests.cs" />
     <Compile Include="RobustnessTests.cs" />
     <Compile Include="StatusTests.cs" />
@@ -73,6 +74,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>taskkill /f /fi "imagename eq nunit-agent-x86.exe"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
