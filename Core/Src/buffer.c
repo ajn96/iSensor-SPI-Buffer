@@ -23,7 +23,7 @@ volatile uint32_t buf_tail = 0;
 volatile uint32_t buf_count = 0;
 
 /** The buffer storage */
-uint8_t buf[BUF_SIZE];
+uint8_t buf[BUF_SIZE] __attribute__((aligned (32)));
 
 /** Increment per buffer entry */
 uint32_t buf_increment = 64;
@@ -39,6 +39,9 @@ uint32_t buf_maxCount;
 
 /** position at which buffer needs to wrap around */
 uint32_t buf_lastEntryIndex;
+
+/** Number of 32-bit words per buffer entry */
+uint32_t buf_numWords32;
 
 /**
   * @brief Take a single element from the buffer
@@ -203,6 +206,12 @@ void BufReset()
 
 	/* Get the buffer size setting (4 bytes added per buffer for time stamp) */
 	buf_increment = regs[BUF_LEN_REG] + 4;
+
+	/* Want each buffer entry to be word aligned for ease of use. Add some extra bytes if needed */
+	buf_increment = (buf_increment + 3) & ~(0x3);
+
+	/* Number of 32-bit words per buffer entry */
+	buf_numWords32 = buf_increment >> 2;
 
 	/* Mask out unused bits in BUF_CONFIG */
 	regs[BUF_CONFIG_REG] &= 0xFF03;

@@ -16,6 +16,9 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue);
 /* User SPI handle (from main) */
 extern SPI_HandleTypeDef hspi2;
 
+/** Number of 32-bit words per buffer (from buffer) */
+extern uint32_t buf_numWords32;
+
 /** Selected page. Starts on 253 (config page) */
 volatile uint32_t selected_page = BUF_CONFIG_PAGE;
 
@@ -23,7 +26,7 @@ volatile uint32_t selected_page = BUF_CONFIG_PAGE;
 volatile uint32_t update_flags = 0;
 
 /** iSensor-SPI-Buffer global register array (read-able via SPI) */
-uint16_t regs[3 * REG_PER_PAGE] = {
+uint16_t regs[3 * REG_PER_PAGE] __attribute__((aligned (32))) = {
 /* Page 253 */
 
 /*0							1						2					3			4					5						6						7 */
@@ -56,6 +59,9 @@ BUF_READ_PAGE, 				0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000, 				0x0000
 0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
 0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000};
 
+/** Pointer to output registers */
+static uint32_t* outputRegs = (uint32_t *) &regs[BUF_TIMESTAMP_REG];
+
 /**
   * @brief Process a register read request (from master)
   *
@@ -72,9 +78,8 @@ uint16_t ReadReg(uint8_t regAddr)
 {
 	uint16_t regIndex;
 	uint16_t status;
-	uint8_t* bufEntry;
-	uint8_t* bufOutput;
-	uint32_t* outputRegs;
+	uint32_t* bufEntry;
+	uint32_t i;
 
 	if(selected_page < BUF_CONFIG_PAGE)
 	{
@@ -94,13 +99,12 @@ uint16_t ReadReg(uint8_t regAddr)
 			if(regs[BUF_CNT_0_REG] > 0)
 			{
 				/* Get element from the buffer */
-				bufEntry = BufTakeElement();
+				bufEntry = (uint32_t *) BufTakeElement();
 
 				/* Copy buffer data to output registers */
-				bufOutput = (uint8_t *) &regs[BUF_TIMESTAMP_REG];
-				for(uint32_t i = 0; i < regs[BUF_LEN_REG] + 4; i++)
+				for(i = buf_numWords32; i > 0; i--)
 				{
-					bufOutput[i] = bufEntry[i];
+					outputRegs[i] = bufEntry[i];
 				}
 
 				/* Burst read mode is enabled */
@@ -112,8 +116,7 @@ uint16_t ReadReg(uint8_t regAddr)
 			else
 			{
 				/* Clear regs */
-				outputRegs = (uint32_t *) &regs[BUF_TIMESTAMP_REG];
-				for(uint32_t i = 0; i < 18; i++)
+				for(uint32_t i = 17; i > 0; i--)
 				{
 					outputRegs[i] = 0;
 				}
