@@ -17,12 +17,69 @@ namespace iSensor_SPI_Buffer_Test
         public void BufferRetrieveTimeTest()
         {
             InitializeTestCase();
+
+            /* Set writedata regs */
+            uint index = 1;
+            foreach (RegClass reg in WriteDataRegs)
+            {
+                Dut.WriteUnsigned(reg, index);
+                index++;
+            }
+
+            uint stall;
+            for (uint bufLen = 2; bufLen <= 64; bufLen += 2)
+            {
+                Console.WriteLine("Testing buffer length: " + bufLen.ToString() + " bytes");
+                stall = FindBufRetrieveTime(bufLen);
+                Console.WriteLine("Minimum stall time to get valid buffers: " + stall.ToString() + "us");
+                Assert.LessOrEqual(stall, 15, "ERROR: Required stall > 15us!");
+                CheckDUTConnection();
+            }
         }
 
-        [Test]
-        public void BufferClearTest()
+        public uint FindBufRetrieveTime(uint bufLen)
         {
-            InitializeTestCase();
+            bool goodStall = true;
+            ushort stall = 50;
+
+            /* Set buffer length */
+            WriteUnsigned("BUF_LEN", bufLen, true);
+
+            /* Put DUT onto buffer page */
+            ReadUnsigned("BUF_TIMESTAMP_LWR");
+
+            uint[] buf;
+
+            while(goodStall)
+            {
+                FX3.StallTime = stall;
+                for(int trial = 0; trial < 4; trial++)
+                {
+                    FX3.SetPin(FX3.DIO1, 0);
+                    FX3.SetPin(FX3.DIO1, 1);
+                    FX3.SetPin(FX3.DIO1, 0);
+                    System.Threading.Thread.Sleep(10);
+                    buf = Dut.ReadUnsigned(ReadDataRegs);
+                    if (buf[0] != 0)
+                        goodStall = false;
+                    for (int i = 3; i < buf.Count(); i++)
+                    {
+                        if ((i - 3) < (bufLen / 2))
+                        {
+                            if (buf[i] != (i - 2))
+                                goodStall = false;
+                        }
+                        else
+                        {
+                            if (buf[i] != 0)
+                                goodStall = false;
+                        }
+                    }
+                }
+                if (goodStall)
+                    stall -= 2;
+            }
+            return stall;
         }
 
         [Test]
@@ -41,6 +98,14 @@ namespace iSensor_SPI_Buffer_Test
         public void BufferCountTest()
         {
             InitializeTestCase();
+
+            /* Flush buffer */
+            WriteUnsigned("USER_COMMAND", 1 << COMMAND_CLEAR_BUFFER, false);
+            System.Threading.Thread.Sleep(10);
+            /* Put DUT on correct page */
+            ReadUnsigned("BUF_TIMESTAMP_LWR");
+
+
         }
 
         [Test]
@@ -77,7 +142,6 @@ namespace iSensor_SPI_Buffer_Test
             freq = FindMaxDrFreq(2, 200.0, 100.0);
             Assert.GreaterOrEqual(freq, 5000, "ERROR: Max supported DR freq must be at least 5KHz...");
 
-            FX3.StallTime = 100;
             Console.WriteLine("Testing buffer max data rate with no user SPI traffic and largest buffer size...");
             WriteUnsigned("BUF_LEN", 64, true);
             freq = FindMaxDrFreq(64, 50.0, 50.0);
