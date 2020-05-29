@@ -32,7 +32,7 @@ namespace iSensor_SPI_Buffer_Test
                 Console.WriteLine("Testing buffer length: " + bufLen.ToString() + " bytes");
                 stall = FindBufRetrieveTime(bufLen);
                 Console.WriteLine("Minimum stall time to get valid buffers: " + stall.ToString() + "us");
-                //Assert.LessOrEqual(stall, 15, "ERROR: Required stall > 15us!");
+                Assert.LessOrEqual(stall, 10, "ERROR: Required stall > 10us!");
                 CheckDUTConnection();
             }
         }
@@ -40,7 +40,7 @@ namespace iSensor_SPI_Buffer_Test
         public uint FindBufRetrieveTime(uint bufLen)
         {
             bool goodStall = true;
-            ushort stall = 25;
+            ushort stall = 20;
 
             uint timeStamp, oldTimestamp;
 
@@ -59,6 +59,10 @@ namespace iSensor_SPI_Buffer_Test
                 FX3.StallTime = stall;
                 for(int trial = 0; trial < 4; trial++)
                 {
+                    WriteUnsigned("BUF_CNT_1", 0, false);
+                    System.Threading.Thread.Sleep(1);
+                    ReadUnsigned("BUF_RETRIEVE");
+                    System.Threading.Thread.Sleep(1);
                     FX3.SetPin(FX3.DIO1, 0);
                     FX3.SetPin(FX3.DIO1, 1);
                     FX3.SetPin(FX3.DIO1, 0);
@@ -105,6 +109,53 @@ namespace iSensor_SPI_Buffer_Test
         public void BufferTimestampTest()
         {
             InitializeTestCase();
+        }
+
+        [Test]
+        public void BufferEnqueueDequeueTest()
+        {
+            InitializeTestCase();
+
+            double freq;
+            bool goodFreq = true;
+            uint index;
+            uint buffersRead;
+            uint count;
+            uint[] buf;
+
+            /* Set writedata regs */
+            index = 1;
+            foreach (RegClass reg in WriteDataRegs)
+            {
+                Dut.WriteUnsigned(reg, index);
+                index++;
+            }
+
+            /* Set min buffer length */
+            WriteUnsigned("BUF_LEN", 2, true);
+
+            freq = 10;
+            while(goodFreq)
+            {
+                Console.WriteLine("Testing DR freq: " + freq.ToString() + "Hz");
+                buffersRead = 0;
+                WriteUnsigned("BUF_CNT_1", 0, false);
+                System.Threading.Thread.Sleep(10);
+                FX3.StartPWM(freq, 0.5, FX3.DIO1);
+                while((buffersRead < 5000) && goodFreq)
+                {
+                    /* Want to service every 100 ms (or 50 buffers, whichever is more) */
+                    System.Threading.Thread.Sleep((int) Math.Max(100, 50000 / freq));
+                    count = ReadUnsigned("BUF_CNT_1");
+                    count -= 2;
+                    Console.WriteLine("Reading " + count.ToString() + " buffer entries...");
+                    buf = Dut.ReadUnsigned(10, ReadDataRegs, 1, count);
+                    goodFreq = ValidateBufferData(buf, 2, (int) count, freq);
+                    buffersRead += count;
+                }
+                if (goodFreq)
+                    freq += 50;
+            }
         }
 
         [Test]
@@ -178,7 +229,7 @@ namespace iSensor_SPI_Buffer_Test
             Console.WriteLine("Testing buffer max data rate with no user SPI traffic and smallest buffer size...");
             WriteUnsigned("BUF_LEN", 2, true);
             CheckDUTConnection();
-            freq = FindMaxDrFreq(2, 200.0, 100.0);
+            freq = FindMaxDrFreq(2, 200.0, 200.0);
             Assert.GreaterOrEqual(freq, 5000, "ERROR: Max supported DR freq must be at least 5KHz...");
 
             Console.WriteLine("Testing buffer max data rate with no user SPI traffic and largest buffer size...");
@@ -259,7 +310,7 @@ namespace iSensor_SPI_Buffer_Test
                 avgFreq = avgFreq / numAverages;
                 Console.WriteLine("Average sample freq (from timestamp): " + avgFreq.ToString("f2") + "Hz");
                 /* If average timestamp error of more than 2% then is bad */
-                if (((freq - avgFreq) / freq) > 0.02)
+                if (Math.Abs((freq - avgFreq) / freq) > 0.02)
                     goodFreq = false;
 
                 if (goodFreq)

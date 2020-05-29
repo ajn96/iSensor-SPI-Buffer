@@ -198,5 +198,64 @@ namespace iSensor_SPI_Buffer_Test
             if(ReadBack)
                 Assert.AreEqual(WriteVal, Dut.ReadUnsigned(strippedReg), "ERROR: " + RegName + " read back after write failed!");
         }
+
+        public bool ValidateBufferData(uint[] buf, int bufSize, int numBufs, double expectedFreq)
+        {
+            uint timestamp, oldTimestamp;
+            double timestampfreq;
+            int index = 0;
+
+            if (buf.Count() != (ReadDataRegs.Count * numBufs))
+            {
+                Console.WriteLine("Invalid buffer data count!");
+                return false;
+            }
+
+            oldTimestamp = 0;
+            for (int j = 0; j < numBufs; j++)
+            {
+                if (buf[index] != 0)
+                {
+                    Console.WriteLine("BUF_RETRIEVE readback value of " + buf[index].ToString());
+                    //return false;
+                }
+                timestamp = buf[index + 1];
+                timestamp += (buf[index + 2] << 16);
+                index += 3;
+                for (int i = 3; i < ReadDataRegs.Count; i++)
+                {
+                    if ((i - 3) < (bufSize / 2))
+                    {
+                        if (buf[index] != (i - 2))
+                        {
+                            Console.WriteLine("Invalid buffer data at index " + i.ToString() + " value: " + buf[index].ToString());
+                            //return false;
+                        }
+                    }
+                    else
+                    {
+                        if (buf[index] != 0)
+                        {
+                            Console.WriteLine("Non-zero buffer data at index " + i.ToString());
+                            //return false;
+                        }
+                    }
+                    index++;
+                }
+                //Console.WriteLine("Timestamp: " + timeStamp.ToString());
+                if(j > 0)
+                {
+                    timestampfreq = (1000000.0 / (timestamp - oldTimestamp));
+                    if(Math.Abs((timestampfreq - expectedFreq) / expectedFreq) > 0.02)
+                    {
+                        Console.WriteLine("Invalid timestamp freq in buffer " + j.ToString() + ". Expected " + expectedFreq.ToString() + "Hz, was " + timestampfreq.ToString() + "Hz");
+                        //return false;
+                    }
+                }
+                oldTimestamp = timestamp;
+            }
+
+            return true;
+        }
     }
 }
