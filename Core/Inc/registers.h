@@ -27,6 +27,7 @@ void GetBuildDate();
 void ProcessCommand();
 void FactoryReset();
 void UpdateUserSpiConfig();
+void BufDequeueToOutputRegs();
 
 /* Number of registers per page */
 #define REG_PER_PAGE				64
@@ -90,6 +91,7 @@ void UpdateUserSpiConfig();
 #define USER_COMMAND_FLAG			(1 << 3)
 #define DR_CONFIG_FLAG				(1 << 4)
 #define ENABLE_CAPTURE_FLAG			(1 << 5)
+#define DEQUEUE_BUF_FLAG			(1 << 6)
 
 /* Command register bits */
 #define CLEAR_BUFFER				(1 << 0)

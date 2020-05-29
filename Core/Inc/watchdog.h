@@ -12,6 +12,7 @@
 #define INC_WATCHDOG_H_
 
 #include "stm32f303xe.h"
+#include "registers.h"
 
 /* Public function prototypes */
 void CheckWatchDogStatus();

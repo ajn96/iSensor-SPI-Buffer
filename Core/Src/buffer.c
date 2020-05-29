@@ -13,19 +13,19 @@
 /* register array */
 extern volatile uint16_t regs[];
 
-/** Index for buffer head */
+/** Index within buffer array for buffer head */
 volatile uint32_t buf_head = 0;
 
-/** Index for buffer tail */
+/** Index within buffer array for buffer tail */
 volatile uint32_t buf_tail = 0;
 
-/** Number of elements in the buffer */
+/** Number of elements currently stored in the buffer */
 volatile uint32_t buf_count = 0;
 
-/** The buffer storage */
+/** The buffer storage (aligned to allow word-wise retrieval of buffer data) */
 uint8_t buf[BUF_SIZE] __attribute__((aligned (32)));
 
-/** Increment per buffer entry */
+/** Increment per buffer entry. This is buffer len + 4, padded to multiple of 4 */
 uint32_t buf_increment = 64;
 
 /** Buffer mode ( 0 -> FIFO, 1 -> LIFO) */
@@ -34,10 +34,10 @@ uint32_t buf_LIFOMode = 0;
 /** Buffer full setting (0 -> stop adding, 1 -> replace oldest) */
 uint32_t buf_replaceOldest = 0;
 
-/** Buffer max count */
+/** Buffer max count (determined once when buffer is initialized) */
 uint32_t buf_maxCount;
 
-/** position at which buffer needs to wrap around */
+/** Position at which buffer needs to wrap around */
 uint32_t buf_lastEntryIndex;
 
 /** Number of 32-bit words per buffer entry */

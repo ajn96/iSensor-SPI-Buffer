@@ -5,12 +5,10 @@
   * @file		watchdog.c
   * @date		4/30/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		iSensor-SPI-Buffer watchdog timer module implementation
+  * @brief		iSensor-SPI-Buffer watchdog reset timer module implementation
  **/
 
-
 #include "watchdog.h"
-#include "registers.h"
 
 /** Watchdog timer re-load value */
 uint32_t watchdog_reset = 0;
@@ -22,6 +20,10 @@ volatile extern uint16_t regs[3 * REG_PER_PAGE];
   * @brief Feeds the watchdog timer. Should be called periodically from main loop
   *
   * @return void
+  *
+  * If this function is not called within the reset period, the watchdog timer will
+  * trip and force a system reset. Default watchdog timeout is 2s, which should be
+  * significantly longer than any operation execution time in firmware.
   */
 void FeedWatchDog()
 {
@@ -103,7 +105,7 @@ void EnableWatchDog(uint32_t timeout_ms)
 		scaledFreq = WATCHDOG_BASE_FREQ / 128;
 		scale = 5;
 	}
-	else if(timeout_ms < 26208)
+	else
 	{
 		scaledFreq = WATCHDOG_BASE_FREQ / 256;
 		scale = 6;

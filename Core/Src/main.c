@@ -76,6 +76,9 @@ int main(void)
   /* Init buffer */
   BufReset();
 
+  /* Init sample timer */
+  EnableSampleTimer(1000000);
+
   /* Config IMU SPI settings */
   UpdateImuSpiConfig();
 
@@ -84,9 +87,6 @@ int main(void)
 
   /* Init data ready */
   UpdateDRConfig();
-
-  /* Init sample timer */
-  EnableSampleTimer(1000000);
 
   /* Set DR int priority (same as user SPI) */
   HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
@@ -106,43 +106,55 @@ int main(void)
   /* Infinite loop */
   while(1)
   {
-	  /* Process register flags */
-	  if(update_flags & USER_COMMAND_FLAG)
+	  /* Process buf dequeue (high priority) */
+	  if(update_flags & DEQUEUE_BUF_FLAG)
 	  {
-		  update_flags &= ~USER_COMMAND_FLAG;
-		  ProcessCommand();
+		  update_flags &= ~DEQUEUE_BUF_FLAG;
+		  BufDequeueToOutputRegs();
 	  }
-	  if(update_flags & DR_CONFIG_FLAG)
+	  /* Process other register update flags (lower priority, done in priority order) */
+	  else if(update_flags)
 	  {
-		  update_flags &= ~DR_CONFIG_FLAG;
-		  UpdateDRConfig();
+		  if(update_flags & ENABLE_CAPTURE_FLAG)
+		  {
+			  update_flags &= ~ENABLE_CAPTURE_FLAG;
+			  EnableDataCapture();
+		  }
+		  else if(update_flags & USER_COMMAND_FLAG)
+		  {
+			  update_flags &= ~USER_COMMAND_FLAG;
+			  ProcessCommand();
+		  }
+		  else if(update_flags & DR_CONFIG_FLAG)
+		  {
+			  update_flags &= ~DR_CONFIG_FLAG;
+			  UpdateDRConfig();
+		  }
+		  else if(update_flags & DIO_CONFIG_FLAG)
+		  {
+			  update_flags &= ~DIO_CONFIG_FLAG;
+			  UpdateDIOConfig();
+		  }
+		  else if(update_flags & IMU_SPI_CONFIG_FLAG)
+		  {
+			  update_flags &= ~IMU_SPI_CONFIG_FLAG;
+			  UpdateImuSpiConfig();
+		  }
+		  else if(update_flags & USER_SPI_CONFIG_FLAG)
+		  {
+			  update_flags &= ~USER_SPI_CONFIG_FLAG;
+			  UpdateUserSpiConfig();
+		  }
 	  }
-	  if(update_flags & DIO_CONFIG_FLAG)
+	  /* Housekeeping and interrupt generation */
+	  else
 	  {
-		  update_flags &= ~DIO_CONFIG_FLAG;
-		  UpdateDIOConfig();
-	  }
-	  if(update_flags & IMU_SPI_CONFIG_FLAG)
-	  {
-		  update_flags &= ~IMU_SPI_CONFIG_FLAG;
-		  UpdateImuSpiConfig();
-	  }
-	  if(update_flags & USER_SPI_CONFIG_FLAG)
-	  {
-		  update_flags &= ~USER_SPI_CONFIG_FLAG;
-		  UpdateUserSpiConfig();
-	  }
-	  if(update_flags & ENABLE_CAPTURE_FLAG)
-	  {
-		  update_flags &= ~ENABLE_CAPTURE_FLAG;
-		  EnableDataCapture();
-	  }
+		  /* Check user interrupt generation status */
+		  UpdateUserInterrupt();
 
-	  /* Check user interrupt generation status */
-	  UpdateUserInterrupt();
-
-	  /* Check if red LED needs to be set (status error) */
-	  UpdateLEDStatus();
+		  /* Check if red LED needs to be set (status error) */
+		  UpdateLEDStatus();
+	  }
 
 	  /* Feed watch dog timer */
 	  FeedWatchDog();

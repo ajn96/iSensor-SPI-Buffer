@@ -62,6 +62,21 @@ BUF_READ_PAGE, 				0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000, 				0x0000
 /** Pointer to output registers */
 static uint32_t* outputRegs = (uint32_t *) &regs[BUF_TIMESTAMP_REG];
 
+void BufDequeueToOutputRegs()
+{
+	uint32_t* bufEntry;
+	uint32_t i;
+
+	/* Get element from the buffer */
+	bufEntry = (uint32_t *) BufTakeElement();
+
+	/* Copy buffer data to output registers */
+	for(i = 0; i < buf_numWords32; i++)
+	{
+		outputRegs[i] = bufEntry[i];
+	}
+}
+
 /**
   * @brief Process a register read request (from master)
   *
@@ -78,8 +93,6 @@ uint16_t ReadReg(uint8_t regAddr)
 {
 	uint16_t regIndex;
 	uint16_t status;
-	uint32_t* bufEntry;
-	uint32_t i;
 
 	if(selected_page < BUF_CONFIG_PAGE)
 	{
@@ -92,20 +105,14 @@ uint16_t ReadReg(uint8_t regAddr)
 		/* The regAddr will be in range 0 - 127 for register index in range 0 - 63*/
 		regIndex += (regAddr >> 1);
 
-		/* Handler buffer retrieve case (todo: something faster/safer here) */
+		/* Handler buffer retrieve case (todo: maybe switch to DMA here?) */
 		if(regIndex == BUF_RETRIEVE_REG)
 		{
 			/* Check if buf count > 0) */
 			if(regs[BUF_CNT_0_REG] > 0)
 			{
-				/* Get element from the buffer */
-				bufEntry = (uint32_t *) BufTakeElement();
-
-				/* Copy buffer data to output registers */
-				for(i = buf_numWords32; i > 0; i--)
-				{
-					outputRegs[i] = bufEntry[i];
-				}
+				/* Set update flag for main loop */
+				update_flags |= DEQUEUE_BUF_FLAG;
 
 				/* Burst read mode is enabled */
 				if(regs[USER_SPI_CONFIG_REG] & SPI_CONF_BURST_RD)
@@ -116,9 +123,9 @@ uint16_t ReadReg(uint8_t regAddr)
 			else
 			{
 				/* Clear regs */
-				for(i = 17; i > 0; i--)
+				for(uint32_t i = BUF_TIMESTAMP_REG; i <= (BUF_DATA_0_REG + 32); i++)
 				{
-					outputRegs[i] = 0;
+					regs[i] = 0;
 				}
 			}
 		}
