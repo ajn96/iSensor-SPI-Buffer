@@ -116,7 +116,7 @@ uint16_t ReadReg(uint8_t regAddr)
 			else
 			{
 				/* Clear regs */
-				for(uint32_t i = 17; i > 0; i--)
+				for(i = 17; i > 0; i--)
 				{
 					outputRegs[i] = 0;
 				}
