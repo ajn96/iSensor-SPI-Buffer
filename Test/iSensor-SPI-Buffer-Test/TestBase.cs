@@ -145,6 +145,9 @@ namespace iSensor_SPI_Buffer_Test
             /* Check connection */
             CheckDUTConnection();
 
+            RestoreDefaultValues();
+            Console.WriteLine("Default values restored!");
+
             Console.WriteLine("Test initialization complete...");
         }
 
@@ -153,6 +156,17 @@ namespace iSensor_SPI_Buffer_Test
             uint initialVal =  Dut.ReadUnsigned(RegMap["USER_SCR_1"]);
             WriteUnsigned("USER_SCR_1", initialVal ^ 0xFFFFU, true);
             WriteUnsigned("USER_SCR_1", initialVal, true);
+        }
+
+        public void RestoreDefaultValues()
+        {
+            foreach(RegClass Reg in RegMap)
+            {
+                if(Reg.DefaultValue != null)
+                {
+                    WriteUnsigned(Reg.Label, (uint) Reg.DefaultValue, true);
+                }
+            }
         }
 
         public void ResetDUT()
