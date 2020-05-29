@@ -62,6 +62,17 @@ BUF_READ_PAGE, 				0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000, 				0x0000
 /** Pointer to output registers */
 static uint32_t* outputRegs = (uint32_t *) &regs[BUF_TIMESTAMP_REG];
 
+/**
+  * @brief Dequeues an entry from the buffer and loads it to the primary output registers
+  *
+  * @return void
+  *
+  * This function is called from the main loop to preserve SPI responsiveness while
+  * a buffer entry is being dequeued into the output registers. This allows a user to read
+  * the buffer contents while the values are being moved (if they start reading at buffer
+  * entry 0). After moving all values to the correct location in the output register array,
+  * the function sets up the burst read DMA (if enabled in user SPI config).
+  */
 void BufDequeueToOutputRegs()
 {
 	uint32_t* bufEntry;
@@ -74,6 +85,12 @@ void BufDequeueToOutputRegs()
 	for(i = 0; i < buf_numWords32; i++)
 	{
 		outputRegs[i] = bufEntry[i];
+	}
+
+	/* Check if burst read mode is enabled */
+	if(regs[USER_SPI_CONFIG_REG] & SPI_CONF_BURST_RD)
+	{
+		BurstReadSetup();
 	}
 }
 
@@ -105,7 +122,7 @@ uint16_t ReadReg(uint8_t regAddr)
 		/* The regAddr will be in range 0 - 127 for register index in range 0 - 63*/
 		regIndex += (regAddr >> 1);
 
-		/* Handler buffer retrieve case (todo: maybe switch to DMA here?) */
+		/* Handler buffer retrieve case by setting deferred processing flag */
 		if(regIndex == BUF_RETRIEVE_REG)
 		{
 			/* Check if buf count > 0) */
@@ -113,12 +130,6 @@ uint16_t ReadReg(uint8_t regAddr)
 			{
 				/* Set update flag for main loop */
 				update_flags |= DEQUEUE_BUF_FLAG;
-
-				/* Burst read mode is enabled */
-				if(regs[USER_SPI_CONFIG_REG] & SPI_CONF_BURST_RD)
-				{
-					BurstReadSetup();
-				}
 			}
 			else
 			{
