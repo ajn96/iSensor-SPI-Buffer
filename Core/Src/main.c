@@ -36,7 +36,8 @@ static void MX_SPI1_Init(void);
 static void MX_SPI3_Init(void);
 static void DWT_Init();
 static void MX_DMA_Init(void);
-static void EnableSampleTimer(uint32_t timerfreq);
+static void ConfigureSampleTimer(uint32_t timerfreq);
+static void ConfigureStallTimer(uint32_t stalltime);
 
 /**
   * @brief  The application entry point.
@@ -57,6 +58,9 @@ int main(void)
   /* Check if system previously reset due to watch dog */
   CheckWatchDogStatus();
 
+  /* Enable watch dog timer (2 seconds period) */
+  EnableWatchDog(2000);
+
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_SPI1_Init();
@@ -76,11 +80,14 @@ int main(void)
   /* Init buffer */
   BufReset();
 
-  /* Init sample timer */
-  EnableSampleTimer(1000000);
+  /* Init sample timer (TIM2) */
+  ConfigureSampleTimer(1000000);
 
   /* Config IMU SPI settings */
   UpdateImuSpiConfig();
+
+  /* Init IMU stall timer (TIM3) */
+  InitIMUStallTimer();
 
   /* Init DIOs*/
   UpdateDIOConfig();
@@ -88,11 +95,8 @@ int main(void)
   /* Init data ready */
   UpdateDRConfig();
 
-  /* Set DR int priority (same as user SPI) */
-  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
-
-  /* Enable watch dog timer (2 seconds period) */
-  EnableWatchDog(2000);
+  /* Set DR int priority (1 lower than user SPI - no preemption) */
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 1, 0);
 
   /* Configure and enable user SPI port (based on loaded register values) */
   UpdateUserSpiConfig();
@@ -204,7 +208,7 @@ void Error_Handler(void)
   * This function should be called as part of the buffered data
   * acquisition startup process. The enabled timer is TIM2 (32 bit)
   */
-static void EnableSampleTimer(uint32_t timerfreq)
+static void ConfigureSampleTimer(uint32_t timerfreq)
 {
 	TIM_ClockConfigTypeDef sClockSourceConfig = {0};
 
@@ -222,6 +226,11 @@ static void EnableSampleTimer(uint32_t timerfreq)
 
 	/* Enable timer */
 	TIM2->CR1 = 0x1;
+}
+
+static void ConfigureStallTimer(uint32_t stalltime)
+{
+
 }
 
 /**

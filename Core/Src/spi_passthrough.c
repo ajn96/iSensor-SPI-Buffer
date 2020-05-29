@@ -22,6 +22,9 @@ volatile extern uint16_t regs[3 * REG_PER_PAGE];
 /** track stall time (microseconds) */
 uint32_t imu_stalltime_us = 25;
 
+/** TIM2 handle */
+static TIM_HandleTypeDef htim2;
+
 /**
   * @brief Basic IMU SPI data transfer function (protocol agnostic).
   *
@@ -121,6 +124,28 @@ void SleepMicroseconds(uint32_t microseconds)
 
 	/* Delay till end */
 	while ((DWT->CYCCNT - clk_cycle_start) < microseconds);
+}
+
+/**
+ * @brief Configures the period on TIM3
+ *
+ * @param MicroSecondsPeriod The timer period (in microseconds)
+ *
+ * @return void
+ */
+void ConfigureStallPeriod(uint32_t MicroSecondsPeriod)
+{
+
+}
+
+/**
+ * @brief Inits TIM3 for use as a IMU stall timer. Enables interrupts
+ *
+ * @return void
+ */
+void InitIMUStallTimer()
+{
+
 }
 
 /**

@@ -26,6 +26,7 @@ void DMA1_Channel5_IRQHandler(void);
 
 /* Data ready related interrupts */
 void EXTI9_5_IRQHandler();
+void TIM3_IRQHandler();
 
 /* Fault exceptions */
 void HardFault_Handler(void);

@@ -32,7 +32,7 @@ void EXTI9_5_IRQHandler()
 	/* Clear interrupt first */
 	EXTI->PR |= (0x1F << 5);
 
-	/* Get the timestamp */
+	/* Get the sample timestamp */
 	uint32_t timestamp = GetCurrentSampleTime();
 
 	/* Handle to element to add */
@@ -62,6 +62,11 @@ void EXTI9_5_IRQHandler()
 	elementHandle[1] = (timestamp >> 8) & 0xFF;
 	elementHandle[2] = (timestamp >> 16) & 0xFF;
 	elementHandle[3] = (timestamp >> 24) & 0xFF;
+}
+
+void TIM3_IRQHandler()
+{
+
 }
 
 /**
