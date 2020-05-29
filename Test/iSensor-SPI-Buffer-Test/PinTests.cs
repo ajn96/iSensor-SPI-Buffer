@@ -22,6 +22,13 @@ namespace iSensor_SPI_Buffer_Test
         public void DrPolarityTest()
         {
             InitializeTestCase();
+
+            for(int trial = 0; trial < 5; trial++)
+            {
+                Console.WriteLine("Testing posedge dr polarity...");
+                WriteUnsigned("DR_CONFIG", 0x11, true);
+            }
+
         }
 
         [Test]

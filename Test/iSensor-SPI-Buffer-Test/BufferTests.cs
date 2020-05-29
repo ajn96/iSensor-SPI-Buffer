@@ -32,7 +32,7 @@ namespace iSensor_SPI_Buffer_Test
                 Console.WriteLine("Testing buffer length: " + bufLen.ToString() + " bytes");
                 stall = FindBufRetrieveTime(bufLen);
                 Console.WriteLine("Minimum stall time to get valid buffers: " + stall.ToString() + "us");
-                Assert.LessOrEqual(stall, 15, "ERROR: Required stall > 15us!");
+                //Assert.LessOrEqual(stall, 15, "ERROR: Required stall > 15us!");
                 CheckDUTConnection();
             }
         }
@@ -40,7 +40,9 @@ namespace iSensor_SPI_Buffer_Test
         public uint FindBufRetrieveTime(uint bufLen)
         {
             bool goodStall = true;
-            ushort stall = 50;
+            ushort stall = 25;
+
+            uint timeStamp, oldTimestamp;
 
             /* Set buffer length */
             WriteUnsigned("BUF_LEN", bufLen, true);
@@ -49,6 +51,8 @@ namespace iSensor_SPI_Buffer_Test
             ReadUnsigned("BUF_TIMESTAMP_LWR");
 
             uint[] buf;
+
+            oldTimestamp = 0;
 
             while(goodStall)
             {
@@ -60,6 +64,12 @@ namespace iSensor_SPI_Buffer_Test
                     FX3.SetPin(FX3.DIO1, 0);
                     System.Threading.Thread.Sleep(10);
                     buf = Dut.ReadUnsigned(ReadDataRegs);
+
+                    /* Check timestamp (must be greater than old timestamp) */
+                    timeStamp = buf[1] + (buf[2] << 16);
+                    if (timeStamp <= oldTimestamp)
+                        goodStall = false;
+                    oldTimestamp = timeStamp;
                     if (buf[0] != 0)
                         goodStall = false;
                     for (int i = 3; i < buf.Count(); i++)
@@ -78,6 +88,9 @@ namespace iSensor_SPI_Buffer_Test
                 }
                 if (goodStall)
                     stall -= 2;
+
+                if (stall < 5)
+                    return stall;
             }
             return stall;
         }
@@ -99,13 +112,39 @@ namespace iSensor_SPI_Buffer_Test
         {
             InitializeTestCase();
 
+            uint maxCount, count;
+
             /* Flush buffer */
             WriteUnsigned("USER_COMMAND", 1 << COMMAND_CLEAR_BUFFER, false);
+            System.Threading.Thread.Sleep(100);
+            Assert.AreEqual(0, ReadUnsigned("BUF_CNT"), "ERROR: Expected buf count of 0");
+            WriteUnsigned("BUF_LEN", 32, true);
             System.Threading.Thread.Sleep(10);
+            maxCount = ReadUnsigned("BUF_MAX_CNT");
+            FX3.SetPin(FX3.DIO1, 0);
             /* Put DUT on correct page */
-            ReadUnsigned("BUF_TIMESTAMP_LWR");
+            ReadUnsigned("STATUS_1");
+            Console.WriteLine("Count: " + ReadUnsigned("BUF_CNT_1"));
 
+            for(uint i = 0; i < maxCount; i++)
+            {
+                FX3.SetPin(FX3.DIO1, 1);
+                FX3.SetPin(FX3.DIO1, 0);
+                System.Threading.Thread.Sleep(5);
+                count = ReadUnsigned("BUF_CNT_1");
+                Console.WriteLine("Buffer count: " + count.ToString());
+                Assert.AreEqual(i + 1, count, "ERROR: Expected BUF_CNT to increment");
+            }
 
+            for(int trial = 0; trial < 10; trial++)
+            {
+                FX3.SetPin(FX3.DIO1, 1);
+                FX3.SetPin(FX3.DIO1, 0);
+                System.Threading.Thread.Sleep(5);
+                count = ReadUnsigned("BUF_CNT_1");
+                Console.WriteLine("Buffer count: " + count.ToString());
+                Assert.AreEqual(maxCount, count, "ERROR: Expected BUF_CNT not to increment when full");
+            }
         }
 
         [Test]
