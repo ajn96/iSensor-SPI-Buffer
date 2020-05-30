@@ -59,11 +59,11 @@ void DisableDataCapture()
 	NVIC_DisableIRQ(EXTI9_5_IRQn);
 
 	/* Disable capture timer */
-	TIM3->CR1 &= ~0x1;
+	TIM4->CR1 &= ~0x1;
 
 	/* Clear any pending interrupts */
 	EXTI->PR |= (0x1F << 5);
-	TIM3->SR &= ~TIM_SR_UIF;
+	TIM4->SR &= ~TIM_SR_UIF;
 
 	/* Capture in progress set to false */
 	CaptureInProgress = 0;

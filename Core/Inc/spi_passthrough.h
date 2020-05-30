@@ -14,6 +14,7 @@
 /* Includes */
 #include "main.h"
 #include "registers.h"
+#include "stm32f3xx_hal.h"
 
 /* Public function prototypes */
 uint16_t ImuSpiTransfer(uint32_t MOSI);

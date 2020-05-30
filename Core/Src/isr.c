@@ -47,15 +47,13 @@ static uint32_t SampleTimestamp;
   */
 void EXTI9_5_IRQHandler()
 {
-	uint32_t miso;
-
 	/* Clear interrupt first */
 	EXTI->PR |= (0x1F << 5);
 
 	/* If capture in progress then set error flag and exit */
 	if(CaptureInProgress)
 	{
-		CaptureInProgress = TIM3->CR1 & 0x1;
+		CaptureInProgress = TIM4->CR1 & 0x1;
 		regs[STATUS_0_REG] |= STATUS_OVERRUN;
 		regs[STATUS_1_REG] = regs[STATUS_0_REG];
 		return;
@@ -71,27 +69,23 @@ void EXTI9_5_IRQHandler()
 	/* Get element handle */
 	BufferElementHandle = BufAddElement();
 
+	/* Send first 16 bit word */
+	TIM3->CR1 &= ~0x1;
+	TIM3->CNT = 0;
+	TIM3->CR1 |= 0x1;
+	SPI1->DR = regs[BUF_WRITE_0_REG];
+
+	/*Set timer value to 0 */
+	TIM4->CNT = 0;
 	/* Enable timer */
-	if(WordsPerCapture > 1)
-	{
-		/*Set timer value to 0 */
-		TIM3->CNT = 0;
-		/* Enable */
-		TIM3->CR1 |= 0x1;
-		/* Clear timer interrupt flag */
-		TIM3->SR &= ~TIM_SR_UIF;
-		/* Set flag indicating capture is running */
-		CaptureInProgress = 1;
-		/* Set words captured to 1 */
-		WordsCaptured = 1;
-	}
+	TIM4->CR1 |= 0x1;
+	/* Clear timer interrupt flag */
+	TIM4->SR &= ~TIM_SR_UIF;
 
-	/* Grab first SPI word */
-	miso = ImuSpiTransfer(regs[BUF_WRITE_0_REG]);
-
-	/* Add to buffer */
-	BufferElementHandle[4] = (miso & 0xFF);
-	BufferElementHandle[5] = (miso >> 8);
+	/* Set flag indicating capture is running */
+	CaptureInProgress = 1;
+	/* Set words captured to 0 */
+	WordsCaptured = 0;
 
 	/* Add timestamp to buffer */
 	BufferElementHandle[0] = SampleTimestamp & 0xFF;
@@ -99,30 +93,30 @@ void EXTI9_5_IRQHandler()
 	BufferElementHandle[2] = (SampleTimestamp >> 16) & 0xFF;
 	BufferElementHandle[3] = (SampleTimestamp >> 24) & 0xFF;
 
-	if(!CaptureInProgress)
-	{
-		/* Update count register */
-		regs[BUF_CNT_0_REG] = buf_count;
-		regs[BUF_CNT_1_REG] = regs[BUF_CNT_0_REG];
-	}
 	/* Offset buffer element handle */
-	BufferElementHandle += 6;
+	BufferElementHandle += 4;
 }
 
-void TIM3_IRQHandler()
+void TIM4_IRQHandler()
 {
+	uint32_t miso;
+
 	/* Clear timer interrupt flag */
-	TIM3->SR &= ~TIM_SR_UIF;
+	TIM4->SR &= ~TIM_SR_UIF;
+
+	/* Disable CS timer */
+	TIM3->CR1 = 0;
+	TIM3->CNT = 0xFFFF;
 
 	if(!CaptureInProgress)
 	{
-		/* Disable timer */
-		TIM3->CR1 &= ~0x1;
+		/* Disable timers */
+		TIM4->CR1 &= ~0x1;
 		return;
 	}
 
-	/* Perform SPI transfer and add to buffer */
-	uint32_t miso = ImuSpiTransfer(regs[BUF_WRITE_0_REG + WordsCaptured]);
+	/* Grab SPI data from last transaction */
+	miso = SPI1->DR;
 
 	BufferElementHandle[0] = (miso & 0xFF);
 	BufferElementHandle[1] = (miso >> 8);
@@ -131,10 +125,19 @@ void TIM3_IRQHandler()
 	/* Increment words captured count */
 	WordsCaptured++;
 
-	if(WordsCaptured >= WordsPerCapture)
+	if(WordsCaptured < WordsPerCapture)
 	{
-		/* Disable timer */
+		/* Restart PWM timer for CS */
+		TIM3->CR1 |= 0x1;
+		/* Load SPI transmit reg */
+		SPI1->DR = regs[BUF_WRITE_0_REG + WordsCaptured];
+	}
+	else
+	{
+		/* Disable timers */
+		TIM4->CR1 &= ~0x1;
 		TIM3->CR1 &= ~0x1;
+		TIM3->CNT = 0xFFFF;
 
 		/* Update buffer count regs */
 		regs[BUF_CNT_0_REG] = buf_count;
