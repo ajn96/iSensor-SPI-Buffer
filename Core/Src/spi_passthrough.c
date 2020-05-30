@@ -126,6 +126,11 @@ void SleepMicroseconds(uint32_t microseconds)
 	while ((DWT->CYCCNT - clk_cycle_start) < microseconds);
 }
 
+void ConfigureImuCsTimer(uint32_t period)
+{
+
+}
+
 /**
  * @brief Configures the period on TIM3
  *
@@ -133,7 +138,7 @@ void SleepMicroseconds(uint32_t microseconds)
  *
  * @return void
  */
-void ConfigureStallPeriod(uint32_t period)
+void ConfigureImuSpiTimer(uint32_t period)
 {
 	/* Disable timer */
 	TIM3->CR1 &= ~0x1;
@@ -146,11 +151,15 @@ void ConfigureStallPeriod(uint32_t period)
 }
 
 /**
- * @brief Inits TIM3 for use as a IMU stall timer. Enables interrupts
+ * @brief Inits TIM4 for use as a IMU spi period timer
  *
  * @return void
+ *
+ * TIM4 is used to drive SPI buffered data acquisition from the IMU.
+ * One timer interrupt is generated per SPI word clocked out from the
+ * DUT.
  */
-void InitIMUStallTimer()
+void InitImuSpiTimer()
 {
 	TIM_ClockConfigTypeDef sClockSourceConfig = {0};
 	TIM_MasterConfigTypeDef sMasterConfig = {0};
@@ -179,6 +188,11 @@ void InitIMUStallTimer()
 	/* Set interrupt priority and enable */
 	HAL_NVIC_SetPriority(TIM3_IRQn, 1, 0);
 	HAL_NVIC_EnableIRQ(TIM3_IRQn);
+}
+
+void InitImuCsTimer()
+{
+
 }
 
 /**

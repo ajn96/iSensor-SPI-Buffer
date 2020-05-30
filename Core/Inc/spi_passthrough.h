@@ -21,7 +21,11 @@ uint16_t ImuReadReg(uint8_t RegAddr);
 uint16_t ImuWriteReg(uint8_t RegAddr, uint8_t RegValue);
 void UpdateImuSpiConfig();
 void SleepMicroseconds(uint32_t microseconds);
-void ConfigureStallPeriod(uint32_t MicroSecondsPeriod);
-void InitIMUStallTimer();
+
+/* Timer config */
+void InitImuCsTimer();
+void ConfigureImuCsTimer(uint32_t period);
+void InitImuSpiTimer();
+void ConfigureImuSpiTimer(uint32_t period);
 
 #endif
