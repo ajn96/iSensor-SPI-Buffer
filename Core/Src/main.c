@@ -36,7 +36,7 @@ static void MX_SPI1_Init(void);
 static void MX_SPI3_Init(void);
 static void DWT_Init();
 static void MX_DMA_Init(void);
-static void ConfigureSampleTimer(uint32_t timerfreq);
+static void InitTimestampTimer(uint32_t timerfreq);
 
 /**
   * @brief  The application entry point.
@@ -80,10 +80,13 @@ int main(void)
   BufReset();
 
   /* Init sample timer (TIM2) */
-  ConfigureSampleTimer(1000000);
+  InitTimestampTimer(1000000);
 
-  /* Init IMU stall timer (TIM3) */
-  InitIMUStallTimer();
+  /* Init IMU spi period timer (TIM4) */
+  InitImuSpiTimer();
+
+  /* Init IMU CS timer in PWM mode (TIM3) */
+  InitImuSpiTimer();
 
   /* Config IMU SPI settings */
   UpdateImuSpiConfig();
@@ -207,7 +210,7 @@ void Error_Handler(void)
   * This function should be called as part of the buffered data
   * acquisition startup process. The enabled timer is TIM2 (32 bit)
   */
-static void ConfigureSampleTimer(uint32_t timerfreq)
+static void InitTimestampTimer(uint32_t timerfreq)
 {
 	TIM_ClockConfigTypeDef sClockSourceConfig = {0};
 

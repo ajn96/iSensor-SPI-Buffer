@@ -22,8 +22,11 @@ volatile extern uint16_t regs[3 * REG_PER_PAGE];
 /** track stall time (microseconds) */
 uint32_t imu_stalltime_us = 25;
 
-/** TIM3 handle */
+/** TIM3 HAL handle */
 static TIM_HandleTypeDef htim3;
+
+/** TIM4 HAL handle */
+static TIM_HandleTypeDef htim4;
 
 /**
   * @brief Basic IMU SPI data transfer function (protocol agnostic).
@@ -131,8 +134,13 @@ void ConfigureImuCsTimer(uint32_t period)
 
 }
 
+void InitImuCsTimer()
+{
+
+}
+
 /**
- * @brief Configures the period on TIM3
+ * @brief Configures the period on TIM4
  *
  * @param period The timer period (in 8MHz ticks)
  *
@@ -190,11 +198,6 @@ void InitImuSpiTimer()
 	HAL_NVIC_EnableIRQ(TIM3_IRQn);
 }
 
-void InitImuCsTimer()
-{
-
-}
-
 /**
  * @brief Processes any changes to IMU_SPI_CONFIG reg and applies
  *
@@ -212,6 +215,9 @@ void UpdateImuSpiConfig()
 
 	/* SCLK + stall, in terms of 1/8th microsecond ticks */
 	uint32_t transmitPeriod;
+
+	/* CS period (72MHz ticks) */
+	uint32_t csPeriod;
 
 	/* Get the config register value from reg array */
 	uint16_t configReg = regs[IMU_SPI_CONFIG_REG];
@@ -287,7 +293,9 @@ void UpdateImuSpiConfig()
 	transmitPeriod += ((configReg & 0xFF) << 3);
 
 	/* Apply period to timer */
-	ConfigureStallPeriod(transmitPeriod);
+	ConfigureImuSpiTimer(transmitPeriod);
+
+	ConfigureImuCsTimer(csPeriod);
 
 	/* Apply setting */
 	ApplySclkDivider(sclkDividerSetting);
