@@ -43,6 +43,24 @@ uint32_t buf_lastEntryIndex;
 /** Number of 32-bit words per buffer entry */
 uint32_t buf_numWords32;
 
+uint32_t BufCanAddElement()
+{
+	/* can always add new element if replace oldest is set */
+	if(buf_replaceOldest)
+	{
+		return 1;
+	}
+
+	/* Buffer full and replace oldest set to false */
+	if(buf_count >= buf_maxCount)
+	{
+		return 0;
+	}
+
+	/* Buf not full, return 1 */
+	return 1;
+}
+
 /**
   * @brief Take a single element from the buffer
   *
@@ -174,9 +192,6 @@ uint8_t* BufAddElement()
 		/* Return pointer to head */
 		buf_addr += buf_head;
 	}
-	/* Update count register (might want to move elsewhere?) */
-	regs[BUF_CNT_0_REG] = buf_count;
-	regs[BUF_CNT_1_REG] = regs[BUF_CNT_0_REG];
 	/* Return pointer to write buffer value to */
 	return buf_addr;
 }

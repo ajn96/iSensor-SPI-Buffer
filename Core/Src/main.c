@@ -37,7 +37,6 @@ static void MX_SPI3_Init(void);
 static void DWT_Init();
 static void MX_DMA_Init(void);
 static void ConfigureSampleTimer(uint32_t timerfreq);
-static void ConfigureStallTimer(uint32_t stalltime);
 
 /**
   * @brief  The application entry point.
@@ -83,11 +82,11 @@ int main(void)
   /* Init sample timer (TIM2) */
   ConfigureSampleTimer(1000000);
 
-  /* Config IMU SPI settings */
-  UpdateImuSpiConfig();
-
   /* Init IMU stall timer (TIM3) */
   InitIMUStallTimer();
+
+  /* Config IMU SPI settings */
+  UpdateImuSpiConfig();
 
   /* Init DIOs*/
   UpdateDIOConfig();
@@ -95,8 +94,8 @@ int main(void)
   /* Init data ready */
   UpdateDRConfig();
 
-  /* Set DR int priority (1 lower than user SPI - no preemption) */
-  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 1, 0);
+  /* Set DR int priority (lower than user SPI - no preemption) */
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 2, 0);
 
   /* Configure and enable user SPI port (based on loaded register values) */
   UpdateUserSpiConfig();
@@ -228,11 +227,6 @@ static void ConfigureSampleTimer(uint32_t timerfreq)
 	TIM2->CR1 = 0x1;
 }
 
-static void ConfigureStallTimer(uint32_t stalltime)
-{
-
-}
-
 /**
   * @brief Enable DMA channels in use
   *
@@ -293,6 +287,7 @@ static void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
   /** Initializes the CPU, AHB and APB busses clocks
   */
@@ -317,6 +312,13 @@ static void SystemClock_Config(void)
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_TIM2|RCC_PERIPHCLK_TIM34;
+  PeriphClkInit.Tim2ClockSelection = RCC_TIM2CLK_HCLK;
+  PeriphClkInit.Tim34ClockSelection = RCC_TIM34CLK_HCLK;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
   }

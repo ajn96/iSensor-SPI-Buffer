@@ -22,8 +22,8 @@ volatile extern uint16_t regs[3 * REG_PER_PAGE];
 /** track stall time (microseconds) */
 uint32_t imu_stalltime_us = 25;
 
-/** TIM2 handle */
-static TIM_HandleTypeDef htim2;
+/** TIM3 handle */
+static TIM_HandleTypeDef htim3;
 
 /**
   * @brief Basic IMU SPI data transfer function (protocol agnostic).
@@ -129,13 +129,20 @@ void SleepMicroseconds(uint32_t microseconds)
 /**
  * @brief Configures the period on TIM3
  *
- * @param MicroSecondsPeriod The timer period (in microseconds)
+ * @param period The timer period (in 8MHz ticks)
  *
  * @return void
  */
-void ConfigureStallPeriod(uint32_t MicroSecondsPeriod)
+void ConfigureStallPeriod(uint32_t period)
 {
+	/* Disable timer */
+	TIM3->CR1 &= ~0x1;
 
+	/* Set new period. Period is stall + SCLK time */
+	TIM3->ARR = period;
+
+	/* Clear timer interrupt flag */
+	TIM3->SR &= ~TIM_SR_UIF;
 }
 
 /**
@@ -145,7 +152,33 @@ void ConfigureStallPeriod(uint32_t MicroSecondsPeriod)
  */
 void InitIMUStallTimer()
 {
+	TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+	TIM_MasterConfigTypeDef sMasterConfig = {0};
+	htim3.Instance = TIM3;
+	/* 8MHz clock (72MHz / (8 + 1))*/
+	htim3.Init.Prescaler = 8;
+	htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim3.Init.Period = 0;
+	htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+	HAL_TIM_Base_Init(&htim3);
 
+	sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+	HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig);
+
+	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+	HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig);
+
+	/* Enable interrupt in timer */
+	TIM3->DIER |= TIM_IT_UPDATE;
+
+	/* Clear timer interrupt flag */
+	TIM3->SR &= ~TIM_SR_UIF;
+
+	/* Set interrupt priority and enable */
+	HAL_NVIC_SetPriority(TIM3_IRQn, 1, 0);
+	HAL_NVIC_EnableIRQ(TIM3_IRQn);
 }
 
 /**
@@ -163,6 +196,9 @@ void UpdateImuSpiConfig()
 	/* SCLK divider setting (format to be passed to HAL) */
 	uint32_t sclkDividerSetting;
 
+	/* SCLK + stall, in terms of 1/8th microsecond ticks */
+	uint32_t transmitPeriod;
+
 	/* Get the config register value from reg array */
 	uint16_t configReg = regs[IMU_SPI_CONFIG_REG];
 
@@ -178,42 +214,66 @@ void UpdateImuSpiConfig()
 	/* Sclk divider setting is upper 8 bits */
 	if(configReg & (1 << 8))
 	{
+		/* 18 MHz */
 		sclkDividerSetting = SPI_BAUDRATEPRESCALER_2;
+		/* 8 * 16 bits / sclk freq */
+		transmitPeriod = 7;
 	}
 	else if(configReg & (1 << 9))
 	{
+		/* 9 MHz */
 		sclkDividerSetting = SPI_BAUDRATEPRESCALER_4;
+		transmitPeriod = 14;
 	}
 	else if(configReg & (1 << 10))
 	{
+		/* 4.5 MHz */
 		sclkDividerSetting = SPI_BAUDRATEPRESCALER_8;
+		transmitPeriod = 28;
 	}
 	else if(configReg & (1 << 11))
 	{
+		/* 2.25 MHz */
 		sclkDividerSetting = SPI_BAUDRATEPRESCALER_16;
+		transmitPeriod = 56;
 	}
 	else if(configReg & (1 << 12))
 	{
+		/* 1.125 MHz */
 		sclkDividerSetting = SPI_BAUDRATEPRESCALER_32;
+		transmitPeriod = 114;
 	}
 	else if(configReg & (1 << 13))
 	{
+		/* 560 KHz */
 		sclkDividerSetting = SPI_BAUDRATEPRESCALER_64;
+		transmitPeriod = 228;
 	}
 	else if(configReg & (1 << 14))
 	{
+		/* 281 KHz */
 		sclkDividerSetting = SPI_BAUDRATEPRESCALER_128;
+		transmitPeriod = 455;
 	}
 	else if(configReg & (1 << 15))
 	{
+		/* 140 KHz */
 		sclkDividerSetting = SPI_BAUDRATEPRESCALER_256;
+		transmitPeriod = 910;
 	}
 	else
 	{
-		/* Default to divider of 64 (72MHz / 64 = 1.125MHz SCLK, will work with all iSensors IMU's) */
-		configReg |= (1 << 13);
-		sclkDividerSetting = SPI_BAUDRATEPRESCALER_64;
+		/* Default to divider of 64 (36MHz / 32 = 1.125MHz SCLK, will work with all iSensors IMU's) */
+		configReg |= (1 << 12);
+		sclkDividerSetting = SPI_BAUDRATEPRESCALER_32;
+		transmitPeriod = 114;
 	}
+
+	/* Add stall time to transmit period */
+	transmitPeriod += ((configReg & 0xFF) << 3);
+
+	/* Apply period to timer */
+	ConfigureStallPeriod(transmitPeriod);
 
 	/* Apply setting */
 	ApplySclkDivider(sclkDividerSetting);

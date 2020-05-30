@@ -19,6 +19,7 @@
 void BufReset();
 uint8_t* BufTakeElement();
 uint8_t* BufAddElement();
+uint32_t BufCanAddElement();
 
 #define BUF_SIZE	0xA000
 

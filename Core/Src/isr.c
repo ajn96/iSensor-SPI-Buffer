@@ -13,11 +13,29 @@
 /* Global register array */
 volatile extern uint16_t regs[3 * REG_PER_PAGE];
 
+/* Buffer internal count variable */
+volatile extern uint32_t buf_count;
+
 /* IMU stall time (from pass through module) */
 extern uint32_t imu_stalltime_us;
 
 extern DMA_HandleTypeDef hdma_spi2_rx;
 extern DMA_HandleTypeDef hdma_spi2_tx;
+
+/** Pointer to buffer element which is being populated */
+static uint8_t* BufferElementHandle;
+
+/** Track if there is currently a capture in progress */
+volatile uint32_t CaptureInProgress;
+
+/** Track number of words captured within current buffer entry */
+static volatile uint32_t WordsCaptured;
+
+/** Current capture size (in 16 bit words) */
+volatile uint32_t WordsPerCapture;
+
+/** Sample time stamp */
+static uint32_t SampleTimestamp;
 
 /**
   * @brief IMU data ready ISR. Kicks off data capture process.
@@ -29,44 +47,102 @@ extern DMA_HandleTypeDef hdma_spi2_tx;
   */
 void EXTI9_5_IRQHandler()
 {
+	uint32_t miso;
+
 	/* Clear interrupt first */
 	EXTI->PR |= (0x1F << 5);
 
-	/* Get the sample timestamp */
-	uint32_t timestamp = GetCurrentSampleTime();
+	/* If capture in progress then set error flag and exit */
+	if(CaptureInProgress)
+	{
+		CaptureInProgress = TIM3->CR1 & 0x1;
+		regs[STATUS_0_REG] |= STATUS_OVERRUN;
+		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+		return;
+	}
 
-	/* Handle to element to add */
-	uint8_t* elementHandle;
+	/* If buffer element cannot be added then exit */
+	if(!BufCanAddElement())
+		return;
+
+	/* Get the sample timestamp */
+	SampleTimestamp = GetCurrentSampleTime();
 
 	/* Get element handle */
-	elementHandle = BufAddElement();
+	BufferElementHandle = BufAddElement();
 
-	//TODO: DMA based implementation
-
-	/* Get number of 16 bit words to transfer*/
-	uint32_t numWords = regs[BUF_LEN_REG] >> 1;
-
-	uint32_t index = 4;
-	uint32_t mosi, miso;
-	for(int i = 0; i < numWords; i++)
+	/* Enable timer */
+	if(WordsPerCapture > 1)
 	{
-		mosi = regs[BUF_WRITE_0_REG + i];
-		miso = ImuSpiTransfer(mosi);
-		SleepMicroseconds(imu_stalltime_us);
-		elementHandle[index] = miso & 0xFF;
-		elementHandle[index + 1] = (miso >> 8);
-		index += 2;
+		/*Set timer value to 0 */
+		TIM3->CNT = 0;
+		/* Enable */
+		TIM3->CR1 |= 0x1;
+		/* Clear timer interrupt flag */
+		TIM3->SR &= ~TIM_SR_UIF;
+		/* Set flag indicating capture is running */
+		CaptureInProgress = 1;
+		/* Set words captured to 1 */
+		WordsCaptured = 1;
 	}
-	/* Add timestamp */
-	elementHandle[0] = timestamp & 0xFF;
-	elementHandle[1] = (timestamp >> 8) & 0xFF;
-	elementHandle[2] = (timestamp >> 16) & 0xFF;
-	elementHandle[3] = (timestamp >> 24) & 0xFF;
+
+	/* Grab first SPI word */
+	miso = ImuSpiTransfer(regs[BUF_WRITE_0_REG]);
+
+	/* Add to buffer */
+	BufferElementHandle[4] = (miso & 0xFF);
+	BufferElementHandle[5] = (miso >> 8);
+
+	/* Add timestamp to buffer */
+	BufferElementHandle[0] = SampleTimestamp & 0xFF;
+	BufferElementHandle[1] = (SampleTimestamp >> 8) & 0xFF;
+	BufferElementHandle[2] = (SampleTimestamp >> 16) & 0xFF;
+	BufferElementHandle[3] = (SampleTimestamp >> 24) & 0xFF;
+
+	if(!CaptureInProgress)
+	{
+		/* Update count register */
+		regs[BUF_CNT_0_REG] = buf_count;
+		regs[BUF_CNT_1_REG] = regs[BUF_CNT_0_REG];
+	}
+	/* Offset buffer element handle */
+	BufferElementHandle += 6;
 }
 
 void TIM3_IRQHandler()
 {
+	/* Clear timer interrupt flag */
+	TIM3->SR &= ~TIM_SR_UIF;
 
+	if(!CaptureInProgress)
+	{
+		/* Disable timer */
+		TIM3->CR1 &= ~0x1;
+		return;
+	}
+
+	/* Perform SPI transfer and add to buffer */
+	uint32_t miso = ImuSpiTransfer(regs[BUF_WRITE_0_REG + WordsCaptured]);
+
+	BufferElementHandle[0] = (miso & 0xFF);
+	BufferElementHandle[1] = (miso >> 8);
+	BufferElementHandle += 2;
+
+	/* Increment words captured count */
+	WordsCaptured++;
+
+	if(WordsCaptured >= WordsPerCapture)
+	{
+		/* Disable timer */
+		TIM3->CR1 &= ~0x1;
+
+		/* Update buffer count regs */
+		regs[BUF_CNT_0_REG] = buf_count;
+		regs[BUF_CNT_1_REG] = regs[BUF_CNT_0_REG];
+
+		/* Mark capture as done */
+		CaptureInProgress = 0;
+	}
 }
 
 /**
