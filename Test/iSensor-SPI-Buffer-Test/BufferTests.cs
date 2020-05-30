@@ -133,8 +133,8 @@ namespace iSensor_SPI_Buffer_Test
                 index++;
             }
 
-            /* Set min buffer length */
-            WriteUnsigned("BUF_LEN", 2, true);
+            /* Set buffer length */
+            WriteUnsigned("BUF_LEN", 20, true);
 
             for(int i = 0; i < 4; i++)
             {
@@ -148,11 +148,10 @@ namespace iSensor_SPI_Buffer_Test
             {
                 Console.WriteLine("Testing DR freq: " + freq.ToString() + "Hz");
                 buffersRead = 0;
-                WriteUnsigned("BUF_CNT_1", 0, false);
-                System.Threading.Thread.Sleep(10);
                 FX3.StartPWM(freq, 0.5, FX3.DIO1);
-                /* get 5 seconds of data per sample freq */
-                while((buffersRead < 5 * freq) && goodFreq)
+                WriteUnsigned("BUF_CNT_1", 0, false);
+                /* get 3 seconds of data per sample freq */
+                while ((buffersRead < 3 * freq) && goodFreq)
                 {
                     /* Want to service every 100 ms (or 50 buffers, whichever is more) */
                     System.Threading.Thread.Sleep((int) Math.Max(100, 50000 / freq));

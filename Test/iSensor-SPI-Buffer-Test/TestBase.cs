@@ -217,6 +217,9 @@ namespace iSensor_SPI_Buffer_Test
         {
             uint timestamp, oldTimestamp;
             double timestampfreq;
+            double avgFreq = 0;
+            int averages = 0;
+
             int index = 0;
 
             if (buf.Count() != (ReadRegs.Count() * numBufs))
@@ -233,9 +236,9 @@ namespace iSensor_SPI_Buffer_Test
                     Console.WriteLine("BUF_RETRIEVE readback value of " + buf[index].ToString());
                     //return false;
                 }
-                timestamp = buf[index + 1];
-                timestamp += (buf[index + 2] << 16);
-                index += 3;
+                timestamp = buf[index + 2];
+                timestamp += (buf[index + 3] << 16);
+                index += 4;
                 for (int i = 3; i < ReadRegs.Count(); i++)
                 {
                     if (buf[index] != (i - 2))
@@ -249,15 +252,19 @@ namespace iSensor_SPI_Buffer_Test
                 if(j > 0)
                 {
                     timestampfreq = (1000000.0 / (timestamp - oldTimestamp));
-                    if(Math.Abs((timestampfreq - expectedFreq) / expectedFreq) > 0.02)
-                    {
-                        Console.WriteLine("Invalid timestamp freq in buffer " + j.ToString() + ". Expected " + expectedFreq.ToString() + "Hz, was " + timestampfreq.ToString() + "Hz");
-                        Console.WriteLine("Timestamp: " + timestamp.ToString() + " Old Timestamp: " + oldTimestamp.ToString());
-                        //return false;
-                    }
+                    avgFreq += timestampfreq;
+                    averages++;
                 }
                 oldTimestamp = timestamp;
             }
+            avgFreq = avgFreq / averages;
+
+            if (Math.Abs((avgFreq - expectedFreq) / expectedFreq) > 0.02)
+            {
+                Console.WriteLine("Invalid timestamp freq. Expected " + expectedFreq.ToString() + "Hz, was " + avgFreq.ToString() + "Hz");
+                //return false;
+            }
+
 
             return true;
         }

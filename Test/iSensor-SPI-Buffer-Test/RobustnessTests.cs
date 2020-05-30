@@ -7,7 +7,7 @@ using NUnit.Framework;
 using FX3Api;
 using System.IO;
 using System.Reflection;
-
+using RegMapClasses;
 
 namespace iSensor_SPI_Buffer_Test
 {
@@ -18,6 +18,72 @@ namespace iSensor_SPI_Buffer_Test
         {
             InitializeTestCase();
 
+        }
+
+        [Test]
+        public void ADIS1649xBufferTest()
+        {
+            InitializeTestCase();
+
+            uint[] buf;
+            uint count;
+            bool goodData = true;
+            uint buffersRead;
+            uint max;
+
+            /* Want stall time 3us, sclk freq 9MHz */
+            WriteUnsigned("IMU_SPI_CONFIG", 0x203, true);
+
+            /* Set writedata regs */
+            uint index = 1;
+            foreach (RegClass reg in WriteDataRegs)
+            {
+                Dut.WriteUnsigned(reg, index);
+                index++;
+            }
+
+            List<RegClass> ReadRegs = new List<RegClass>();
+            ReadRegs.Add(RegMap["BUF_RETRIEVE"]);
+            ReadRegs.Add(RegMap["BUF_CNT_1"]);
+            ReadRegs.Add(RegMap["BUF_TIMESTAMP_LWR"]);
+            ReadRegs.Add(RegMap["BUF_TIMESTAMP_UPR"]);
+            /* Realistic use case: 32-bit data on each axis + temp + data count -> 14 register reads -> 15 SPI words */
+            for(int i = 0; i < 15; i++)
+            {
+                ReadRegs.Add(RegMap["BUF_DATA_" + i.ToString()]);
+            }
+
+            WriteUnsigned("BUF_LEN", 30, true);
+            max = ReadUnsigned("BUF_MAX_CNT");
+            Console.WriteLine("Max buffer capacity: " + max.ToString());
+
+            /* Set data production rate 4.25KHz */
+            FX3.StartPWM(4250, 0.5, FX3.DIO1);
+
+            /* Clear */
+            WriteUnsigned("BUF_CNT_1", 0, false);
+
+            while (goodData)
+            {
+                Console.WriteLine("Testing DR freq: 4250Hz");
+                buffersRead = 0;
+                System.Threading.Thread.Sleep((int) (500 * max / 4250));
+                count = ReadUnsigned("BUF_CNT_1");
+                count -= 2;
+                Console.WriteLine("Reading " + count.ToString() + " buffer entries...");
+                buf = Dut.ReadUnsigned(10, ReadRegs, 1, count);
+                goodData = ValidateBufferData(buf, ReadRegs, (int)count, 4250);
+                buffersRead += count;
+            }
+        }
+
+        [Test]
+        public void ADIS1650xBufferTest()
+        {
+            InitializeTestCase();
+
+            /* Want stall time 15us, sclk freq 2.25MHz */
+            WriteUnsigned("IMU_SPI_CONFIG", 0x810, true);
         }
 
         [Test]
