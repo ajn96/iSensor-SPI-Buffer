@@ -125,8 +125,8 @@ namespace iSensor_SPI_Buffer_Test
                         FX3.StopPWM((AdisApi.IPinObject)prop.GetValue(FX3));
                 }
             }
-            FX3.SclkFrequency = 8000000;
-            FX3.StallTime = 15;
+            FX3.SclkFrequency = 10000000;
+            FX3.StallTime = 8;
             FX3.DrActive = false;
         }
 
@@ -213,13 +213,13 @@ namespace iSensor_SPI_Buffer_Test
                 Assert.AreEqual(WriteVal, Dut.ReadUnsigned(strippedReg), "ERROR: " + RegName + " read back after write failed!");
         }
 
-        public bool ValidateBufferData(uint[] buf, int bufSize, int numBufs, double expectedFreq)
+        public bool ValidateBufferData(uint[] buf, IEnumerable<RegClass> ReadRegs, int numBufs, double expectedFreq)
         {
             uint timestamp, oldTimestamp;
             double timestampfreq;
             int index = 0;
 
-            if (buf.Count() != (ReadDataRegs.Count * numBufs))
+            if (buf.Count() != (ReadRegs.Count() * numBufs))
             {
                 Console.WriteLine("Invalid buffer data count!");
                 return false;
@@ -236,23 +236,12 @@ namespace iSensor_SPI_Buffer_Test
                 timestamp = buf[index + 1];
                 timestamp += (buf[index + 2] << 16);
                 index += 3;
-                for (int i = 3; i < ReadDataRegs.Count; i++)
+                for (int i = 3; i < ReadRegs.Count(); i++)
                 {
-                    if ((i - 3) < (bufSize / 2))
+                    if (buf[index] != (i - 2))
                     {
-                        if (buf[index] != (i - 2))
-                        {
-                            Console.WriteLine("Invalid buffer data at index " + i.ToString() + " value: " + buf[index].ToString());
-                            //return false;
-                        }
-                    }
-                    else
-                    {
-                        if (buf[index] != 0)
-                        {
-                            Console.WriteLine("Non-zero buffer data at index " + i.ToString());
-                            //return false;
-                        }
+                        Console.WriteLine("Invalid buffer data at index " + i.ToString() + " value: " + buf[index].ToString());
+                        //return false;
                     }
                     index++;
                 }
@@ -263,6 +252,7 @@ namespace iSensor_SPI_Buffer_Test
                     if(Math.Abs((timestampfreq - expectedFreq) / expectedFreq) > 0.02)
                     {
                         Console.WriteLine("Invalid timestamp freq in buffer " + j.ToString() + ". Expected " + expectedFreq.ToString() + "Hz, was " + timestampfreq.ToString() + "Hz");
+                        Console.WriteLine("Timestamp: " + timestamp.ToString() + " Old Timestamp: " + oldTimestamp.ToString());
                         //return false;
                     }
                 }

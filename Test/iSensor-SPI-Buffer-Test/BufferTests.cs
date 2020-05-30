@@ -123,6 +123,8 @@ namespace iSensor_SPI_Buffer_Test
             uint count;
             uint[] buf;
 
+            List<RegClass> ReadRegs = new List<RegClass>();
+
             /* Set writedata regs */
             index = 1;
             foreach (RegClass reg in WriteDataRegs)
@@ -132,7 +134,14 @@ namespace iSensor_SPI_Buffer_Test
             }
 
             /* Set min buffer length */
-            WriteUnsigned("BUF_LEN", 4, true);
+            WriteUnsigned("BUF_LEN", 2, true);
+
+            for(int i = 0; i < 4; i++)
+            {
+                ReadRegs.Add(ReadDataRegs[i]);
+            }
+
+            WriteUnsigned("IMU_SPI_CONFIG", 0x810, true);
 
             freq = 50;
             while(goodFreq)
@@ -150,8 +159,8 @@ namespace iSensor_SPI_Buffer_Test
                     count = ReadUnsigned("BUF_CNT_1");
                     count -= 2;
                     Console.WriteLine("Reading " + count.ToString() + " buffer entries...");
-                    buf = Dut.ReadUnsigned(10, ReadDataRegs, 1, count);
-                    goodFreq = ValidateBufferData(buf, 4, (int) count, freq);
+                    buf = Dut.ReadUnsigned(10, ReadRegs, 1, count);
+                    goodFreq = ValidateBufferData(buf, ReadRegs, (int) count, freq);
                     buffersRead += count;
                 }
                 if (goodFreq)
