@@ -30,6 +30,7 @@ namespace iSensor_SPI_Buffer_Test
             bool goodData = true;
             uint buffersRead;
             uint max;
+            double freq = 4250;
 
             /* Want stall time 3us, sclk freq 9MHz */
             WriteUnsigned("IMU_SPI_CONFIG", 0x203, true);
@@ -47,33 +48,34 @@ namespace iSensor_SPI_Buffer_Test
             ReadRegs.Add(RegMap["BUF_CNT_1"]);
             ReadRegs.Add(RegMap["BUF_TIMESTAMP_LWR"]);
             ReadRegs.Add(RegMap["BUF_TIMESTAMP_UPR"]);
-            /* Realistic use case: 32-bit data on each axis + temp + data count -> 14 register reads -> 15 SPI words */
-            for(int i = 0; i < 15; i++)
+            /* Realistic use case: 32-bit data on each axis + temp + data count + status -> 15 register reads -> 16 SPI words */
+            for(int i = 0; i < 16; i++)
             {
                 ReadRegs.Add(RegMap["BUF_DATA_" + i.ToString()]);
             }
 
-            WriteUnsigned("BUF_LEN", 30, true);
+            WriteUnsigned("BUF_LEN", 32, true);
             max = ReadUnsigned("BUF_MAX_CNT");
             Console.WriteLine("Max buffer capacity: " + max.ToString());
 
             /* Set data production rate 4.25KHz */
-            FX3.StartPWM(4250, 0.5, FX3.DIO1);
+            FX3.StartPWM(freq, 0.5, FX3.DIO1);
 
             /* Clear */
             WriteUnsigned("BUF_CNT_1", 0, false);
 
+            Console.WriteLine("Testing DR freq: " + freq.ToString() + "Hz");
+            buffersRead = 0;
             while (goodData)
             {
-                Console.WriteLine("Testing DR freq: 4250Hz");
-                buffersRead = 0;
-                System.Threading.Thread.Sleep((int) (500 * max / 4250));
+                System.Threading.Thread.Sleep(10);
                 count = ReadUnsigned("BUF_CNT_1");
                 count -= 2;
-                Console.WriteLine("Reading " + count.ToString() + " buffer entries...");
+                //Console.WriteLine("Reading " + count.ToString() + " buffer entries...");
                 buf = Dut.ReadUnsigned(10, ReadRegs, 1, count);
-                goodData = ValidateBufferData(buf, ReadRegs, (int)count, 4250);
+                goodData = ValidateBufferData(buf, ReadRegs, (int)count, freq);
                 buffersRead += count;
+                Console.WriteLine("Total buffers read: " + buffersRead.ToString());
             }
         }
 

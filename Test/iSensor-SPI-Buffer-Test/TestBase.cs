@@ -126,7 +126,7 @@ namespace iSensor_SPI_Buffer_Test
                 }
             }
             FX3.SclkFrequency = 10000000;
-            FX3.StallTime = 8;
+            FX3.StallTime = 6;
             FX3.DrActive = false;
         }
 
@@ -239,9 +239,9 @@ namespace iSensor_SPI_Buffer_Test
                 timestamp = buf[index + 2];
                 timestamp += (buf[index + 3] << 16);
                 index += 4;
-                for (int i = 3; i < ReadRegs.Count(); i++)
+                for (int i = 0; i < ReadRegs.Count() - 4; i++)
                 {
-                    if (buf[index] != (i - 2))
+                    if (buf[index] != (i + 1))
                     {
                         Console.WriteLine("Invalid buffer data at index " + i.ToString() + " value: " + buf[index].ToString());
                         //return false;

@@ -237,8 +237,9 @@ namespace iSensor_SPI_Buffer_Test
 
             Console.WriteLine("Testing buffer max data rate with no user SPI traffic and smallest buffer size...");
             WriteUnsigned("BUF_LEN", 2, true);
+            WriteUnsigned("IMU_SPI_CONFIG", 0x102, true);
             CheckDUTConnection();
-            freq = FindMaxDrFreq(2, 200.0, 200.0);
+            freq = FindMaxDrFreq(2, 200.0, 400.0);
             Assert.GreaterOrEqual(freq, 5000, "ERROR: Max supported DR freq must be at least 5KHz...");
 
             Console.WriteLine("Testing buffer max data rate with no user SPI traffic and largest buffer size...");
