@@ -69,21 +69,9 @@ void EXTI9_5_IRQHandler()
 	/* Get element handle */
 	BufferElementHandle = BufAddElement();
 
-	/* Send first 16 bit word */
-	TIM3->CR1 &= ~0x1;
-	TIM3->CNT = 0;
-	TIM3->CR1 |= 0x1;
-	SPI1->DR = regs[BUF_WRITE_0_REG];
-
-	/*Set timer value to 0 */
-	TIM4->CNT = 0;
-	/* Enable timer */
-	TIM4->CR1 |= 0x1;
-	/* Clear timer interrupt flag */
-	TIM4->SR &= ~TIM_SR_UIF;
-
 	/* Set flag indicating capture is running */
 	CaptureInProgress = 1;
+
 	/* Set words captured to 0 */
 	WordsCaptured = 0;
 
@@ -95,6 +83,19 @@ void EXTI9_5_IRQHandler()
 
 	/* Offset buffer element handle */
 	BufferElementHandle += 4;
+
+	/*Set timer value to 0 */
+	TIM4->CNT = 0;
+	/* Enable timer */
+	TIM4->CR1 |= 0x1;
+	/* Clear timer interrupt flag */
+	TIM4->SR &= ~TIM_SR_UIF;
+
+	/* Send first 16 bit word */
+	TIM3->CR1 &= ~0x1;
+	TIM3->CNT = 0;
+	TIM3->CR1 |= 0x1;
+	SPI1->DR = regs[BUF_WRITE_0_REG];
 }
 
 void TIM4_IRQHandler()
@@ -114,6 +115,9 @@ void TIM4_IRQHandler()
 		TIM4->CR1 &= ~0x1;
 		return;
 	}
+
+	/* Wait for SPI rx done */
+	while(!(SPI1->SR & SPI_SR_RXNE));
 
 	/* Grab SPI data from last transaction */
 	miso = SPI1->DR;

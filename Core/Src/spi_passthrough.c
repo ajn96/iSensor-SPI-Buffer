@@ -247,7 +247,7 @@ void InitImuSpiTimer()
 	TIM4->SR &= ~TIM_SR_UIF;
 
 	/* Set interrupt priority and enable */
-	HAL_NVIC_SetPriority(TIM4_IRQn, 1, 0);
+	HAL_NVIC_SetPriority(TIM4_IRQn, 0, 0);
 	HAL_NVIC_EnableIRQ(TIM4_IRQn);
 }
 

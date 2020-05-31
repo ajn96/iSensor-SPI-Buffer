@@ -98,7 +98,7 @@ int main(void)
   UpdateDRConfig();
 
   /* Set DR int priority (lower than user SPI - no preemption) */
-  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 2, 0);
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 1, 0);
 
   /* Configure and enable user SPI port (based on loaded register values) */
   UpdateUserSpiConfig();
