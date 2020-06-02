@@ -33,9 +33,9 @@
 | Address | Register Name | Default | R/W | Flash Backup | Description |
 | --- | --- | --- | --- | --- | --- |
 | 0x00 | PAGE_ID | 0x00FE | R/W | T | Page register. Used to change the currently selected register page |
-| 0x0C | BUF_WRITE_0 | 0x0000 | R/W | T | First transmit data register (data sent to IMU DIN) |
+| 0x10 | BUF_WRITE_0 | 0x0000 | R/W | T | First transmit data register (data sent to IMU DIN) |
 | ... | ... | ... | ... | ... | ... |
-| 0x4A | BUF_WRITE_31 | 0x0000 | R/W | T | Last transmit data register |
+| 0x4E | BUF_WRITE_31 | 0x0000 | R/W | T | Last transmit data register |
 | 0x7C | FLASH_SIG_DRV | N/A | R | F | Derived flash memory signature register (determined at initialization) |
 | 0x7E | FLASH_SIG | N/A | R | T | Stored flash memory signature register |
 
@@ -49,10 +49,11 @@
 | 0x06 | BUF_RETRIEVE | 0x0000 | R | F | Read this register to dequeue new data from buffer to buffer output registers |
 | 0x08 | BUF_TIMESTAMP_LWR | 0x0000 | R | F | Lower 16 bits of buffer entry timestamp |
 | 0x0A | BUF_TIMESTAMP_UPR | 0x0000 | R | F | Upper 16 bits of buffer entry timestamp |
-| 0x0C | BUF_DATA_0 | 0x0000 | R | F | First buffer output register (data received from IMU DOUT) |
+| 0x0C | BUF_DELTA_TIME | 0x0000 | R | F | Delta time between last buffer entry and current buffer entry, in microseconds. Truncated to 16 bits |
+| 0x0E | BUF_SIG | 0x0000 | R | F | Buffer entry checksum register |
+| 0x10 | BUF_DATA_0 | 0x0000 | R | F | First buffer output register (data received from IMU DOUT) |
 | ... | ... | ... | ... | ... | ... |
-| 0x4A | BUF_DATA_31 | 0x0000 | R | F | Last buffer output register |
-| 0x4C | BUF_SIG | 0x0000 | R | F | Buffer entry checksum register |
+| 0x4E | BUF_DATA_31 | 0x0000 | R | F | Last buffer output register |
 
 # iSensor-SPI-Buffer register bit fields
 
