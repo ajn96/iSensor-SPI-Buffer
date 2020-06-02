@@ -79,7 +79,7 @@ namespace iSensor_SPI_Buffer_Test
             {
                 if ((reg.Page == 255) && (reg.Address >= 6))
                     ReadDataRegs.Add(reg);
-                if ((reg.Page == 254) && (reg.Address != 0))
+                if ((reg.Page == 254) && (reg.Address != 0) && (reg.Address < 124))
                     WriteDataRegs.Add(reg);
             }
         }
@@ -219,6 +219,8 @@ namespace iSensor_SPI_Buffer_Test
             double timestampfreq;
             double avgFreq = 0;
             int averages = 0;
+            long deltaTime, expectedDeltaTime;
+            uint sig, expectedSig;
 
             int index = 0;
 
@@ -228,32 +230,55 @@ namespace iSensor_SPI_Buffer_Test
                 return false;
             }
 
+            expectedDeltaTime = (long) (1000000 / expectedFreq);
+
             oldTimestamp = 0;
             for (int j = 0; j < numBufs; j++)
             {
                 if (buf[index] != 0)
                 {
                     Console.WriteLine("BUF_RETRIEVE readback value of " + buf[index].ToString());
-                    //return false;
+                    return false;
                 }
                 timestamp = buf[index + 2];
+                expectedSig = buf[index + 2];
                 timestamp += (buf[index + 3] << 16);
-                index += 4;
-                for (int i = 0; i < ReadRegs.Count() - 4; i++)
+                expectedSig += buf[index + 3];
+                deltaTime = buf[index + 4];
+                expectedSig += buf[index + 4];
+                index += 5;
+                /* Check data*/
+                for (int i = 0; i < ReadRegs.Count() - 6; i++)
                 {
                     if (buf[index] != (i + 1))
                     {
                         Console.WriteLine("Invalid buffer data at index " + i.ToString() + " value: " + buf[index].ToString());
                         //return false;
                     }
+                    expectedSig += buf[index];
                     index++;
                 }
-                //Console.WriteLine("Timestamp: " + timeStamp.ToString());
+
+                /* Check sig */
+                sig = buf[index];
+                index++;
+                expectedSig = expectedSig & 0xFFFF;
+                if(expectedSig != sig)
+                {
+                    Console.WriteLine("Invalid buffer signature. Expected " + expectedSig.ToString() + ", was " + sig.ToString());
+                    //return false;
+                }
+                /* Check timestamps and delta time */
                 if(j > 0)
                 {
                     timestampfreq = (1000000.0 / (timestamp - oldTimestamp));
                     avgFreq += timestampfreq;
                     averages++;
+                    if (Math.Abs((deltaTime - expectedDeltaTime)) > 10)
+                    {
+                        Console.WriteLine("Invalid delta time measurement. Expected " + expectedDeltaTime.ToString() + "us, was " + deltaTime.ToString() + "us");
+                        //return false;
+                    }
                 }
                 oldTimestamp = timestamp;
             }

@@ -48,11 +48,13 @@ namespace iSensor_SPI_Buffer_Test
             ReadRegs.Add(RegMap["BUF_CNT_1"]);
             ReadRegs.Add(RegMap["BUF_TIMESTAMP_LWR"]);
             ReadRegs.Add(RegMap["BUF_TIMESTAMP_UPR"]);
+            ReadRegs.Add(RegMap["BUF_DELTA_TIME"]);
             /* Realistic use case: 32-bit data on each axis + temp + data count + status -> 15 register reads -> 16 SPI words */
-            for(int i = 0; i < 16; i++)
+            for (int i = 0; i < 16; i++)
             {
                 ReadRegs.Add(RegMap["BUF_DATA_" + i.ToString()]);
             }
+            ReadRegs.Add(RegMap["BUF_SIG"]);
 
             WriteUnsigned("BUF_LEN", 32, true);
             max = ReadUnsigned("BUF_MAX_CNT");
