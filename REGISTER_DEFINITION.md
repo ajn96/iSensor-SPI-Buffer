@@ -36,6 +36,8 @@
 | 0x0C | BUF_WRITE_0 | 0x0000 | R/W | T | First transmit data register (data sent to IMU DIN) |
 | ... | ... | ... | ... | ... | ... |
 | 0x4A | BUF_WRITE_31 | 0x0000 | R/W | T | Last transmit data register |
+| 0x7C | FLASH_SIG_DRV | N/A | R | F | Derived flash memory signature register (determined at initialization) |
+| 0x7E | FLASH_SIG | N/A | R | T | Stored flash memory signature register |
 
 ## Page 255 - Buffer output registers
 
@@ -50,6 +52,7 @@
 | 0x0C | BUF_DATA_0 | 0x0000 | R | F | First buffer output register (data received from IMU DOUT) |
 | ... | ... | ... | ... | ... | ... |
 | 0x4A | BUF_DATA_31 | 0x0000 | R | F | Last buffer output register |
+| 0x4C | BUF_SIG | 0x0000 | R | F | Buffer entry checksum register |
 
 # iSensor-SPI-Buffer register bit fields
 
@@ -163,7 +166,7 @@ The following default values will be used for DIO_CONFIG:
 | 2 | OVERRUN | Data capture overrun. Set when processor receives an IMU data ready interrupt and has not finished the previous capture |
 | 3 | DMA_ERROR | Set when processor DMA peripheral reports an error (user SPI DMA for burst read or IMU SPI DMA) |
 | 5:4 | RESERVED | Currently unused |
-| 6 | FLASH_ERROR | Set when the flash register signature stored does not match signature calculated from SRAM register contents at initialization. This condition will cause a factory reset, to reach a known good state. Sticky |
+| 6 | FLASH_ERROR | Set when the flash register signature stored does not match signature calculated from SRAM register contents at initialization. Sticky |
 | 7 | FLASH_UPDATE_ERROR | Set when the flash update routine fails. Sticky |
 | 8 | FAULT | Set when the processor core generates a fault exception (bus fault, memory fault, hard fault, initialization error). Fault exceptions will force a system reset. Sticky |
 | 9 | WATCHDOG | Set when the processor has reset due to a watchdog timeout. Sticky |
@@ -211,6 +214,18 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 | --- | --- | --- |
 | 15:0 | WRITE_N | Write data to transmit on MOSI line while capturing a buffered data entry |
 
+**FLASH_SIG_DRV**
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 15:0 | SIGNATURE | Derived signature for all registers stored to flash memory. This value is determined at initilization and compared to "FLASH_SIG" to determine if flash memory contents are valid |
+
+**FLASH_SIG**
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 15:0 | SIGNATURE | Signature for all registers stored to flash memory. This value is stored in flash, and is updated when a flash update command is executed |
+
 **BUF_CNT**
 
 | Bit | Name | Description |
@@ -240,3 +255,9 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | READ_N | Read data received on the MISO line while capturing a buffered data entry |
+
+**BUF_SIG**
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 15:0 | SIGNATURE | Buffer signature. This is the sum of all 16-bit words stored in the buffer (including timestamp) |

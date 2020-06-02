@@ -62,6 +62,7 @@ void BufDequeueToOutputRegs();
 #define BUF_WRITE_PAGE				254
 
 #define BUF_WRITE_0_REG				0x46
+#define FLASH_SIG_DRV_REG			0x7E
 #define FLASH_SIG_REG				0x7F
 
 /** iSensor-SPI-Buffer buffer Rx data page */
