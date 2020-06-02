@@ -73,6 +73,7 @@ void BufDequeueToOutputRegs();
 #define BUF_RETRIEVE_REG			0x83
 #define BUF_TIMESTAMP_REG			0x84
 #define BUF_DATA_0_REG				0x86
+#define BUF_SIG_REG					0xA6
 
 /* Register (non-zero) default values */
 #define FW_REV_DEFAULT				0x0100

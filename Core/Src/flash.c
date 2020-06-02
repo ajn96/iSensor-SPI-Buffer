@@ -98,8 +98,8 @@ void FlashUpdate()
   */
 void LoadRegsFlash()
 {
-	uint32_t expectedSig;
-	uint32_t storedSig;
+	uint16_t expectedSig;
+	uint16_t storedSig;
 
 	/* Load regs to SRAM */
 	uint16_t* flashAddr = (uint16_t *) FLASH_REG_ADDR;
@@ -112,13 +112,15 @@ void LoadRegsFlash()
 	/* Calc expected sig (stop before flash signature register) */
 	expectedSig = CalcRegSig((uint16_t*)regs, FLASH_SIG_REG - 1);
 
-	/* Read flash sig value which was loaded */
+	/* Store sig */
+	regs[FLASH_SIG_DRV_REG] = expectedSig;
+
+	/* Read flash sig value which was stored at last flash update */
 	storedSig = regs[FLASH_SIG_REG];
 
 	/* Perform factory reset and alert user of flash error in case of sig mis-match */
 	if(storedSig != expectedSig)
 	{
-		FactoryReset();
 		regs[STATUS_0_REG] |= STATUS_FLASH_ERROR;
 		regs[STATUS_1_REG] = regs[STATUS_0_REG];
 	}
