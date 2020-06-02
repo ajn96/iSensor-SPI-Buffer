@@ -22,6 +22,7 @@ void LoadRegsFlash();
 void FlashCheckLoggedError();
 void FlashLogError(uint32_t faultCode);
 void FlashInitErrorLog();
+uint16_t CalcRegSig(uint16_t * regs, uint32_t count);
 
 /** Address for flash register storage (2KB pages, put on page 31) */
 #define FLASH_REG_ADDR			0x0800F800

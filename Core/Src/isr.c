@@ -25,6 +25,9 @@ extern DMA_HandleTypeDef hdma_spi2_tx;
 /** Pointer to buffer element which is being populated */
 static uint8_t* BufferElementHandle;
 
+/** Pointer to buffer data signature within buffer element which is being populated */
+static uint16_t* BufferSigHandle;
+
 /** Track if there is currently a capture in progress */
 volatile uint32_t CaptureInProgress;
 
@@ -36,6 +39,15 @@ volatile uint32_t WordsPerCapture;
 
 /** Sample time stamp */
 static uint32_t SampleTimestamp;
+
+/* Previous time stamp */
+static uint32_t LastTimestamp;
+
+/* Buffer delta time */
+static uint16_t DeltaTime;
+
+/* Buffer signature */
+static uint32_t BufferSignature;
 
 /**
   * @brief IMU data ready ISR. Kicks off data capture process.
@@ -65,6 +77,8 @@ void EXTI9_5_IRQHandler()
 
 	/* Get the sample timestamp */
 	SampleTimestamp = GetCurrentSampleTime();
+	DeltaTime = SampleTimestamp - LastTimestamp;
+	LastTimestamp = SampleTimestamp;
 
 	/* Get element handle */
 	BufferElementHandle = BufAddElement();
@@ -79,10 +93,20 @@ void EXTI9_5_IRQHandler()
 	BufferElementHandle[0] = SampleTimestamp & 0xFF;
 	BufferElementHandle[1] = (SampleTimestamp >> 8) & 0xFF;
 	BufferElementHandle[2] = (SampleTimestamp >> 16) & 0xFF;
-	BufferElementHandle[3] = (SampleTimestamp >> 24) & 0xFF;
+	BufferElementHandle[3] = (SampleTimestamp >> 24);
+	BufferElementHandle[4] = DeltaTime & 0xFF;
+	BufferElementHandle[5] = (DeltaTime >> 8);
 
-	/* Offset buffer element handle */
-	BufferElementHandle += 4;
+	/* Set signature to timestamp value initially */
+	BufferSignature = SampleTimestamp & 0xFFFF;
+	BufferSignature += (SampleTimestamp >> 16);
+	BufferSignature += DeltaTime;
+
+	/* Set buffer signature handle */
+	BufferSigHandle = (uint16_t *) (BufferElementHandle + 6);
+
+	/* Offset buffer element handle by 8 bytes (timestamp + delta + sig) */
+	BufferElementHandle += 8;
 
 	/*Set timer value to 0 */
 	TIM4->CNT = 0;
@@ -122,6 +146,9 @@ void TIM4_IRQHandler()
 	/* Grab SPI data from last transaction */
 	miso = SPI1->DR;
 
+	/* Add to signature */
+	BufferSignature += miso;
+
 	BufferElementHandle[0] = (miso & 0xFF);
 	BufferElementHandle[1] = (miso >> 8);
 	BufferElementHandle += 2;
@@ -138,12 +165,15 @@ void TIM4_IRQHandler()
 	}
 	else
 	{
-		/* Disable timers */
+		/* Disable timers and ensure CS is high */
 		TIM4->CR1 &= ~0x1;
 		TIM3->CR1 &= ~0x1;
 		TIM3->CNT = 0xFFFF;
 
-		/* Update buffer count regs */
+		/* Save final signature */
+		BufferSigHandle[0] = BufferSignature;
+
+		/* Update buffer count regs with new count */
 		regs[BUF_CNT_0_REG] = buf_count;
 		regs[BUF_CNT_1_REG] = regs[BUF_CNT_0_REG];
 

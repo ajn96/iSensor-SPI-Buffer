@@ -12,7 +12,6 @@
 
 /* Local function prototypes */
 static void PrepareRegsForFlash();
-static uint16_t CalcRegSig(uint16_t * regs, uint32_t count);
 
 /* Global register array */
 volatile extern uint16_t regs[3 * REG_PER_PAGE];
@@ -238,7 +237,7 @@ void FlashInitErrorLog()
   *
   * @return void
   */
-static uint16_t CalcRegSig(uint16_t * regs, uint32_t count)
+uint16_t CalcRegSig(uint16_t * regs, uint32_t count)
 {
 	/* Sig is just a sum (should more or less work for verifying flash contents) */
 	uint16_t sig = 0;

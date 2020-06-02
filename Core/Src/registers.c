@@ -255,7 +255,7 @@ void ProcessCommand()
 void FactoryReset()
 {
 	/* Store endurance count during factory reset */
-	uint16_t endurance;
+	uint16_t endurance, flash_sig;
 
 	/* Disable data capture from IMU (shouldn't be running, but better safe than sorry) */
 	DisableDataCapture();
@@ -263,8 +263,9 @@ void FactoryReset()
 	/* Reset selected page */
 	selected_page = BUF_CONFIG_PAGE;
 
-	/* Save endurance */
+	/* Save endurance and flash sig */
 	endurance = regs[ENDURANCE_REG];
+	flash_sig = regs[FLASH_SIG_REG];
 
 	/* Reset all registers to 0 */
 	for(int i = 0; i < (3 * REG_PER_PAGE); i++)
@@ -286,10 +287,12 @@ void FactoryReset()
 	regs[IMU_SPI_CONFIG_REG] = IMU_SPI_CONFIG_DEFAULT;
 	regs[USER_SPI_CONFIG_REG] = USER_SPI_CONFIG_DEFAULT;
 	regs[FW_REV_REG] = FW_REV_DEFAULT;
-	regs[FLASH_SIG_REG] = FLASH_SIG_DEFAULT;
 
-	/* Apply endurance back */
+	/* Apply endurance and flash sig back */
 	regs[ENDURANCE_REG] = endurance;
+	regs[FLASH_SIG_REG] = flash_sig;
+
+	regs[FLASH_SIG_DRV_REG] = CalcRegSig((uint16_t*)regs, FLASH_SIG_DRV_REG - 1);;
 
 	/* Populate SN and build date */
 	GetSN();
@@ -532,12 +535,12 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	}
 	else if(selected_page == BUF_WRITE_PAGE)
 	{
-		/* outside writable regs */
-		if(regIndex > (BUF_WRITE_0_REG + 31))
+		/* regs under write data are reserved */
+		if(regIndex < BUF_WRITE_0_REG)
 			return regIndex;
 
-		/* reg 1, 2, 3 also reserved */
-		if(regIndex <= 3)
+		/* regs over write data are reserved */
+		if(regIndex > (BUF_WRITE_0_REG + 31))
 			return regIndex;
 	}
 	else if(selected_page == BUF_READ_PAGE)

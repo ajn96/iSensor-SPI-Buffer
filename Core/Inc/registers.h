@@ -61,7 +61,7 @@ void BufDequeueToOutputRegs();
 /** iSensor-SPI-Buffer buffer Tx data page */
 #define BUF_WRITE_PAGE				254
 
-#define BUF_WRITE_0_REG				0x46
+#define BUF_WRITE_0_REG				0x48
 #define FLASH_SIG_DRV_REG			0x7E
 #define FLASH_SIG_REG				0x7F
 
@@ -72,8 +72,9 @@ void BufDequeueToOutputRegs();
 #define BUF_CNT_1_REG				0x82
 #define BUF_RETRIEVE_REG			0x83
 #define BUF_TIMESTAMP_REG			0x84
-#define BUF_DATA_0_REG				0x86
-#define BUF_SIG_REG					0xA6
+#define BUF_DELTA_TIME_REG			0x86
+#define BUF_SIG_REG					0x87
+#define BUF_DATA_0_REG				0x88
 
 /* Register (non-zero) default values */
 #define FW_REV_DEFAULT				0x0100
