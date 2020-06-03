@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BufferEntry.cs" />
     <Compile Include="BufferTests.cs" />
     <Compile Include="CommandTests.cs" />
     <Compile Include="PinTests.cs" />

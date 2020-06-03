@@ -213,83 +213,52 @@ namespace iSensor_SPI_Buffer_Test
                 Assert.AreEqual(WriteVal, Dut.ReadUnsigned(strippedReg), "ERROR: " + RegName + " read back after write failed!");
         }
 
-        public bool ValidateBufferData(uint[] buf, IEnumerable<RegClass> ReadRegs, int numBufs, double expectedFreq)
+        public bool ValidateBufferData(List<BufferEntry> Data, double expectedFreq)
         {
-            uint timestamp, oldTimestamp;
             double timestampfreq;
             double avgFreq = 0;
-            int averages = 0;
-            long deltaTime, expectedDeltaTime;
-            uint sig, expectedSig;
+            int averages, index;
+            long expectedDeltaTime;
 
-            int index = 0;
-
-            if (buf.Count() != (ReadRegs.Count() * numBufs))
+            if(Data.Count == 1)
             {
-                Console.WriteLine("Invalid buffer data count!");
-                return false;
+                return (Data[0].Signature == Data[0].GetExpectedSignature());
             }
 
-            expectedDeltaTime = (long) (1000000 / expectedFreq);
-
-            oldTimestamp = 0;
-            for (int j = 0; j < numBufs; j++)
+            averages = 0;
+            for(index = 1; index <= Data.Count; index++)
             {
-                if (buf[index] != 0)
+                expectedDeltaTime = Data[index].Timestamp - Data[index - 1].Timestamp;
+                if(expectedDeltaTime != Data[index].DeltaTime)
                 {
-                    Console.WriteLine("BUF_RETRIEVE readback value of " + buf[index].ToString());
+                    Console.WriteLine("Invalid delta time measurement in buffer " + index.ToString());
                     return false;
                 }
-                timestamp = buf[index + 2];
-                expectedSig = buf[index + 2];
-                timestamp += (buf[index + 3] << 16);
-                expectedSig += buf[index + 3];
-                deltaTime = buf[index + 4];
-                expectedSig += buf[index + 4];
-                index += 5;
-                /* Check data*/
-                for (int i = 0; i < ReadRegs.Count() - 6; i++)
+                if(Data[index].Signature == Data[index].GetExpectedSignature())
                 {
-                    if (buf[index] != (i + 1))
-                    {
-                        Console.WriteLine("Invalid buffer data at index " + i.ToString() + " value: " + buf[index].ToString());
-                        //return false;
-                    }
-                    expectedSig += buf[index];
-                    index++;
+                    Console.WriteLine("Invalid buffer signature. Expected " + Data[0].GetExpectedSignature().ToString() + ", was " + Data[0].Signature.ToString());
+                    return false;
                 }
-
-                /* Check sig */
-                sig = buf[index];
-                index++;
-                expectedSig = expectedSig & 0xFFFF;
-                if(expectedSig != sig)
+                for(int i = 0; i < Data[index].Data.Count(); i++)
                 {
-                    Console.WriteLine("Invalid buffer signature. Expected " + expectedSig.ToString() + ", was " + sig.ToString());
-                    //return false;
-                }
-                /* Check timestamps and delta time */
-                if(j > 0)
-                {
-                    timestampfreq = (1000000.0 / (timestamp - oldTimestamp));
-                    avgFreq += timestampfreq;
-                    averages++;
-                    if (Math.Abs((deltaTime - expectedDeltaTime)) > 10)
+                    if(Data[index].Data[i] != (i + 1))
                     {
-                        Console.WriteLine("Invalid delta time measurement. Expected " + expectedDeltaTime.ToString() + "us, was " + deltaTime.ToString() + "us");
-                        //return false;
+                        Console.WriteLine("Invalid buffer contents!");
+                        return false;
                     }
                 }
-                oldTimestamp = timestamp;
+                timestampfreq = (1000000.0 / (Data[index].Timestamp - Data[index - 1].Timestamp));
+                avgFreq += timestampfreq;
+                averages++;
             }
+
             avgFreq = avgFreq / averages;
 
             if (Math.Abs((avgFreq - expectedFreq) / expectedFreq) > 0.02)
             {
-                Console.WriteLine("Invalid timestamp freq. Expected " + expectedFreq.ToString() + "Hz, was " + avgFreq.ToString() + "Hz");
-                //return false;
+                Console.WriteLine("Invalid average timestamp freq. Expected " + expectedFreq.ToString() + "Hz, was " + avgFreq.ToString() + "Hz");
+                return false;
             }
-
 
             return true;
         }

@@ -73,9 +73,8 @@ namespace iSensor_SPI_Buffer_Test
                 System.Threading.Thread.Sleep(10);
                 count = ReadUnsigned("BUF_CNT_1");
                 count -= 2;
-                //Console.WriteLine("Reading " + count.ToString() + " buffer entries...");
                 buf = Dut.ReadUnsigned(10, ReadRegs, 1, count);
-                goodData = ValidateBufferData(buf, ReadRegs, (int)count, freq);
+                goodData = ValidateBufferData(BufferEntry.ParseBufferData(buf, ReadRegs), freq);
                 buffersRead += count;
                 Console.WriteLine("Total buffers read: " + buffersRead.ToString());
             }

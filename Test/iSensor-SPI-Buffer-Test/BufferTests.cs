@@ -136,7 +136,7 @@ namespace iSensor_SPI_Buffer_Test
             /* Set buffer length */
             WriteUnsigned("BUF_LEN", 20, true);
 
-            for(int i = 0; i < 4; i++)
+            for(int i = 0; i < 10; i++)
             {
                 ReadRegs.Add(ReadDataRegs[i]);
             }
@@ -159,7 +159,7 @@ namespace iSensor_SPI_Buffer_Test
                     count -= 2;
                     Console.WriteLine("Reading " + count.ToString() + " buffer entries...");
                     buf = Dut.ReadUnsigned(10, ReadRegs, 1, count);
-                    goodFreq = ValidateBufferData(buf, ReadRegs, (int) count, freq);
+                    goodFreq = ValidateBufferData(BufferEntry.ParseBufferData(buf, ReadRegs), freq);
                     buffersRead += count;
                 }
                 if (goodFreq)
@@ -252,10 +252,8 @@ namespace iSensor_SPI_Buffer_Test
         private double FindMaxDrFreq(int bufSize, double startFreq, double freqStep)
         {
             double freq = startFreq;
-            double timestampfreq, avgFreq;
             bool goodFreq = true;
             int numSamples = 100;
-            int numAverages;
 
             uint[] bufData;
 
@@ -279,49 +277,7 @@ namespace iSensor_SPI_Buffer_Test
                     goodFreq = false;
                 }
                 bufData = Dut.ReadUnsigned(10, ReadDataRegs, 1, (uint) numSamples);
-                long timeStamp, oldTimestamp;
-                oldTimestamp = bufData[1];
-                oldTimestamp += (bufData[2] << 16);
-                int index = ReadDataRegs.Count;
-                avgFreq = 0;
-                numAverages = 0;
-                for(int j = 1; j < numSamples; j++)
-                {
-                    if (bufData[index] != 0)
-                        goodFreq = false;
-                    timeStamp = bufData[index + 1];
-                    timeStamp += (bufData[index + 2] << 16);
-                    index += 3;
-                    for (int i = 3; i < ReadDataRegs.Count; i++)
-                    {
-                        if((i - 3) < (bufSize / 2))
-                        {
-                            if (bufData[index] != (i - 2))
-                            {
-                                goodFreq = false;
-                            }
-                        }
-                        else
-                        {
-                            if (bufData[index] != 0)
-                            {
-                                goodFreq = false;
-                            }
-                        }
-                        index++;
-                    }
-                    //Console.WriteLine("Timestamp: " + timeStamp.ToString());
-                    timestampfreq = (1000000.0 / (timeStamp - oldTimestamp));
-                    avgFreq += timestampfreq;
-                    numAverages++;
-                    oldTimestamp = timeStamp;
-                }
-
-                avgFreq = avgFreq / numAverages;
-                Console.WriteLine("Average sample freq (from timestamp): " + avgFreq.ToString("f2") + "Hz");
-                /* If average timestamp error of more than 2% then is bad */
-                if (Math.Abs((freq - avgFreq) / freq) > 0.02)
-                    goodFreq = false;
+                goodFreq = ValidateBufferData(BufferEntry.ParseBufferData(bufData, ReadDataRegs), freq);
 
                 if (goodFreq)
                     freq += freqStep;
