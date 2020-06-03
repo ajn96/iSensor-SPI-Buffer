@@ -59,8 +59,8 @@ BUF_READ_PAGE, 				0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000, 				0x0000
 0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
 0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000};
 
-/** Pointer to output registers */
-static uint32_t* outputRegs = (uint32_t *) &regs[BUF_TIMESTAMP_REG];
+/** Pointer to buffer entry. Will be 0 if no buffer entry "loaded" to output registers */
+static uint16_t* CurrentBufEntry;
 
 /**
   * @brief Dequeues an entry from the buffer and loads it to the primary output registers
@@ -75,17 +75,8 @@ static uint32_t* outputRegs = (uint32_t *) &regs[BUF_TIMESTAMP_REG];
   */
 void BufDequeueToOutputRegs()
 {
-	uint32_t* bufEntry;
-	uint32_t i;
-
 	/* Get element from the buffer */
-	bufEntry = (uint32_t *) BufTakeElement();
-
-	/* Copy buffer data to output registers */
-	for(i = 0; i < buf_numWords32; i++)
-	{
-		outputRegs[i] = bufEntry[i];
-	}
+	CurrentBufEntry = (uint16_t *) BufTakeElement();
 
 	/* Check if burst read mode is enabled */
 	if(regs[USER_SPI_CONFIG_REG] & SPI_CONF_BURST_RD)
@@ -133,11 +124,20 @@ uint16_t ReadReg(uint8_t regAddr)
 			}
 			else
 			{
-				/* Clear regs */
-				for(uint32_t i = BUF_TIMESTAMP_REG; i <= (BUF_DATA_0_REG + 32); i++)
-				{
-					regs[i] = 0;
-				}
+				/* Set current buf entry to 0 */
+				CurrentBufEntry = 0;
+			}
+		}
+
+		if(regIndex > BUF_RETRIEVE_REG)
+		{
+			if(CurrentBufEntry)
+			{
+				return CurrentBufEntry[regIndex - BUF_TIMESTAMP_REG];
+			}
+			else
+			{
+				return 0;
 			}
 		}
 
