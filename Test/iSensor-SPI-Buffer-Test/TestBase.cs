@@ -126,7 +126,7 @@ namespace iSensor_SPI_Buffer_Test
                 }
             }
             FX3.SclkFrequency = 10000000;
-            FX3.StallTime = 6;
+            FX3.StallTime = 10;
             FX3.DrActive = false;
         }
 
@@ -219,6 +219,7 @@ namespace iSensor_SPI_Buffer_Test
             double avgFreq = 0;
             int averages, index;
             long expectedDeltaTime;
+            uint expectedSig;
 
             if(Data.Count == 1)
             {
@@ -226,24 +227,28 @@ namespace iSensor_SPI_Buffer_Test
             }
 
             averages = 0;
-            for(index = 1; index <= Data.Count; index++)
+            for(index = 1; index < Data.Count; index++)
             {
-                expectedDeltaTime = Data[index].Timestamp - Data[index - 1].Timestamp;
+                if (Data[index - 1].Timestamp > Data[index].Timestamp)
+                    expectedDeltaTime = Data[index].DeltaTime;
+                else
+                    expectedDeltaTime = Data[index].Timestamp - Data[index - 1].Timestamp;
                 if(expectedDeltaTime != Data[index].DeltaTime)
                 {
-                    Console.WriteLine("Invalid delta time measurement in buffer " + index.ToString());
+                    Console.WriteLine("Invalid delta time measurement in buffer " + index.ToString() + ". Expected " + expectedDeltaTime.ToString() + ", was " + Data[index].DeltaTime.ToString());
                     return false;
                 }
-                if(Data[index].Signature == Data[index].GetExpectedSignature())
+                expectedSig = Data[index].GetExpectedSignature();
+                if(Data[index].Signature != expectedSig)
                 {
-                    Console.WriteLine("Invalid buffer signature. Expected " + Data[0].GetExpectedSignature().ToString() + ", was " + Data[0].Signature.ToString());
+                    Console.WriteLine("Invalid buffer signature in buffer " + index.ToString() + ". Expected " + expectedSig.ToString() + ", was " + Data[index].Signature.ToString());
                     return false;
                 }
                 for(int i = 0; i < Data[index].Data.Count(); i++)
                 {
                     if(Data[index].Data[i] != (i + 1))
                     {
-                        Console.WriteLine("Invalid buffer contents!");
+                        Console.WriteLine("Invalid buffer contents! Expected " + (i + 1).ToString() + ", was " + Data[index].Data[i].ToString());
                         return false;
                     }
                 }

@@ -28,7 +28,11 @@ namespace iSensor_SPI_Buffer_Test
         public BufferEntry(uint[] BufferData, IEnumerable<RegClass> Reglist)
         {
             Assert.AreEqual(BufferData.Count(), Reglist.Count(), "ERROR: Buffer data and register list must be the same size");
-            Data = new List<uint>(32);
+            Data = new List<uint>(0);
+            for(int i = 0; i < 32; i++)
+            {
+                Data.Add(0);
+            }
             int index, dataIndex, maxIndex;
             maxIndex = 0;
             index = 0;
@@ -44,7 +48,7 @@ namespace iSensor_SPI_Buffer_Test
                     Signature = BufferData[index];
                 if (reg.Label.Contains("BUF_DATA_"))
                 {
-                    dataIndex = Convert.ToInt32(reg.Label.Last());
+                    dataIndex = Convert.ToInt32(reg.Label.Replace("BUF_DATA_", ""));
                     maxIndex = Math.Max(maxIndex, dataIndex);
                     Data[dataIndex] = BufferData[index];
                 }
@@ -79,9 +83,9 @@ namespace iSensor_SPI_Buffer_Test
             List<BufferEntry> result = new List<BufferEntry>();
             uint[] entryData = new uint[Reglist.Count()];
             int index = 0;
-            while(index <= BufferData.Count())
+            while(index < BufferData.Count())
             {
-                Array.Copy(BufferData, entryData, Reglist.Count());
+                Array.Copy(BufferData, index, entryData, 0, Reglist.Count());
                 result.Add(new BufferEntry(entryData, Reglist));
                 index += Reglist.Count();
             }
