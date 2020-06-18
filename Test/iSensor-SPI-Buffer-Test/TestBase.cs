@@ -65,7 +65,7 @@ namespace iSensor_SPI_Buffer_Test
 
             /* Load regmap and set up DUT interface */
             RegMapPath = Path.GetFullPath(Path.Combine(exePath, @"..\..\..\..\"));
-            RegMapPath = Path.Combine(RegMapPath, "iSensor_SPI_Buffer_RegDataFile.csv");
+            RegMapPath = Path.Combine(RegMapPath, @"Regmaps\iSensor_SPI_Buffer_RegDataFile.csv");
 
             RegMap = new RegMapCollection();
             RegMap.ReadFromCSV(RegMapPath);
