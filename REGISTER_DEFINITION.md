@@ -8,9 +8,9 @@
 | 0x02 | BUF_CONFIG | 0x0200 | R/W | T | Buffer configuration settings (SPI word size, overflow behavior) |
 | 0x04 | BUF_LEN | 0x0014 | R/W | T | Length (in bytes) of each buffered data capture |
 | 0x06 | BUF_MAX_CNT | N/A | R | T | Maximum entries which can be stored in the buffer. Determined by BUF_LEN. Read-only register |
-| 0x08 | DR_CONFIG | 0x0011 | R/W | T | Data ready input (IMU to iSensor-SPI-Buffer) configuration |
-| 0x0A | DIO_CONFIG | 0x0843 | R/W | T | DIO configuration. Sets up pin pass-through and assigns interrupts |
-| 0x0C | INT_CONFIG | 0x0020 | R/W | T | Interrupt configuration register |
+| 0x08 | DIO_INPUT_CONFIG | 0x0011 | R/W | T | DIO input configuration. Allows data ready (from IMU) and PPS (from host) input selection |
+| 0x0A | DIO_OUTPUT_CONFIG | 0x8421 | R/W | T | DIO output configuration. Sets up pin pass-through and assigns interrupts |
+| 0x0C | WATERMARK_INT_CONFIG | 0x0020 | R/W | T | Watermark interrupt configuration register |
 | 0x0E | IMU_SPI_CONFIG | 0x2014 | R/W | T | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
 | 0x10 | USER_SPI_CONFIG | 0x0007 | R/W | T | User SPI configuration (mode, etc.) |
 | 0x12 | USER_COMMAND | N/A | W | T | Command register (flash update, factory reset, clear buffer, software reset) |
@@ -83,38 +83,61 @@
 | --- | --- | --- |
 | 15:0 | MAX | Total number of entries which can be stored in the buffer. Updates automatically when BUF_LEN is changed |
 
-**DR_CONFIG**
+**DIO_INPUT_CONFIG**
 | Bit | Name | Description |
 | --- | --- | --- |
-| 3:0 | DR_SELECT | Select which IMU ouput pin is treated as data ready. Can only select one pin |
-| 4 | POLARITY | Data ready trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge |
-| 15:5 | RESERVED | Currently unused |
+| 3:0 | DR_SELECT | Select which IMU DIO ouput pin is treated as data ready. Can only select one pin |
+| 4 | DR_POLARITY | Data ready trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge |
+| 7:5 | RESERVED | Currently unused |
+| 11:8 | PPS_SELECT | Select which host processor DIO output pin acts as a Pulse Per Second (PPS) input, for timebase synchronization |
+| 12 | PPS_POLARITY | PPS trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge |
+| 15:13 | RESERVED | Currently unused |
 
-**DIO_CONFIG**
-
-| Bit | Name | Description |
-| --- | --- | --- |
-| 3:0 | PIN_PASS | Select which pins are directly connected to IMU vs passing through iSensor-SPI-Buffer firmware |
-| 7:4 | INT_MAP | Select which pins are driven with the buffer data ready interrupt signal from the iSensor-SPI-Buffer firmware |
-| 11:8 | OVERFLOW_MAP | Select which pins are driven with the overflow interrupt signal from the iSensor-SPI-Buffer firmware |
-| 15:12 | RESERVED | Currently unused |
-
-For each field in DIO_CONFIG, the following pin mapping is made:
+For each field in DIO_INPUT_CONFIG, the following pin mapping is made:
 * Bit0 -> DIO1
 * Bit1 -> DIO2
 * Bit2 -> DIO3
 * Bit3 -> DIO4
 
-The following default values will be used for DIO_CONFIG:
-* PIN_PASS: 0x3. DIO1 (typically acts as IMU data ready) and DIO2 (typically acts as SYNC input) will be passed through using an Analog Switch. This allows for direct sync strobing and reading of the data ready signal
-* INT_MAP: 0x4. The buffer data ready interrupt is applied to DIO3 by default
-* OVERFLOW_MAP: 0x8. The buffer overflow interrupt is applied to DIO4 by default
+The following default values will be used for DIO_INPUT_CONFIG:
+* DR_SELECT: 0x1. DIO1 is used for data ready
+* DR_POLARITY: 0x1. Data ready is posedge triggered
+* PPS_SELECT: 0x0. PPS input is disabled by default
+* PPS_POLARITY: 0x0. PPS triggers on falling edge
 
-**INT_CONFIG**
+**DIO_OUTPUT_CONFIG**
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 3:0 | PIN_PASS | Select which pins are directly connected from the host processor to the IMU using an ADG1611 analog switch |
+| 7:4 | WATERMARK_INT | Select which pins are driven with the buffer watermark interrupt signal from the iSensor-SPI-Buffer firmware |
+| 11:8 | OVERFLOW_INT | Select which pins are driven with the buffer overflow interrupt signal from the iSensor-SPI-Buffer firmware |
+| 15:12 | ERROR_INT | Select which pins are driven with the error interrupt signal from the iSensor-SPI-Buffer firmware |
+
+For each field in DIO_OUTPUT_CONFIG, the following pin mapping is made:
+* Bit0 -> DIO1
+* Bit1 -> DIO2
+* Bit2 -> DIO3
+* Bit3 -> DIO4
+
+The following default values will be used for DIO_OUTPUT_CONFIG:
+* PIN_PASS: 0x3. DIO1 (typically acts as IMU data ready), and DIO2 (typically acts as sync input) will be passed through using an Analog Switch. This allows for direct reading of the data ready signal and control over sample synchronization.
+* WATERMARK_INT: 0x4. The buffer watermark interrupt is applied to DIO3 by default
+* OVERFLOW_INT: 0x0. The buffer overflow interrupt is disabled by default
+* ERROR_INT: 0x8. The error interrupt is applied to DIO4 by default
+
+**WATERMARK_INT_CONFIG**
 
 | Name | Bits | Description |
 | --- | --- | --- |
 | 15:0 | WATERMARK | Number of elements stored in buffer before asserting the iSensor-SPI-Buffer data ready interrupt. Range 0 - BUF_MAX_CNT |
+
+**ERROR_INT_CONFIG**
+
+| Name | Bits | Description |
+| --- | --- | --- |
+| 11:0 | STATUS_MASK | Bitmask to set which bits in the iSensor-SPI-Buffer status register error bits will generate an interrupt when set |
+| 15:12 | RESERVED | These bits are used by the iSensor-SPI-Buffer 4 bit transaction counter, and cannot generate an error interrupt |
 
 **IMU_SPI_CONFIG**
 
@@ -148,25 +171,28 @@ The following default values will be used for DIO_CONFIG:
 | 1 | CLEAR_FAULT | Clears any fault data logged in flash memory. Until this command is run, status FAULT bit will never clear |
 | 2 | FACTORY_RESET | Restores firmware to a factory default state |
 | 3 | FLASH_UPDATE | Save all non-volatile registers to flash memory |
-| 14:5 | RESERVED | Currently unused |
+| 4 | PPS_ENABLE | Enable PPS timestamp synchronization. Must have PPS_SELECT defined before enabling PPS. The UTC timestamp will start counting up on the next PPS signal |
+| 5 | PPS_DISABLE | Disable PPS timestamp synchronization. The microsecond timestamp register will continue free running. |
+| 14:6 | RESERVED | Currently unused |
 | 15 | RESET | Software reset |
 
 **USER_SCR_N**
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 15:0 | USER_SCR | User scratch value |
+| 15:0 | USER_SCR | User scratch value. Available for end user use |
 
 **STATUS**
 
 | Bit | Name | Description |
 | --- | --- | --- |
 | 0 | SPI_ERROR | SPI error reported by the user SPI or IMU SPI peripheral |
-| 1 | SPI_OVERFLOW | User SPI data overflow (min stall time violated) |
-| 2 | OVERRUN | Data capture overrun. Set when processor receives an IMU data ready interrupt and has not finished the previous capture |
+| 1 | SPI_OVERFLOW | User SPI data overflow (min stall time violated). This bit is set when a user SPI interrupt is recieved, and the previous user SPI interrupt is still being processed |
+| 2 | OVERRUN | Data capture overrun. Set when processor receives an IMU data ready interrupt and has not finished the previous data capture |
 | 3 | DMA_ERROR | Set when processor DMA peripheral reports an error (user SPI DMA for burst read or IMU SPI DMA) |
-| 5:4 | RESERVED | Currently unused |
-| 6 | FLASH_ERROR | Set when the flash register signature stored does not match signature calculated from SRAM register contents at initialization. Sticky |
+| 4 | PPS_UNLOCK | Set when the PPS synchronization clock is enabled, but no PPS signal has been recieved for over 1100ms |
+| 5 | RESERVED | Currently unused |
+| 6 | FLASH_ERROR | Set when the register signature stored in flash (stored during flash update) does not match signature calculated from SRAM register contents at initialization. Sticky |
 | 7 | FLASH_UPDATE_ERROR | Set when the flash update routine fails. Sticky |
 | 8 | FAULT | Set when the processor core generates a fault exception (bus fault, memory fault, hard fault, initialization error). Fault exceptions will force a system reset. Sticky |
 | 9 | WATCHDOG | Set when the processor has reset due to a watchdog timeout. Sticky |
@@ -174,7 +200,37 @@ The following default values will be used for DIO_CONFIG:
 | 11 | BUF_INTERRUPT | Set when buffer data ready interrupt condition is met (data ready interrupt) |
 | 15:12 | TC | User SPI transaction counter. Increments by one with each SPI transaction |
 
-Excluding the transaction counter field and bits identified as sticky, this register clears on read.
+Excluding the transaction counter field and bits identified as sticky, this register clears on read. The values in this register are used to generate an error interrupt, if error interrupts are enabled.
+
+**UTC_TIME_LWR**
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 15:0 | UTC_TIME | Lower 16 bits of the 32-bit UTC timestamp |
+
+**UTC_TIME_UPR**
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 15:0 | UTC_TIME | Upper 16 bits of the 32-bit UTC timestamp |
+
+The UTC timestamp is a 32-bit value which represents the number of seconds since Jan 01 1970. This register must be set by a master device (no RTC). When a PPS input is enabled using the command register PPS_ENABLE bit, and a PPS pin assigned in DIO_INPUT_CONFIG, this register will count up once per PPS interrupt.
+
+**TIMESTAMP_LWR**
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 15:0 | TIMESTAMP | Lower 16 bits of the 32-bit microsecond timestamp |
+
+**TIMESTAMP_UPR**
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 15:0 | TIMESTAMP | Upper 16 bits of the 32-bit microsecond timestamp |
+
+This register is a 32-bit microsecond timestamp which starts counting up as soon as the iSensor-SPI-Buffer firmware finishes initialization. 
+
+When a PPS input is enabled using the command register PPS_ENABLE, and a PPS pin is assigned in DIO_INPUT_CONFIG, this timestamp will reset to 0 every time a PPS pulse is recieved. This PPS functionality allows the iSensor-SPI-Buffer firmware to track the "wall" time with microsecond accuracy. Since the microsecond timestamp is reset every second, any error accumulation (due to 20ppm crystal) should be minimal. 
 
 **FW_DAY_MONTH**
 

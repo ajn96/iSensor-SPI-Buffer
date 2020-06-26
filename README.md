@@ -49,7 +49,6 @@ The code contained in this repository was developed using the freely available [
 
 * "Invisible" SPI pass-through to an iSensor IMU, including modules that implement register pages
 * iSensor-SPI-Buffer configuration registers and buffered data acquisition registers will be placed on unassigned IMU pages (Pages 253 - 255)
-* The data ready signal must be passed through by iSensor-SPI-Buffer firmware, with added phase delay to allow for any autonomous data acquisition
 
 ### Buffered Data Acquisition
 
@@ -60,9 +59,8 @@ The code contained in this repository was developed using the freely available [
 
 ### Configuration Options
 
-* Buffer operating mode (LIFO/FIFO)
 * Buffer overflow setting (stop sampling vs delete oldest)
-* Data ready input GPIO
+* Data ready input (from IMU) DIO number
 * IMU Data ready trigger polarity
 * Master SPI (interface between the iSensor-SPI-Buffer firmware and the IMU) 
   * SCLK Frequency
@@ -72,7 +70,7 @@ The code contained in this repository was developed using the freely available [
 
 ### Buffer Design
 
-* Reading the buffer output registers will dequeue from the buffer
+* Reading a buffer retrieve register will dequeue data from the buffer data strcture to the buffer output registers
 * The user will also be able to clear the buffer using a control register
 * A buffer counter will be added to each buffer for the user to keep track of the state of the buffer. This counter must also be accessible without dequeuing data from buffer
 * Using a maximum buffer entry size of 64 bytes, the buffer will provide a minimum of 512 frames of buffering using 32KB SRAM
@@ -90,7 +88,7 @@ The iSensor-SPI-Buffer firmware will utilize two hardware SPI ports. One operati
 
 ### Program Flow
 
-The iSensor-SPI-Buffer application will be exclusively interrupt-driven to remove as much influence from the ST processor as possible
+The iSensor-SPI-Buffer communications handling will be interrupt-driven to remove as much influence from the ST processor as possible. A main cyclic executive loop handles command execution, interrupt generation, and diagnostics.
 
 **User SPI Interrupt**
 
@@ -108,11 +106,12 @@ The data capture ISR will be triggered by a user-specified GPIO, corresponding t
 
 ![Buffered Capture Data Flow](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/Data_Capture_Flow.jpg)
 
-**Interrupt Signaling**
+**User Interrupt Signaling (to host)**
 
-Each of the four DIO lines from the iSensor-SPI-Buffer to the master device can be configured to operate in one of three modes
-* Data Ready Interrupt Mode: The selected DIO will go high when a specified number of samples are available to be dequeued. This allows a master device to simply monitor the data ready interrupt signal for a positive edge, and then dequeue a large number of IMU data samples
+Each of the four DIO lines from the iSensor-SPI-Buffer to the master device can be configured to operate in one of four modes
+* Watermark Interrupt Mode: The selected DIO will go high when a specified number of samples are available to be dequeued. This allows a master device to simply monitor the data ready interrupt signal for a positive edge, and then dequeue a large number of IMU data samples
 * Buffer Full Interrupt Mode: The selected DIO will go high when the buffer is full
+* Error Interrupt Mode: The selected DIO will go high when an error is detected and flagged in the STATUS register
 * Pin Pass-Through Mode: The DIO output from the IMU (e.g. a data ready signal or sync signal) will be directly connected to the master device, using an ADG1611 switch. When a DIO is configured in pin pass-through mode it cannot be used for interrupt signalling
 
 The state of each interrupt signal is checked and updated on each iteration of the main cyclic executive loop. This ensures quick response time to changes in the buffer state while maintaining a simple program flow.
