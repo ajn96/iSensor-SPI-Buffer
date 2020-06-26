@@ -20,6 +20,8 @@
 #include "flash.h"
 #include "led.h"
 #include "watchdog.h"
+#include "timer.h"
+#include "dio.h"
 
 /* Public function prototypes */
 void Error_Handler(void);

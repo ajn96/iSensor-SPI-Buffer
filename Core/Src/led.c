@@ -62,25 +62,3 @@ void TurnOffLED(LED light)
 		return;
 	}
 }
-
-/**
-  * @brief Updates the red LED based on STATUS error bits
-  *
-  * @return void
-  *
-  * This function is called periodically from the main loop
-  */
-void UpdateLEDStatus()
-{
-	uint16_t status = regs[STATUS_0_REG];
-	/* Mask out upper 6 bits (not error indicators) */
-	status &= 0x03FF;
-	if(status)
-	{
-		TurnOnLED(Red);
-	}
-	else
-	{
-		TurnOffLED(Red);
-	}
-}

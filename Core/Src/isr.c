@@ -76,7 +76,7 @@ void EXTI9_5_IRQHandler()
 		return;
 
 	/* Get the sample timestamp */
-	SampleTimestamp = GetCurrentSampleTime();
+	SampleTimestamp = GetMicrosecondTimestamp();
 	DeltaTime = SampleTimestamp - LastTimestamp;
 	LastTimestamp = SampleTimestamp;
 
@@ -191,18 +191,9 @@ void TIM4_IRQHandler()
   */
 void SPI2_IRQHandler(void)
 {
-	/* Transaction counter */
-	static uint32_t transaction_counter = 0;
-
 	uint32_t itflag = SPI2->SR;
 	uint32_t transmitData;
 	uint32_t rxData;
-
-	/* Apply transaction counter to STATUS upper 4 bits and increment */
-	regs[STATUS_0_REG] &= 0x0FFF;
-	regs[STATUS_0_REG] |= transaction_counter;
-	regs[STATUS_1_REG] = regs[STATUS_0_REG];
-	transaction_counter += 0x1000;
 
 	/* Error interrupt source */
 	if(itflag & (SPI_FLAG_OVR | SPI_FLAG_MODF))

@@ -37,6 +37,9 @@ uint32_t buf_maxCount;
 /** Position at which buffer needs to wrap around */
 uint32_t buf_lastEntryIndex;
 
+/** Index for the last buffer output register. This is based on buffer size */
+uint32_t buf_lastRegIndex;
+
 /** Number of 32-bit words per buffer entry */
 uint32_t buf_numWords32;
 
@@ -175,6 +178,9 @@ void BufReset()
 		regs[BUF_LEN_REG] = BUF_MIN_ENTRY;
 	if(regs[BUF_LEN_REG] > BUF_MAX_ENTRY)
 		regs[BUF_LEN_REG] = BUF_MAX_ENTRY;
+
+	/* Set the index for the last buffer entry */
+	buf_lastRegIndex = (BUF_DATA_0_REG + (regs[BUF_LEN_REG] >> 1));
 
 	/* Get the buffer size setting (8 bytes added per buffer for time stamp, delta time, sig) */
 	buf_increment = regs[BUF_LEN_REG] + 8;

@@ -19,8 +19,5 @@
 /* Public function prototypes */
 void EnableDataCapture();
 void DisableDataCapture();
-void UpdateDRConfig();
-
-uint32_t GetCurrentSampleTime();
 
 #endif /* INC_DATA_CAPTURE_H_ */

@@ -16,6 +16,9 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue);
 /* User SPI handle (from main) */
 extern SPI_HandleTypeDef hspi2;
 
+/* Index after last buffer output register (from buffer) */
+extern uint32_t buf_lastRegIndex;
+
 /** Number of 32-bit words per buffer (from buffer) */
 extern uint32_t buf_numWords32;
 
@@ -27,37 +30,48 @@ volatile uint32_t update_flags = 0;
 
 /** iSensor-SPI-Buffer global register array (read-able via SPI) */
 uint16_t regs[3 * REG_PER_PAGE] __attribute__((aligned (32))) = {
-/* Page 253 */
 
-/*0							1						2					3			4					5						6						7 */
-BUF_CONFIG_PAGE, 			BUF_CONFIG_DEFAULT, 	BUF_LEN_DEFAULT, 	0x0000, 	DR_CONFIG_DEFAULT, 	DIO_CONFIG_DEFAULT, 	INT_CONFIG_DEFAULT, 	IMU_SPI_CONFIG_DEFAULT, /* PAGE_ID - IMU_SPI_CONFIG */
-USER_SPI_CONFIG_DEFAULT, 	0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000, 				0x0000, 				FW_REV_DEFAULT, /* USER_SPI_CONFIG_DEFAULT - USER_SCR_3 */
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,	 				0x0000, 				0x0000, /* FW_REV - BUF_CNT_0_REG */
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000, /* FW_DAY_MONTH - DEV_SN_5 */
+/* Page 253 */
+BUF_CONFIG_PAGE, /* 0x0 */
+BUF_CONFIG_DEFAULT, /* 0x1 */
+BUF_LEN_DEFAULT, /* 0x2 */
+0x0000, /* 0x3 */
+DIO_INPUT_CONFIG_DEFAULT, /* 0x4 */
+DIO_OUTPUT_CONFIG_DEFAULT, /* 0x5 */
+WATER_INT_CONFIG_DEFAULT, /* 0x6 */
+ERROR_INT_CONFIG_DEFAULT, /* 0x7 */
+IMU_SPI_CONFIG_DEFAULT, /* 0x8 */
+USER_SPI_CONFIG_DEFAULT, /* 0x9 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xA - 0xF */
+0x0000, 0x0000, 0x0000, 0x0000, /* 0x10 - 0x13 */
+FW_REV_DEFAULT, /* 0x14 */
+0x0000, 0x0000, 0x0000, /* 0x15 - 0x17 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x18 - 0x1F */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x20 - 0x27 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x28 - 0x2F */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x30 - 0x37 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x38 - 0x3F */
 
 /* Page 254 */
-BUF_WRITE_PAGE, 			0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000, 				0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000, 				0x0000, 				FLASH_SIG_DEFAULT, /* FLASH_SIG at end */
+BUF_WRITE_PAGE, 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, /* 0x40 - 0x47 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x48 - 0x4F */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x50 - 0x57 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x58 - 0x5F */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x60 - 0x67 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x68 - 0x6F */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x70 - 0x77 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, FLASH_SIG_DEFAULT, /* 0x78 - 0x7F */
 
 /* Page 255 */
-BUF_READ_PAGE, 				0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000, 				0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000,
-0x0000, 					0x0000, 				0x0000, 			0x0000, 	0x0000, 			0x0000,					0x0000, 				0x0000};
+BUF_READ_PAGE, 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, /* 0x80 - 0x87 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x88 - 0x8F */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x90 - 0x97 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x98 - 0x9F */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xA0 - 0xA7 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xA8 - 0xAF */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xB0 - 0xB7 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xB8 - 0xBF */
+};
 
 /** Pointer to buffer entry. Will be 0 if no buffer entry "loaded" to output registers */
 static uint16_t* CurrentBufEntry;
@@ -131,7 +145,7 @@ uint16_t ReadReg(uint8_t regAddr)
 
 		if(regIndex > BUF_RETRIEVE_REG)
 		{
-			if(CurrentBufEntry && (regIndex < (BUF_DATA_0_REG + (regs[BUF_LEN_REG] >> 1))))
+			if(CurrentBufEntry && (regIndex < buf_lastRegIndex))
 			{
 				return CurrentBufEntry[regIndex - BUF_TIMESTAMP_REG];
 			}
@@ -149,6 +163,12 @@ uint16_t ReadReg(uint8_t regAddr)
 			regs[STATUS_1_REG] = regs[STATUS_0_REG];
 			return status;
 		}
+
+		/* Load time stamp on demand upon read */
+		if(regIndex == TIMESTAMP_LWR_REG)
+			return GetMicrosecondTimestamp() & 0xFFFF;
+		if(regIndex == TIMESTAMP_UPR_REG)
+			return GetMicrosecondTimestamp() >> 16;
 
 		/* get value from reg array */
 		return regs[regIndex];
@@ -214,29 +234,30 @@ void ProcessCommand()
 	SPI2->CR1 &= ~SPI_CR1_SPE;
 
 	/* Set output pins low while running command */
-	UpdateOutputPins(0, 0);
+	UpdateOutputPins(0, 0, 0);
 
-	if(command & SOFTWARE_RESET)
+	if(command & CMD_SOFTWARE_RESET)
 	{
 		NVIC_SystemReset();
 	}
-	else if(command & CLEAR_BUFFER)
+	else if(command & CMD_CLEAR_BUFFER)
 	{
 		BufReset();
 	}
-	else if(command & FLASH_UPDATE)
+	else if(command & CMD_FLASH_UPDATE)
 	{
 		FlashUpdate();
 	}
-	else if(command & FACTORY_RESET)
+	else if(command & CMD_FACTORY_RESET)
 	{
 		FactoryReset();
 	}
-	else if(command & CLEAR_FAULT)
+	else if(command & CMD_CLEAR_FAULT)
 	{
 		FlashLogError(ERROR_NONE);
 		FlashCheckLoggedError();
 	}
+	else if(command & CMD_PPS_ENABLE)
 
 	/* Re-enable SPI */
 	SPI2->CR1 |= SPI_CR1_SPE;
@@ -281,9 +302,10 @@ void FactoryReset()
 	/* Restore all non-zero default values */
 	regs[BUF_CONFIG_REG] = BUF_CONFIG_DEFAULT;
 	regs[BUF_LEN_REG] = BUF_LEN_DEFAULT;
-	regs[DR_CONFIG_REG] = DR_CONFIG_DEFAULT;
-	regs[DIO_CONFIG_REG] = DIO_CONFIG_DEFAULT;
-	regs[INT_CONFIG_REG] = INT_CONFIG_DEFAULT;
+	regs[DIO_INPUT_CONFIG_REG] = DIO_INPUT_CONFIG_DEFAULT;
+	regs[DIO_OUTPUT_CONFIG_REG] = DIO_OUTPUT_CONFIG_DEFAULT;
+	regs[WATERMARK_INT_CONFIG_REG] = WATER_INT_CONFIG_DEFAULT;
+	regs[ERROR_INT_CONFIG_REG] = ERROR_INT_CONFIG_DEFAULT;
 	regs[IMU_SPI_CONFIG_REG] = IMU_SPI_CONFIG_DEFAULT;
 	regs[USER_SPI_CONFIG_REG] = USER_SPI_CONFIG_DEFAULT;
 	regs[FW_REV_REG] = FW_REV_DEFAULT;
@@ -301,8 +323,8 @@ void FactoryReset()
 	/* Apply all settings and reset buffer */
 	UpdateImuSpiConfig();
 	UpdateUserSpiConfig();
-	UpdateDIOConfig();
-	UpdateDRConfig();
+	UpdateDIOOutputConfig();
+	UpdateDIOInputConfig();
 	BufReset();
 
 	/* Load logged error status from flash */
@@ -531,7 +553,13 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 
 		/* Last writable reg on config page */
 		if(regIndex > USER_SCR_7_REG)
-			return regIndex;
+		{
+			/* Allow writes to the UTC timestamp regs */
+			if((regIndex != UTC_TIMESTAMP_LWR_REG)&&(regIndex != UTC_TIMESTAMP_UPR_REG))
+			{
+				return regIndex;
+			}
+		}
 	}
 	else if(selected_page == BUF_WRITE_PAGE)
 	{
@@ -592,20 +620,20 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 			update_flags |= USER_SPI_CONFIG_FLAG;
 		}
 	}
-	else if(regIndex == DIO_CONFIG_REG)
+	else if(regIndex == DIO_OUTPUT_CONFIG_REG)
 	{
 		if(isUpper)
 		{
-			/* Need to set a flag to update DIO config */
-			update_flags |= DIO_CONFIG_FLAG;
+			/* Need to set a flag to update DIO output config */
+			update_flags |= DIO_OUTPUT_CONFIG_FLAG;
 		}
 	}
-	else if(regIndex == DR_CONFIG_REG)
+	else if(regIndex == DIO_INPUT_CONFIG_REG)
 	{
 		if(isUpper)
 		{
-			/* Need to set a flag to update data ready config */
-			update_flags |= DR_CONFIG_FLAG;
+			/* Need to set a flag to update DIO input config */
+			update_flags |= DIO_INPUT_CONFIG_FLAG;
 		}
 	}
 	else if(regIndex == USER_COMMAND_REG)

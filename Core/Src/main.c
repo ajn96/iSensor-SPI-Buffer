@@ -19,9 +19,6 @@ SPI_HandleTypeDef hspi2;
 /** SPI handle for SD card master port */
 SPI_HandleTypeDef hspi3;
 
-/** TIM2 handle */
-TIM_HandleTypeDef htim2;
-
 /* User SPI DMA handles */
 DMA_HandleTypeDef hdma_spi2_rx;
 DMA_HandleTypeDef hdma_spi2_tx;
@@ -36,7 +33,6 @@ static void MX_SPI1_Init(void);
 static void MX_SPI3_Init(void);
 static void DWT_Init();
 static void MX_DMA_Init(void);
-static void InitTimestampTimer(uint32_t timerfreq);
 
 /**
   * @brief  The application entry point.
@@ -79,8 +75,8 @@ int main(void)
   /* Init buffer */
   BufReset();
 
-  /* Init sample timer (TIM2) */
-  InitTimestampTimer(1000000);
+  /* Init microsecond sample timer (TIM2)  */
+  InitMicrosecondTimer();
 
   /* Init IMU spi period timer (TIM4) */
   InitImuSpiTimer();
@@ -91,11 +87,11 @@ int main(void)
   /* Config IMU SPI settings */
   UpdateImuSpiConfig();
 
-  /* Init DIOs*/
-  UpdateDIOConfig();
+  /* Init DIO outputs */
+  UpdateDIOOutputConfig();
 
-  /* Init data ready */
-  UpdateDRConfig();
+  /* Init DIO inputs (data ready) */
+  UpdateDIOInputConfig();
 
   /* Set DR int priority (lower than user SPI - no preemption) */
   HAL_NVIC_SetPriority(EXTI9_5_IRQn, 1, 0);
@@ -131,15 +127,15 @@ int main(void)
 			  update_flags &= ~USER_COMMAND_FLAG;
 			  ProcessCommand();
 		  }
-		  else if(update_flags & DR_CONFIG_FLAG)
+		  else if(update_flags & DIO_INPUT_CONFIG_FLAG)
 		  {
-			  update_flags &= ~DR_CONFIG_FLAG;
-			  UpdateDRConfig();
+			  update_flags &= ~DIO_INPUT_CONFIG_FLAG;
+			  UpdateDIOInputConfig();
 		  }
-		  else if(update_flags & DIO_CONFIG_FLAG)
+		  else if(update_flags & DIO_OUTPUT_CONFIG_FLAG)
 		  {
-			  update_flags &= ~DIO_CONFIG_FLAG;
-			  UpdateDIOConfig();
+			  update_flags &= ~DIO_OUTPUT_CONFIG_FLAG;
+			  UpdateDIOOutputConfig();
 		  }
 		  else if(update_flags & IMU_SPI_CONFIG_FLAG)
 		  {
@@ -157,9 +153,6 @@ int main(void)
 	  {
 		  /* Check user interrupt generation status */
 		  UpdateUserInterrupt();
-
-		  /* Check if red LED needs to be set (status error) */
-		  UpdateLEDStatus();
 	  }
 
 	  /* Feed watch dog timer */
@@ -198,36 +191,6 @@ void Error_Handler(void)
 	FlashLogError(ERROR_INIT);
 	/* Reset system */
 	NVIC_SystemReset();
-}
-
-/**
-  * @brief Enables IMU sample timestamp timer
-  *
-  * @param timerfreq The desired timer freq (in Hz)
-  *
-  * @return void
-  *
-  * This function should be called as part of the buffered data
-  * acquisition startup process. The enabled timer is TIM2 (32 bit)
-  */
-static void InitTimestampTimer(uint32_t timerfreq)
-{
-	TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-
-	htim2.Instance = TIM2;
-	/* Set prescaler to give desired timer freq */
-	htim2.Init.Prescaler = (SystemCoreClock / timerfreq) - 1;
-	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim2.Init.Period = 0xFFFFFFFF;
-	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-	htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-	HAL_TIM_Base_Init(&htim2);
-
-	sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-	HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig);
-
-	/* Enable timer */
-	TIM2->CR1 = 0x1;
 }
 
 /**

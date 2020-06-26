@@ -41,19 +41,24 @@ void BufDequeueToOutputRegs();
 #define BUF_CONFIG_REG				0x01
 #define BUF_LEN_REG					0x02
 #define BUF_MAX_CNT_REG				0x03
-#define DR_CONFIG_REG				0x04
-#define DIO_CONFIG_REG				0x05
-#define INT_CONFIG_REG				0x06
-#define IMU_SPI_CONFIG_REG			0x07
-#define USER_SPI_CONFIG_REG			0x08
-#define USER_COMMAND_REG			0x09
-#define USER_SCR_0_REG				0x0A
-#define USER_SCR_7_REG				0x11
+#define DIO_INPUT_CONFIG_REG		0x04
+#define DIO_OUTPUT_CONFIG_REG		0x05
+#define WATERMARK_INT_CONFIG_REG	0x06
+#define ERROR_INT_CONFIG_REG		0x07
+#define IMU_SPI_CONFIG_REG			0x08
+#define USER_SPI_CONFIG_REG			0x09
+#define USER_COMMAND_REG			0x0A
+#define USER_SCR_0_REG				0x0B
+#define USER_SCR_7_REG				0x12
 #define FW_REV_REG					0x14
 #define ENDURANCE_REG				0x15
-#define STATUS_0_REG				0x35
-#define BUF_CNT_0_REG				0x36
-#define FAULT_CODE_REG				0x37
+#define STATUS_0_REG				0x20
+#define BUF_CNT_0_REG				0x21
+#define FAULT_CODE_REG				0x22
+#define UTC_TIMESTAMP_LWR_REG		0x23
+#define UTC_TIMESTAMP_UPR_REG		0x24
+#define TIMESTAMP_LWR_REG			0x25
+#define TIMESTAMP_UPR_REG			0x26
 #define FW_DAY_MONTH_REG			0x38
 #define FW_YEAR_REG					0x39
 #define DEV_SN_REG					0x3A
@@ -80,28 +85,31 @@ void BufDequeueToOutputRegs();
 #define FW_REV_DEFAULT				0x0100
 #define BUF_CONFIG_DEFAULT			0x0200
 #define BUF_LEN_DEFAULT				0x0014
-#define DR_CONFIG_DEFAULT			0x0011
-#define DIO_CONFIG_DEFAULT			0x0843
-#define INT_CONFIG_DEFAULT			0x0020
+#define DIO_INPUT_CONFIG_DEFAULT	0x0011
+#define DIO_OUTPUT_CONFIG_DEFAULT	0x8421
+#define WATER_INT_CONFIG_DEFAULT	0x0020
+#define ERROR_INT_CONFIG_DEFAULT	0x3FFF
 #define IMU_SPI_CONFIG_DEFAULT		0x1014
 #define USER_SPI_CONFIG_DEFAULT		0x0007
 #define FLASH_SIG_DEFAULT			0x2d9e
 
 /* Update flags definitions */
-#define DIO_CONFIG_FLAG				(1 << 0)
+#define DIO_OUTPUT_CONFIG_FLAG		(1 << 0)
 #define IMU_SPI_CONFIG_FLAG			(1 << 1)
 #define USER_SPI_CONFIG_FLAG		(1 << 2)
 #define USER_COMMAND_FLAG			(1 << 3)
-#define DR_CONFIG_FLAG				(1 << 4)
+#define DIO_INPUT_CONFIG_FLAG		(1 << 4)
 #define ENABLE_CAPTURE_FLAG			(1 << 5)
 #define DEQUEUE_BUF_FLAG			(1 << 6)
 
 /* Command register bits */
-#define CLEAR_BUFFER				(1 << 0)
-#define CLEAR_FAULT					(1 << 1)
-#define FACTORY_RESET				(1 << 2)
-#define FLASH_UPDATE				(1 << 3)
-#define SOFTWARE_RESET				(1 << 15)
+#define CMD_CLEAR_BUFFER			(1 << 0)
+#define CMD_CLEAR_FAULT				(1 << 1)
+#define CMD_FACTORY_RESET			(1 << 2)
+#define CMD_FLASH_UPDATE			(1 << 3)
+#define CMD_PPS_ENABLE				(1 << 4)
+#define CMD_PPS_DISABLE				(1 << 5)
+#define CMD_SOFTWARE_RESET			(1 << 15)
 
 /* User SPI config register bits */
 #define SPI_CONF_CPHA				(1 << 0)
@@ -115,12 +123,15 @@ void BufDequeueToOutputRegs();
 #define STATUS_SPI_OVERFLOW			(1 << 1)
 #define STATUS_OVERRUN				(1 << 2)
 #define STATUS_DMA_ERROR			(1 << 3)
-#define STATUS_FLASH_ERROR			(1 << 6)
-#define STATUS_FLASH_UPDATE			(1 << 7)
-#define STATUS_FAULT				(1 << 8)
-#define STATUS_WATCHDOG				(1 << 9)
-#define STATUS_BUF_FULL				(1 << 10)
-#define STATUS_BUF_INT				(1 << 11)
+#define STATUS_PPS_UNLOCK			(1 << 4)
+#define STATUS_FLASH_ERROR			(1 << 10)
+#define STATUS_FLASH_UPDATE			(1 << 11)
+#define STATUS_FAULT				(1 << 12)
+#define STATUS_WATCHDOG				(1 << 13)
+#define STATUS_BUF_FULL				(1 << 14)
+#define STATUS_BUF_INT				(1 << 15)
+
+/* Status clear mask (defines status bits which are sticky) */
 #define STATUS_CLEAR_MASK			(STATUS_FLASH_ERROR|STATUS_FAULT|STATUS_FLASH_UPDATE|STATUS_WATCHDOG)
 
 #endif /* INC_REGISTERS_H_ */

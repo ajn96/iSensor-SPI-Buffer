@@ -16,15 +16,6 @@
 
 /* Public function prototypes */
 void UpdateUserInterrupt();
-void UpdateDIOConfig();
-void UpdateOutputPins(uint32_t interrupt, uint32_t overflow);
-
-/** Struct representing DIO configuration settings */
-typedef struct DIOConfig
-{
-	uint32_t passPins;
-	uint32_t intPins;
-	uint32_t overflowPins;
-}DIOConfig;
+void UpdateOutputPins(uint32_t interrupt, uint32_t overflow, uint32_t error);
 
 #endif /* INC_USER_INTERRUPT_H_ */

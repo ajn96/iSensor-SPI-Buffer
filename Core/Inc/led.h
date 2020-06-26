@@ -24,6 +24,5 @@ typedef enum LED
 /* Public function prototypes */
 void TurnOnLED(LED light);
 void TurnOffLED(LED light);
-void UpdateLEDStatus();
 
 #endif /* INC_LED_H_ */
