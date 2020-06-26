@@ -1,32 +1,52 @@
-# iSensor-SPI-Buffer
-Firmware for the STM32F303 (Nucleo-64) to enable full throughput buffered data capture on Analog Devices IMUs
+# iSensor SPI Buffer
+The iSensor SPI Buffer is a hardware and software solution designed to buffer iSensor IMU data, enabling asynchronous sampling systems (specifically embedded Linux systems) such as the Raspberry Pi, BeagleBone, Nvidia Jetson, etc. to capture IMU data at high sampling rates **with accurate timestamps and** **without data loss**. 
+
+The firmware is architected around an STM32F303 to enable full-throughput, buffered data captures as well as an ADG1611 analog switch IC to enable routing STALL and DATA READY signals. The SPI buffer board is designed to be compatible with all current and future iSensor IMU products. 
+
+A custom PCB was designed to fit the profile and form factor of an ADIS1649x IMU. This profile allows the iSensor SPI Buffer to act as a drop-in solution for existing, high-performance solutions. The buffer interface is designed to mimic the iSensor page convention and SPI settings out-of-the box. 
+
+Additional hardware and software resources are linked below.
 
 [Detailed Register Map](REGISTER_DEFINITION.md)
 
-[Hardware Pin Map](PIN_MAP.md)
+[Nucleo Development Hardware Pin Map](PIN_MAP.md)
 
-[Firmware Documentation](https://ajn96.github.io/iSensor-SPI-Buffer/files.html)
+[Firmware Documentation (Doxygen)](https://ajn96.github.io/iSensor-SPI-Buffer/files.html)
 
 ## Hardware Platform
 
-* This firmware is designed to run on the Nucleo-F303RE board (based on STM32F303). Once prototype phase is complete will move to a more permanent solution based around a custom PCB that will mate directly with the IMU using its mounting holes
+This firmware is designed to operate in the STMicro processor family - specifically the STM32F303 processor. The STM32F303RET6 variant of the processor family was chosen for this application because of its large SRAM and low cost. 
 
-![STM Nucleo-64 board](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/stm_nucleo.JPG)
+![iSensor SPI Buffer Top Image](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/top_image.jpg)
 
-* The firmware and hardware will be compatible with all modern Analog Devices iSensor IMUs (excluding those which have non-standard SPI interfaces)
+![iSensor SPI Buffer Isometric Image](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/back_iso_image.jpg)
 
-![ADIS1649x IMU](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/adis_imu.JPG)
+Revision B of the PCB design includes the following features:
+
+- STM32F303RET6 processor (64k SRAM, hardware SPI peripherals, DMA fabric)
+- ADG1611 analog switch - used for mapping SYNC and DATA READY signals from the IMU to the buffer board or SPI host
+- ADP1706 high-transient linear regulator - used to regulate USB 5V and power both the IMU and buffer board
+  - Power supply selection jumper for powering the buffer board & IMU from the 24-pin IMU connector or USB
+- USB C expansion port - currently unused, but will eventually be used for pushing inertial data to a PC
+- SD card slot - currently unused, but will enable IMU data to be captured without the use of a PC or SPI host
+- LEDs - used to indicate buffer state and SPI buffer errors
+- 24-pin IMU connectors - used to interface with and pass through IMU and SPI Buffer data to and from a host using SPI
+- ADIS1650x footprint - used to enable the evaluation and use of compact iSensor IMUs
+
+The iSensor SPI Buffer was designed to sit between an iSensor IMU and the SPI host without changing any existing PCB designs. 
+
+![iSensor SPI Buffer Mounted Image](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/mounted_image.jpg)
 
 ## Development Environment
 
-The iSensor-SPI-Buffer project can be loaded and built using the free [STM32 Cube IDE](https://my.st.com/content/my_st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-ides/stm32cubeide).
+The code contained in this repository was developed using the freely available [STM32 Cube IDE](https://my.st.com/content/my_st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-ides/stm32cubeide). 
 
-## Design Requirements
+## Design Requirements and Features
 
-### IMU Register Interfacing
+### IMU Register Interface
 
 * "Invisible" SPI pass-through to an iSensor IMU, including modules that implement register pages
-* iSensor-SPI-Buffer configuration registers and buffered data acquisition registers will be placed on pages not assigned by any IMU (Pages 253 - 255)
+* iSensor-SPI-Buffer configuration registers and buffered data acquisition registers will be placed on unassigned IMU pages (Pages 253 - 255)
 * The data ready signal must be passed through by iSensor-SPI-Buffer firmware, with added phase delay to allow for any autonomous data acquisition
 
 ### Buffered Data Acquisition
