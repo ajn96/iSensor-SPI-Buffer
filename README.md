@@ -35,6 +35,8 @@ Revision B of the PCB design includes the following features:
 
 The iSensor SPI Buffer was designed to sit between an iSensor IMU and the SPI host without changing any existing PCB designs. 
 
+**Note:** A [TC2030-IDC cable](https://www.tag-connect.com/product/tc2030-idc-6-pin-tag-connect-plug-of-nails-spring-pin-cable-with-legs) must be used to interface with the SWD pads on the Rev B PCB. 
+
 ![iSensor SPI Buffer Mounted Image](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/mounted_image.jpg)
 
 ## Development Environment
