@@ -22,4 +22,4 @@ Commands are sent to the CLI over the virtual COM port. Each command starts with
 | read | Register address | N/A | N/A | Read a single register, at the address provided |
 | read | Start address | End address | N/A | Read multiple registers, accross the address range provided |
 | read | Start address | End address | Number of reads | Read multiple registers, accross the address range provided, number of reads times. Each set of reads is terminated by a new line |
-| write | Register address | Write Value | N/A | N/A | Write a byte to the specified register |
+| write | Register address | Write Value | N/A | Write a byte to the specified register |
