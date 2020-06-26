@@ -49,7 +49,7 @@ void UpdateUserInterrupt()
 	/* Apply watermark to status reg */
 	if(interrupt)
 	{
-		regs[STATUS_0_REG] |= STATUS_BUF_INT;
+		regs[STATUS_0_REG] |= STATUS_BUF_WATERMARK;
 		regs[STATUS_1_REG] = regs[STATUS_0_REG];
 	}
 

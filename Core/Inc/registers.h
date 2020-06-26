@@ -88,10 +88,10 @@ void BufDequeueToOutputRegs();
 #define DIO_INPUT_CONFIG_DEFAULT	0x0011
 #define DIO_OUTPUT_CONFIG_DEFAULT	0x8421
 #define WATER_INT_CONFIG_DEFAULT	0x0020
-#define ERROR_INT_CONFIG_DEFAULT	0x3FFF
+#define ERROR_INT_CONFIG_DEFAULT	0xFFFC
 #define IMU_SPI_CONFIG_DEFAULT		0x1014
 #define USER_SPI_CONFIG_DEFAULT		0x0007
-#define FLASH_SIG_DEFAULT			0x2d9e
+#define FLASH_SIG_DEFAULT			0x9F2F
 
 /* Update flags definitions */
 #define DIO_OUTPUT_CONFIG_FLAG		(1 << 0)
@@ -119,17 +119,17 @@ void BufDequeueToOutputRegs();
 #define SPI_CONF_MASK				(SPI_CONF_CPHA|SPI_CONF_CPOL|SPI_CONF_MSB_FIRST|SPI_CONF_BURST_RD)
 
 /* Status register bits */
-#define STATUS_SPI_ERROR			(1 << 0)
-#define STATUS_SPI_OVERFLOW			(1 << 1)
-#define STATUS_OVERRUN				(1 << 2)
-#define STATUS_DMA_ERROR			(1 << 3)
-#define STATUS_PPS_UNLOCK			(1 << 4)
-#define STATUS_FLASH_ERROR			(1 << 10)
-#define STATUS_FLASH_UPDATE			(1 << 11)
-#define STATUS_FAULT				(1 << 12)
-#define STATUS_WATCHDOG				(1 << 13)
-#define STATUS_BUF_FULL				(1 << 14)
-#define STATUS_BUF_INT				(1 << 15)
+#define STATUS_BUF_WATERMARK		(1 << 0)
+#define STATUS_BUF_FULL				(1 << 1)
+#define STATUS_SPI_ERROR			(1 << 2)
+#define STATUS_SPI_OVERFLOW			(1 << 3)
+#define STATUS_OVERRUN				(1 << 4)
+#define STATUS_DMA_ERROR			(1 << 5)
+#define STATUS_PPS_UNLOCK			(1 << 6)
+#define STATUS_FLASH_ERROR			(1 << 12)
+#define STATUS_FLASH_UPDATE			(1 << 13)
+#define STATUS_FAULT				(1 << 14)
+#define STATUS_WATCHDOG				(1 << 15)
 
 /* Status clear mask (defines status bits which are sticky) */
 #define STATUS_CLEAR_MASK			(STATUS_FLASH_ERROR|STATUS_FAULT|STATUS_FLASH_UPDATE|STATUS_WATCHDOG)

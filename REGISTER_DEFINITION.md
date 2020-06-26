@@ -11,17 +11,22 @@
 | 0x08 | DIO_INPUT_CONFIG | 0x0011 | R/W | T | DIO input configuration. Allows data ready (from IMU) and PPS (from host) input selection |
 | 0x0A | DIO_OUTPUT_CONFIG | 0x8421 | R/W | T | DIO output configuration. Sets up pin pass-through and assigns interrupts |
 | 0x0C | WATERMARK_INT_CONFIG | 0x0020 | R/W | T | Watermark interrupt configuration register |
-| 0x0E | IMU_SPI_CONFIG | 0x2014 | R/W | T | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
-| 0x10 | USER_SPI_CONFIG | 0x0007 | R/W | T | User SPI configuration (mode, etc.) |
-| 0x12 | USER_COMMAND | N/A | W | T | Command register (flash update, factory reset, clear buffer, software reset) |
-| 0x14 | USER_SCR_0 | 0x0000 | R/W | T | User scratch 0 register |
+| 0x0E | ERROR_INT_CONFIG | 0x03FF | R/W | T | Error interrupt configuration register |
+| 0x10 | IMU_SPI_CONFIG | 0x2014 | R/W | T | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
+| 0x12 | USER_SPI_CONFIG | 0x0007 | R/W | T | User SPI configuration (mode, etc.) |
+| 0x14 | USER_COMMAND | N/A | W | T | Command register (flash update, factory reset, clear buffer, software reset) |
+| 0x16 | USER_SCR_0 | 0x0000 | R/W | T | User scratch 0 register |
 | ... | ... | ... | ... | ... | ... |
-| 0x22 | USER_SCR_7 | 0x0000 | R/W | T | User scratch 7 register |
+| 0x24 | USER_SCR_7 | 0x0000 | R/W | T | User scratch 7 register |
 | 0x28 | FW_REV | N/A | R | T | Firmware revision |
 | 0x2A | ENDURANCE | N/A | R | T | Flash update counter |
-| 0x6A | FAULT_CODE | 0x0000 | R | N/A | Fault code, stored in case of a hard fault exception. This register is stored on a separate flash page from the primary register array |
-| 0x6C | STATUS | N/A | R | F | Device status register. Clears on read |
-| 0x6E | BUF_CNT | 0x0000 | R | F | The number of samples in buffer |
+| 0x40 | STATUS | N/A | R | F | Device status register. Clears on read |
+| 0x42 | BUF_CNT | 0x0000 | R | F | The number of samples in buffer |
+| 0x44 | FAULT_CODE | 0x0000 | R | N/A | Fault code, stored in case of a hard fault exception. This register is stored on a separate flash page from the primary register array |
+| 0x46 | UTC_TIMESTAMP_LWR | 0x0000 | R/W | F | Lower 16 bits of UTC timestamp (PPS counter) |
+| 0x48 | UTC_TIMESTAMP_UPR | 0x0000 | R/W | F | Upper 16 bits of UTC timestamp (PPS counter) |
+| 0x4A | TIMESTAMP_LWR | 0x0000 | R | F | Lower 16 bits of microsecond timestamp |
+| 0x4C | TIMESTAMP_UPR | 0x0000 | R | F | Upper 16 bits of microsecond timestamp |
 | 0x70 | FW_DAY_MONTH | N/A | R | T | Firmware build date |
 | 0x72 | FW_YEAR | N/A | R | T | Firmware build year |
 | 0x74 | DEV_SN_0 | N/A | R | T | Processor core serial number register, word 0 |
@@ -121,9 +126,9 @@ For each field in DIO_OUTPUT_CONFIG, the following pin mapping is made:
 * Bit3 -> DIO4
 
 The following default values will be used for DIO_OUTPUT_CONFIG:
-* PIN_PASS: 0x3. DIO1 (typically acts as IMU data ready), and DIO2 (typically acts as sync input) will be passed through using an Analog Switch. This allows for direct reading of the data ready signal and control over sample synchronization.
-* WATERMARK_INT: 0x4. The buffer watermark interrupt is applied to DIO3 by default
-* OVERFLOW_INT: 0x0. The buffer overflow interrupt is disabled by default
+* PIN_PASS: 0x1. DIO1 (typically acts as IMU data ready) will be passed through using an Analog Switch. This allows for direct reading of the data ready signal
+* WATERMARK_INT: 0x2. The buffer watermark interrupt is applied to DIO2 by default
+* OVERFLOW_INT: 0x4. The buffer overflow interrupt is applied to DIO3 by default
 * ERROR_INT: 0x8. The error interrupt is applied to DIO4 by default
 
 **WATERMARK_INT_CONFIG**

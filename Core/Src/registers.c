@@ -258,6 +258,13 @@ void ProcessCommand()
 		FlashCheckLoggedError();
 	}
 	else if(command & CMD_PPS_ENABLE)
+	{
+		EnablePPSTimer();
+	}
+	else if(command & CMD_PPS_DISABLE)
+	{
+		DisablePPSTimer();
+	}
 
 	/* Re-enable SPI */
 	SPI2->CR1 |= SPI_CR1_SPE;
