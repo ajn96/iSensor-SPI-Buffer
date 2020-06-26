@@ -172,27 +172,29 @@ void UpdateDIOConfig()
 
 	/* SW_IN1 (PB6) */
 	if(config.passPins & 0x1)
-		GPIOB->ODR |= GPIO_PIN_6;
-	else
 		GPIOB->ODR &= ~GPIO_PIN_6;
+	else
+		GPIOB->ODR |= GPIO_PIN_6;
+
 
 	/* SW_IN2 (PB7) */
 	if(config.passPins & 0x2)
-		GPIOB->ODR |= GPIO_PIN_7;
-	else
 		GPIOB->ODR &= ~GPIO_PIN_7;
+	else
+		GPIOB->ODR |= GPIO_PIN_7;
+
 
 	/* SW_IN3 (PC8) */
 	if(config.passPins & 0x4)
-		GPIOC->ODR |= GPIO_PIN_8;
-	else
 		GPIOC->ODR &= ~GPIO_PIN_8;
+	else
+		GPIOC->ODR |= GPIO_PIN_8;
 
 	/* SW_IN4 (PC9) */
 	if(config.passPins & 0x8)
-		GPIOC->ODR |= GPIO_PIN_9;
-	else
 		GPIOC->ODR &= ~GPIO_PIN_9;
+	else
+		GPIOC->ODR |= GPIO_PIN_9;
 
 	/* For each DIOx_Slave pin, set as input if not used as overflow/interrupt */
 
