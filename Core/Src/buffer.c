@@ -63,9 +63,7 @@ uint32_t BufCanAddElement()
   *
   * @return Pointer to the element retrieved from the buffer
   *
-  * When running in LIFO mode (stack) this function takes from the head
-  * of the buffer and moves the header pointer up. When running in FIFO
-  * mode (queue) this function takes from the tail and moves the tail
+  * In FIFO mode (queue) this function takes from the tail and moves the tail
   * pointer down.
   */
 uint8_t* BufTakeElement()
@@ -81,11 +79,10 @@ uint8_t* BufTakeElement()
 		buf_count--;
 		buf_tail += buf_increment;
 
-		/* Check that buffer header hasn't wrapped around
-		 * We can check if greater because buf_head is unsigned, so when it goes negative will become very large */
+		/* Check that buffer tail hasn't wrapped around */
 		if(buf_tail > buf_lastEntryIndex)
 		{
-			/* reset to end of buffer */
+			/* reset to top of buffer */
 			buf_tail = 0;
 		}
 	}
@@ -116,17 +113,15 @@ uint8_t* BufTakeElement()
 uint8_t* BufAddElement()
 {
 	uint8_t* buf_addr = buf;
-	if(buf_count == 0)
+	if(buf_count < buf_maxCount)
 	{
-		/* Increment buffer count */
+		/* Increment counter */
 		buf_count++;
-		/* Return pointer to current buffer head without moving head */
+
+		/* Set return pointer to current buffer head */
 		buf_addr += buf_head;
-	}
-	else if(buf_count < buf_maxCount)
-	{
-		/* Increment counter and move head down */
-		buf_count++;
+
+		/* Move buffer head down */
 		buf_head += buf_increment;
 
 		/* Check if head has wrapped around */
@@ -134,9 +129,6 @@ uint8_t* BufAddElement()
 		{
 			buf_head = 0;
 		}
-
-		/* Return pointer to current buffer head */
-		buf_addr += buf_head;
 	}
 	else
 	{
@@ -144,13 +136,10 @@ uint8_t* BufAddElement()
 		/* Buffer is full */
 		if(buf_replaceOldest)
 		{
-			/* Move head down */
-			buf_head += buf_increment;
-			if(buf_head > buf_lastEntryIndex)
-			{
-				buf_head = 0;
-			}
-			/* Move tail down. Tail should be one entry in front of head */
+			/* Set head to current tail */
+			buf_head = buf_tail;
+
+			/* Move tail down. Tail should be one entry ahead of head */
 			buf_tail += buf_increment;
 			if(buf_tail > buf_lastEntryIndex)
 			{
