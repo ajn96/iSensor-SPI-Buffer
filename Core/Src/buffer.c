@@ -28,9 +28,6 @@ uint8_t buf[BUF_SIZE] __attribute__((aligned (32)));
 /** Increment per buffer entry. This is buffer len + 4, padded to multiple of 4 */
 uint32_t buf_increment = 64;
 
-/** Buffer mode ( 0 -> FIFO, 1 -> LIFO) */
-uint32_t buf_LIFOMode = 0;
-
 /** Buffer full setting (0 -> stop adding, 1 -> replace oldest) */
 uint32_t buf_replaceOldest = 0;
 
@@ -74,58 +71,29 @@ uint32_t BufCanAddElement()
 uint8_t* BufTakeElement()
 {
 	uint8_t* buf_addr = buf;
-	if(buf_LIFOMode)
+	/* In FIFO mode take from the tail and move tail down */
+	if(buf_count)
 	{
-		/* In LIFO mode take from the head and move it up */
-		if(buf_count)
-		{
-			/*Get pointer to the current head entry */
-			buf_addr += buf_head;
+		/*Get pointer to the current tail entry */
+		buf_addr += buf_tail;
 
-			/* Decrement counter and move head up */
-			buf_count--;
-			buf_head -= buf_increment;
+		/* Decrement counter and move tail down */
+		buf_count--;
+		buf_tail += buf_increment;
 
-			/* Check that buffer tail hasn't wrapped around */
-			if(buf_head > buf_lastEntryIndex)
-			{
-				/* reset head to end of buffer */
-				buf_head = buf_lastEntryIndex;
-			}
-		}
-		else
+		/* Check that buffer header hasn't wrapped around
+		 * We can check if greater because buf_head is unsigned, so when it goes negative will become very large */
+		if(buf_tail > buf_lastEntryIndex)
 		{
-			/*Return pointer to current head and leave in place for 0 and 1 entries */
-			buf_addr += buf_head;
-			buf_count = 0;
+			/* reset to end of buffer */
+			buf_tail = 0;
 		}
 	}
 	else
 	{
-		/* In FIFO mode take from the tail and move tail down */
-		if(buf_count)
-		{
-			/*Get pointer to the current tail entry */
-			buf_addr += buf_tail;
-
-			/* Decrement counter and move tail down */
-			buf_count--;
-			buf_tail += buf_increment;
-
-			/* Check that buffer header hasn't wrapped around
-			 * We can check if greater because buf_head is unsigned, so when it goes negative will become very large */
-			if(buf_tail > buf_lastEntryIndex)
-			{
-				/* reset to end of buffer */
-				buf_tail = 0;
-			}
-		}
-		else
-		{
-			/*Return pointer to current tail and leave in place for zero entries */
-			buf_addr += buf_tail;
-			buf_count = 0;
-		}
+		/*Return pointer to current tail and leave in place for zero entries */
+		buf_addr += buf_tail;
+		buf_count = 0;
 	}
 	/* Update buffer count register */
 	regs[BUF_CNT_0_REG] = buf_count;
@@ -229,13 +197,10 @@ void BufReset()
 	buf_numWords32 = buf_increment >> 2;
 
 	/* Mask out unused bits in BUF_CONFIG */
-	regs[BUF_CONFIG_REG] &= 0xFF03;
-
-	/* Get the mode setting */
-	buf_LIFOMode = regs[BUF_CONFIG_REG] & 0x1;
+	regs[BUF_CONFIG_REG] &= 0xFF01;
 
 	/* Get replacement setting */
-	buf_replaceOldest = (regs[BUF_CONFIG_REG] & 0x2) >> 1;
+	buf_replaceOldest = (regs[BUF_CONFIG_REG] & 0x1);
 
 	/* Find max buffer count and index */
 	buf_maxCount = BUF_SIZE / buf_increment;

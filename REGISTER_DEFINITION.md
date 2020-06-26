@@ -5,7 +5,7 @@
 | Address | Register Name | Default | R/W | Flash Backup | Description |
 | --- | --- | --- | --- | --- | --- |
 | 0x00 | PAGE_ID | 0x00FD | R/W | T | Page register. Used to change the currently selected register page |
-| 0x02 | BUF_CONFIG | 0x0200 | R/W | T | Buffer configuration settings (FIFO/LIFO, SPI word size, overflow behavior) |
+| 0x02 | BUF_CONFIG | 0x0200 | R/W | T | Buffer configuration settings (SPI word size, overflow behavior) |
 | 0x04 | BUF_LEN | 0x0014 | R/W | T | Length (in bytes) of each buffered data capture |
 | 0x06 | BUF_MAX_CNT | N/A | R | T | Maximum entries which can be stored in the buffer. Determined by BUF_LEN. Read-only register |
 | 0x08 | DR_CONFIG | 0x0011 | R/W | T | Data ready input (IMU to iSensor-SPI-Buffer) configuration |
@@ -67,9 +67,8 @@
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 0 | MODE | The buffer mode (0 is FIFO mode, 1 is LIFO mode) |
-| 1 | OVERFLOW | Buffer overflow behavior. 0 stop sampling, 1 replace oldest data |
-| 7:2 | RESERVED | Currently unused |
+| 0 | OVERFLOW | Buffer overflow behavior. 0 stop sampling, 1 replace oldest data |
+| 7:1 | RESERVED | Currently unused |
 | 15:8 | SPIWORDSIZE | SPI word size for buffered capture (in bytes). Valid range 2 - 64 |
 
 **BUF_LEN**
