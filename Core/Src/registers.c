@@ -131,7 +131,7 @@ uint16_t ReadReg(uint8_t regAddr)
 
 		if(regIndex > BUF_RETRIEVE_REG)
 		{
-			if(CurrentBufEntry)
+			if(CurrentBufEntry && (regIndex < (BUF_DATA_0_REG + (regs[BUF_LEN_REG] >> 1))))
 			{
 				return CurrentBufEntry[regIndex - BUF_TIMESTAMP_REG];
 			}
