@@ -77,7 +77,7 @@ uint8_t* BufTakeElement()
 	if(buf_LIFOMode)
 	{
 		/* In LIFO mode take from the head and move it up */
-		if(buf_count > 1)
+		if(buf_count)
 		{
 			/*Get pointer to the current head entry */
 			buf_addr += buf_head;
@@ -103,7 +103,7 @@ uint8_t* BufTakeElement()
 	else
 	{
 		/* In FIFO mode take from the tail and move tail down */
-		if(buf_count > 1)
+		if(buf_count)
 		{
 			/*Get pointer to the current tail entry */
 			buf_addr += buf_tail;
@@ -122,7 +122,7 @@ uint8_t* BufTakeElement()
 		}
 		else
 		{
-			/*Return pointer to current tail and leave in place for zero and 1 entries */
+			/*Return pointer to current tail and leave in place for zero entries */
 			buf_addr += buf_tail;
 			buf_count = 0;
 		}
