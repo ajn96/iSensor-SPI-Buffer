@@ -43,14 +43,17 @@ static volatile uint32_t WordsCaptured;
 /** Sample time stamp */
 static uint32_t SampleTimestamp;
 
-/* Previous time stamp */
+/** Previous time stamp */
 static uint32_t LastTimestamp;
 
-/* Buffer delta time */
+/** Buffer delta time */
 static uint16_t DeltaTime;
 
-/* Buffer signature */
+/** Buffer signature */
 static uint32_t BufferSignature;
+
+/** SPI MISO data */
+static uint32_t SPIMISO;
 
 /**
   * @brief IMU data ready ISR. Kicks off data capture process.
@@ -125,10 +128,16 @@ void EXTI9_5_IRQHandler()
 	SPI1->DR = g_regs[BUF_WRITE_0_REG];
 }
 
+/**
+  * @brief IMU SPI timer ISR.
+  *
+  * @return void
+  *
+  * This interrupt retrieves the SPI data read on the previous SPI transaction. It
+  * then starts the next SPI transaction (if needed) and returns.
+  */
 void TIM4_IRQHandler()
 {
-	uint32_t miso;
-
 	/* Clear timer interrupt flag */
 	TIM4->SR &= ~TIM_SR_UIF;
 
@@ -147,13 +156,13 @@ void TIM4_IRQHandler()
 	while(!(SPI1->SR & SPI_SR_RXNE));
 
 	/* Grab SPI data from last transaction */
-	miso = SPI1->DR;
+	SPIMISO = SPI1->DR;
 
 	/* Add to signature */
-	BufferSignature += miso;
+	BufferSignature += SPIMISO;
 
-	BufferElementHandle[0] = (miso & 0xFF);
-	BufferElementHandle[1] = (miso >> 8);
+	BufferElementHandle[0] = (SPIMISO & 0xFF);
+	BufferElementHandle[1] = (SPIMISO >> 8);
 	BufferElementHandle += 2;
 
 	/* Increment words captured count */
