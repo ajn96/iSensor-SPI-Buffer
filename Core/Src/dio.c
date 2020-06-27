@@ -16,6 +16,9 @@ volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 /** Struct storing current DIO output config. Global scope */
 volatile DIOConfig g_pinConfig = {};
 
+/** Interrupt mask for the data ready EXTI interrupt. Global scope */
+uint32_t g_DrInterruptMask;
+
 /* Private function prototypes */
 static void ValidateDIOOutputConfig();
 static uint16_t BuildDIOOutputConfigReg();
@@ -85,6 +88,9 @@ void UpdateDIOInputConfig()
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
 		else
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+
+		/* Set data ready interrupt mask */
+		g_DrInterruptMask = (1 << 5);
 	}
 	else
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -101,6 +107,9 @@ void UpdateDIOInputConfig()
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
 		else
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+
+		/* Set data ready interrupt mask */
+		g_DrInterruptMask = (1 << 9);
 	}
 	else
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -117,6 +126,9 @@ void UpdateDIOInputConfig()
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
 		else
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+
+		/* Set data ready interrupt mask */
+		g_DrInterruptMask = (1 << 6);
 	}
 	else
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -133,6 +145,9 @@ void UpdateDIOInputConfig()
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
 		else
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+
+		/* Set data ready interrupt mask */
+		g_DrInterruptMask = (1 << 9);
 	}
 	else
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -300,6 +315,8 @@ static uint16_t BuildDIOOutputConfigReg()
   */
 static void ValidateDIOOutputConfig()
 {
+	uint32_t ppsPins = g_regs[DIO_INPUT_CONFIG_REG] >> 8;
+
 	/* Clear upper bits in each */
 	g_pinConfig.passPins &= 0xF;
 	g_pinConfig.watermarkPins &= 0xF;
@@ -310,6 +327,11 @@ static void ValidateDIOOutputConfig()
 	g_pinConfig.overflowPins &= ~g_pinConfig.passPins;
 	g_pinConfig.watermarkPins &= ~g_pinConfig.passPins;
 	g_pinConfig.errorPins &= ~g_pinConfig.passPins;
+
+	/* Any pins set as PPS input pins cannot be interrupt pins (PPS gets priority) */
+	g_pinConfig.overflowPins &= ~ppsPins;
+	g_pinConfig.watermarkPins &= ~ppsPins;
+	g_pinConfig.errorPins &= ~ppsPins;
 
 	/* Interrupt priority: Error -> Watermark -> Overflow */
 	g_pinConfig.watermarkPins &= ~g_pinConfig.errorPins;

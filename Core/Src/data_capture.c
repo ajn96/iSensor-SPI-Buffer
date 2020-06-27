@@ -19,6 +19,15 @@ volatile extern uint32_t g_wordsPerCapture;
 /* Capture in progress (from isr.c) */
 volatile extern uint32_t g_captureInProgress;
 
+/** PPS input interrupt mask (from timer.c) */
+extern uint32_t g_PPSInterruptMask;
+
+/** Data ready input interrupt mask (from dio.c) */
+extern uint32_t g_DrInterruptMask;
+
+/** Track EXTI interrupt mask for active data ready signal. Global scope */
+uint32_t g_ActiveDrInterruptMask;
+
 /* Track if a capture is currently running */
 static volatile uint32_t capture_running = 0;
 
@@ -32,8 +41,11 @@ static volatile uint32_t capture_running = 0;
   */
 void EnableDataCapture()
 {
-	/* Clear pending interrupts */
-	EXTI->PR |= (0x1F << 5);
+	/* Clear pending data ready interrupts */
+	EXTI->PR |= DATA_READY_INT_MASK;
+
+	/* Set active mask based on latest DR settings */
+	g_ActiveDrInterruptMask = g_DrInterruptMask;
 
 	/* Set 16-bit words per capture */
 	g_wordsPerCapture = g_regs[BUF_LEN_REG] >> 1;
@@ -55,15 +67,19 @@ void EnableDataCapture()
   */
 void DisableDataCapture()
 {
-	/* Disable data ready interrupts */
-	NVIC_DisableIRQ(EXTI9_5_IRQn);
+	/* Disable EXTI interrupt if PPS mode is not using interrupt also */
+	if(!g_PPSInterruptMask)
+		NVIC_DisableIRQ(EXTI9_5_IRQn);
 
 	/* Disable capture timer */
 	TIM4->CR1 &= ~0x1;
 
 	/* Clear any pending interrupts */
-	EXTI->PR |= (0x1F << 5);
+	EXTI->PR |= DATA_READY_INT_MASK;
 	TIM4->SR &= ~TIM_SR_UIF;
+
+	/* Set active interrupt mask to 0 */
+	g_ActiveDrInterruptMask = 0;
 
 	/* Capture in progress set to false */
 	g_captureInProgress = 0;

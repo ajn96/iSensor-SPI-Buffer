@@ -35,4 +35,6 @@ void UpdateDIOInputConfig();
 void UpdateDIOOutputConfig();
 uint32_t GetHardwareID();
 
+#define DATA_READY_INT_MASK 	(1<<5)|(1<<6)|(1<<9)
+
 #endif /* INC_DIO_H_ */

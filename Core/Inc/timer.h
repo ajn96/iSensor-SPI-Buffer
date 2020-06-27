@@ -20,6 +20,7 @@ uint32_t GetMicrosecondTimestamp();
 
 void EnablePPSTimer();
 void DisablePPSTimer();
+void IncrementPPSTime();
 uint32_t GetPPSTimestamp();
 
 void SleepMicroseconds(uint32_t microseconds);

@@ -12,10 +12,11 @@
 #define INC_ISR_H_
 
 /* Includes */
-#include <imu_spi.h>
+#include "imu_spi.h"
 #include "registers.h"
 #include "buffer.h"
 #include "data_capture.h"
+#include "timer.h"
 
 /* User SPI port related interrupts */
 void SPI2_IRQHandler(void);
@@ -26,6 +27,7 @@ void DMA1_Channel5_IRQHandler(void);
 
 /* Data ready related interrupts */
 void EXTI9_5_IRQHandler();
+void EXTI4_IRQHandler();
 void TIM4_IRQHandler();
 
 /* Fault exceptions */
