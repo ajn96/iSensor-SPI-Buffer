@@ -191,21 +191,20 @@ The following default values will be used for DIO_OUTPUT_CONFIG:
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 0 | SPI_ERROR | SPI error reported by the user SPI or IMU SPI peripheral |
-| 1 | SPI_OVERFLOW | User SPI data overflow (min stall time violated). This bit is set when a user SPI interrupt is recieved, and the previous user SPI interrupt is still being processed |
-| 2 | OVERRUN | Data capture overrun. Set when processor receives an IMU data ready interrupt and has not finished the previous data capture |
-| 3 | DMA_ERROR | Set when processor DMA peripheral reports an error (user SPI DMA for burst read or IMU SPI DMA) |
-| 4 | PPS_UNLOCK | Set when the PPS synchronization clock is enabled, but no PPS signal has been recieved for over 1100ms |
-| 5 | RESERVED | Currently unused |
-| 6 | FLASH_ERROR | Set when the register signature stored in flash (stored during flash update) does not match signature calculated from SRAM register contents at initialization. Sticky |
-| 7 | FLASH_UPDATE_ERROR | Set when the flash update routine fails. Sticky |
-| 8 | FAULT | Set when the processor core generates a fault exception (bus fault, memory fault, hard fault, initialization error). Fault exceptions will force a system reset. Sticky |
-| 9 | WATCHDOG | Set when the processor has reset due to a watchdog timeout. Sticky |
-| 10 | BUF_FULL | Set when buffer is full (overflow interrupt) |
-| 11 | BUF_INTERRUPT | Set when buffer data ready interrupt condition is met (data ready interrupt) |
-| 15:12 | TC | User SPI transaction counter. Increments by one with each SPI transaction |
+| 0 | BUF_WATERMARK | Set when buffer watermark interrupt condition is met (data ready interrupt) |
+| 1 | BUF_FULL | Set when buffer is full (overflow interrupt) |
+| 2 | SPI_ERROR | SPI error reported by the user SPI or IMU SPI peripheral |
+| 3 | SPI_OVERFLOW | User SPI data overflow (min stall time violated). This bit is set when a user SPI interrupt is recieved, and the previous user SPI interrupt is still being processed |
+| 4 | OVERRUN | Data capture overrun. Set when processor receives an IMU data ready interrupt and has not finished the previous data capture |
+| 5 | DMA_ERROR | Set when processor DMA peripheral reports an error (user SPI DMA for burst read or IMU SPI DMA) |
+| 6 | PPS_UNLOCK | Set when the PPS synchronization clock is enabled, but no PPS signal has been recieved for over 1100ms |
+| 11:7 | RESERVED | Currently unused |
+| 12 | FLASH_ERROR | Set when the register signature stored in flash (stored during flash update) does not match signature calculated from SRAM register contents at initialization. Sticky |
+| 13 | FLASH_UPDATE_ERROR | Set when the flash update routine fails. Sticky |
+| 14 | FAULT | Set when the processor core generates a fault exception (bus fault, memory fault, hard fault, initialization error). Fault exceptions will force a system reset. Sticky |
+| 15 | WATCHDOG | Set when the processor has reset due to a watchdog timeout. Sticky |
 
-Excluding the transaction counter field and bits identified as sticky, this register clears on read. The values in this register are used to generate an error interrupt, if error interrupts are enabled.
+Excluding bits identified as sticky, this register clears on read. The values in this register are used to generate an error interrupt, if error interrupts are enabled.
 
 **UTC_TIME_LWR**
 
