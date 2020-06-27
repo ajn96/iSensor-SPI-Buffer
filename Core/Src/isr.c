@@ -14,7 +14,7 @@
 volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
 /* Buffer internal count variable */
-volatile extern uint32_t buf_count;
+volatile extern uint32_t g_bufCount;
 
 /* IMU stall time (from pass through module) */
 extern uint32_t imu_stalltime_us;
@@ -174,7 +174,7 @@ void TIM4_IRQHandler()
 		BufferSigHandle[0] = BufferSignature;
 
 		/* Update buffer count regs with new count */
-		g_regs[BUF_CNT_0_REG] = buf_count;
+		g_regs[BUF_CNT_0_REG] = g_bufCount;
 		g_regs[BUF_CNT_1_REG] = g_regs[BUF_CNT_0_REG];
 
 		/* Mark capture as done */

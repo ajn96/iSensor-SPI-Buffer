@@ -10,38 +10,38 @@
 
 #include "buffer.h"
 
-/* register array */
+/** Global register array. From registers.c */
 extern volatile uint16_t g_regs[];
 
-/** Index within buffer array for buffer head */
-volatile uint32_t buf_head = 0;
+/** Index for the last buffer output register. This is based on buffer size. Global scope */
+uint32_t g_bufLastRegIndex;
 
-/** Index within buffer array for buffer tail */
-volatile uint32_t buf_tail = 0;
+/** Number of elements currently stored in the buffer. Global scope */
+uint32_t g_bufCount = 0;
 
-/** Number of elements currently stored in the buffer */
-volatile uint32_t buf_count = 0;
+/** Number of 32-bit words per buffer entry. Global scope */
+uint32_t g_bufNumWords32;
 
 /** The buffer storage (aligned to allow word-wise retrieval of buffer data) */
-uint8_t buf[BUF_SIZE] __attribute__((aligned (32)));
+static uint8_t buf[BUF_SIZE] __attribute__((aligned (32)));
+
+/** Index within buffer array for buffer head */
+static volatile uint32_t buf_head = 0;
+
+/** Index within buffer array for buffer tail */
+static volatile uint32_t buf_tail = 0;
 
 /** Increment per buffer entry. This is buffer len + 4, padded to multiple of 4 */
-uint32_t buf_increment = 64;
+static uint32_t buf_increment = 64;
 
 /** Buffer full setting (0 -> stop adding, 1 -> replace oldest) */
-uint32_t buf_replaceOldest = 0;
+static uint32_t buf_replaceOldest = 0;
 
 /** Buffer max count (determined once when buffer is initialized) */
-uint32_t buf_maxCount;
+static uint32_t buf_maxCount;
 
 /** Position at which buffer needs to wrap around */
-uint32_t buf_lastEntryIndex;
-
-/** Index for the last buffer output register. This is based on buffer size */
-uint32_t buf_lastRegIndex;
-
-/** Number of 32-bit words per buffer entry */
-uint32_t buf_numWords32;
+static uint32_t buf_lastEntryIndex;
 
 /**
   * @brief Checks if an element can be added to the buffer
@@ -59,7 +59,7 @@ uint32_t BufCanAddElement()
 	}
 
 	/* Buffer full and replace oldest set to false */
-	if(buf_count >= buf_maxCount)
+	if(g_bufCount >= buf_maxCount)
 	{
 		return 0;
 	}
@@ -80,13 +80,13 @@ uint8_t* BufTakeElement()
 {
 	uint8_t* buf_addr = buf;
 	/* In FIFO mode take from the tail and move tail down */
-	if(buf_count)
+	if(g_bufCount)
 	{
 		/*Get pointer to the current tail entry */
 		buf_addr += buf_tail;
 
 		/* Decrement counter and move tail down */
-		buf_count--;
+		g_bufCount--;
 		buf_tail += buf_increment;
 
 		/* Check that buffer tail hasn't wrapped around */
@@ -100,10 +100,10 @@ uint8_t* BufTakeElement()
 	{
 		/*Return pointer to current tail and leave in place for zero entries */
 		buf_addr += buf_tail;
-		buf_count = 0;
+		g_bufCount = 0;
 	}
 	/* Update buffer count register */
-	g_regs[BUF_CNT_0_REG] = buf_count;
+	g_regs[BUF_CNT_0_REG] = g_bufCount;
 	g_regs[BUF_CNT_1_REG] = g_regs[BUF_CNT_0_REG];
 	/* Return pointer to the buffer entry */
 	return buf_addr;
@@ -123,10 +123,10 @@ uint8_t* BufTakeElement()
 uint8_t* BufAddElement()
 {
 	uint8_t* buf_addr = buf;
-	if(buf_count < buf_maxCount)
+	if(g_bufCount < buf_maxCount)
 	{
 		/* Increment counter */
-		buf_count++;
+		g_bufCount++;
 
 		/* Set return pointer to current buffer head */
 		buf_addr += buf_head;
@@ -142,7 +142,7 @@ uint8_t* BufAddElement()
 	}
 	else
 	{
-		buf_count = buf_maxCount;
+		g_bufCount = buf_maxCount;
 		/* Buffer is full */
 		if(buf_replaceOldest)
 		{
@@ -178,7 +178,7 @@ void BufReset()
 	/* Reset head/tail and count to 0 */
 	buf_head = 0;
 	buf_tail = 0;
-	buf_count = 0;
+	g_bufCount = 0;
 
 	/* Enforce min/max settings for buffer increment */
 	if(g_regs[BUF_LEN_REG] < BUF_MIN_ENTRY)
@@ -187,7 +187,7 @@ void BufReset()
 		g_regs[BUF_LEN_REG] = BUF_MAX_ENTRY;
 
 	/* Set the index for the last buffer entry */
-	buf_lastRegIndex = (BUF_DATA_0_REG + (g_regs[BUF_LEN_REG] >> 1));
+	g_bufLastRegIndex = (BUF_DATA_0_REG + (g_regs[BUF_LEN_REG] >> 1));
 
 	/* Get the buffer size setting (8 bytes added per buffer for time stamp, delta time, sig) */
 	buf_increment = g_regs[BUF_LEN_REG] + 8;
@@ -196,7 +196,7 @@ void BufReset()
 	buf_increment = (buf_increment + 3) & ~(0x3);
 
 	/* Number of 32-bit words per buffer entry */
-	buf_numWords32 = buf_increment >> 2;
+	g_bufNumWords32 = buf_increment >> 2;
 
 	/* Mask out unused bits in BUF_CONFIG */
 	g_regs[BUF_CONFIG_REG] &= 0xFF01;

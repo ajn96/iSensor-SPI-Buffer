@@ -13,22 +13,19 @@
 /* Local function prototypes */
 static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue);
 
-/* User SPI handle (from main) */
+/* User SPI handle (from main.c) */
 extern SPI_HandleTypeDef hspi2;
 
-/* Index after last buffer output register (from buffer) */
-extern uint32_t buf_lastRegIndex;
+/* Index after last buffer output register (from buffer.c) */
+extern uint32_t g_bufLastRegIndex;
 
-/** Number of 32-bit words per buffer (from buffer) */
-extern uint32_t buf_numWords32;
+/** Number of 32-bit words per buffer (from buffer.c) */
+extern uint32_t g_bufNumWords32;
 
-/** Selected page. Starts on 253 (config page) */
-volatile uint32_t selected_page = BUF_CONFIG_PAGE;
-
-/** Register update flags for main loop processing */
+/** Register update flags for main loop processing. Global scope */
 volatile uint32_t update_flags = 0;
 
-/** iSensor-SPI-Buffer global register array (read-able via SPI) */
+/** iSensor-SPI-Buffer global register array (read-able via SPI). Global scope */
 uint16_t g_regs[3 * REG_PER_PAGE] __attribute__((aligned (32))) = {
 
 /* Page 253 */
@@ -72,6 +69,9 @@ BUF_READ_PAGE, 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, /* 0x80 - 0x87 
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xB0 - 0xB7 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xB8 - 0xBF */
 };
+
+/** Selected page. Starts on 253 (config page) */
+static volatile uint32_t selected_page = BUF_CONFIG_PAGE;
 
 /** Pointer to buffer entry. Will be 0 if no buffer entry "loaded" to output registers */
 static uint16_t* CurrentBufEntry;
@@ -145,7 +145,7 @@ uint16_t ReadReg(uint8_t regAddr)
 
 		if(regIndex > BUF_RETRIEVE_REG)
 		{
-			if(CurrentBufEntry && (regIndex < buf_lastRegIndex))
+			if(CurrentBufEntry && (regIndex < g_bufLastRegIndex))
 			{
 				return CurrentBufEntry[regIndex - BUF_TIMESTAMP_REG];
 			}
