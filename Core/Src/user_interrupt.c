@@ -11,7 +11,7 @@
 #include "user_interrupt.h"
 
 /* Global register array */
-volatile extern uint16_t regs[3 * REG_PER_PAGE];
+volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
 /** Struct to track config */
 extern DIOConfig pinConfig;
@@ -31,26 +31,26 @@ void UpdateUserInterrupt()
 	uint32_t overflow, interrupt, error;
 
 	/* Get overflow status */
-	overflow = (regs[BUF_CNT_0_REG] >= regs[BUF_MAX_CNT_REG]);
+	overflow = (g_regs[BUF_CNT_0_REG] >= g_regs[BUF_MAX_CNT_REG]);
 
 	/* Get watermark interrupt status */
-	interrupt = (regs[BUF_CNT_0_REG] >= regs[WATERMARK_INT_CONFIG_REG]);
+	interrupt = (g_regs[BUF_CNT_0_REG] >= g_regs[WATERMARK_INT_CONFIG_REG]);
 
 	/* Get error interrupt status, masking out bits which are not error indicators */
-	error = regs[STATUS_0_REG] & regs[ERROR_INT_CONFIG_REG];
+	error = g_regs[STATUS_0_REG] & g_regs[ERROR_INT_CONFIG_REG];
 
 	/* Apply overflow to status reg. Don't clear because user must read to clear */
 	if(overflow)
 	{
-		regs[STATUS_0_REG] |= STATUS_BUF_FULL;
-		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+		g_regs[STATUS_0_REG] |= STATUS_BUF_FULL;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 	}
 
 	/* Apply watermark to status reg */
 	if(interrupt)
 	{
-		regs[STATUS_0_REG] |= STATUS_BUF_WATERMARK;
-		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+		g_regs[STATUS_0_REG] |= STATUS_BUF_WATERMARK;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 	}
 
 	/* Apply error to LEDs */

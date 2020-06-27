@@ -17,7 +17,7 @@ static void ApplySclkDivider(uint32_t preScalerSetting);
 extern SPI_HandleTypeDef hspi1;
 
 /* Global register array */
-volatile extern uint16_t regs[3 * REG_PER_PAGE];
+volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
 /** track stall time (microseconds) */
 uint32_t imu_stalltime_us = 25;
@@ -273,7 +273,7 @@ void UpdateImuSpiConfig()
 	uint32_t csPeriod;
 
 	/* Get the config register value from reg array */
-	uint16_t configReg = regs[IMU_SPI_CONFIG_REG];
+	uint16_t configReg = g_regs[IMU_SPI_CONFIG_REG];
 
 	/* Stall time is lower 8 bits */
 	if((configReg & 0xFF) < 2)
@@ -366,7 +366,7 @@ void UpdateImuSpiConfig()
 	ApplySclkDivider(sclkDividerSetting);
 
 	/* Apply value back to IMU SPI config register */
-	regs[IMU_SPI_CONFIG_REG] = configReg;
+	g_regs[IMU_SPI_CONFIG_REG] = configReg;
 }
 
 /**

@@ -11,7 +11,7 @@
 #include "dio.h"
 
 /* Global register array */
-volatile extern uint16_t regs[3 * REG_PER_PAGE];
+volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
 /** Struct storing current DIO output config */
 volatile DIOConfig pinConfig = {};
@@ -37,7 +37,7 @@ void UpdateDIOInputConfig()
 	DisableDataCapture();
 
 	/* Get current config value */
-	uint32_t config = regs[DIO_INPUT_CONFIG_REG];
+	uint32_t config = g_regs[DIO_INPUT_CONFIG_REG];
 
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
@@ -125,7 +125,7 @@ void UpdateDIOInputConfig()
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 	/* Apply modified settings back to reg */
-	regs[DIO_INPUT_CONFIG_REG] = config;
+	g_regs[DIO_INPUT_CONFIG_REG] = config;
 }
 
 /**
@@ -161,7 +161,7 @@ void UpdateDIOOutputConfig()
 	ValidateDIOOutputConfig();
 
 	/* Write back */
-	regs[DIO_OUTPUT_CONFIG_REG] = BuildDIOOutputConfigReg();
+	g_regs[DIO_OUTPUT_CONFIG_REG] = BuildDIOOutputConfigReg();
 
 	/* All SW_INx pins are driven as outputs */
 
@@ -260,7 +260,7 @@ void UpdateDIOOutputConfig()
 static void ParseDIOOutputConfig()
 {
 	/* Get current config value */
-	uint32_t configReg = regs[DIO_OUTPUT_CONFIG_REG];
+	uint32_t configReg = g_regs[DIO_OUTPUT_CONFIG_REG];
 
 	pinConfig.passPins = (configReg) & 0xF;
 	pinConfig.watermarkPins = (configReg >> 4) & 0xF;

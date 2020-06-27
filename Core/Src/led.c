@@ -11,7 +11,7 @@
 #include "led.h"
 
 /* Global register array */
-volatile extern uint16_t regs[3 * REG_PER_PAGE];
+volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
 /**
   * @brief Turn on a selected LED

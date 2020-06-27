@@ -11,7 +11,7 @@
 #include "buffer.h"
 
 /* register array */
-extern volatile uint16_t regs[];
+extern volatile uint16_t g_regs[];
 
 /** Index within buffer array for buffer head */
 volatile uint32_t buf_head = 0;
@@ -43,6 +43,13 @@ uint32_t buf_lastRegIndex;
 /** Number of 32-bit words per buffer entry */
 uint32_t buf_numWords32;
 
+/**
+  * @brief Checks if an element can be added to the buffer
+  *
+  * @return 0 if no element can be added to the buffer, 1 otherwise
+  *
+  * The return value depends on the replace oldest setting and buffer count
+  */
 uint32_t BufCanAddElement()
 {
 	/* can always add new element if replace oldest is set */
@@ -96,8 +103,8 @@ uint8_t* BufTakeElement()
 		buf_count = 0;
 	}
 	/* Update buffer count register */
-	regs[BUF_CNT_0_REG] = buf_count;
-	regs[BUF_CNT_1_REG] = regs[BUF_CNT_0_REG];
+	g_regs[BUF_CNT_0_REG] = buf_count;
+	g_regs[BUF_CNT_1_REG] = g_regs[BUF_CNT_0_REG];
 	/* Return pointer to the buffer entry */
 	return buf_addr;
 }
@@ -174,16 +181,16 @@ void BufReset()
 	buf_count = 0;
 
 	/* Enforce min/max settings for buffer increment */
-	if(regs[BUF_LEN_REG] < BUF_MIN_ENTRY)
-		regs[BUF_LEN_REG] = BUF_MIN_ENTRY;
-	if(regs[BUF_LEN_REG] > BUF_MAX_ENTRY)
-		regs[BUF_LEN_REG] = BUF_MAX_ENTRY;
+	if(g_regs[BUF_LEN_REG] < BUF_MIN_ENTRY)
+		g_regs[BUF_LEN_REG] = BUF_MIN_ENTRY;
+	if(g_regs[BUF_LEN_REG] > BUF_MAX_ENTRY)
+		g_regs[BUF_LEN_REG] = BUF_MAX_ENTRY;
 
 	/* Set the index for the last buffer entry */
-	buf_lastRegIndex = (BUF_DATA_0_REG + (regs[BUF_LEN_REG] >> 1));
+	buf_lastRegIndex = (BUF_DATA_0_REG + (g_regs[BUF_LEN_REG] >> 1));
 
 	/* Get the buffer size setting (8 bytes added per buffer for time stamp, delta time, sig) */
-	buf_increment = regs[BUF_LEN_REG] + 8;
+	buf_increment = g_regs[BUF_LEN_REG] + 8;
 
 	/* Want each buffer entry to be word aligned for ease of use. Add some extra bytes if needed */
 	buf_increment = (buf_increment + 3) & ~(0x3);
@@ -192,19 +199,19 @@ void BufReset()
 	buf_numWords32 = buf_increment >> 2;
 
 	/* Mask out unused bits in BUF_CONFIG */
-	regs[BUF_CONFIG_REG] &= 0xFF01;
+	g_regs[BUF_CONFIG_REG] &= 0xFF01;
 
 	/* Get replacement setting */
-	buf_replaceOldest = (regs[BUF_CONFIG_REG] & 0x1);
+	buf_replaceOldest = (g_regs[BUF_CONFIG_REG] & 0x1);
 
 	/* Find max buffer count and index */
 	buf_maxCount = BUF_SIZE / buf_increment;
 	buf_lastEntryIndex = (buf_maxCount - 1) * buf_increment;
 
 	/* Update buffer count register */
-	regs[BUF_CNT_0_REG] = 0;
-	regs[BUF_CNT_1_REG] = 0;
+	g_regs[BUF_CNT_0_REG] = 0;
+	g_regs[BUF_CNT_1_REG] = 0;
 
 	/* Update buffer max count register */
-	regs[BUF_MAX_CNT_REG] = buf_maxCount;
+	g_regs[BUF_MAX_CNT_REG] = buf_maxCount;
 }

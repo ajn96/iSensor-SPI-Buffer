@@ -14,7 +14,7 @@
 static void PrepareRegsForFlash();
 
 /* Global register array */
-volatile extern uint16_t regs[3 * REG_PER_PAGE];
+volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
 /**
   * @brief Flash update command handler
@@ -40,8 +40,8 @@ void FlashUpdate()
 	/* Unlock flash. If fails abort the flash update */
 	if(HAL_FLASH_Unlock() != HAL_OK)
 	{
-		regs[STATUS_0_REG] |= STATUS_FLASH_UPDATE;
-		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+		g_regs[STATUS_0_REG] |= STATUS_FLASH_UPDATE;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 		return;
 	}
 
@@ -58,15 +58,15 @@ void FlashUpdate()
 	if(error != 0xFFFFFFFF)
 	{
 		/* Flag error and try to finish flash write */
-		regs[STATUS_0_REG] |= STATUS_FLASH_UPDATE;
-		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+		g_regs[STATUS_0_REG] |= STATUS_FLASH_UPDATE;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 	}
 
 	/* Write all values */
 	flashAddr = FLASH_REG_ADDR;
 	for(int regAddr = 0; regAddr <= FLASH_SIG_REG; regAddr++)
 	{
-		HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, flashAddr, regs[regAddr]);
+		HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, flashAddr, g_regs[regAddr]);
 		flashAddr += 2;
 	}
 
@@ -78,8 +78,8 @@ void FlashUpdate()
 	GetBuildDate();
 
 	/* Copy BUF_CNT and STATUS from last page to config page (last page not stored to flash) */
-	regs[STATUS_0_REG] = regs[STATUS_1_REG];
-	regs[BUF_CNT_0_REG] = regs[BUF_CNT_1_REG];
+	g_regs[STATUS_0_REG] = g_regs[STATUS_1_REG];
+	g_regs[BUF_CNT_0_REG] = g_regs[BUF_CNT_1_REG];
 
 	/* Restore fault code register */
 	FlashCheckLoggedError();
@@ -104,30 +104,30 @@ void LoadRegsFlash()
 	uint16_t* flashAddr = (uint16_t *) FLASH_REG_ADDR;
 	for(int regAddr = 0; regAddr <= FLASH_SIG_REG; regAddr++)
 	{
-		regs[regAddr] = (*flashAddr) & 0xFFFF;
+		g_regs[regAddr] = (*flashAddr) & 0xFFFF;
 		flashAddr++;
 	}
 
 	/* Calc expected sig (stop before flash signature register) */
-	expectedSig = CalcRegSig((uint16_t*)regs, FLASH_SIG_REG - 1);
+	expectedSig = CalcRegSig((uint16_t*)g_regs, FLASH_SIG_REG - 1);
 
 	/* Store sig */
-	regs[FLASH_SIG_DRV_REG] = expectedSig;
+	g_regs[FLASH_SIG_DRV_REG] = expectedSig;
 
 	/* Read flash sig value which was stored at last flash update */
-	storedSig = regs[FLASH_SIG_REG];
+	storedSig = g_regs[FLASH_SIG_REG];
 
 	/* Perform factory reset and alert user of flash error in case of sig mis-match */
 	if(storedSig != expectedSig)
 	{
-		regs[STATUS_0_REG] |= STATUS_FLASH_ERROR;
-		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+		g_regs[STATUS_0_REG] |= STATUS_FLASH_ERROR;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 	}
 
 	/* Make sure endurance loads as 0 */
-	if(regs[ENDURANCE_REG] == 0xFFFF)
+	if(g_regs[ENDURANCE_REG] == 0xFFFF)
 	{
-		regs[ENDURANCE_REG] = 0;
+		g_regs[ENDURANCE_REG] = 0;
 	}
 
 	FlashCheckLoggedError();
@@ -146,16 +146,16 @@ void FlashCheckLoggedError()
 	/* Load error code from flash */
 	uint16_t errorCode = (*(uint16_t *) FLASH_ERROR_ADDR) & 0x001F;
 
-	regs[FAULT_CODE_REG] = errorCode;
-	if(regs[FAULT_CODE_REG] != 0)
+	g_regs[FAULT_CODE_REG] = errorCode;
+	if(g_regs[FAULT_CODE_REG] != 0)
 	{
-		regs[STATUS_0_REG] |= STATUS_FAULT;
-		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+		g_regs[STATUS_0_REG] |= STATUS_FAULT;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 	}
 	else
 	{
-		regs[STATUS_0_REG] &= ~STATUS_FAULT;
-		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+		g_regs[STATUS_0_REG] &= ~STATUS_FAULT;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 	}
 }
 
@@ -258,12 +258,12 @@ static void PrepareRegsForFlash()
 	/* Clear all volatile regs (STATUS, BUF_CNT, day/year, dev SN regs) */
 	for(int addr = STATUS_0_REG; addr < (DEV_SN_REG + 6); addr++)
 	{
-		regs[addr] = 0;
+		g_regs[addr] = 0;
 	}
 
 	/* Increment endurance counter */
-	regs[ENDURANCE_REG]++;
+	g_regs[ENDURANCE_REG]++;
 
 	/* Calc sig and store back to SRAM */
-	regs[FLASH_SIG_REG] = CalcRegSig((uint16_t*)regs, FLASH_SIG_REG - 1);
+	g_regs[FLASH_SIG_REG] = CalcRegSig((uint16_t*)g_regs, FLASH_SIG_REG - 1);
 }

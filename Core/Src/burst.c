@@ -14,7 +14,7 @@
 extern SPI_HandleTypeDef hspi2;
 
 /* Register array */
-volatile extern uint16_t regs[];
+volatile extern uint16_t g_regs[];
 
 /** Buffer to receive burst DMA data (from master) into */
 uint8_t burstRxData[64] = {0};
@@ -29,6 +29,6 @@ uint8_t burstRxData[64] = {0};
   */
 void BurstReadSetup()
 {
-	HAL_SPI_TransmitReceive_DMA(&hspi2, (uint8_t*) &regs[BUF_DATA_0_REG], burstRxData, regs[BUF_LEN_REG]);
+	HAL_SPI_TransmitReceive_DMA(&hspi2, (uint8_t*) &g_regs[BUF_DATA_0_REG], burstRxData, g_regs[BUF_LEN_REG]);
 }
 

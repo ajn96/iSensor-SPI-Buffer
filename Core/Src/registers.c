@@ -29,7 +29,7 @@ volatile uint32_t selected_page = BUF_CONFIG_PAGE;
 volatile uint32_t update_flags = 0;
 
 /** iSensor-SPI-Buffer global register array (read-able via SPI) */
-uint16_t regs[3 * REG_PER_PAGE] __attribute__((aligned (32))) = {
+uint16_t g_regs[3 * REG_PER_PAGE] __attribute__((aligned (32))) = {
 
 /* Page 253 */
 BUF_CONFIG_PAGE, /* 0x0 */
@@ -93,7 +93,7 @@ void BufDequeueToOutputRegs()
 	CurrentBufEntry = (uint16_t *) BufTakeElement();
 
 	/* Check if burst read mode is enabled */
-	if(regs[USER_SPI_CONFIG_REG] & SPI_CONF_BURST_RD)
+	if(g_regs[USER_SPI_CONFIG_REG] & SPI_CONF_BURST_RD)
 	{
 		BurstReadSetup();
 	}
@@ -131,7 +131,7 @@ uint16_t ReadReg(uint8_t regAddr)
 		if(regIndex == BUF_RETRIEVE_REG)
 		{
 			/* Check if buf count > 0) */
-			if(regs[BUF_CNT_0_REG] > 0)
+			if(g_regs[BUF_CNT_0_REG] > 0)
 			{
 				/* Set update flag for main loop */
 				update_flags |= DEQUEUE_BUF_FLAG;
@@ -158,9 +158,9 @@ uint16_t ReadReg(uint8_t regAddr)
 		/* Clear status upon read */
 		if(regIndex == STATUS_0_REG || regIndex == STATUS_1_REG)
 		{
-			status = regs[STATUS_0_REG];
-			regs[STATUS_0_REG] &= STATUS_CLEAR_MASK;
-			regs[STATUS_1_REG] = regs[STATUS_0_REG];
+			status = g_regs[STATUS_0_REG];
+			g_regs[STATUS_0_REG] &= STATUS_CLEAR_MASK;
+			g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 			return status;
 		}
 
@@ -171,7 +171,7 @@ uint16_t ReadReg(uint8_t regAddr)
 			return GetMicrosecondTimestamp() >> 16;
 
 		/* get value from reg array */
-		return regs[regIndex];
+		return g_regs[regIndex];
 	}
 }
 
@@ -210,7 +210,7 @@ uint16_t WriteReg(uint8_t regAddr, uint8_t regValue)
 		/* Process reg write then return value from addressed register */
 		regIndex = ProcessRegWrite(regAddr, regValue);
 		/* get value from reg array */
-		return regs[regIndex];
+		return g_regs[regIndex];
 	}
 }
 
@@ -225,10 +225,10 @@ uint16_t WriteReg(uint8_t regAddr, uint8_t regValue)
   */
 void ProcessCommand()
 {
-	uint16_t command = regs[USER_COMMAND_REG];
+	uint16_t command = g_regs[USER_COMMAND_REG];
 
 	/* Clear command register */
-	regs[USER_COMMAND_REG] = 0;
+	g_regs[USER_COMMAND_REG] = 0;
 
 	/* Disable SPI for duration of command processing */
 	SPI2->CR1 &= ~SPI_CR1_SPE;
@@ -292,36 +292,36 @@ void FactoryReset()
 	selected_page = BUF_CONFIG_PAGE;
 
 	/* Save endurance and flash sig */
-	endurance = regs[ENDURANCE_REG];
-	flash_sig = regs[FLASH_SIG_REG];
+	endurance = g_regs[ENDURANCE_REG];
+	flash_sig = g_regs[FLASH_SIG_REG];
 
 	/* Reset all registers to 0 */
 	for(int i = 0; i < (3 * REG_PER_PAGE); i++)
 	{
-		regs[i] = 0;
+		g_regs[i] = 0;
 	}
 
 	/* Restore page number registers (addr 0 on each page) */
-	regs[0 * REG_PER_PAGE] = BUF_CONFIG_PAGE;
-	regs[1 * REG_PER_PAGE] = BUF_WRITE_PAGE;
-	regs[2 * REG_PER_PAGE] = BUF_READ_PAGE;
+	g_regs[0 * REG_PER_PAGE] = BUF_CONFIG_PAGE;
+	g_regs[1 * REG_PER_PAGE] = BUF_WRITE_PAGE;
+	g_regs[2 * REG_PER_PAGE] = BUF_READ_PAGE;
 
 	/* Restore all non-zero default values */
-	regs[BUF_CONFIG_REG] = BUF_CONFIG_DEFAULT;
-	regs[BUF_LEN_REG] = BUF_LEN_DEFAULT;
-	regs[DIO_INPUT_CONFIG_REG] = DIO_INPUT_CONFIG_DEFAULT;
-	regs[DIO_OUTPUT_CONFIG_REG] = DIO_OUTPUT_CONFIG_DEFAULT;
-	regs[WATERMARK_INT_CONFIG_REG] = WATER_INT_CONFIG_DEFAULT;
-	regs[ERROR_INT_CONFIG_REG] = ERROR_INT_CONFIG_DEFAULT;
-	regs[IMU_SPI_CONFIG_REG] = IMU_SPI_CONFIG_DEFAULT;
-	regs[USER_SPI_CONFIG_REG] = USER_SPI_CONFIG_DEFAULT;
-	regs[FW_REV_REG] = FW_REV_DEFAULT;
+	g_regs[BUF_CONFIG_REG] = BUF_CONFIG_DEFAULT;
+	g_regs[BUF_LEN_REG] = BUF_LEN_DEFAULT;
+	g_regs[DIO_INPUT_CONFIG_REG] = DIO_INPUT_CONFIG_DEFAULT;
+	g_regs[DIO_OUTPUT_CONFIG_REG] = DIO_OUTPUT_CONFIG_DEFAULT;
+	g_regs[WATERMARK_INT_CONFIG_REG] = WATER_INT_CONFIG_DEFAULT;
+	g_regs[ERROR_INT_CONFIG_REG] = ERROR_INT_CONFIG_DEFAULT;
+	g_regs[IMU_SPI_CONFIG_REG] = IMU_SPI_CONFIG_DEFAULT;
+	g_regs[USER_SPI_CONFIG_REG] = USER_SPI_CONFIG_DEFAULT;
+	g_regs[FW_REV_REG] = FW_REV_DEFAULT;
 
 	/* Apply endurance and flash sig back */
-	regs[ENDURANCE_REG] = endurance;
-	regs[FLASH_SIG_REG] = flash_sig;
+	g_regs[ENDURANCE_REG] = endurance;
+	g_regs[FLASH_SIG_REG] = flash_sig;
 
-	regs[FLASH_SIG_DRV_REG] = CalcRegSig((uint16_t*)regs, FLASH_SIG_DRV_REG - 1);;
+	g_regs[FLASH_SIG_DRV_REG] = CalcRegSig((uint16_t*)g_regs, FLASH_SIG_DRV_REG - 1);;
 
 	/* Populate SN and build date */
 	GetSN();
@@ -352,7 +352,7 @@ void GetSN()
 	{
 		id = *(volatile uint8_t *)(UID_BASE + i);
 		id |= (*(volatile uint8_t *)(UID_BASE + i + 1)) << 8;
-		regs[DEV_SN_REG + (i >> 1)] = id;
+		g_regs[DEV_SN_REG + (i >> 1)] = id;
 	}
 }
 
@@ -428,8 +428,8 @@ void GetBuildDate()
 		break;
 	}
 
-	regs[FW_DAY_MONTH_REG] = (day << 8) | month;
-	regs[FW_YEAR_REG] = year;
+	g_regs[FW_DAY_MONTH_REG] = (day << 8) | month;
+	g_regs[FW_YEAR_REG] = year;
 }
 
 /**
@@ -442,7 +442,7 @@ void GetBuildDate()
   */
 void UpdateUserSpiConfig()
 {
-	uint16_t config = regs[USER_SPI_CONFIG_REG];
+	uint16_t config = g_regs[USER_SPI_CONFIG_REG];
 
 	/* mask unused bits */
 	config &= SPI_CONF_MASK;
@@ -510,7 +510,7 @@ void UpdateUserSpiConfig()
 	HAL_NVIC_EnableIRQ(SPI2_IRQn);
 
 	/* Apply config value in use back */
-	regs[USER_SPI_CONFIG_REG] = config;
+	g_regs[USER_SPI_CONFIG_REG] = config;
 }
 
 /**
@@ -653,7 +653,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	}
 
 	/* Get initial register value */
-	regWriteVal = regs[regIndex];
+	regWriteVal = g_regs[regIndex];
 
 	/* Perform write to reg array */
 	if(isUpper)
@@ -668,7 +668,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 		regWriteVal &= 0xFF00;
 		regWriteVal |= regValue;
 	}
-	regs[regIndex] = regWriteVal;
+	g_regs[regIndex] = regWriteVal;
 
 	/* Check for buffer reset actions which should be performed in ISR */
 	if(regIndex == BUF_CONFIG_REG || regIndex == BUF_LEN_REG)

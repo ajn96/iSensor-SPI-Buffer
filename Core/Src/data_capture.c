@@ -11,7 +11,7 @@
 #include "data_capture.h"
 
 /* Global register array */
-volatile extern uint16_t regs[3 * REG_PER_PAGE];
+volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
 /* Words per buffer (from isr) */
 volatile extern uint32_t WordsPerCapture;
@@ -36,7 +36,7 @@ void EnableDataCapture()
 	EXTI->PR |= (0x1F << 5);
 
 	/* Set 16-bit words per capture */
-	WordsPerCapture = regs[BUF_LEN_REG] >> 1;
+	WordsPerCapture = g_regs[BUF_LEN_REG] >> 1;
 
 	/* Enable data ready interrupts */
 	NVIC_EnableIRQ(EXTI9_5_IRQn);

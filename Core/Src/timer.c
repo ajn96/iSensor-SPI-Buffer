@@ -2,16 +2,16 @@
   * Copyright (c) Analog Devices Inc, 2020
   * All Rights Reserved.
   *
-  * @file		timer.h
+  * @file		timer.c
   * @date		6/26/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		Implementation for for iSensor-SPI-Buffer timer module
+  * @brief		Implementation for for iSensor-SPI-Buffer timer module. Covers microsecond timer and PPS timer.
  **/
 
 #include "timer.h"
 
 /* Global register array */
-volatile extern uint16_t regs[3 * REG_PER_PAGE];
+volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
 /** TIM2 handle */
 static TIM_HandleTypeDef htim2;
@@ -31,19 +31,26 @@ uint32_t GetMicrosecondTimestamp()
 
 uint32_t GetPPSTimestamp()
 {
-	return (regs[UTC_TIMESTAMP_LWR_REG] | (regs[UTC_TIMESTAMP_UPR_REG] << 16));
+	return (g_regs[UTC_TIMESTAMP_LWR_REG] | (g_regs[UTC_TIMESTAMP_UPR_REG] << 16));
 }
 
 /**
-  * @brief Init TIM2 to operate in 32-bit mode with a 1MHz timebase
+  * @brief Init TIM2 to operate in 32-bit mode with a 1MHz timebase.
   *
   * @return void
+  *
+  * This timer is used to generate the buffer entry timestamp values
   */
 void InitMicrosecondTimer()
 {
 	InitTIM2(1000000);
 }
 
+/**
+  * @brief Reset TIM2 counter to 0.
+  *
+  * @return void
+  */
 void ClearMicrosecondTimer()
 {
 

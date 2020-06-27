@@ -14,7 +14,7 @@
 uint32_t watchdog_reset = 0;
 
 /* Global register array */
-volatile extern uint16_t regs[3 * REG_PER_PAGE];
+volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
 /**
   * @brief Feeds the watchdog timer. Should be called periodically from main loop
@@ -39,8 +39,8 @@ void CheckWatchDogStatus()
 {
 	if(__HAL_RCC_GET_FLAG(RCC_FLAG_IWDGRST))
 	{
-		regs[STATUS_0_REG] |= STATUS_WATCHDOG;
-		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+		g_regs[STATUS_0_REG] |= STATUS_WATCHDOG;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 	}
 }
 

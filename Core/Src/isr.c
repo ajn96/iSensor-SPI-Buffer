@@ -11,7 +11,7 @@
 #include "isr.h"
 
 /* Global register array */
-volatile extern uint16_t regs[3 * REG_PER_PAGE];
+volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
 /* Buffer internal count variable */
 volatile extern uint32_t buf_count;
@@ -66,8 +66,8 @@ void EXTI9_5_IRQHandler()
 	if(CaptureInProgress)
 	{
 		CaptureInProgress = TIM4->CR1 & 0x1;
-		regs[STATUS_0_REG] |= STATUS_OVERRUN;
-		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+		g_regs[STATUS_0_REG] |= STATUS_OVERRUN;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 		return;
 	}
 
@@ -119,7 +119,7 @@ void EXTI9_5_IRQHandler()
 	TIM3->CR1 &= ~0x1;
 	TIM3->CNT = 0;
 	TIM3->CR1 |= 0x1;
-	SPI1->DR = regs[BUF_WRITE_0_REG];
+	SPI1->DR = g_regs[BUF_WRITE_0_REG];
 }
 
 void TIM4_IRQHandler()
@@ -161,7 +161,7 @@ void TIM4_IRQHandler()
 		/* Restart PWM timer for CS */
 		TIM3->CR1 |= 0x1;
 		/* Load SPI transmit reg */
-		SPI1->DR = regs[BUF_WRITE_0_REG + WordsCaptured];
+		SPI1->DR = g_regs[BUF_WRITE_0_REG + WordsCaptured];
 	}
 	else
 	{
@@ -174,8 +174,8 @@ void TIM4_IRQHandler()
 		BufferSigHandle[0] = BufferSignature;
 
 		/* Update buffer count regs with new count */
-		regs[BUF_CNT_0_REG] = buf_count;
-		regs[BUF_CNT_1_REG] = regs[BUF_CNT_0_REG];
+		g_regs[BUF_CNT_0_REG] = buf_count;
+		g_regs[BUF_CNT_1_REG] = g_regs[BUF_CNT_0_REG];
 
 		/* Mark capture as done */
 		CaptureInProgress = 0;
@@ -199,8 +199,8 @@ void SPI2_IRQHandler(void)
 	if(itflag & (SPI_FLAG_OVR | SPI_FLAG_MODF))
 	{
 		/* Set status reg SPI error flag */
-		regs[STATUS_0_REG] |= STATUS_SPI_ERROR;
-		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+		g_regs[STATUS_0_REG] |= STATUS_SPI_ERROR;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 
 		/* Overrun error, can be cleared by repeatedly reading DR */
 		for(uint32_t i = 0; i < 4; i++)
@@ -222,8 +222,8 @@ void SPI2_IRQHandler(void)
 		rxData = SPI2->DR;
 
 		/* Set status reg SPI overflow flag */
-		regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
-		regs[STATUS_1_REG] = regs[STATUS_0_REG];
+		g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 
 		/* Exit ISR */
 		return;
