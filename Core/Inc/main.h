@@ -25,6 +25,5 @@
 
 /* Public function prototypes */
 void Error_Handler(void);
-uint32_t GetHardwareID();
 
 #endif /* __MAIN_H */

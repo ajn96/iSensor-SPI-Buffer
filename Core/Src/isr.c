@@ -10,17 +10,26 @@
 
 #include "isr.h"
 
-/* Global register array */
+/** Global register array (from registers.c) */
 volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
-/* Buffer internal count variable */
+/** Buffer internal count variable (from buffer.c) */
 volatile extern uint32_t g_bufCount;
 
-/* IMU stall time (from pass through module) */
-extern uint32_t imu_stalltime_us;
+/** IMU stall time (from imu_spi.c) */
+extern uint32_t g_imuStallTimeUs;
 
-extern DMA_HandleTypeDef hdma_spi2_rx;
-extern DMA_HandleTypeDef hdma_spi2_tx;
+/** SPI Rx DMA (from main.c) */
+extern DMA_HandleTypeDef g_dma_spi2_rx;
+
+/** SPI Rx DMA (from main.c) */
+extern DMA_HandleTypeDef g_dma_spi2_tx;
+
+/** Current capture size (in 16 bit words). Global scope */
+volatile uint32_t g_wordsPerCapture;
+
+/** Track if there is currently a capture in progress */
+volatile uint32_t g_captureInProgress;
 
 /** Pointer to buffer element which is being populated */
 static uint8_t* BufferElementHandle;
@@ -28,14 +37,8 @@ static uint8_t* BufferElementHandle;
 /** Pointer to buffer data signature within buffer element which is being populated */
 static uint16_t* BufferSigHandle;
 
-/** Track if there is currently a capture in progress */
-volatile uint32_t CaptureInProgress;
-
 /** Track number of words captured within current buffer entry */
 static volatile uint32_t WordsCaptured;
-
-/** Current capture size (in 16 bit words) */
-volatile uint32_t WordsPerCapture;
 
 /** Sample time stamp */
 static uint32_t SampleTimestamp;
@@ -63,9 +66,9 @@ void EXTI9_5_IRQHandler()
 	EXTI->PR |= (0x1F << 5);
 
 	/* If capture in progress then set error flag and exit */
-	if(CaptureInProgress)
+	if(g_captureInProgress)
 	{
-		CaptureInProgress = TIM4->CR1 & 0x1;
+		g_captureInProgress = TIM4->CR1 & 0x1;
 		g_regs[STATUS_0_REG] |= STATUS_OVERRUN;
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 		return;
@@ -84,7 +87,7 @@ void EXTI9_5_IRQHandler()
 	BufferElementHandle = BufAddElement();
 
 	/* Set flag indicating capture is running */
-	CaptureInProgress = 1;
+	g_captureInProgress = 1;
 
 	/* Set words captured to 0 */
 	WordsCaptured = 0;
@@ -133,7 +136,7 @@ void TIM4_IRQHandler()
 	TIM3->CR1 = 0;
 	TIM3->CNT = 0xFFFF;
 
-	if(!CaptureInProgress)
+	if(!g_captureInProgress)
 	{
 		/* Disable timers */
 		TIM4->CR1 &= ~0x1;
@@ -156,7 +159,7 @@ void TIM4_IRQHandler()
 	/* Increment words captured count */
 	WordsCaptured++;
 
-	if(WordsCaptured < WordsPerCapture)
+	if(WordsCaptured < g_wordsPerCapture)
 	{
 		/* Restart PWM timer for CS */
 		TIM3->CR1 |= 0x1;
@@ -178,7 +181,7 @@ void TIM4_IRQHandler()
 		g_regs[BUF_CNT_1_REG] = g_regs[BUF_CNT_0_REG];
 
 		/* Mark capture as done */
-		CaptureInProgress = 0;
+		g_captureInProgress = 0;
 	}
 }
 
@@ -259,7 +262,7 @@ void SPI2_IRQHandler(void)
   */
 void DMA1_Channel4_IRQHandler(void)
 {
-	HAL_DMA_IRQHandler(&hdma_spi2_rx);
+	HAL_DMA_IRQHandler(&g_dma_spi2_rx);
 }
 
 /**
@@ -269,7 +272,7 @@ void DMA1_Channel4_IRQHandler(void)
   */
 void DMA1_Channel5_IRQHandler(void)
 {
-	HAL_DMA_IRQHandler(&hdma_spi2_tx);
+	HAL_DMA_IRQHandler(&g_dma_spi2_tx);
 }
 
 /**

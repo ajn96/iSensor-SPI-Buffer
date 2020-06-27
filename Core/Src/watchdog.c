@@ -10,10 +10,7 @@
 
 #include "watchdog.h"
 
-/** Watchdog timer re-load value */
-uint32_t watchdog_reset = 0;
-
-/* Global register array */
+/* Global register array (from registers.c) */
 volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
 /**

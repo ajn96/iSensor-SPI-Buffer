@@ -2,25 +2,25 @@
   * Copyright (c) Analog Devices Inc, 2020
   * All Rights Reserved.
   *
-  * @file		SpiPassthrough.c
+  * @file		imu_spi.c
   * @date		3/18/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		iSensor-SPI-Buffer SPI pass through (to IMU) module
+  * @brief		Implementation for iSensor-SPI-Buffer IMU interfacing module
  **/
 
-#include "spi_passthrough.h"
+#include "imu_spi.h"
 
 /* Local function prototypes */
 static void ApplySclkDivider(uint32_t preScalerSetting);
 
 /* Get reference to master SPI instance (SPI1) */
-extern SPI_HandleTypeDef hspi1;
+extern SPI_HandleTypeDef g_spi1;
 
 /* Global register array */
 volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
 /** track stall time (microseconds) */
-uint32_t imu_stalltime_us = 25;
+uint32_t g_imuStallTimeUs = 25;
 
 /** TIM3 HAL handle */
 static TIM_HandleTypeDef htim3;
@@ -83,7 +83,7 @@ uint16_t ImuReadReg(uint8_t RegAddr)
 	ImuSpiTransfer(readRequest);
 
 	/* Delay for stall time */
-	SleepMicroseconds(imu_stalltime_us);
+	SleepMicroseconds(g_imuStallTimeUs);
 
 	/* Return result data on second word */
 	return ImuSpiTransfer(0);
@@ -109,27 +109,6 @@ uint16_t ImuWriteReg(uint8_t RegAddr, uint8_t RegValue)
 
 	/* Perform write and return result */
 	return ImuSpiTransfer(writeRequest);
-}
-
-/**
-  * @brief Blocking sleep function call
-  *
-  * @param microseconds The number of microseconds to sleep
-  *
-  * @return void
-  *
-  * This function uses DWT peripheral (data watchpoint and trace) cycle counter to perform delay.
- **/
-void SleepMicroseconds(uint32_t microseconds)
-{
-	/* Get the start time */
-	uint32_t clk_cycle_start = DWT->CYCCNT;
-
-	/* Go to number of cycles for system */
-	microseconds *= (HAL_RCC_GetHCLKFreq() / 1000000);
-
-	/* Delay till end */
-	while ((DWT->CYCCNT - clk_cycle_start) < microseconds);
 }
 
 void ConfigureImuCsTimer(uint32_t period)
@@ -282,7 +261,7 @@ void UpdateImuSpiConfig()
 		configReg |= 2;
 	}
 	/* set the stall time used to the stall time setting */
-	imu_stalltime_us = (configReg & 0xFF);
+	g_imuStallTimeUs = (configReg & 0xFF);
 
 	/* Sclk divider setting is upper 8 bits */
 	if(configReg & (1 << 8))
@@ -354,7 +333,7 @@ void UpdateImuSpiConfig()
 	csPeriod += 28;
 
 	/* Spi period is cs period + stall time */
-	spiPeriod = csPeriod + (imu_stalltime_us * 72);
+	spiPeriod = csPeriod + (g_imuStallTimeUs * 72);
 
 	/* Apply spi period to timer */
 	ConfigureImuSpiTimer(spiPeriod);
@@ -378,10 +357,10 @@ void UpdateImuSpiConfig()
   */
 static void ApplySclkDivider(uint32_t preScalerSetting)
 {
-	hspi1.Init.BaudRatePrescaler = preScalerSetting;
-	HAL_SPI_DeInit(&hspi1);
-	HAL_SPI_Init(&hspi1);
+	g_spi1.Init.BaudRatePrescaler = preScalerSetting;
+	HAL_SPI_DeInit(&g_spi1);
+	HAL_SPI_Init(&g_spi1);
 	SPI1->CR2 &= ~(SPI_CR2_FRXTH);
     /* Enable SPI peripheral */
-    __HAL_SPI_ENABLE(&hspi1);
+    __HAL_SPI_ENABLE(&g_spi1);
 }

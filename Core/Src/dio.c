@@ -10,16 +10,31 @@
 
 #include "dio.h"
 
-/* Global register array */
+/** Global register array (from registers.c) */
 volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
-/** Struct storing current DIO output config */
-volatile DIOConfig pinConfig = {};
+/** Struct storing current DIO output config. Global scope */
+volatile DIOConfig g_pinConfig = {};
 
 /* Private function prototypes */
 static void ValidateDIOOutputConfig();
 static uint16_t BuildDIOOutputConfigReg();
 static void ParseDIOOutputConfig();
+
+/**
+  * @brief Gets two bit hardware identification code from identifier pins
+  *
+  * @return ID code read from ID pins (0 - 3)
+  */
+uint32_t GetHardwareID()
+{
+	uint32_t id;
+
+	/* Get ID from GPIO port C, pins 2-3 */
+	id = GPIOC->IDR;
+	id = (id >> 2) & 0x3;
+	return id;
+}
 
 /**
   * @brief Validates and updates the data ready and PPS input configuration based on DIO_INPUT_CONFIG
@@ -166,25 +181,25 @@ void UpdateDIOOutputConfig()
 	/* All SW_INx pins are driven as outputs */
 
 	/* SW_IN1 (PB6) */
-	if(pinConfig.passPins & 0x1)
+	if(g_pinConfig.passPins & 0x1)
 		GPIOB->ODR &= ~GPIO_PIN_6;
 	else
 		GPIOB->ODR |= GPIO_PIN_6;
 
 	/* SW_IN2 (PB7) */
-	if(pinConfig.passPins & 0x2)
+	if(g_pinConfig.passPins & 0x2)
 		GPIOB->ODR &= ~GPIO_PIN_7;
 	else
 		GPIOB->ODR |= GPIO_PIN_7;
 
 	/* SW_IN3 (PC8) */
-	if(pinConfig.passPins & 0x4)
+	if(g_pinConfig.passPins & 0x4)
 		GPIOC->ODR &= ~GPIO_PIN_8;
 	else
 		GPIOC->ODR |= GPIO_PIN_8;
 
 	/* SW_IN4 (PC9) */
-	if(pinConfig.passPins & 0x8)
+	if(g_pinConfig.passPins & 0x8)
 		GPIOC->ODR &= ~GPIO_PIN_9;
 	else
 		GPIOC->ODR |= GPIO_PIN_9;
@@ -196,7 +211,7 @@ void UpdateDIOOutputConfig()
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 	GPIO_InitStruct.Pin = GPIO_PIN_4;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	if((pinConfig.watermarkPins & 0x1) || (pinConfig.overflowPins & 0x1) || (pinConfig.errorPins & 0x1))
+	if((g_pinConfig.watermarkPins & 0x1) || (g_pinConfig.overflowPins & 0x1) || (g_pinConfig.errorPins & 0x1))
 	{
 		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	}
@@ -211,7 +226,7 @@ void UpdateDIOOutputConfig()
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 	GPIO_InitStruct.Pin = GPIO_PIN_8;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	if((pinConfig.watermarkPins & 0x2) || (pinConfig.overflowPins & 0x2) || (pinConfig.errorPins & 0x2))
+	if((g_pinConfig.watermarkPins & 0x2) || (g_pinConfig.overflowPins & 0x2) || (g_pinConfig.errorPins & 0x2))
 	{
 		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	}
@@ -226,7 +241,7 @@ void UpdateDIOOutputConfig()
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 	GPIO_InitStruct.Pin = GPIO_PIN_7;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	if((pinConfig.watermarkPins & 0x4) || (pinConfig.overflowPins & 0x4) || (pinConfig.errorPins & 0x4))
+	if((g_pinConfig.watermarkPins & 0x4) || (g_pinConfig.overflowPins & 0x4) || (g_pinConfig.errorPins & 0x4))
 	{
 		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	}
@@ -241,7 +256,7 @@ void UpdateDIOOutputConfig()
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 	GPIO_InitStruct.Pin = GPIO_PIN_8;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	if((pinConfig.watermarkPins & 0x8) || (pinConfig.overflowPins & 0x8) || (pinConfig.errorPins & 0x8))
+	if((g_pinConfig.watermarkPins & 0x8) || (g_pinConfig.overflowPins & 0x8) || (g_pinConfig.errorPins & 0x8))
 	{
 		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	}
@@ -262,10 +277,10 @@ static void ParseDIOOutputConfig()
 	/* Get current config value */
 	uint32_t configReg = g_regs[DIO_OUTPUT_CONFIG_REG];
 
-	pinConfig.passPins = (configReg) & 0xF;
-	pinConfig.watermarkPins = (configReg >> 4) & 0xF;
-	pinConfig.overflowPins = (configReg >> 8) & 0xF;
-	pinConfig.errorPins = (configReg >> 12) & 0xF;
+	g_pinConfig.passPins = (configReg) & 0xF;
+	g_pinConfig.watermarkPins = (configReg >> 4) & 0xF;
+	g_pinConfig.overflowPins = (configReg >> 8) & 0xF;
+	g_pinConfig.errorPins = (configReg >> 12) & 0xF;
 }
 
 /**
@@ -275,7 +290,7 @@ static void ParseDIOOutputConfig()
   */
 static uint16_t BuildDIOOutputConfigReg()
 {
-	return pinConfig.passPins | (pinConfig.watermarkPins << 4) | (pinConfig.overflowPins << 8) | (pinConfig.errorPins << 12);
+	return g_pinConfig.passPins | (g_pinConfig.watermarkPins << 4) | (g_pinConfig.overflowPins << 8) | (g_pinConfig.errorPins << 12);
 }
 
 /**
@@ -286,18 +301,18 @@ static uint16_t BuildDIOOutputConfigReg()
 static void ValidateDIOOutputConfig()
 {
 	/* Clear upper bits in each */
-	pinConfig.passPins &= 0xF;
-	pinConfig.watermarkPins &= 0xF;
-	pinConfig.overflowPins &= 0xF;
-	pinConfig.errorPins &= 0xF;
+	g_pinConfig.passPins &= 0xF;
+	g_pinConfig.watermarkPins &= 0xF;
+	g_pinConfig.overflowPins &= 0xF;
+	g_pinConfig.errorPins &= 0xF;
 
 	/* Any pins set as pass pins cannot also be set as interrupt pins */
-	pinConfig.overflowPins &= ~pinConfig.passPins;
-	pinConfig.watermarkPins &= ~pinConfig.passPins;
-	pinConfig.errorPins &= ~pinConfig.passPins;
+	g_pinConfig.overflowPins &= ~g_pinConfig.passPins;
+	g_pinConfig.watermarkPins &= ~g_pinConfig.passPins;
+	g_pinConfig.errorPins &= ~g_pinConfig.passPins;
 
 	/* Interrupt priority: Error -> Watermark -> Overflow */
-	pinConfig.watermarkPins &= ~pinConfig.errorPins;
-	pinConfig.overflowPins &= ~pinConfig.watermarkPins;
-	pinConfig.overflowPins &= ~pinConfig.errorPins;
+	g_pinConfig.watermarkPins &= ~g_pinConfig.errorPins;
+	g_pinConfig.overflowPins &= ~g_pinConfig.watermarkPins;
+	g_pinConfig.overflowPins &= ~g_pinConfig.errorPins;
 }

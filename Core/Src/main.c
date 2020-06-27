@@ -10,22 +10,6 @@
 
 #include "main.h"
 
-/** SPI handle for IMU master port */
-SPI_HandleTypeDef hspi1;
-
-/** SPI handle for slave port (from master controller) */
-SPI_HandleTypeDef hspi2;
-
-/** SPI handle for SD card master port */
-SPI_HandleTypeDef hspi3;
-
-/* User SPI DMA handles */
-DMA_HandleTypeDef hdma_spi2_rx;
-DMA_HandleTypeDef hdma_spi2_tx;
-
-/* Update processing required */
-volatile extern uint32_t update_flags;
-
 /* Local function prototypes */
 static void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
@@ -33,6 +17,24 @@ static void MX_SPI1_Init(void);
 static void MX_SPI3_Init(void);
 static void DWT_Init();
 static void MX_DMA_Init(void);
+
+/* Update processing required (from registers.c) */
+volatile extern uint32_t g_update_flags;
+
+/** User SPI Rx DMA handle. Global scope */
+DMA_HandleTypeDef g_dma_spi2_rx;
+
+/** User SPI Tx DMA handle. Global scope */
+DMA_HandleTypeDef g_dma_spi2_tx;
+
+/** SPI handle for IMU master port. Global scope */
+SPI_HandleTypeDef g_spi1;
+
+/** SPI handle for slave port (from master controller). Global scope */
+SPI_HandleTypeDef g_spi2;
+
+/** SPI handle for SD card master port. Global scope */
+SPI_HandleTypeDef g_spi3;
 
 /**
   * @brief  The application entry point.
@@ -103,48 +105,48 @@ int main(void)
   MX_DMA_Init();
 
   /* Clear all update flags before entering loop (shouldn't be set anyways, but it doesn't hurt) */
-  update_flags = 0;
+  g_update_flags = 0;
 
   /* Infinite loop */
   while(1)
   {
 	  /* Process buf dequeue (high priority) */
-	  if(update_flags & DEQUEUE_BUF_FLAG)
+	  if(g_update_flags & DEQUEUE_BUF_FLAG)
 	  {
-		  update_flags &= ~DEQUEUE_BUF_FLAG;
+		  g_update_flags &= ~DEQUEUE_BUF_FLAG;
 		  BufDequeueToOutputRegs();
 	  }
 	  /* Process other register update flags (lower priority, done in priority order) */
-	  else if(update_flags)
+	  else if(g_update_flags)
 	  {
-		  if(update_flags & ENABLE_CAPTURE_FLAG)
+		  if(g_update_flags & ENABLE_CAPTURE_FLAG)
 		  {
-			  update_flags &= ~ENABLE_CAPTURE_FLAG;
+			  g_update_flags &= ~ENABLE_CAPTURE_FLAG;
 			  EnableDataCapture();
 		  }
-		  else if(update_flags & USER_COMMAND_FLAG)
+		  else if(g_update_flags & USER_COMMAND_FLAG)
 		  {
-			  update_flags &= ~USER_COMMAND_FLAG;
+			  g_update_flags &= ~USER_COMMAND_FLAG;
 			  ProcessCommand();
 		  }
-		  else if(update_flags & DIO_INPUT_CONFIG_FLAG)
+		  else if(g_update_flags & DIO_INPUT_CONFIG_FLAG)
 		  {
-			  update_flags &= ~DIO_INPUT_CONFIG_FLAG;
+			  g_update_flags &= ~DIO_INPUT_CONFIG_FLAG;
 			  UpdateDIOInputConfig();
 		  }
-		  else if(update_flags & DIO_OUTPUT_CONFIG_FLAG)
+		  else if(g_update_flags & DIO_OUTPUT_CONFIG_FLAG)
 		  {
-			  update_flags &= ~DIO_OUTPUT_CONFIG_FLAG;
+			  g_update_flags &= ~DIO_OUTPUT_CONFIG_FLAG;
 			  UpdateDIOOutputConfig();
 		  }
-		  else if(update_flags & IMU_SPI_CONFIG_FLAG)
+		  else if(g_update_flags & IMU_SPI_CONFIG_FLAG)
 		  {
-			  update_flags &= ~IMU_SPI_CONFIG_FLAG;
+			  g_update_flags &= ~IMU_SPI_CONFIG_FLAG;
 			  UpdateImuSpiConfig();
 		  }
-		  else if(update_flags & USER_SPI_CONFIG_FLAG)
+		  else if(g_update_flags & USER_SPI_CONFIG_FLAG)
 		  {
-			  update_flags &= ~USER_SPI_CONFIG_FLAG;
+			  g_update_flags &= ~USER_SPI_CONFIG_FLAG;
 			  UpdateUserSpiConfig();
 		  }
 	  }
@@ -161,21 +163,6 @@ int main(void)
 
   /* Should never get here */
   return 0;
-}
-
-/**
-  * @brief Gets two bit hardware identification code from identifier pins
-  *
-  * @return ID code read from ID pins (0 - 3)
-  */
-uint32_t GetHardwareID()
-{
-	uint32_t id;
-
-	/* Get ID from GPIO port C, pins 2-3 */
-	id = GPIOC->IDR;
-	id = (id >> 2) & 0x3;
-	return id;
 }
 
 /**
@@ -206,34 +193,34 @@ static void MX_DMA_Init(void)
 
   /* SPI2 DMA Init */
   /* SPI2_RX Init */
-  hdma_spi2_rx.Instance = DMA1_Channel4;
-  hdma_spi2_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
-  hdma_spi2_rx.Init.PeriphInc = DMA_PINC_DISABLE;
-  hdma_spi2_rx.Init.MemInc = DMA_MINC_ENABLE;
-  hdma_spi2_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-  hdma_spi2_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
-  hdma_spi2_rx.Init.Mode = DMA_NORMAL;
-  hdma_spi2_rx.Init.Priority = DMA_PRIORITY_VERY_HIGH;
-  if (HAL_DMA_Init(&hdma_spi2_rx) != HAL_OK)
+  g_dma_spi2_rx.Instance = DMA1_Channel4;
+  g_dma_spi2_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+  g_dma_spi2_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+  g_dma_spi2_rx.Init.MemInc = DMA_MINC_ENABLE;
+  g_dma_spi2_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+  g_dma_spi2_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+  g_dma_spi2_rx.Init.Mode = DMA_NORMAL;
+  g_dma_spi2_rx.Init.Priority = DMA_PRIORITY_VERY_HIGH;
+  if (HAL_DMA_Init(&g_dma_spi2_rx) != HAL_OK)
   {
     Error_Handler();
   }
-  __HAL_LINKDMA(&hspi2,hdmarx,hdma_spi2_rx);
+  __HAL_LINKDMA(&g_spi2,hdmarx,g_dma_spi2_rx);
 
   /* SPI2_TX Init */
-  hdma_spi2_tx.Instance = DMA1_Channel5;
-  hdma_spi2_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
-  hdma_spi2_tx.Init.PeriphInc = DMA_PINC_DISABLE;
-  hdma_spi2_tx.Init.MemInc = DMA_MINC_ENABLE;
-  hdma_spi2_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-  hdma_spi2_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
-  hdma_spi2_tx.Init.Mode = DMA_NORMAL;
-  hdma_spi2_tx.Init.Priority = DMA_PRIORITY_VERY_HIGH;
-  if (HAL_DMA_Init(&hdma_spi2_tx) != HAL_OK)
+  g_dma_spi2_tx.Instance = DMA1_Channel5;
+  g_dma_spi2_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
+  g_dma_spi2_tx.Init.PeriphInc = DMA_PINC_DISABLE;
+  g_dma_spi2_tx.Init.MemInc = DMA_MINC_ENABLE;
+  g_dma_spi2_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+  g_dma_spi2_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+  g_dma_spi2_tx.Init.Mode = DMA_NORMAL;
+  g_dma_spi2_tx.Init.Priority = DMA_PRIORITY_VERY_HIGH;
+  if (HAL_DMA_Init(&g_dma_spi2_tx) != HAL_OK)
   {
     Error_Handler();
   }
-  __HAL_LINKDMA(&hspi2,hdmatx,hdma_spi2_tx);
+  __HAL_LINKDMA(&g_spi2,hdmatx,g_dma_spi2_tx);
 
   /* DMA interrupt init */
   /* DMA1_Channel4_IRQn interrupt configuration */
@@ -300,21 +287,21 @@ static void SystemClock_Config(void)
 static void MX_SPI1_Init(void)
 {
   /* SPI1 parameter configuration*/
-  hspi1.Instance = SPI1;
-  hspi1.Init.Mode = SPI_MODE_MASTER;
-  hspi1.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi1.Init.DataSize = SPI_DATASIZE_16BIT;
-  hspi1.Init.CLKPolarity = SPI_POLARITY_HIGH;
-  hspi1.Init.CLKPhase = SPI_PHASE_2EDGE;
-  hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
-  hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
-  hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-  hspi1.Init.CRCPolynomial = 7;
-  hspi1.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-  hspi1.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
-  if (HAL_SPI_Init(&hspi1) != HAL_OK)
+  g_spi1.Instance = SPI1;
+  g_spi1.Init.Mode = SPI_MODE_MASTER;
+  g_spi1.Init.Direction = SPI_DIRECTION_2LINES;
+  g_spi1.Init.DataSize = SPI_DATASIZE_16BIT;
+  g_spi1.Init.CLKPolarity = SPI_POLARITY_HIGH;
+  g_spi1.Init.CLKPhase = SPI_PHASE_2EDGE;
+  g_spi1.Init.NSS = SPI_NSS_SOFT;
+  g_spi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
+  g_spi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  g_spi1.Init.TIMode = SPI_TIMODE_DISABLE;
+  g_spi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  g_spi1.Init.CRCPolynomial = 7;
+  g_spi1.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+  g_spi1.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
+  if (HAL_SPI_Init(&g_spi1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -322,10 +309,10 @@ static void MX_SPI1_Init(void)
   SPI1->CR2 &= ~(SPI_CR2_FRXTH);
 
   /* Check if the SPI is already enabled */
-  if ((hspi1.Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
+  if ((g_spi1.Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
   {
     /* Enable SPI peripheral */
-    __HAL_SPI_ENABLE(&hspi1);
+    __HAL_SPI_ENABLE(&g_spi1);
   }
 
 }
@@ -340,21 +327,21 @@ static void MX_SPI1_Init(void)
 static void MX_SPI3_Init(void)
 {
   /* SPI3 parameter configuration*/
-  hspi3.Instance = SPI3;
-  hspi3.Init.Mode = SPI_MODE_MASTER;
-  hspi3.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi3.Init.DataSize = SPI_DATASIZE_4BIT;
-  hspi3.Init.CLKPolarity = SPI_POLARITY_LOW;
-  hspi3.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi3.Init.NSS = SPI_NSS_HARD_OUTPUT;
-  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-  hspi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  hspi3.Init.TIMode = SPI_TIMODE_DISABLE;
-  hspi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-  hspi3.Init.CRCPolynomial = 7;
-  hspi3.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-  hspi3.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
-  if (HAL_SPI_Init(&hspi3) != HAL_OK)
+  g_spi3.Instance = SPI3;
+  g_spi3.Init.Mode = SPI_MODE_MASTER;
+  g_spi3.Init.Direction = SPI_DIRECTION_2LINES;
+  g_spi3.Init.DataSize = SPI_DATASIZE_4BIT;
+  g_spi3.Init.CLKPolarity = SPI_POLARITY_LOW;
+  g_spi3.Init.CLKPhase = SPI_PHASE_1EDGE;
+  g_spi3.Init.NSS = SPI_NSS_HARD_OUTPUT;
+  g_spi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  g_spi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  g_spi3.Init.TIMode = SPI_TIMODE_DISABLE;
+  g_spi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  g_spi3.Init.CRCPolynomial = 7;
+  g_spi3.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+  g_spi3.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
+  if (HAL_SPI_Init(&g_spi3) != HAL_OK)
   {
     Error_Handler();
   }

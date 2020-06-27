@@ -12,7 +12,7 @@
 #define INC_REGISTERS_H_
 
 /* Includes */
-#include "spi_passthrough.h"
+#include <imu_spi.h>
 #include "main.h"
 #include "buffer.h"
 #include "flash.h"

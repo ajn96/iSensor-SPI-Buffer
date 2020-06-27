@@ -10,14 +10,14 @@
 
 #include "burst.h"
 
-/* User SPI handle (from main) */
-extern SPI_HandleTypeDef hspi2;
+/** User SPI handle (from main.c) */
+extern SPI_HandleTypeDef g_spi2;
 
-/* Register array */
+/** Global register array (from registers.c) */
 volatile extern uint16_t g_regs[];
 
 /** Buffer to receive burst DMA data (from master) into */
-uint8_t burstRxData[64] = {0};
+static uint8_t burstRxData[64] = {0};
 
 /**
   * @brief Configures SPI for a burst buffer read
@@ -29,6 +29,6 @@ uint8_t burstRxData[64] = {0};
   */
 void BurstReadSetup()
 {
-	HAL_SPI_TransmitReceive_DMA(&hspi2, (uint8_t*) &g_regs[BUF_DATA_0_REG], burstRxData, g_regs[BUF_LEN_REG]);
+	HAL_SPI_TransmitReceive_DMA(&g_spi2, (uint8_t*) &g_regs[BUF_DATA_0_REG], burstRxData, g_regs[BUF_LEN_REG]);
 }
 

@@ -10,11 +10,11 @@
 
 #include "user_interrupt.h"
 
-/* Global register array */
+/** Global register array (from registers.c) */
 volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
-/** Struct to track config */
-extern DIOConfig pinConfig;
+/** Struct to track config (from dio.c) */
+extern DIOConfig g_pinConfig;
 
 /**
   * @brief Updates the user interrupt (data ready) signal status
@@ -81,7 +81,7 @@ void UpdateUserInterrupt()
 void UpdateOutputPins(uint32_t watermark, uint32_t overflow, uint32_t error)
 {
 	/* Apply interrupt values to pins */
-	if(pinConfig.watermarkPins & 0x1)
+	if(g_pinConfig.watermarkPins & 0x1)
 	{
 		/* PB4 */
 		if(watermark)
@@ -89,7 +89,7 @@ void UpdateOutputPins(uint32_t watermark, uint32_t overflow, uint32_t error)
 		else
 			GPIOB->ODR &= ~GPIO_PIN_4;
 	}
-	if(pinConfig.watermarkPins & 0x2)
+	if(g_pinConfig.watermarkPins & 0x2)
 	{
 		/* PB8 */
 		if(watermark)
@@ -97,7 +97,7 @@ void UpdateOutputPins(uint32_t watermark, uint32_t overflow, uint32_t error)
 		else
 			GPIOB->ODR &= ~GPIO_PIN_8;
 	}
-	if(pinConfig.watermarkPins & 0x4)
+	if(g_pinConfig.watermarkPins & 0x4)
 	{
 		/* PC7 */
 		if(watermark)
@@ -105,7 +105,7 @@ void UpdateOutputPins(uint32_t watermark, uint32_t overflow, uint32_t error)
 		else
 			GPIOC->ODR &= ~GPIO_PIN_7;
 	}
-	if(pinConfig.watermarkPins & 0x8)
+	if(g_pinConfig.watermarkPins & 0x8)
 	{
 		/* PA8 */
 		if(watermark)
@@ -115,7 +115,7 @@ void UpdateOutputPins(uint32_t watermark, uint32_t overflow, uint32_t error)
 	}
 
 	/* Apply overflow values to pins */
-	if(pinConfig.overflowPins & 0x1)
+	if(g_pinConfig.overflowPins & 0x1)
 	{
 		/* PB4 */
 		if(overflow)
@@ -123,7 +123,7 @@ void UpdateOutputPins(uint32_t watermark, uint32_t overflow, uint32_t error)
 		else
 			GPIOB->ODR &= ~GPIO_PIN_4;
 	}
-	if(pinConfig.overflowPins & 0x2)
+	if(g_pinConfig.overflowPins & 0x2)
 	{
 		/* PB8 */
 		if(overflow)
@@ -131,7 +131,7 @@ void UpdateOutputPins(uint32_t watermark, uint32_t overflow, uint32_t error)
 		else
 			GPIOB->ODR &= ~GPIO_PIN_8;
 	}
-	if(pinConfig.overflowPins & 0x4)
+	if(g_pinConfig.overflowPins & 0x4)
 	{
 		/* PC7 */
 		if(overflow)
@@ -139,7 +139,7 @@ void UpdateOutputPins(uint32_t watermark, uint32_t overflow, uint32_t error)
 		else
 			GPIOC->ODR &= ~GPIO_PIN_7;
 	}
-	if(pinConfig.overflowPins & 0x8)
+	if(g_pinConfig.overflowPins & 0x8)
 	{
 		/* PA8 */
 		if(overflow)
@@ -149,7 +149,7 @@ void UpdateOutputPins(uint32_t watermark, uint32_t overflow, uint32_t error)
 	}
 
 	/* Apply error values to pins */
-	if(pinConfig.errorPins & 0x1)
+	if(g_pinConfig.errorPins & 0x1)
 	{
 		/* PB4 */
 		if(error)
@@ -157,7 +157,7 @@ void UpdateOutputPins(uint32_t watermark, uint32_t overflow, uint32_t error)
 		else
 			GPIOB->ODR &= ~GPIO_PIN_4;
 	}
-	if(pinConfig.errorPins & 0x2)
+	if(g_pinConfig.errorPins & 0x2)
 	{
 		/* PB8 */
 		if(error)
@@ -165,7 +165,7 @@ void UpdateOutputPins(uint32_t watermark, uint32_t overflow, uint32_t error)
 		else
 			GPIOB->ODR &= ~GPIO_PIN_8;
 	}
-	if(pinConfig.errorPins & 0x4)
+	if(g_pinConfig.errorPins & 0x4)
 	{
 		/* PC7 */
 		if(error)
@@ -173,7 +173,7 @@ void UpdateOutputPins(uint32_t watermark, uint32_t overflow, uint32_t error)
 		else
 			GPIOC->ODR &= ~GPIO_PIN_7;
 	}
-	if(pinConfig.errorPins & 0x8)
+	if(g_pinConfig.errorPins & 0x8)
 	{
 		/* PA8 */
 		if(error)

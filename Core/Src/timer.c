@@ -10,14 +10,35 @@
 
 #include "timer.h"
 
-/* Global register array */
+/* Private function prototypes */
+static void InitTIM2(uint32_t timerfreq);
+
+/** Global register array (from registers.c) */
 volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
 /** TIM2 handle */
 static TIM_HandleTypeDef htim2;
 
-/* Private function prototypes */
-static void InitTIM2(uint32_t timerfreq);
+/**
+  * @brief Blocking sleep function call
+  *
+  * @param microseconds The number of microseconds to sleep
+  *
+  * @return void
+  *
+  * This function uses DWT peripheral (data watchpoint and trace) cycle counter to perform delay.
+ **/
+void SleepMicroseconds(uint32_t microseconds)
+{
+	/* Get the start time */
+	uint32_t clk_cycle_start = DWT->CYCCNT;
+
+	/* Go to number of cycles for system */
+	microseconds *= (HAL_RCC_GetHCLKFreq() / 1000000);
+
+	/* Delay till end */
+	while ((DWT->CYCCNT - clk_cycle_start) < microseconds);
+}
 
 /**
   * @brief Gets the current 32-bit value from the IMU sample timestamp timer

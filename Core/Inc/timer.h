@@ -22,4 +22,6 @@ void EnablePPSTimer();
 void DisablePPSTimer();
 uint32_t GetPPSTimestamp();
 
+void SleepMicroseconds(uint32_t microseconds);
+
 #endif /* INC_TIMER_H_ */

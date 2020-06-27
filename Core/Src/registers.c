@@ -14,7 +14,7 @@
 static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue);
 
 /* User SPI handle (from main.c) */
-extern SPI_HandleTypeDef hspi2;
+extern SPI_HandleTypeDef g_spi2;
 
 /* Index after last buffer output register (from buffer.c) */
 extern uint32_t g_bufLastRegIndex;
@@ -23,7 +23,7 @@ extern uint32_t g_bufLastRegIndex;
 extern uint32_t g_bufNumWords32;
 
 /** Register update flags for main loop processing. Global scope */
-volatile uint32_t update_flags = 0;
+volatile uint32_t g_update_flags = 0;
 
 /** iSensor-SPI-Buffer global register array (read-able via SPI). Global scope */
 uint16_t g_regs[3 * REG_PER_PAGE] __attribute__((aligned (32))) = {
@@ -134,7 +134,7 @@ uint16_t ReadReg(uint8_t regAddr)
 			if(g_regs[BUF_CNT_0_REG] > 0)
 			{
 				/* Set update flag for main loop */
-				update_flags |= DEQUEUE_BUF_FLAG;
+				g_update_flags |= DEQUEUE_BUF_FLAG;
 			}
 			else
 			{
@@ -449,59 +449,59 @@ void UpdateUserSpiConfig()
 
 	/* CPHA */
 	if(config & SPI_CONF_CPHA)
-		hspi2.Init.CLKPhase = SPI_PHASE_2EDGE;
+		g_spi2.Init.CLKPhase = SPI_PHASE_2EDGE;
 	else
-		hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
+		g_spi2.Init.CLKPhase = SPI_PHASE_1EDGE;
 
 	/* CPOL */
 	if(config & SPI_CONF_CPOL)
-		hspi2.Init.CLKPolarity = SPI_POLARITY_HIGH;
+		g_spi2.Init.CLKPolarity = SPI_POLARITY_HIGH;
 	else
-		hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
+		g_spi2.Init.CLKPolarity = SPI_POLARITY_LOW;
 
 	/* Bit order */
 	if(config & SPI_CONF_MSB_FIRST)
-		hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
+		g_spi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
 	else
-		hspi2.Init.FirstBit = SPI_FIRSTBIT_LSB;
+		g_spi2.Init.FirstBit = SPI_FIRSTBIT_LSB;
 
 	/* Reset all immutable settings */
-	hspi2.Instance = SPI2;
-	hspi2.Init.Mode = SPI_MODE_SLAVE;
-	hspi2.Init.Direction = SPI_DIRECTION_2LINES;
-	hspi2.Init.DataSize = SPI_DATASIZE_16BIT;
-	hspi2.Init.NSS = SPI_NSS_HARD_INPUT;
-	hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
-	hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
-	hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-	hspi2.Init.CRCPolynomial = 7;
-	hspi2.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-	hspi2.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
+	g_spi2.Instance = SPI2;
+	g_spi2.Init.Mode = SPI_MODE_SLAVE;
+	g_spi2.Init.Direction = SPI_DIRECTION_2LINES;
+	g_spi2.Init.DataSize = SPI_DATASIZE_16BIT;
+	g_spi2.Init.NSS = SPI_NSS_HARD_INPUT;
+	g_spi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
+	g_spi2.Init.TIMode = SPI_TIMODE_DISABLE;
+	g_spi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+	g_spi2.Init.CRCPolynomial = 7;
+	g_spi2.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+	g_spi2.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
 
 	/* De-init SPI */
-	HAL_SPI_DeInit(&hspi2);
+	HAL_SPI_DeInit(&g_spi2);
 
 	/* Init */
-	if (HAL_SPI_Init(&hspi2) != HAL_OK)
+	if (HAL_SPI_Init(&g_spi2) != HAL_OK)
 	{
 		Error_Handler();
 	}
 
 	/* Start user SPI interrupt processing (Rx and error) */
-	__HAL_SPI_ENABLE_IT(&hspi2, (SPI_IT_RXNE | SPI_IT_ERR));
+	__HAL_SPI_ENABLE_IT(&g_spi2, (SPI_IT_RXNE | SPI_IT_ERR));
 
 	/* Set threshold for 16 bit mode */
-	CLEAR_BIT(hspi2.Instance->CR2, SPI_RXFIFO_THRESHOLD);
+	CLEAR_BIT(g_spi2.Instance->CR2, SPI_RXFIFO_THRESHOLD);
 
 	/* Check if the SPI is already enabled */
-	if ((hspi2.Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
+	if ((g_spi2.Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
 	{
 		/* Enable SPI peripheral */
-		__HAL_SPI_ENABLE(&hspi2);
+		__HAL_SPI_ENABLE(&g_spi2);
 	}
 
 	/* Load output with initial zeros */
-	hspi2.Instance->DR = 0;
+	g_spi2.Instance->DR = 0;
 
 	/* Set user SPI interrupt priority */
 	HAL_NVIC_SetPriority(SPI2_IRQn, 0, 0);
@@ -543,7 +543,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	if(regAddr < 2)
 	{
 		if(selected_page == BUF_READ_PAGE)
-			update_flags |= ENABLE_CAPTURE_FLAG;
+			g_update_flags |= ENABLE_CAPTURE_FLAG;
 		else
 			DisableDataCapture();
 
@@ -616,7 +616,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 		if(isUpper)
 		{
 			/* Need to set a flag to update IMU spi config */
-			update_flags |= IMU_SPI_CONFIG_FLAG;
+			g_update_flags |= IMU_SPI_CONFIG_FLAG;
 		}
 	}
 	else if(regIndex == USER_SPI_CONFIG_REG)
@@ -624,7 +624,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 		if(isUpper)
 		{
 			/* Need to set a flag to update user spi config */
-			update_flags |= USER_SPI_CONFIG_FLAG;
+			g_update_flags |= USER_SPI_CONFIG_FLAG;
 		}
 	}
 	else if(regIndex == DIO_OUTPUT_CONFIG_REG)
@@ -632,7 +632,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 		if(isUpper)
 		{
 			/* Need to set a flag to update DIO output config */
-			update_flags |= DIO_OUTPUT_CONFIG_FLAG;
+			g_update_flags |= DIO_OUTPUT_CONFIG_FLAG;
 		}
 	}
 	else if(regIndex == DIO_INPUT_CONFIG_REG)
@@ -640,7 +640,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 		if(isUpper)
 		{
 			/* Need to set a flag to update DIO input config */
-			update_flags |= DIO_INPUT_CONFIG_FLAG;
+			g_update_flags |= DIO_INPUT_CONFIG_FLAG;
 		}
 	}
 	else if(regIndex == USER_COMMAND_REG)
@@ -648,7 +648,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 		if(isUpper)
 		{
 			/* Need to set a flag to process command */
-			update_flags |= USER_COMMAND_FLAG;
+			g_update_flags |= USER_COMMAND_FLAG;
 		}
 	}
 

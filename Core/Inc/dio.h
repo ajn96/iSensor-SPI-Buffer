@@ -17,15 +17,22 @@
 /** Struct representing DIO configuration settings */
 typedef struct DIOConfig
 {
+	/** Pins to connect directly from host to IMU */
 	uint32_t passPins;
+
+	/** Watermark interrupt pins */
 	uint32_t watermarkPins;
+
+	/** Overflow interrupt pins */
 	uint32_t overflowPins;
+
+	/** Error interrupt pins */
 	uint32_t errorPins;
 }DIOConfig;
 
 /* Public function prototypes */
 void UpdateDIOInputConfig();
 void UpdateDIOOutputConfig();
-
+uint32_t GetHardwareID();
 
 #endif /* INC_DIO_H_ */

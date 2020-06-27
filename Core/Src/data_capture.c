@@ -10,17 +10,17 @@
 
 #include "data_capture.h"
 
-/* Global register array */
+/** Global register array (from registers.c) */
 volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
-/* Words per buffer (from isr) */
-volatile extern uint32_t WordsPerCapture;
+/* Words per buffer (from isr.c) */
+volatile extern uint32_t g_wordsPerCapture;
 
-/* Capture in progress (from isr) */
-volatile extern uint32_t CaptureInProgress;
+/* Capture in progress (from isr.c) */
+volatile extern uint32_t g_captureInProgress;
 
 /* Track if a capture is currently running */
-volatile uint32_t capture_running = 0;
+static volatile uint32_t capture_running = 0;
 
 /**
   * @brief Enables autonomous data capture by enabling DR ISR in NVIC.
@@ -36,7 +36,7 @@ void EnableDataCapture()
 	EXTI->PR |= (0x1F << 5);
 
 	/* Set 16-bit words per capture */
-	WordsPerCapture = g_regs[BUF_LEN_REG] >> 1;
+	g_wordsPerCapture = g_regs[BUF_LEN_REG] >> 1;
 
 	/* Enable data ready interrupts */
 	NVIC_EnableIRQ(EXTI9_5_IRQn);
@@ -66,7 +66,7 @@ void DisableDataCapture()
 	TIM4->SR &= ~TIM_SR_UIF;
 
 	/* Capture in progress set to false */
-	CaptureInProgress = 0;
+	g_captureInProgress = 0;
 
 	/* Turn off green LED */
 	TurnOffLED(Green);
