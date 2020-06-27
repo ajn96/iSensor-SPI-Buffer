@@ -23,6 +23,8 @@
 #include "stm32f3xx_it.h"
 #include "stm32f3xx_hal_pcd.h"
 
+extern PCD_HandleTypeDef hpcd_USB_FS;
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
