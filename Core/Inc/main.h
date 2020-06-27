@@ -22,6 +22,7 @@
 #include "watchdog.h"
 #include "timer.h"
 #include "dio.h"
+#include "usb_device.h"
 
 /* Public function prototypes */
 void Error_Handler(void);
