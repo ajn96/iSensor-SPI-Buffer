@@ -18,8 +18,10 @@ Commands are sent to the CLI over the virtual COM port. Each command starts with
 | Command | arg0 | arg1 | arg2 | Description |
 | --- | --- | --- | --- | --- |
 | help | N/A | N/A | N/A | List available CLI options |
-| reset | N/A | N/A | N/A | Trigger a system reset  |
+| reset | N/A | N/A | N/A | Trigger a system reset. This will reset the page to 253 (default page)  |
 | read | Register address | N/A | N/A | Read a single register, at the address provided |
 | read | Start address | End address | N/A | Read multiple registers, accross the address range provided |
 | read | Start address | End address | Number of reads | Read multiple registers, accross the address range provided, number of reads times. Each set of reads is terminated by a new line |
+| readbuf | N/A | N/A | N/A | Read all buffer entries. This call will set the active page to the buffer data page |
+| stream | start/stop | N/A | N/A | Start (1) / stop (0) a buffer read stream. When running, a stream is equivalent to calling readbuf every time a watermark interrupt is generated. WATERMARK_INT_CONFIG can be modified to set the data latency |
 | write | Register address | Write Value | N/A | Write a byte to the specified register |
