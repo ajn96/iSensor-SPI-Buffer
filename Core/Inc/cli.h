@@ -11,6 +11,8 @@
 #ifndef INC_CLI_H_
 #define INC_CLI_H_
 
+#include "main.h"
+
 void USBSerialHandler();
 
 #endif /* INC_CLI_H_ */
