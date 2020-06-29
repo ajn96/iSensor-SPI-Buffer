@@ -12,6 +12,9 @@
 #define INC_CLI_H_
 
 #include "main.h"
+#include "usbd_cdc_if.h"
+#include "registers.h"
+#include "stdlib.h"
 
 void USBSerialHandler();
 

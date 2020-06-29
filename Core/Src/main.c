@@ -9,6 +9,8 @@
  **/
 
 #include "main.h"
+#include "usbd_cdc_if.h"
+#include "cli.h"
 
 /* Local function prototypes */
 static void SystemClock_Config(void);
@@ -157,6 +159,9 @@ int main(void)
 		  /* Check user interrupt generation status */
 		  UpdateUserInterrupt();
 	  }
+
+	  /* Handle any command line activity */
+	  USBSerialHandler();
 
 	  /* Feed watch dog timer */
 	  FeedWatchDog();
