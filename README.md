@@ -1,7 +1,7 @@
 # iSensor SPI Buffer
 The iSensor SPI Buffer is a hardware and software solution designed to buffer iSensor IMU data, enabling asynchronous sampling systems (specifically embedded Linux systems) such as the Raspberry Pi, BeagleBone, Nvidia Jetson, etc. to capture IMU data at high sampling rates **with accurate timestamps and** **without data loss**. 
 
-The firmware is architected around an STM32F303 to enable full-throughput, buffered data captures as well as an ADG1611 analog switch IC to enable routing STALL and DATA READY signals. The SPI buffer board is designed to be compatible with all current and future iSensor IMU products. 
+The firmware is architected around an STM32F303 to enable full-throughput, buffered data captures as well as an ADG1611 analog switch IC to enable routing SYNC and DATA READY signals from a host processor directly to the IMU. The SPI buffer board is designed to be compatible with all current and future iSensor IMU products. 
 
 A custom PCB was designed to fit the profile and form factor of an ADIS1649x IMU. This profile allows the iSensor SPI Buffer to act as a drop-in solution for existing, high-performance solutions. The buffer interface is designed to mimic the iSensor page convention and SPI settings out-of-the box. 
 
