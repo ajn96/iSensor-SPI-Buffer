@@ -14,8 +14,13 @@
 #include "main.h"
 #include "usbd_cdc_if.h"
 #include "registers.h"
-#include "stdlib.h"
 
 void USBSerialHandler();
+void USBReadBuf();
+
+#define BUF_BASE_ADDR			8
+
+#define BUF_DATA_BASE_ADDR		16
+
 
 #endif /* INC_CLI_H_ */

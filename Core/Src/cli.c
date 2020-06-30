@@ -14,10 +14,14 @@
 static void ParseCommand();
 static void Read();
 static void Write();
-static void ReadBuf();
 static void Stream();
 static void ParseCommandArgs();
 static uint32_t HexToUInt();
+static void UShortToHex(uint8_t * outBuf, uint16_t val);
+static void BlockingUSBTransmit(uint8_t * buf, uint32_t Len, uint32_t TimeoutMs);
+
+/** Global register array. From registers.c */
+extern volatile uint16_t g_regs[];
 
 /** USB Rx buffer (from usbd_cdc_if.c) */
 extern uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
@@ -38,13 +42,13 @@ static uint8_t CurrentCommand[64];
 static uint8_t EchoBuf[4];
 
 /** Print string for invalid command */
-static uint8_t InvalidCmdStr[] = "\r\nError: Invalid command!\r\n>";
+static uint8_t InvalidCmdStr[] = "\r\nError: Invalid command!\r\n";
 
 /** Print string for newline */
-static uint8_t NewLineStr[] = "\r\n>";
+static uint8_t NewLineStr[] = "\r\n";
 
 /** Print string for invalid argument */
-static uint8_t InvalidArgStr[] = "\r\nError: Invalid argument!\r\n>";
+static uint8_t InvalidArgStr[] = "\r\nError: Invalid argument!\r\n";
 
 /** Print string for help command */
 static uint8_t HelpStr[] = "\r\nAll numeric values are in hex. [] arguments are optional\r\n"
@@ -53,7 +57,7 @@ static uint8_t HelpStr[] = "\r\nAll numeric values are in hex. [] arguments are 
 		"read startAddr [endAddr = addr] [numReads = 1]: Read registers starting at startAddr and ending at endAddr numReads times\r\n"
 		"write addr value: Write the 8-bit value in value to register at address addr\r\n"
 		"readbuf: Read all buffer entries. Values for each entry are placed on a newline\r\n"
-		"stream startStop: Start (startStop != 0) or stop (startStop = 0) a read stream\r\n>";
+		"stream startStop: Start (startStop != 0) or stop (startStop = 0) a read stream\r\n";
 
 /** String literal for read command. Must be followed by a space */
 static const uint8_t ReadCmd[] = "read ";
@@ -141,6 +145,40 @@ void USBSerialHandler()
 	}
 }
 
+void USBReadBuf()
+{
+	uint32_t numBufs = g_regs[BUF_CNT_0_REG];
+	uint32_t bufLastAddr = g_regs[BUF_LEN_REG] + BUF_DATA_BASE_ADDR;
+	uint32_t buf;
+	uint32_t addr;
+	uint8_t* writeBufPtr;
+	uint16_t readVal;
+	uint32_t count;
+
+	/* Set page to 255 */
+	WriteReg(0, 255);
+
+	for(buf = 0; buf < numBufs; buf++)
+	{
+		writeBufPtr = UserRxBufferFS;
+		count = 0;
+		BufDequeueToOutputRegs();
+		for(addr = BUF_BASE_ADDR; addr < bufLastAddr; addr += 2)
+		{
+			readVal = ReadReg(addr);
+			UShortToHex(writeBufPtr, readVal);
+			writeBufPtr[4] = ' ';
+			writeBufPtr += 5;
+			count += 5;
+		}
+		writeBufPtr[0] = '\r';
+		writeBufPtr[1] = '\n';
+		writeBufPtr += 2;
+		count += 2;
+		BlockingUSBTransmit(UserRxBufferFS, count, 20);
+	}
+}
+
 static void ParseCommand()
 {
 	uint32_t validCmd;
@@ -183,8 +221,10 @@ static void ParseCommand()
 	}
 	if(validCmd)
 	{
+		/* Print newline to console */
+		BlockingUSBTransmit(NewLineStr, sizeof(NewLineStr), 10);
 		/* Call read buf handler */
-		ReadBuf();
+		USBReadBuf();
 		return;
 	}
 
@@ -289,17 +329,19 @@ static void Read()
 		for(uint32_t addr = startAddr; addr <= endAddr; addr += 2)
 		{
 			readVal = ReadReg(addr);
-			sprintf(writeBufPtr, "%04X", readVal);
-			writeBufPtr += 4;
-			count += 4;
+			UShortToHex(writeBufPtr, readVal);
+			writeBufPtr[4] = ' ';
+			writeBufPtr += 5;
+			count += 5;
 		}
 		writeBufPtr[0] = '\r';
 		writeBufPtr[1] = '\n';
-		writeBufPtr[2] = '>';
-		writeBufPtr += 3;
-		count += 3;
+		writeBufPtr += 2;
+		count += 2;
+		BlockingUSBTransmit(UserRxBufferFS, count, 20);
+		writeBufPtr = UserRxBufferFS;
+		count = 0;
 	}
-	CDC_Transmit_FS(UserRxBufferFS, count);
 }
 
 static void Write()
@@ -316,11 +358,6 @@ static void Write()
 
 	WriteReg(args[0], args[1]);
 	CDC_Transmit_FS(NewLineStr, sizeof(NewLineStr));
-}
-
-static void ReadBuf()
-{
-
 }
 
 static void Stream()
@@ -426,4 +463,38 @@ static uint32_t HexToUInt()
 	}
 	cmdIndex++;
 	return value;
+}
+
+static void UShortToHex(uint8_t * outBuf, uint16_t val)
+{
+	outBuf[0] = val >> 12;
+	if(outBuf[0] < 0xA)
+		outBuf[0] += '0';
+	else
+		outBuf[0] += ('A' - 10);
+	outBuf[1] = (val >> 8) & 0xF;
+	if(outBuf[1] < 0xA)
+		outBuf[1] += '0';
+	else
+		outBuf[1] += ('A' - 10);
+	outBuf[2] = (val >> 4) & 0xF;
+	if(outBuf[2] < 0xA)
+		outBuf[2] += '0';
+	else
+		outBuf[2] += ('A' - 10);
+	outBuf[3] = val & 0xF;
+	if(outBuf[3] < 0xA)
+		outBuf[3] += '0';
+	else
+		outBuf[3] += ('A' - 10);
+}
+
+static void BlockingUSBTransmit(uint8_t * buf, uint32_t Len, uint32_t TimeoutMs)
+{
+	uint8_t status = CDC_Transmit_FS(buf, Len);
+	uint32_t endTime = HAL_GetTick() + TimeoutMs;
+	while((status != USBD_OK)&&(HAL_GetTick() < endTime))
+	{
+		status = CDC_Transmit_FS(buf, Len);
+	}
 }
