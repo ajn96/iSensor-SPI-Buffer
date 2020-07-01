@@ -39,7 +39,8 @@ WATER_INT_CONFIG_DEFAULT, /* 0x6 */
 ERROR_INT_CONFIG_DEFAULT, /* 0x7 */
 IMU_SPI_CONFIG_DEFAULT, /* 0x8 */
 USER_SPI_CONFIG_DEFAULT, /* 0x9 */
-0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xA - 0xF */
+USB_CONFIG_DEFAULT, /* 0xA */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xB - 0xF */
 0x0000, 0x0000, 0x0000, 0x0000, /* 0x10 - 0x13 */
 FW_REV_DEFAULT, /* 0x14 */
 0x0000, 0x0000, 0x0000, /* 0x15 - 0x17 */
@@ -316,11 +317,13 @@ void FactoryReset()
 	g_regs[IMU_SPI_CONFIG_REG] = IMU_SPI_CONFIG_DEFAULT;
 	g_regs[USER_SPI_CONFIG_REG] = USER_SPI_CONFIG_DEFAULT;
 	g_regs[FW_REV_REG] = FW_REV_DEFAULT;
+	g_regs[USB_CONFIG_REG] = USB_CONFIG_DEFAULT;
 
 	/* Apply endurance and flash sig back */
 	g_regs[ENDURANCE_REG] = endurance;
 	g_regs[FLASH_SIG_REG] = flash_sig;
 
+	/* Calculate new flash sig */
 	g_regs[FLASH_SIG_DRV_REG] = CalcRegSig((uint16_t*)g_regs, FLASH_SIG_DRV_REG - 1);;
 
 	/* Populate SN and build date */

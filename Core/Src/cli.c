@@ -32,9 +32,6 @@ extern uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
 /** USB Rx count (from usbd_cdc_if.c) */
 extern uint32_t USBRxCount;
 
-/* Stream interrupt enable flag */
-uint32_t g_StreamEnable = 0;
-
 /** Current command string */
 static uint8_t CurrentCommand[64];
 
@@ -76,6 +73,9 @@ static const uint8_t ReadBufCmd[] = "readbuf";
 
 /** String literal for stream command. Must be followed by a space */
 static const uint8_t StreamCmd[] = "stream ";
+
+/** String literal for delim set command. Must be followed by a space */
+static const uint8_t DelimCmd[] = "delim ";
 
 /** Array for command arguments */
 static uint32_t args[3];
@@ -167,7 +167,7 @@ void USBReadBuf()
 		{
 			readVal = ReadReg(addr);
 			UShortToHex(writeBufPtr, readVal);
-			writeBufPtr[4] = ' ';
+			writeBufPtr[4] = g_regs[USB_CONFIG_REG] >> 8;
 			writeBufPtr += 5;
 			count += 5;
 		}
@@ -256,6 +256,24 @@ static void ParseCommand()
 		return;
 	}
 
+	/* Set delim command */
+	validCmd = 1;
+	for(int i = 0; i < sizeof(DelimCmd) - 1; i++)
+	{
+		if(CurrentCommand[i] != DelimCmd[i])
+			validCmd = 0;
+	}
+	if(validCmd)
+	{
+		/* Clear delim char in USB config */
+		g_regs[USB_CONFIG_REG] &= 0xFF;
+		/* Set new value */
+		g_regs[USB_CONFIG_REG] |= (CurrentCommand[6] << 8);
+		/* Send newline */
+		CDC_Transmit_FS(NewLineStr, sizeof(NewLineStr));
+		return;
+	}
+
 	/* Reset command */
 	validCmd = 1;
 	for(int i = 0; i < sizeof(ResetCmd) - 1; i++)
@@ -330,7 +348,7 @@ static void Read()
 		{
 			readVal = ReadReg(addr);
 			UShortToHex(writeBufPtr, readVal);
-			writeBufPtr[4] = ' ';
+			writeBufPtr[4] = g_regs[USB_CONFIG_REG] >> 8;
 			writeBufPtr += 5;
 			count += 5;
 		}
@@ -369,15 +387,16 @@ static void Stream()
 		return;
 	}
 
-	/* Set stream interrupt enable flag */
+	/* Set/clear stream interrupt enable flag */
 	if(args[0])
 	{
-		g_StreamEnable = 1;
+		g_regs[USB_CONFIG_REG] |= 1;
 	}
 	else
 	{
-		g_StreamEnable = 0;
+		g_regs[USB_CONFIG_REG] &= ~1;
 	}
+	CDC_Transmit_FS(NewLineStr, sizeof(NewLineStr));
 }
 
 static void ParseCommandArgs()

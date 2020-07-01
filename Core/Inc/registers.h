@@ -47,9 +47,10 @@ void BufDequeueToOutputRegs();
 #define ERROR_INT_CONFIG_REG		0x07
 #define IMU_SPI_CONFIG_REG			0x08
 #define USER_SPI_CONFIG_REG			0x09
-#define USER_COMMAND_REG			0x0A
-#define USER_SCR_0_REG				0x0B
-#define USER_SCR_7_REG				0x12
+#define USB_CONFIG_REG				0x0A
+#define USER_COMMAND_REG			0x0B
+#define USER_SCR_0_REG				0x0C
+#define USER_SCR_7_REG				0x13
 #define FW_REV_REG					0x14
 #define ENDURANCE_REG				0x15
 #define STATUS_0_REG				0x20
@@ -91,6 +92,7 @@ void BufDequeueToOutputRegs();
 #define ERROR_INT_CONFIG_DEFAULT	0xFFFC
 #define IMU_SPI_CONFIG_DEFAULT		0x100F
 #define USER_SPI_CONFIG_DEFAULT		0x0007
+#define USB_CONFIG_DEFAULT			0x2000
 #define FLASH_SIG_DEFAULT			0x9F2A
 
 /* Update flags definitions */

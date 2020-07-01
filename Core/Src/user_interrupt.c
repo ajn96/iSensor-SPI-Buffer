@@ -17,9 +17,6 @@ volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 /** Struct to track config (from dio.c) */
 extern DIOConfig g_pinConfig;
 
-/** Flag for streaming data to USB (from cli.c) */
-extern uint32_t g_StreamEnable;
-
 /**
   * @brief Updates the user interrupt (data ready) signal status
   *
@@ -71,7 +68,7 @@ void UpdateUserInterrupt()
 	UpdateOutputPins(interrupt, overflow, error);
 
 	/* If USB data streaming is enabled and watermark interrupt triggered then dump buffer to USB */
-	if(g_StreamEnable && interrupt)
+	if((g_regs[USB_CONFIG_REG] & 0x1) && interrupt)
 	{
 		USBReadBuf();
 	}
