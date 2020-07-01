@@ -14,10 +14,11 @@
 | 0x0E | ERROR_INT_CONFIG | 0x03FF | R/W | T | Error interrupt configuration register |
 | 0x10 | IMU_SPI_CONFIG | 0x2014 | R/W | T | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
 | 0x12 | USER_SPI_CONFIG | 0x0007 | R/W | T | User SPI configuration (mode, etc.) |
-| 0x14 | USER_COMMAND | N/A | W | T | Command register (flash update, factory reset, clear buffer, software reset) |
-| 0x16 | USER_SCR_0 | 0x0000 | R/W | T | User scratch 0 register |
+| 0x14 | USB_CONFIG | 0x2000 | R/W | T | USB API configuration |
+| 0x16 | USER_COMMAND | N/A | W | T | Command register (flash update, factory reset, clear buffer, software reset) |
+| 0x18 | USER_SCR_0 | 0x0000 | R/W | T | User scratch 0 register |
 | ... | ... | ... | ... | ... | ... |
-| 0x24 | USER_SCR_7 | 0x0000 | R/W | T | User scratch 7 register |
+| 0x26 | USER_SCR_7 | 0x0000 | R/W | T | User scratch 7 register |
 | 0x28 | FW_REV | N/A | R | T | Firmware revision |
 | 0x2A | ENDURANCE | N/A | R | T | Flash update counter |
 | 0x40 | STATUS | N/A | R | F | Device status register. Clears on read |
@@ -167,6 +168,16 @@ The following default values will be used for DIO_OUTPUT_CONFIG:
 | 2 | MSB_FIRST | 1 = transmit MSB first, 0 = transmit LSB first |
 | 14:3 | RESERVED | Currently unused |
 | 15 | BUF_BURST | Enable burst read of buffered data, using SPI DMA |
+
+**USB_CONFIG**
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 0 | STREAM | USB data stream running |
+| 7:2 | RESERVED | Currently unused |
+| 15:8 | DELIM | Register read value delimiter character (ASCII), for USB CLI. Defaults to space |
+
+For more details on the iSensor-SPI-Buffer USB interface, see the USB_CLI document
 
 **USER_COMMAND**
 
