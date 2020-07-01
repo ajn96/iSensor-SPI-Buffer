@@ -171,6 +171,11 @@ void USBReadBuf()
 			writeBufPtr += 5;
 			count += 5;
 		}
+		readVal = ReadReg(bufLastAddr);
+		UShortToHex(writeBufPtr, readVal);
+		writeBufPtr += 4;
+		count += 4;
+		/* Insert newline */
 		writeBufPtr[0] = '\r';
 		writeBufPtr[1] = '\n';
 		writeBufPtr += 2;
@@ -344,7 +349,7 @@ static void Read()
 	/* Perform read */
 	for(int i = 0; i<numReads; i++)
 	{
-		for(uint32_t addr = startAddr; addr <= endAddr; addr += 2)
+		for(uint32_t addr = startAddr; addr < endAddr; addr += 2)
 		{
 			readVal = ReadReg(addr);
 			UShortToHex(writeBufPtr, readVal);
@@ -352,10 +357,17 @@ static void Read()
 			writeBufPtr += 5;
 			count += 5;
 		}
+		/* Last read doesn't need delim char */
+		readVal = ReadReg(endAddr);
+		UShortToHex(writeBufPtr, readVal);
+		writeBufPtr += 4;
+		count += 4;
+		/* Add newline */
 		writeBufPtr[0] = '\r';
 		writeBufPtr[1] = '\n';
 		writeBufPtr += 2;
 		count += 2;
+		/* Transmit */
 		BlockingUSBTransmit(UserRxBufferFS, count, 20);
 		writeBufPtr = UserRxBufferFS;
 		count = 0;
