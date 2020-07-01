@@ -9,7 +9,9 @@ Additional hardware and software resources are linked below.
 
 [Detailed Register Map](REGISTER_DEFINITION.md)
 
-[Nucleo Development Hardware Pin Map](PIN_MAP.md)
+[USB CLI Definition](USB_CLI.md)
+
+[STM32 Processor Pin Map](PIN_MAP.md)
 
 [Firmware Documentation (Doxygen)](https://ajn96.github.io/iSensor-SPI-Buffer/files.html)
 
@@ -66,12 +68,12 @@ The code contained in this repository was developed using the freely available [
   * SCLK Frequency
   * Stall time
 * Slave SPI (interface between the iSensor-SPI-Buffer firmware and the host processor) 
-  * Standard SPI settings
+  * Standard SPI settings (CPOL, CPHA, endianness)
 
 ### Buffer Design
 
-* Reading a buffer retrieve register will dequeue data from the buffer data strcture to the buffer output registers
-* The user will also be able to clear the buffer using a control register
+* Reading a buffer retrieve register will dequeue data from the buffer data strcture to the buffer output registers for retrieval by a user
+* The user will can clear the buffer using a control register
 * A buffer counter will be added to each buffer for the user to keep track of the state of the buffer. This counter must also be accessible without dequeuing data from buffer
 * Using a maximum buffer entry size of 64 bytes, the buffer will provide a minimum of 512 frames of buffering using 32KB SRAM
   * STM32F303 has 80KB of SRAM available, so more than 512 entries may be feasible
