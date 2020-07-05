@@ -1,23 +1,26 @@
 # iSensor-SPI-Buffer Register Structure
 
-Data and control interfacing to the iSensor SPI Buffer is done via a set of user accessible registers. These registers can be accessed over SPI, using the standard iSensor SPI format (see ADIS16xxx datasheet), or over a USB virtual serial port command line interface (see USB CLI documentation). The register address space is split into three pages, each with 128 addresses. On each page, the PAGE ID register is stored at address 0. Writing to the PAGE ID register will select a different register page for access.
+Data and control interfacing to the iSensor SPI Buffer is done via a set of user accessible registers. These registers can be accessed over SPI, using the standard iSensor SPI format (see ADIS16xxx datasheet), or over a USB virtual serial port command line interface (see USB CLI documentation). The register address space is split into three pages, each with 128 addresses. On each page, the PAGE ID register is stored at address 0. Writing to the PAGE ID register will select a different register page for access. 
+* Registers which are marked with a "Default Value" will have that value loaded when a Factory Reset command is executed
+* Registers with a R/W field marked "R" can be read. Registers marked "W" can be written. Any registers in the address space not enumerated in the register map are read only and will always read 0
+* Registers which are marked "Flash Backup" are loaded from non-volatile memory on initialization. Issuing a Flash Update command will save the current register contents to non-volatile memory
 
 ## Page 253 - iSensor-SPI-Buffer configuration
 
 | Address | Register Name | Default | R/W | Flash Backup | Description |
 | --- | --- | --- | --- | --- | --- |
-| 0x00 | PAGE_ID | 0x00FD | R/W | T | Page register. Used to change the currently selected register page |
+| 0x00 | [PAGE_ID](#PAGE_ID) | 0x00FD | R/W | T | Page register. Used to read or change the currently selected register page |
 | 0x02 | BUF_CONFIG | 0x0200 | R/W | T | Buffer configuration settings (SPI word size, overflow behavior) |
 | 0x04 | BUF_LEN | 0x0014 | R/W | T | Length (in bytes) of each buffered data capture |
-| 0x06 | BUF_MAX_CNT | N/A | R | T | Maximum entries which can be stored in the buffer. Determined by BUF_LEN. Read-only register |
+| 0x06 | BUF_MAX_CNT | N/A | R | T | Maximum entries which can be stored in the buffer. Determined by BUF_LEN and the fixed buffer memory allocation |
 | 0x08 | DIO_INPUT_CONFIG | 0x0011 | R/W | T | DIO input configuration. Allows data ready (from IMU) and PPS (from host) input selection |
 | 0x0A | DIO_OUTPUT_CONFIG | 0x8421 | R/W | T | DIO output configuration. Sets up pin pass-through and assigns interrupts |
 | 0x0C | WATERMARK_INT_CONFIG | 0x0020 | R/W | T | Watermark interrupt configuration register |
 | 0x0E | ERROR_INT_CONFIG | 0x03FF | R/W | T | Error interrupt configuration register |
-| 0x10 | IMU_SPI_CONFIG | 0x2014 | R/W | T | SCLK frequency to the IMU (specified in terms of clock divider) + stall time between SPI words |
-| 0x12 | USER_SPI_CONFIG | 0x0007 | R/W | T | User SPI configuration (mode, etc.) |
+| 0x10 | IMU_SPI_CONFIG | 0x2014 | R/W | T | IMU SPI configuration. Sets SCLK frequency to the IMU and stall time between SPI words |
+| 0x12 | USER_SPI_CONFIG | 0x0007 | R/W | T | User SPI configuration (SPI mode, etc.) |
 | 0x14 | USB_CONFIG | 0x2000 | R/W | T | USB API configuration |
-| 0x16 | USER_COMMAND | N/A | W | T | Command register (flash update, factory reset, clear buffer, software reset) |
+| 0x16 | USER_COMMAND | N/A | W | T | Command register (flash update, factory reset, clear buffer, software reset, etc) |
 | 0x18 | USER_SCR_0 | 0x0000 | R/W | T | User scratch 0 register |
 | ... | ... | ... | ... | ... | ... |
 | 0x26 | USER_SCR_7 | 0x0000 | R/W | T | User scratch 7 register |
@@ -63,15 +66,15 @@ Data and control interfacing to the iSensor SPI Buffer is done via a set of user
 | ... | ... | ... | ... | ... | ... |
 | 0x4E | BUF_DATA_31 | 0x0000 | R | F | Last buffer output register |
 
-# iSensor-SPI-Buffer register bit fields
+# iSensor-SPI-Buffer detailed register descriptions
 
-**PAGE_ID**
+## PAGE_ID
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 15:0 | PAGE | Selected page |
+| 15:0 | PAGE | Selected page. Setting the page to a value outside [253-255] will result in SPI traffic being passed to the IMU. |
 
-**BUF_CONFIG**
+## BUF_CONFIG
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -79,19 +82,19 @@ Data and control interfacing to the iSensor SPI Buffer is done via a set of user
 | 7:1 | RESERVED | Currently unused |
 | 15:8 | SPIWORDSIZE | SPI word size for buffered capture (in bytes). Valid range 2 - 64 |
 
-**BUF_LEN**
+## BUF_LEN
 
 | Name | Bits | Description |
 | --- | --- | --- |
 | 15:0 | LEN | Length (in bytes) of each buffer entry. Valid range 2 - 64 |
 
-**BUF_MAX_CNT**
+## BUF_MAX_CNT
 
 | Name | Bits | Description |
 | --- | --- | --- |
 | 15:0 | MAX | Total number of entries which can be stored in the buffer. Updates automatically when BUF_LEN is changed |
 
-**DIO_INPUT_CONFIG**
+## DIO_INPUT_CONFIG
 | Bit | Name | Description |
 | --- | --- | --- |
 | 3:0 | DR_SELECT | Select which IMU DIO ouput pin is treated as data ready. Can only select one pin |
@@ -113,7 +116,7 @@ The following default values will be used for DIO_INPUT_CONFIG:
 * PPS_SELECT: 0x0. PPS input is disabled by default
 * PPS_POLARITY: 0x0. PPS triggers on falling edge
 
-**DIO_OUTPUT_CONFIG**
+## DIO_OUTPUT_CONFIG
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -134,20 +137,19 @@ The following default values will be used for DIO_OUTPUT_CONFIG:
 * OVERFLOW_INT: 0x4. The buffer overflow interrupt is applied to DIO3 by default
 * ERROR_INT: 0x8. The error interrupt is applied to DIO4 by default
 
-**WATERMARK_INT_CONFIG**
+## WATERMARK_INT_CONFIG
 
 | Name | Bits | Description |
 | --- | --- | --- |
 | 15:0 | WATERMARK | Number of elements stored in buffer before asserting the iSensor-SPI-Buffer data ready interrupt. Range 0 - BUF_MAX_CNT |
 
-**ERROR_INT_CONFIG**
+## ERROR_INT_CONFIG
 
 | Name | Bits | Description |
 | --- | --- | --- |
-| 11:0 | STATUS_MASK | Bitmask to set which bits in the iSensor-SPI-Buffer status register error bits will generate an interrupt when set |
-| 15:12 | RESERVED | These bits are used by the iSensor-SPI-Buffer 4 bit transaction counter, and cannot generate an error interrupt |
+| 15:0 | STATUS_MASK | Bitmask to set which bits in the iSensor-SPI-Buffer status register error bits will generate an interrupt when set. Set to 0xFFFF to enable all error interrupts, 0x0000 to disable all |
 
-**IMU_SPI_CONFIG**
+## IMU_SPI_CONFIG
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -161,7 +163,7 @@ The following default values will be used for DIO_OUTPUT_CONFIG:
 | 14 | SCLK_SCALE_128 | Sets SCLK prescaler to 128 (281.25KHz) |
 | 15 | SCLK_SCALE_256 | Sets SCLK prescaler to 256 (140.625KHz) |
 
-**USER_SPI_CONFIG**
+## USER_SPI_CONFIG
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -171,7 +173,7 @@ The following default values will be used for DIO_OUTPUT_CONFIG:
 | 14:3 | RESERVED | Currently unused |
 | 15 | BUF_BURST | Enable burst read of buffered data, using SPI DMA |
 
-**USB_CONFIG**
+## USB_CONFIG
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -181,7 +183,7 @@ The following default values will be used for DIO_OUTPUT_CONFIG:
 
 For more details on the iSensor-SPI-Buffer USB interface, see the USB_CLI document
 
-**USER_COMMAND**
+## USER_COMMAND
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -194,13 +196,13 @@ For more details on the iSensor-SPI-Buffer USB interface, see the USB_CLI docume
 | 14:6 | RESERVED | Currently unused |
 | 15 | RESET | Software reset |
 
-**USER_SCR_N**
+## USER_SCR_N
 
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | USER_SCR | User scratch value. Available for end user use |
 
-**STATUS**
+## STATUS
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -219,13 +221,13 @@ For more details on the iSensor-SPI-Buffer USB interface, see the USB_CLI docume
 
 Excluding bits identified as sticky, this register clears on read. The values in this register are used to generate an error interrupt, if error interrupts are enabled.
 
-**UTC_TIME_LWR**
+## UTC_TIME_LWR
 
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | UTC_TIME | Lower 16 bits of the 32-bit UTC timestamp |
 
-**UTC_TIME_UPR**
+## UTC_TIME_UPR
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -233,13 +235,13 @@ Excluding bits identified as sticky, this register clears on read. The values in
 
 The UTC timestamp is a 32-bit value which represents the number of seconds since Jan 01 1970. This register must be set by a master device (no RTC). When a PPS input is enabled using the command register PPS_ENABLE bit, and a PPS pin assigned in DIO_INPUT_CONFIG, this register will count up once per PPS interrupt.
 
-**TIMESTAMP_LWR**
+## TIMESTAMP_LWR
 
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | TIMESTAMP | Lower 16 bits of the 32-bit microsecond timestamp |
 
-**TIMESTAMP_UPR**
+## TIMESTAMP_UPR
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -249,7 +251,7 @@ This register is a 32-bit microsecond timestamp which starts counting up as soon
 
 When a PPS input is enabled using the command register PPS_ENABLE, and a PPS pin is assigned in DIO_INPUT_CONFIG, this timestamp will reset to 0 every time a PPS pulse is received. This PPS functionality allows the iSensor-SPI-Buffer firmware to track the "wall" time with microsecond accuracy. Since the microsecond timestamp is reset every second, any error accumulation (due to 20ppm crystal) should be minimal. 
 
-**FW_DAY_MONTH**
+## FW_DAY_MONTH
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -258,7 +260,7 @@ When a PPS input is enabled using the command register PPS_ENABLE, and a PPS pin
 
 For example, April 24th would be represented by 0x2404.
 
-**FW_YEAR**
+## FW_YEAR
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -266,7 +268,7 @@ For example, April 24th would be represented by 0x2404.
 
 For example, the year 2020 would be represented by 0x2020.
 
-**FW_REV**
+## FW_REV
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -275,62 +277,62 @@ For example, the year 2020 would be represented by 0x2020.
 
 This rev corresponds to the release tag for the firmware. For example, rev 1.15 would be represented by 0x0115 in FW_REV.
 
-**DEV_SN_N**
+## DEV_SN_N
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 15:0 | SN | These six registers contain the 96 bit unique serial number in the STM32F303 |
+| 15:0 | SN | These six registers contain the 96 bit unique serial number in the STM32 processor core |
 
-**BUF_WRITE_N**
+## BUF_WRITE_N
 
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | WRITE_N | Write data to transmit on MOSI line while capturing a buffered data entry |
 
-**FLASH_SIG_DRV**
+## FLASH_SIG_DRV
 
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | SIGNATURE | Derived signature for all registers stored to flash memory. This value is determined at initialization and compared to "FLASH_SIG" to determine if flash memory contents are valid |
 
-**FLASH_SIG**
+## FLASH_SIG
 
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | SIGNATURE | Signature for all registers stored to flash memory. This value is stored in flash, and is updated when a flash update command is executed |
 
-**BUF_CNT**
+## BUF_CNT
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 15:0 | CNT | Number of entries currently stored in the buffer. Write 0 to clear buffer. All other writes ignored |
+| 15:0 | CNT | Number of entries currently stored in the buffer. Write 0 to clear buffer (only on page 255). All other writes ignored |
 
-**BUF_RETRIEVE**
+## BUF_RETRIEVE
 
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | RETRIEVE | Read to place a new sample from the buffer into the BUF_READ output registers. Will always contain 0 |
 
-**BUF_TIMESTAMP_LWR**
+## BUF_TIMESTAMP_LWR
 
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | TIMESTAMP | Lower 16 bits of a 32-bit buffer entry timestamp value which is stored at the start of each data capture. Resolution: 1LSB = 1us |
 
-**BUF_TIMESTAMP_UPR**
+## BUF_TIMESTAMP_UPR
 
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | TIMESTAMP | Upper 16 bits of a 32-bit buffer entry timestamp. |
 
-**BUF_DATA_N**
-
-| Bit | Name | Description |
-| --- | --- | --- |
-| 15:0 | READ_N | Read data received on the MISO line while capturing a buffered data entry |
-
-**BUF_SIG**
+## BUF_SIG
 
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | SIGNATURE | Buffer signature. This is the sum of all 16-bit words stored in the buffer (including timestamp) |
+
+## BUF_DATA_N
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 15:0 | READ_N | Read data received on the MISO line while capturing a buffered data entry |
