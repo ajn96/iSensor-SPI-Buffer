@@ -1,7 +1,7 @@
 # iSensor-SPI-Buffer Register Structure
 
-Data and control interfacing to the iSensor SPI Buffer is done via a set of user accessible registers. These registers can be accessed over SPI, using the standard iSensor SPI format (see ADIS16xxx datasheet), or over a USB virtual serial port command line interface (see USB CLI documentation). The register address space is split into three pages, each with 128 addresses. On each page, the PAGE ID register is stored at address 0. Writing to the PAGE ID register will select a different register page for access. 
-* Registers which are marked with a "Default Value" will have that value loaded when a Factory Reset command is executed
+Data and control interfacing to the iSensor SPI Buffer firmware from a master device is done via a set of user accessible registers. These registers can be accessed over SPI, using the standard iSensor SPI format (see ADIS16xxx datasheet), or over a USB virtual serial port command line interface (see USB CLI documentation). The register address space is split into three pages, each with 128 addresses. On each page, the PAGE ID register is stored at address 0. Writing to the PAGE ID register will select a different register page for access. 
+* Registers which are marked with a "Default Value" will have the specified value loaded when a Factory Reset command is executed
 * Registers with a R/W field marked "R" can be read. Registers marked "W" can be written. Any registers in the address space not enumerated in the register map are read only and will always read 0
 * Registers which are marked "Flash Backup" are loaded from non-volatile memory on initialization. Issuing a Flash Update command will save the current register contents to non-volatile memory
 
@@ -10,61 +10,61 @@ Data and control interfacing to the iSensor SPI Buffer is done via a set of user
 | Address | Register Name | Default | R/W | Flash Backup | Description |
 | --- | --- | --- | --- | --- | --- |
 | 0x00 | [PAGE_ID](#PAGE_ID) | 0x00FD | R/W | T | Page register. Used to read or change the currently selected register page |
-| 0x02 | BUF_CONFIG | 0x0200 | R/W | T | Buffer configuration settings (SPI word size, overflow behavior) |
-| 0x04 | BUF_LEN | 0x0014 | R/W | T | Length (in bytes) of each buffered data capture |
-| 0x06 | BUF_MAX_CNT | N/A | R | T | Maximum entries which can be stored in the buffer. Determined by BUF_LEN and the fixed buffer memory allocation |
-| 0x08 | DIO_INPUT_CONFIG | 0x0011 | R/W | T | DIO input configuration. Allows data ready (from IMU) and PPS (from host) input selection |
-| 0x0A | DIO_OUTPUT_CONFIG | 0x8421 | R/W | T | DIO output configuration. Sets up pin pass-through and assigns interrupts |
-| 0x0C | WATERMARK_INT_CONFIG | 0x0020 | R/W | T | Watermark interrupt configuration register |
-| 0x0E | ERROR_INT_CONFIG | 0x03FF | R/W | T | Error interrupt configuration register |
-| 0x10 | IMU_SPI_CONFIG | 0x2014 | R/W | T | IMU SPI configuration. Sets SCLK frequency to the IMU and stall time between SPI words |
-| 0x12 | USER_SPI_CONFIG | 0x0007 | R/W | T | User SPI configuration (SPI mode, etc.) |
-| 0x14 | USB_CONFIG | 0x2000 | R/W | T | USB API configuration |
-| 0x16 | USER_COMMAND | N/A | W | T | Command register (flash update, factory reset, clear buffer, software reset, etc) |
-| 0x18 | USER_SCR_0 | 0x0000 | R/W | T | User scratch 0 register |
+| 0x02 | [BUF_CONFIG](#BUF_CONFIG) | 0x0200 | R/W | T | Buffer configuration settings (SPI word size, overflow behavior) |
+| 0x04 | [BUF_LEN](#BUF_LEN) | 0x0014 | R/W | T | Length (in bytes) of each buffered data capture |
+| 0x06 | [BUF_MAX_CNT](#BUF_MAX_CNT) | N/A | R | T | Maximum entries which can be stored in the buffer. Determined by BUF_LEN and the fixed buffer memory allocation |
+| 0x08 | [DIO_INPUT_CONFIG](#DIO_INPUT_CONFIG) | 0x0011 | R/W | T | DIO input configuration. Allows data ready (from IMU) and PPS (from host) input selection |
+| 0x0A | [DIO_OUTPUT_CONFIG](#DIO_OUTPUT_CONFIG) | 0x8421 | R/W | T | DIO output configuration. Sets up pin pass-through and assigns interrupts |
+| 0x0C | [WATERMARK_INT_CONFIG](#WATERMARK_INT_CONFIG) | 0x0020 | R/W | T | Watermark interrupt configuration register |
+| 0x0E | [ERROR_INT_CONFIG](#ERROR_INT_CONFIG) | 0x03FF | R/W | T | Error interrupt configuration register |
+| 0x10 | [IMU_SPI_CONFIG](#IMU_SPI_CONFIG) | 0x2014 | R/W | T | IMU SPI configuration. Sets SCLK frequency to the IMU and stall time between SPI words |
+| 0x12 | [USER_SPI_CONFIG](#USER_SPI_CONFIG) | 0x0007 | R/W | T | User SPI configuration (SPI mode, etc.) |
+| 0x14 | [USB_CONFIG](#USB_CONFIG) | 0x2000 | R/W | T | USB API configuration |
+| 0x16 | [USER_COMMAND](#USER_COMMAND) | N/A | W | T | Command register (flash update, factory reset, clear buffer, software reset, etc) |
+| 0x18 | [USER_SCR_0](#USER_SCR_N) | 0x0000 | R/W | T | User scratch 0 register |
 | ... | ... | ... | ... | ... | ... |
-| 0x26 | USER_SCR_7 | 0x0000 | R/W | T | User scratch 7 register |
-| 0x28 | FW_REV | N/A | R | T | Firmware revision |
-| 0x2A | ENDURANCE | N/A | R | T | Flash update counter |
-| 0x40 | STATUS | N/A | R | F | Device status register. Clears on read |
-| 0x42 | BUF_CNT | 0x0000 | R | F | The number of samples in buffer |
-| 0x44 | FAULT_CODE | 0x0000 | R | N/A | Fault code, stored in case of a hard fault exception. This register is stored on a separate flash page from the primary register array |
-| 0x46 | UTC_TIMESTAMP_LWR | 0x0000 | R/W | F | Lower 16 bits of UTC timestamp (PPS counter) |
-| 0x48 | UTC_TIMESTAMP_UPR | 0x0000 | R/W | F | Upper 16 bits of UTC timestamp (PPS counter) |
-| 0x4A | TIMESTAMP_LWR | 0x0000 | R | F | Lower 16 bits of microsecond timestamp |
-| 0x4C | TIMESTAMP_UPR | 0x0000 | R | F | Upper 16 bits of microsecond timestamp |
-| 0x70 | FW_DAY_MONTH | N/A | R | T | Firmware build date |
-| 0x72 | FW_YEAR | N/A | R | T | Firmware build year |
-| 0x74 | DEV_SN_0 | N/A | R | T | Processor core serial number register, word 0 |
+| 0x26 | [USER_SCR_7](#USER_SCR_N) | 0x0000 | R/W | T | User scratch 7 register |
+| 0x28 | [FW_REV](#FW_REV) | N/A | R | T | Firmware revision |
+| 0x2A | [ENDURANCE](#ENDURANCE) | N/A | R | T | Flash update counter |
+| 0x40 | [STATUS](#STATUS) | N/A | R | F | Device status register. Clears on read |
+| 0x42 | [BUF_CNT](#BUF_CNT) | 0x0000 | R | F | The number of samples in buffer |
+| 0x44 | [FAULT_CODE](#FAULT_CODE) | 0x0000 | R | N/A | Fault code, stored in case of a hard fault exception. This register is stored on a separate flash page from the primary register array |
+| 0x46 | [UTC_TIMESTAMP_LWR](#UTC_TIMESTAMP_LWR) | 0x0000 | R/W | F | Lower 16 bits of UTC timestamp (PPS counter) |
+| 0x48 | [UTC_TIMESTAMP_UPR](#UTC_TIMESTAMP_UPR) | 0x0000 | R/W | F | Upper 16 bits of UTC timestamp (PPS counter) |
+| 0x4A | [TIMESTAMP_LWR](#TIMESTAMP_LWR) | 0x0000 | R | F | Lower 16 bits of microsecond timestamp |
+| 0x4C | [TIMESTAMP_UPR](#TIMESTAMP_UPR) | 0x0000 | R | F | Upper 16 bits of microsecond timestamp |
+| 0x70 | [FW_DAY_MONTH](#FW_DAY_MONTH) | N/A | R | T | Firmware build date |
+| 0x72 | [FW_YEAR](#FW_YEAR) | N/A | R | T | Firmware build year |
+| 0x74 | [DEV_SN_0](#DEV_SN_N) | N/A | R | T | Processor core serial number register, word 0 |
 | ... | ... | ... | ... | ... | ... |
-| 0x7E | DEV_SN_5 | N/A | R | T | Processor core serial number register, word 5 |
+| 0x7E | [DEV_SN_5](#DEV_SN_N) | N/A | R | T | Processor core serial number register, word 5 |
 
 ## Page 254 - Buffer write data
 
 | Address | Register Name | Default | R/W | Flash Backup | Description |
 | --- | --- | --- | --- | --- | --- |
-| 0x00 | PAGE_ID | 0x00FE | R/W | T | Page register. Used to change the currently selected register page |
-| 0x10 | BUF_WRITE_0 | 0x0000 | R/W | T | First transmit data register (data sent to IMU DIN) |
+| 0x00 | [PAGE_ID](#PAGE_ID) | 0x00FE | R/W | T | Page register. Used to change the currently selected register page |
+| 0x10 | [BUF_WRITE_0](#BUF_WRITE_N) | 0x0000 | R/W | T | First transmit data register (data sent to IMU DIN) |
 | ... | ... | ... | ... | ... | ... |
-| 0x4E | BUF_WRITE_31 | 0x0000 | R/W | T | Last transmit data register |
-| 0x7C | FLASH_SIG_DRV | N/A | R | F | Derived flash memory signature register (determined at initialization) |
-| 0x7E | FLASH_SIG | N/A | R | T | Stored flash memory signature register |
+| 0x4E | [BUF_WRITE_31](#BUF_WRITE_N) | 0x0000 | R/W | T | Last transmit data register |
+| 0x7C | [FLASH_SIG_DRV](#FLASH_SIG_DRV) | N/A | R | F | Derived flash memory signature register (determined at initialization) |
+| 0x7E | [FLASH_SIG](#FLASH_SIG) | N/A | R | T | Stored flash memory signature register |
 
 ## Page 255 - Buffer output registers
 
 | Address | Register Name | Default | R/W | Flash Backup | Description |
 | --- | --- | --- | --- | --- | --- |
-| 0x00 | PAGE_ID | 0x00FF | R/W | T | Page register. Used to change the currently selected register page |
-| 0x02 | STATUS_1 | 0x0000 | R | F | Mirror of the STATUS register. Clears on read |
-| 0x04 | BUF_CNT_1 | 0x0000 | R/W | F | The number of samples stored in the buffer. Write 0 to this register to clear the buffer. Other writes are ignored |
-| 0x06 | BUF_RETRIEVE | 0x0000 | R | F | Read this register to dequeue new data from buffer to buffer output registers |
-| 0x08 | BUF_TIMESTAMP_LWR | 0x0000 | R | F | Lower 16 bits of buffer entry timestamp |
-| 0x0A | BUF_TIMESTAMP_UPR | 0x0000 | R | F | Upper 16 bits of buffer entry timestamp |
-| 0x0C | BUF_DELTA_TIME | 0x0000 | R | F | Delta time between last buffer entry and current buffer entry, in microseconds. Truncated to 16 bits |
-| 0x0E | BUF_SIG | 0x0000 | R | F | Buffer entry checksum register |
-| 0x10 | BUF_DATA_0 | 0x0000 | R | F | First buffer output register (data received from IMU DOUT) |
+| 0x00 | [PAGE_ID](#PAGE_ID) | 0x00FF | R/W | T | Page register. Used to change the currently selected register page |
+| 0x02 | [STATUS_1](#STATUS) | 0x0000 | R | F | Mirror of the STATUS register. Clears on read |
+| 0x04 | [BUF_CNT_1](#BUF_CNT) | 0x0000 | R/W | F | The number of samples stored in the buffer. Write 0 to this register to clear the buffer. Other writes are ignored |
+| 0x06 | [BUF_RETRIEVE](#BUF_RETRIEVE) | 0x0000 | R | F | Read this register to dequeue new data from buffer to buffer output registers |
+| 0x08 | [BUF_TIMESTAMP_LWR](#BUF_TIMESTAMP_LWR) | 0x0000 | R | F | Lower 16 bits of buffer entry timestamp |
+| 0x0A | [BUF_TIMESTAMP_UPR](#BUF_TIMESTAMP_UPR) | 0x0000 | R | F | Upper 16 bits of buffer entry timestamp |
+| 0x0C | [BUF_DELTA_TIME](#BUF_DELTA_TIME) | 0x0000 | R | F | Delta time between last buffer entry and current buffer entry, in microseconds. Truncated to 16 bits |
+| 0x0E | [BUF_SIG](#BUF_SIG) | 0x0000 | R | F | Buffer entry checksum register |
+| 0x10 | [BUF_DATA_0](#BUF_DATA_N) | 0x0000 | R | F | First buffer output register (data received from IMU DOUT) |
 | ... | ... | ... | ... | ... | ... |
-| 0x4E | BUF_DATA_31 | 0x0000 | R | F | Last buffer output register |
+| 0x4E | [BUF_DATA_31](#BUF_DATA_N) | 0x0000 | R | F | Last buffer output register |
 
 # iSensor-SPI-Buffer detailed register descriptions
 
@@ -324,6 +324,12 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | TIMESTAMP | Upper 16 bits of a 32-bit buffer entry timestamp. |
+
+## BUF_DELTA_TIME
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 15:0 | DELTA_TIME | Delta time (in microseconds) between current buffer entry and previous buffer entry |
 
 ## BUF_SIG
 
