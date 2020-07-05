@@ -1,4 +1,6 @@
-# iSensor-SPI-Buffer register structure
+# iSensor-SPI-Buffer Register Structure
+
+Data and control interfacing to the iSensor SPI Buffer is done via a set of user accessible registers. These registers can be accessed over SPI, using the standard iSensor SPI format (see ADIS16xxx datasheet), or over a USB virtual serial port command line interface (see USB CLI documentation). The register address space is split into three pages, each with 128 addresses. On each page, the PAGE ID register is stored at address 0. Writing to the PAGE ID register will select a different register page for access.
 
 ## Page 253 - iSensor-SPI-Buffer configuration
 
@@ -51,7 +53,7 @@
 | --- | --- | --- | --- | --- | --- |
 | 0x00 | PAGE_ID | 0x00FF | R/W | T | Page register. Used to change the currently selected register page |
 | 0x02 | STATUS_1 | 0x0000 | R | F | Mirror of the STATUS register. Clears on read |
-| 0x04 | BUF_CNT_1 | 0x0000 | R/W | F | The number of samples in buffer. Write 0 to this register to clear buffer. Other writes are ignored |
+| 0x04 | BUF_CNT_1 | 0x0000 | R/W | F | The number of samples stored in the buffer. Write 0 to this register to clear the buffer. Other writes are ignored |
 | 0x06 | BUF_RETRIEVE | 0x0000 | R | F | Read this register to dequeue new data from buffer to buffer output registers |
 | 0x08 | BUF_TIMESTAMP_LWR | 0x0000 | R | F | Lower 16 bits of buffer entry timestamp |
 | 0x0A | BUF_TIMESTAMP_UPR | 0x0000 | R | F | Upper 16 bits of buffer entry timestamp |
@@ -205,10 +207,10 @@ For more details on the iSensor-SPI-Buffer USB interface, see the USB_CLI docume
 | 0 | BUF_WATERMARK | Set when buffer watermark interrupt condition is met (data ready interrupt) |
 | 1 | BUF_FULL | Set when buffer is full (overflow interrupt) |
 | 2 | SPI_ERROR | SPI error reported by the user SPI or IMU SPI peripheral |
-| 3 | SPI_OVERFLOW | User SPI data overflow (min stall time violated). This bit is set when a user SPI interrupt is recieved, and the previous user SPI interrupt is still being processed |
+| 3 | SPI_OVERFLOW | User SPI data overflow (min stall time violated). This bit is set when a user SPI interrupt is received, and the previous user SPI interrupt is still being processed |
 | 4 | OVERRUN | Data capture overrun. Set when processor receives an IMU data ready interrupt and has not finished the previous data capture |
 | 5 | DMA_ERROR | Set when processor DMA peripheral reports an error (user SPI DMA for burst read or IMU SPI DMA) |
-| 6 | PPS_UNLOCK | Set when the PPS synchronization clock is enabled, but no PPS signal has been recieved for over 1100ms |
+| 6 | PPS_UNLOCK | Set when the PPS synchronization clock is enabled, but no PPS signal has been received for over 1100ms |
 | 11:7 | RESERVED | Currently unused |
 | 12 | FLASH_ERROR | Set when the register signature stored in flash (stored during flash update) does not match signature calculated from SRAM register contents at initialization. Sticky |
 | 13 | FLASH_UPDATE_ERROR | Set when the flash update routine fails. Sticky |
@@ -245,7 +247,7 @@ The UTC timestamp is a 32-bit value which represents the number of seconds since
 
 This register is a 32-bit microsecond timestamp which starts counting up as soon as the iSensor-SPI-Buffer firmware finishes initialization. 
 
-When a PPS input is enabled using the command register PPS_ENABLE, and a PPS pin is assigned in DIO_INPUT_CONFIG, this timestamp will reset to 0 every time a PPS pulse is recieved. This PPS functionality allows the iSensor-SPI-Buffer firmware to track the "wall" time with microsecond accuracy. Since the microsecond timestamp is reset every second, any error accumulation (due to 20ppm crystal) should be minimal. 
+When a PPS input is enabled using the command register PPS_ENABLE, and a PPS pin is assigned in DIO_INPUT_CONFIG, this timestamp will reset to 0 every time a PPS pulse is received. This PPS functionality allows the iSensor-SPI-Buffer firmware to track the "wall" time with microsecond accuracy. Since the microsecond timestamp is reset every second, any error accumulation (due to 20ppm crystal) should be minimal. 
 
 **FW_DAY_MONTH**
 
@@ -289,7 +291,7 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 15:0 | SIGNATURE | Derived signature for all registers stored to flash memory. This value is determined at initilization and compared to "FLASH_SIG" to determine if flash memory contents are valid |
+| 15:0 | SIGNATURE | Derived signature for all registers stored to flash memory. This value is determined at initialization and compared to "FLASH_SIG" to determine if flash memory contents are valid |
 
 **FLASH_SIG**
 
