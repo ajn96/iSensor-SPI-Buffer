@@ -28,6 +28,10 @@ typedef struct DIOConfig
 
 	/** Error interrupt pins */
 	uint32_t errorPins;
+
+	/** Active PPS source pin. Set/cleared in PPS enable/disable command function */
+	uint32_t ppsPin;
+
 }DIOConfig;
 
 /* Public function prototypes */

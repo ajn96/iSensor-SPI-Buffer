@@ -60,7 +60,7 @@ void UpdateDIOInputConfig()
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
 	/* Clear unused bits */
-	config &= 0xF1F;
+	config &= 0x1F1F;
 
 	/* Must be one, and only one bit set in drPins. If none, defaults to DIO1 set */
 	if(config & 0x1)
@@ -166,7 +166,8 @@ void UpdateDIOInputConfig()
   * passPins
   * Set SW_IN1 - SW_IN4 output values based on passPins. These act as inputs
   * to the ADG1611 analog switch. For each bit set in passPins, configure the
-  * corresponding DIOx_Slave signal as an input (tristate).
+  * corresponding DIOx_Slave signal as an input (tristate). Only perform this
+  * configuration if the pin is not currently acting as a PPS input
   *
   * watermarkPins
   * Configure selected watermark interrupt pins as output GPIO
@@ -219,67 +220,88 @@ void UpdateDIOOutputConfig()
 	else
 		GPIOC->ODR |= GPIO_PIN_9;
 
-	/* For each DIOx_Slave pin, set as input if not used as overflow/interrupt */
+	/* For each DIOx_Slave pin, set as output if used as interrupt source. Set as input if used as pass pin (and not PPS) */
 
 	/* DIO1_Slave (PB4) */
-	HAL_GPIO_DeInit(GPIOB, GPIO_PIN_4);
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-	GPIO_InitStruct.Pin = GPIO_PIN_4;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	if((g_pinConfig.watermarkPins & 0x1) || (g_pinConfig.overflowPins & 0x1) || (g_pinConfig.errorPins & 0x1))
 	{
+		HAL_GPIO_DeInit(GPIOB, GPIO_PIN_4);
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+		GPIO_InitStruct.Pin = GPIO_PIN_4;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
 		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 	}
-	else
+	else if((g_pinConfig.passPins & 0x1)&(~g_pinConfig.ppsPin))
 	{
+		HAL_GPIO_DeInit(GPIOB, GPIO_PIN_4);
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+		GPIO_InitStruct.Pin = GPIO_PIN_4;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 	}
-	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 	/* DIO2_Slave (PB8) */
-	HAL_GPIO_DeInit(GPIOB, GPIO_PIN_8);
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-	GPIO_InitStruct.Pin = GPIO_PIN_8;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	if((g_pinConfig.watermarkPins & 0x2) || (g_pinConfig.overflowPins & 0x2) || (g_pinConfig.errorPins & 0x2))
 	{
+		HAL_GPIO_DeInit(GPIOB, GPIO_PIN_8);
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+		GPIO_InitStruct.Pin = GPIO_PIN_8;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
 		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 	}
-	else
+	else if((g_pinConfig.passPins & 0x2)&(~g_pinConfig.ppsPin))
 	{
+		HAL_GPIO_DeInit(GPIOB, GPIO_PIN_8);
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+		GPIO_InitStruct.Pin = GPIO_PIN_8;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 	}
-	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 	/* DIO3_Slave (PC7) */
-	HAL_GPIO_DeInit(GPIOC, GPIO_PIN_7);
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-	GPIO_InitStruct.Pin = GPIO_PIN_7;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	if((g_pinConfig.watermarkPins & 0x4) || (g_pinConfig.overflowPins & 0x4) || (g_pinConfig.errorPins & 0x4))
 	{
 		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+		HAL_GPIO_DeInit(GPIOC, GPIO_PIN_7);
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+		GPIO_InitStruct.Pin = GPIO_PIN_7;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
+		HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 	}
-	else
+	else if((g_pinConfig.passPins & 0x4)&(~g_pinConfig.ppsPin))
 	{
+		HAL_GPIO_DeInit(GPIOC, GPIO_PIN_7);
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+		GPIO_InitStruct.Pin = GPIO_PIN_7;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 	}
-	HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
 	/* DIO4_Slave (PA8) */
-	HAL_GPIO_DeInit(GPIOA, GPIO_PIN_8);
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-	GPIO_InitStruct.Pin = GPIO_PIN_8;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	if((g_pinConfig.watermarkPins & 0x8) || (g_pinConfig.overflowPins & 0x8) || (g_pinConfig.errorPins & 0x8))
 	{
+		HAL_GPIO_DeInit(GPIOA, GPIO_PIN_8);
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+		GPIO_InitStruct.Pin = GPIO_PIN_8;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
 		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 	}
-	else
+	else if((g_pinConfig.passPins & 0x8)&(~g_pinConfig.ppsPin))
 	{
+		HAL_GPIO_DeInit(GPIOA, GPIO_PIN_8);
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+		GPIO_InitStruct.Pin = GPIO_PIN_8;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 	}
-	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
 }
 
 /**
@@ -315,8 +337,6 @@ static uint16_t BuildDIOOutputConfigReg()
   */
 static void ValidateDIOOutputConfig()
 {
-	uint32_t ppsPins = g_regs[DIO_INPUT_CONFIG_REG] >> 8;
-
 	/* Clear upper bits in each */
 	g_pinConfig.passPins &= 0xF;
 	g_pinConfig.watermarkPins &= 0xF;
@@ -328,10 +348,10 @@ static void ValidateDIOOutputConfig()
 	g_pinConfig.watermarkPins &= ~g_pinConfig.passPins;
 	g_pinConfig.errorPins &= ~g_pinConfig.passPins;
 
-	/* Any pins set as PPS input pins cannot be interrupt pins (PPS gets priority) */
-	g_pinConfig.overflowPins &= ~ppsPins;
-	g_pinConfig.watermarkPins &= ~ppsPins;
-	g_pinConfig.errorPins &= ~ppsPins;
+	/* Any pins set as active PPS input pins cannot be interrupt pins (PPS gets priority) */
+	g_pinConfig.overflowPins &= ~g_pinConfig.ppsPin;
+	g_pinConfig.watermarkPins &= ~g_pinConfig.ppsPin;
+	g_pinConfig.errorPins &= ~g_pinConfig.ppsPin;
 
 	/* Interrupt priority: Error -> Watermark -> Overflow */
 	g_pinConfig.watermarkPins &= ~g_pinConfig.errorPins;
