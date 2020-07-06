@@ -44,6 +44,9 @@ void EnableDataCapture()
 	/* Clear pending data ready interrupts */
 	EXTI->PR |= DATA_READY_INT_MASK;
 
+	/* Update DIO input config (assign DR interrupt) */
+	UpdateDIOInputConfig();
+
 	/* Set active mask based on latest DR settings */
 	g_ActiveDrInterruptMask = g_DrInterruptMask;
 
@@ -73,6 +76,9 @@ void DisableDataCapture()
 
 	/* Disable capture timer */
 	TIM4->CR1 &= ~0x1;
+
+	/* Disable EXTI data ready interrupt source */
+	EXTI->IMR &= ~(DATA_READY_INT_MASK);
 
 	/* Clear any pending interrupts */
 	EXTI->PR |= DATA_READY_INT_MASK;

@@ -51,9 +51,6 @@ uint32_t GetHardwareID()
   */
 void UpdateDIOInputConfig()
 {
-	/* Disable ISR */
-	DisableDataCapture();
-
 	/* Get current config value */
 	uint32_t config = g_regs[DIO_INPUT_CONFIG_REG];
 
@@ -90,7 +87,7 @@ void UpdateDIOInputConfig()
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
 
 		/* Set data ready interrupt mask */
-		g_DrInterruptMask = (1 << 5);
+		g_DrInterruptMask = GPIO_PIN_5;
 	}
 	else
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -109,7 +106,7 @@ void UpdateDIOInputConfig()
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
 
 		/* Set data ready interrupt mask */
-		g_DrInterruptMask = (1 << 9);
+		g_DrInterruptMask = GPIO_PIN_9;
 	}
 	else
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -128,7 +125,7 @@ void UpdateDIOInputConfig()
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
 
 		/* Set data ready interrupt mask */
-		g_DrInterruptMask = (1 << 6);
+		g_DrInterruptMask = GPIO_PIN_6;
 	}
 	else
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -147,7 +144,7 @@ void UpdateDIOInputConfig()
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
 
 		/* Set data ready interrupt mask */
-		g_DrInterruptMask = (1 << 9);
+		g_DrInterruptMask = GPIO_PIN_9;
 	}
 	else
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -301,7 +298,6 @@ void UpdateDIOOutputConfig()
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
 		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 	}
-
 }
 
 /**

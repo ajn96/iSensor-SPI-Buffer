@@ -77,7 +77,7 @@ void EXTI9_5_IRQHandler()
 	{
 		/* Increment PPS counter and clear */
 		IncrementPPSTime();
-		EXTI->PR |= g_PPSInterruptMask;
+		EXTI->PR |= PPS_INT_MASK;
 		return;
 	}
 

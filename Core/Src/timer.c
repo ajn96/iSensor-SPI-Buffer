@@ -103,6 +103,7 @@ void ClearMicrosecondTimer()
 void EnablePPSTimer()
 {
 	ConfigurePPSPins(1);
+	UpdateDIOOutputConfig();
 }
 
 /**
@@ -113,6 +114,7 @@ void EnablePPSTimer()
 void DisablePPSTimer()
 {
 	ConfigurePPSPins(0);
+	UpdateDIOOutputConfig();
 }
 
 /**
@@ -175,13 +177,14 @@ static void ConfigurePPSPins(uint32_t enable)
 	/* Shift down so PPS timer setting is in lower 5 bits */
 	ppsConfig = config >> 8;
 
-	/* Clear pending EXTI interrupts */
-	EXTI->PR = ((0x1F << 5) | (1 << 4));
+	/* Clear pending PPS EXTI interrupts */
+	EXTI->PR |= PPS_INT_MASK;
 
 	/* Configure selected pin to trigger interrupt. Disable interrupt initially */
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 
+	/* Set mode */
 	if(enable)
 	{
 		if(ppsConfig & 0x10)
@@ -199,19 +202,18 @@ static void ConfigurePPSPins(uint32_t enable)
 	{
 		/* PB4 is PPS pin */
 		HAL_GPIO_DeInit(GPIOB, GPIO_PIN_4);
-		GPIO_InitStruct.Pin = GPIO_PIN_4;
+
+		/* Disable IRQ */
+		NVIC_DisableIRQ(EXTI4_IRQn);
 
 		/* Apply setting */
+		GPIO_InitStruct.Pin = GPIO_PIN_4;
 		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 		/* Need to configure the EXTI4 interrupt source */
 		if(enable)
 		{
 			NVIC_EnableIRQ(EXTI4_IRQn);
-		}
-		else
-		{
-			NVIC_DisableIRQ(EXTI4_IRQn);
 		}
 
 		/* Set mask to 0 */
@@ -226,9 +228,12 @@ static void ConfigurePPSPins(uint32_t enable)
 	{
 		/* PB8 is PPS pin */
 		HAL_GPIO_DeInit(GPIOB, GPIO_PIN_8);
-		GPIO_InitStruct.Pin = GPIO_PIN_8;
+
+		/* Disable IRQ */
+		NVIC_DisableIRQ(EXTI9_5_IRQn);
 
 		/* Apply settings */
+		GPIO_InitStruct.Pin = GPIO_PIN_8;
 		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 		if(enable)
@@ -252,9 +257,12 @@ static void ConfigurePPSPins(uint32_t enable)
 	{
 		/* PC7 is PPS pin */
 		HAL_GPIO_DeInit(GPIOC, GPIO_PIN_7);
-		GPIO_InitStruct.Pin = GPIO_PIN_7;
+
+		/* Disable IRQ */
+		NVIC_DisableIRQ(EXTI9_5_IRQn);
 
 		/* Apply settings */
+		GPIO_InitStruct.Pin = GPIO_PIN_7;
 		HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
 		if(enable)
@@ -278,9 +286,12 @@ static void ConfigurePPSPins(uint32_t enable)
 	{
 		/* PA8 is PPS pin */
 		HAL_GPIO_DeInit(GPIOA, GPIO_PIN_8);
-		GPIO_InitStruct.Pin = GPIO_PIN_8;
+
+		/* Disable IRQ */
+		NVIC_DisableIRQ(EXTI9_5_IRQn);
 
 		/* Apply settings */
+		GPIO_InitStruct.Pin = GPIO_PIN_8;
 		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 		if(enable)
