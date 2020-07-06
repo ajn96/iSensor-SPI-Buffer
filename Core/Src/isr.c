@@ -116,14 +116,8 @@ void EXTI9_5_IRQHandler()
 	WordsCaptured = 0;
 
 	/* Add timestamp to buffer */
-	BufferElementHandle[0] = SampleTimestampS & 0xFF;
-	BufferElementHandle[1] = (SampleTimestampS >> 8) & 0xFF;
-	BufferElementHandle[2] = (SampleTimestampS >> 16) & 0xFF;
-	BufferElementHandle[3] = (SampleTimestampS >> 24);
-	BufferElementHandle[4] = SampleTimestampUs & 0xFF;
-	BufferElementHandle[5] = (SampleTimestampUs >> 8) & 0xFF;
-	BufferElementHandle[6] = (SampleTimestampUs >> 16) & 0xFF;
-	BufferElementHandle[7] = (SampleTimestampUs >> 24);
+	*(uint32_t *) BufferElementHandle = SampleTimestampS;
+	*(uint32_t *) (BufferElementHandle + 4) = SampleTimestampUs;
 
 	/* Set signature to timestamp value initially */
 	BufferSignature = SampleTimestampS & 0xFFFF;
