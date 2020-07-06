@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iSensorSPIBuffer", "iSensorSPIBuffer\iSensorSPIBuffer.csproj", "{0C6C38A1-00E9-4974-9BE4-B0CE4D540650}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApp", "ExampleApp\ExampleApp.csproj", "{8B5D4C0D-3282-4066-8C0C-ECA59F587B1B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0C6C38A1-00E9-4974-9BE4-B0CE4D540650}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C6C38A1-00E9-4974-9BE4-B0CE4D540650}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C6C38A1-00E9-4974-9BE4-B0CE4D540650}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C6C38A1-00E9-4974-9BE4-B0CE4D540650}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B5D4C0D-3282-4066-8C0C-ECA59F587B1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B5D4C0D-3282-4066-8C0C-ECA59F587B1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B5D4C0D-3282-4066-8C0C-ECA59F587B1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B5D4C0D-3282-4066-8C0C-ECA59F587B1B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {247A14C8-BAE2-445B-8D00-7276D18192F9}
+	EndGlobalSection
+EndGlobal
