@@ -9,6 +9,11 @@ Test/iSensor-SPI-Buffer-Test/bin/
 Test/iSensor-SPI-Buffer-Test/obj/
 *.user
 
+Utilities/SensorSPIBuffer/bin/
+Utilities/SensorSPIBuffer/obj/
+Utilities/ExampleApp/bin/
+Utilities/ExampleApp/obj/
+
 *.suo
 
 *.o
