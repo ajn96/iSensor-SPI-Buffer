@@ -54,7 +54,8 @@ static uint8_t HelpStr[] = "\r\nAll numeric values are in hex. [] arguments are 
 		"read startAddr [endAddr = addr] [numReads = 1]: Read registers starting at startAddr and ending at endAddr numReads times\r\n"
 		"write addr value: Write the 8-bit value in value to register at address addr\r\n"
 		"readbuf: Read all buffer entries. Values for each entry are placed on a newline\r\n"
-		"stream startStop: Start (startStop != 0) or stop (startStop = 0) a read stream\r\n";
+		"stream startStop: Start (startStop != 0) or stop (startStop = 0) a read stream\r\n"
+		"delim char: Set the read output delimiter character to char\r\n";
 
 /** String literal for read command. Must be followed by a space */
 static const uint8_t ReadCmd[] = "read ";
