@@ -46,14 +46,11 @@ static uint16_t* BufferSigHandle;
 /** Track number of words captured within current buffer entry */
 static volatile uint32_t WordsCaptured;
 
-/** Sample time stamp */
-static uint32_t SampleTimestamp;
+/** Microsecond sample time stamp */
+static uint32_t SampleTimestampUs;
 
-/** Previous time stamp */
-static uint32_t LastTimestamp;
-
-/** Buffer delta time */
-static uint16_t DeltaTime;
+/** Second sample time stamp */
+static uint32_t SampleTimestampS;
 
 /** Buffer signature */
 static uint32_t BufferSignature;
@@ -81,8 +78,8 @@ void EXTI9_5_IRQHandler()
 		return;
 	}
 
-	/* Clear any data ready interrupts */
-	EXTI->PR |= DATA_READY_INT_MASK;
+	/* Clear any remaining interrupts */
+	EXTI->PR = 0xFFFF;
 
 	/* If capture in progress then set error flag and exit */
 	if(g_captureInProgress)
@@ -98,9 +95,8 @@ void EXTI9_5_IRQHandler()
 		return;
 
 	/* Get the sample timestamp */
-	SampleTimestamp = GetMicrosecondTimestamp();
-	DeltaTime = SampleTimestamp - LastTimestamp;
-	LastTimestamp = SampleTimestamp;
+	SampleTimestampUs = GetMicrosecondTimestamp();
+	SampleTimestampS = GetPPSTimestamp();
 
 	/* Get element handle */
 	BufferElementHandle = BufAddElement();
@@ -112,23 +108,26 @@ void EXTI9_5_IRQHandler()
 	WordsCaptured = 0;
 
 	/* Add timestamp to buffer */
-	BufferElementHandle[0] = SampleTimestamp & 0xFF;
-	BufferElementHandle[1] = (SampleTimestamp >> 8) & 0xFF;
-	BufferElementHandle[2] = (SampleTimestamp >> 16) & 0xFF;
-	BufferElementHandle[3] = (SampleTimestamp >> 24);
-	BufferElementHandle[4] = DeltaTime & 0xFF;
-	BufferElementHandle[5] = (DeltaTime >> 8);
+	BufferElementHandle[0] = SampleTimestampS & 0xFF;
+	BufferElementHandle[1] = (SampleTimestampS >> 8) & 0xFF;
+	BufferElementHandle[2] = (SampleTimestampS >> 16) & 0xFF;
+	BufferElementHandle[3] = (SampleTimestampS >> 24);
+	BufferElementHandle[4] = SampleTimestampUs & 0xFF;
+	BufferElementHandle[5] = (SampleTimestampUs >> 8) & 0xFF;
+	BufferElementHandle[6] = (SampleTimestampUs >> 16) & 0xFF;
+	BufferElementHandle[7] = (SampleTimestampUs >> 24);
 
 	/* Set signature to timestamp value initially */
-	BufferSignature = SampleTimestamp & 0xFFFF;
-	BufferSignature += (SampleTimestamp >> 16);
-	BufferSignature += DeltaTime;
+	BufferSignature = SampleTimestampS & 0xFFFF;
+	BufferSignature += (SampleTimestampS >> 16);
+	BufferSignature += SampleTimestampUs & 0xFFFF;
+	BufferSignature += (SampleTimestampUs >> 16);
 
 	/* Set buffer signature handle */
-	BufferSigHandle = (uint16_t *) (BufferElementHandle + 6);
+	BufferSigHandle = (uint16_t *) (BufferElementHandle + 8);
 
-	/* Offset buffer element handle by 8 bytes (timestamp + delta + sig) */
-	BufferElementHandle += 8;
+	/* Offset buffer element handle by 10 bytes (timestamp + sig) */
+	BufferElementHandle += 10;
 
 	/*Set timer value to 0 */
 	TIM4->CNT = 0;

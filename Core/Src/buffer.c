@@ -189,8 +189,8 @@ void BufReset()
 	/* Set the index for the last buffer entry */
 	g_bufLastRegIndex = (BUF_DATA_0_REG + (g_regs[BUF_LEN_REG] >> 1));
 
-	/* Get the buffer size setting (8 bytes added per buffer for time stamp, delta time, sig) */
-	buf_increment = g_regs[BUF_LEN_REG] + 8;
+	/* Get the buffer size setting (10 bytes added per buffer for 64 bit time stamp, buffer sig) */
+	buf_increment = g_regs[BUF_LEN_REG] + 10;
 
 	/* Want each buffer entry to be word aligned for ease of use. Add some extra bytes if needed */
 	buf_increment = (buf_increment + 3) & ~(0x3);
