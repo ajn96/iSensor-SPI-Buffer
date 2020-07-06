@@ -20,7 +20,7 @@ void USBReadBuf();
 
 #define BUF_BASE_ADDR			8
 
-#define BUF_DATA_BASE_ADDR		14
+#define BUF_DATA_BASE_ADDR		16
 
 
 #endif /* INC_CLI_H_ */

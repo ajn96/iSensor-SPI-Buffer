@@ -68,7 +68,9 @@ static uint32_t EXTI_PR;
   *
   * All four DIOx_Master pins map to this interrupt handler. Only one
   * should be enabled as an interrupt source at a time. This interrupt
-  * also handles PPS input signals for DIO2-4.
+  * also handles PPS input signals for DIO2-4. The EXTI pending interrupt
+  * register (PR) can be used to identify if the interrupt is coming from
+  * a PPS strobe or an IMU data ready signal.
   */
 void EXTI9_5_IRQHandler()
 {
