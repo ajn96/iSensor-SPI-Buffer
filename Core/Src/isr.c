@@ -58,6 +58,9 @@ static uint32_t BufferSignature;
 /** SPI MISO data */
 static uint32_t SPIMISO;
 
+/** EXTI pending request register */
+static uint32_t EXTI_PR;
+
 /**
   * @brief IMU data ready ISR. Kicks off data capture process.
   *
@@ -69,17 +72,22 @@ static uint32_t SPIMISO;
   */
 void EXTI9_5_IRQHandler()
 {
+	/* Clear exti register */
+	EXTI_PR = EXTI->PR;
+	EXTI->PR |= (PPS_INT_MASK|DATA_READY_INT_MASK);
+
 	/* Check if is PPS interrupt */
-	if(EXTI->PR & g_PPSInterruptMask)
+	if(EXTI_PR & (PPS_INT_MASK))
 	{
-		/* Increment PPS counter and clear */
+		/* Increment PPS counter and clear microsecond timestamp */
 		IncrementPPSTime();
-		EXTI->PR |= PPS_INT_MASK;
-		return;
 	}
 
-	/* Clear any remaining interrupts */
-	EXTI->PR = 0xFFFF;
+	/* Exit if no data ready interrupt */
+	if(!(EXTI_PR & (DATA_READY_INT_MASK)))
+	{
+		return;
+	}
 
 	/* If capture in progress then set error flag and exit */
 	if(g_captureInProgress)
@@ -95,8 +103,8 @@ void EXTI9_5_IRQHandler()
 		return;
 
 	/* Get the sample timestamp */
-	SampleTimestampUs = GetMicrosecondTimestamp();
 	SampleTimestampS = GetPPSTimestamp();
+	SampleTimestampUs = GetMicrosecondTimestamp();
 
 	/* Get element handle */
 	BufferElementHandle = BufAddElement();
