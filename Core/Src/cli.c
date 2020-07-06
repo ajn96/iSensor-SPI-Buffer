@@ -20,7 +20,7 @@ static uint32_t HexToUInt();
 static void UShortToHex(uint8_t * outBuf, uint16_t val);
 static void BlockingUSBTransmit(uint8_t * buf, uint32_t Len, uint32_t TimeoutMs);
 
-/** Global register array. From registers.c */
+/** Global register array. (from registers.c) */
 extern volatile uint16_t g_regs[];
 
 /** USB Rx buffer (from usbd_cdc_if.c) */
@@ -84,10 +84,20 @@ static uint32_t args[3];
 /** Number of command arguments (0 - 3) */
 static uint32_t numArgs;
 
+/** Flag to track if current command arguments are valid */
 static uint32_t goodArg;
 
+/** Track parsing index within current command */
 static uint32_t cmdIndex;
 
+/**
+  * @brief Handler for received USB data
+  *
+  * @return void
+  *
+  * This function should be called periodically from
+  * the main loop to check if new USB data has been received
+  */
 void USBSerialHandler()
 {
 	/* Track index within current command string */
@@ -146,6 +156,11 @@ void USBSerialHandler()
 	}
 }
 
+/**
+  * @brief Print all contents of the buffer to the USB CLI
+  *
+  * @return void
+  */
 void USBReadBuf()
 {
 	uint32_t numBufs = g_regs[BUF_CNT_0_REG];
@@ -185,6 +200,11 @@ void USBReadBuf()
 	}
 }
 
+/**
+  * @brief Parse CLI command from CurrentCommand buffer
+  *
+  * @return void
+  */
 static void ParseCommand()
 {
 	uint32_t validCmd;
@@ -195,7 +215,10 @@ static void ParseCommand()
 	for(int i = 0; i < sizeof(ReadCmd) - 1; i++)
 	{
 		if(CurrentCommand[i] != ReadCmd[i])
+		{
 			validCmd = 0;
+			break;
+		}
 	}
 	if(validCmd)
 	{
@@ -209,7 +232,10 @@ static void ParseCommand()
 	for(int i = 0; i < sizeof(WriteCmd) - 1; i++)
 	{
 		if(CurrentCommand[i] != WriteCmd[i])
+		{
 			validCmd = 0;
+			break;
+		}
 	}
 	if(validCmd)
 	{
@@ -223,7 +249,10 @@ static void ParseCommand()
 	for(int i = 0; i < sizeof(ReadBufCmd) - 1; i++)
 	{
 		if(CurrentCommand[i] != ReadBufCmd[i])
+		{
 			validCmd = 0;
+			break;
+		}
 	}
 	if(validCmd)
 	{
@@ -239,7 +268,10 @@ static void ParseCommand()
 	for(int i = 0; i < sizeof(StreamCmd) - 1; i++)
 	{
 		if(CurrentCommand[i] != StreamCmd[i])
+		{
 			validCmd = 0;
+			break;
+		}
 	}
 	if(validCmd)
 	{
@@ -253,7 +285,10 @@ static void ParseCommand()
 	for(int i = 0; i < sizeof(HelpCmd) - 1; i++)
 	{
 		if(CurrentCommand[i] != HelpCmd[i])
+		{
 			validCmd = 0;
+			break;
+		}
 	}
 	if(validCmd)
 	{
@@ -267,7 +302,10 @@ static void ParseCommand()
 	for(int i = 0; i < sizeof(DelimCmd) - 1; i++)
 	{
 		if(CurrentCommand[i] != DelimCmd[i])
+		{
 			validCmd = 0;
+			break;
+		}
 	}
 	if(validCmd)
 	{
@@ -285,7 +323,10 @@ static void ParseCommand()
 	for(int i = 0; i < sizeof(ResetCmd) - 1; i++)
 	{
 		if(CurrentCommand[i] != ResetCmd[i])
+		{
 			validCmd = 0;
+			break;
+		}
 	}
 	if(validCmd)
 	{
@@ -298,6 +339,11 @@ static void ParseCommand()
 	CDC_Transmit_FS(InvalidCmdStr, sizeof(InvalidCmdStr));
 }
 
+/**
+  * @brief Read command handler
+  *
+  * @return void
+  */
 static void Read()
 {
 	uint32_t startAddr, endAddr, numReads;
@@ -375,6 +421,16 @@ static void Read()
 	}
 }
 
+/**
+  * @brief Write command handler
+  *
+  * @return void
+  *
+  * The write address is passed in args[0]. The address is
+  * masked to only 7 bits (address space of a page). The
+  * write value is passed in args[1]. The write value is masked to
+  * 8 bits (byte-wise writes).
+  */
 static void Write()
 {
 	ParseCommandArgs();
@@ -391,6 +447,14 @@ static void Write()
 	CDC_Transmit_FS(NewLineStr, sizeof(NewLineStr));
 }
 
+/**
+  * @brief Stream command handler
+  *
+  * @return void
+  *
+  * Sets the stream enable bit of USB_CONFIG based on
+  * args[0]
+  */
 static void Stream()
 {
 	ParseCommandArgs();
@@ -412,6 +476,16 @@ static void Stream()
 	CDC_Transmit_FS(NewLineStr, sizeof(NewLineStr));
 }
 
+/**
+  * @brief Parse arguments out from CurrentCommand
+  *
+  * @return void
+  *
+  * Arguments must be separated by a space. Each argument
+  * (up to 3) are placed into the args array. The total number
+  * of arguments in the current command is placed in numArgs.
+  * All arguments must be hex strings.
+  */
 static void ParseCommandArgs()
 {
 	/* Set number of args to 0*/
@@ -451,6 +525,14 @@ static void ParseCommandArgs()
 	return;
 }
 
+/**
+  * @brief Convert a hex string to a 32 bit uint
+  *
+  * @return void
+  *
+  * The input string must be stored in CurrentCommand, with
+  * cmdIndex set to point at the first value in the string.
+  */
 static uint32_t HexToUInt()
 {
 	uint8_t currentByte;
@@ -497,6 +579,15 @@ static uint32_t HexToUInt()
 	return value;
 }
 
+/**
+  * @brief Convert a 16 bit value to the corresponding hex string
+  *
+  * @param outBuf Buffer to place the string result in
+  *
+  * @param val The 16 bit value to convert to a string
+  *
+  * @return void
+  */
 static void UShortToHex(uint8_t * outBuf, uint16_t val)
 {
 	outBuf[0] = val >> 12;
@@ -521,6 +612,17 @@ static void UShortToHex(uint8_t * outBuf, uint16_t val)
 		outBuf[3] += ('A' - 10);
 }
 
+/**
+  * @brief Wrapper around CDC_Transmit_FS which retries until the USB transmit is successful
+  *
+  * @param buf The data buffer to transmit
+  *
+  * @param Len The number of bytes to transmit
+  *
+  * @param TimeoutMs Operation timeout (in ms). Must keep under watchdog reset period
+  *
+  * @return void
+  */
 static void BlockingUSBTransmit(uint8_t * buf, uint32_t Len, uint32_t TimeoutMs)
 {
 	uint8_t status = CDC_Transmit_FS(buf, Len);

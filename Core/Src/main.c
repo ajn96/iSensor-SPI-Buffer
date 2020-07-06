@@ -39,7 +39,7 @@ SPI_HandleTypeDef g_spi2;
 SPI_HandleTypeDef g_spi3;
 
 /**
-  * @brief  The application entry point.
+  * @brief The application entry point.
   *
   * @return main status code. Should not return.
   */

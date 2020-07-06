@@ -5,7 +5,7 @@
   * @file		cli.h
   * @date		6/26/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		Header file for iSensor-SPI-Buffer command line register interface
+  * @brief		Header file for iSensor-SPI-Buffer USB command line register interface
  **/
 
 #ifndef INC_CLI_H_
@@ -15,12 +15,14 @@
 #include "usbd_cdc_if.h"
 #include "registers.h"
 
+/* Public function prototypes */
 void USBSerialHandler();
 void USBReadBuf();
 
+/** Buffer output base address (on page 255) */
 #define BUF_BASE_ADDR			8
 
+/** Buffer output data base address (on page 255) */
 #define BUF_DATA_BASE_ADDR		16
-
 
 #endif /* INC_CLI_H_ */
