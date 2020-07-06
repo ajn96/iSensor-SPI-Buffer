@@ -116,7 +116,7 @@ void USBSerialHandler()
 			/* Command is too long */
 			if(commandIndex > 64)
 			{
-				CDC_Transmit_FS(InvalidCmdStr, sizeof(InvalidCmdStr));
+				BlockingUSBTransmit(InvalidCmdStr, sizeof(InvalidCmdStr), 10);
 				commandIndex = 0;
 			}
 			/* Backspace typed in console */
@@ -129,7 +129,7 @@ void USBSerialHandler()
 				EchoBuf[0] = '\b';
 				EchoBuf[1] = ' ';
 				EchoBuf[2] = '\b';
-				CDC_Transmit_FS(EchoBuf, 3);
+				BlockingUSBTransmit(EchoBuf, 3, 10);
 			}
 			/* carriage return char (end of command) */
 			else if(UserRxBufferFS[bufIndex] == '\r')
@@ -150,7 +150,7 @@ void USBSerialHandler()
 				commandIndex++;
 				/* Echo to console */
 				EchoBuf[0] = UserRxBufferFS[bufIndex];
-				CDC_Transmit_FS(EchoBuf, 1);
+				BlockingUSBTransmit(EchoBuf, 1, 5);
 			}
 		}
 	}
