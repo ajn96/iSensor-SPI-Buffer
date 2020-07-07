@@ -474,7 +474,6 @@ void UpdateUserSpiConfig()
 	g_spi2.Init.Direction = SPI_DIRECTION_2LINES;
 	g_spi2.Init.DataSize = SPI_DATASIZE_16BIT;
 	g_spi2.Init.NSS = SPI_NSS_HARD_INPUT;
-	g_spi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
 	g_spi2.Init.TIMode = SPI_TIMODE_DISABLE;
 	g_spi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
 	g_spi2.Init.CRCPolynomial = 7;
