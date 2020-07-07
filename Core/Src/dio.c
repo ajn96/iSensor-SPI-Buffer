@@ -16,9 +16,6 @@ volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 /** Struct storing current DIO output config. Global scope */
 volatile DIOConfig g_pinConfig = {};
 
-/** Interrupt mask for the data ready EXTI interrupt. Global scope */
-uint32_t g_DrInterruptMask;
-
 /* Private function prototypes */
 static void ValidateDIOOutputConfig();
 static uint16_t BuildDIOOutputConfigReg();
@@ -61,13 +58,13 @@ void UpdateDIOInputConfig()
 
 	/* Must be one, and only one bit set in drPins. If none, defaults to DIO1 set */
 	if(config & 0x1)
-		config &= 0xF11;
+		config &= 0x1F11;
 	else if(config & 0x2)
-		config &= 0xF12;
+		config &= 0x1F12;
 	else if(config & 0x4)
-		config &= 0xF14;
+		config &= 0x1F14;
 	else if(config & 0x8)
-		config &= 0xF18;
+		config &= 0x1F18;
 	else
 		config |= 0x1;
 
@@ -85,9 +82,6 @@ void UpdateDIOInputConfig()
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
 		else
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
-
-		/* Set data ready interrupt mask */
-		g_DrInterruptMask = GPIO_PIN_5;
 	}
 	else
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -104,9 +98,6 @@ void UpdateDIOInputConfig()
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
 		else
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
-
-		/* Set data ready interrupt mask */
-		g_DrInterruptMask = GPIO_PIN_9;
 	}
 	else
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -123,9 +114,6 @@ void UpdateDIOInputConfig()
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
 		else
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
-
-		/* Set data ready interrupt mask */
-		g_DrInterruptMask = GPIO_PIN_6;
 	}
 	else
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -142,9 +130,6 @@ void UpdateDIOInputConfig()
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
 		else
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
-
-		/* Set data ready interrupt mask */
-		g_DrInterruptMask = GPIO_PIN_9;
 	}
 	else
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;

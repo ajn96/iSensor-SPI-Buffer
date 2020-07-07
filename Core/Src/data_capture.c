@@ -22,12 +22,6 @@ volatile extern uint32_t g_captureInProgress;
 /** PPS input interrupt mask (from timer.c) */
 extern uint32_t g_PPSInterruptMask;
 
-/** Data ready input interrupt mask (from dio.c) */
-extern uint32_t g_DrInterruptMask;
-
-/** Track EXTI interrupt mask for active data ready signal. Global scope */
-uint32_t g_ActiveDrInterruptMask;
-
 /* Track if a capture is currently running */
 static volatile uint32_t capture_running = 0;
 
@@ -46,9 +40,6 @@ void EnableDataCapture()
 
 	/* Update DIO input config (assign DR interrupt) */
 	UpdateDIOInputConfig();
-
-	/* Set active mask based on latest DR settings */
-	g_ActiveDrInterruptMask = g_DrInterruptMask;
 
 	/* Set 16-bit words per capture */
 	g_wordsPerCapture = g_regs[BUF_LEN_REG] >> 1;
@@ -83,9 +74,6 @@ void DisableDataCapture()
 	/* Clear any pending interrupts */
 	EXTI->PR |= DATA_READY_INT_MASK;
 	TIM4->SR &= ~TIM_SR_UIF;
-
-	/* Set active interrupt mask to 0 */
-	g_ActiveDrInterruptMask = 0;
 
 	/* Capture in progress set to false */
 	g_captureInProgress = 0;

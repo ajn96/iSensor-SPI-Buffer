@@ -34,9 +34,6 @@ extern DMA_HandleTypeDef g_dma_spi1_tx;
 /** PPS input interrupt mask (from timer.c) */
 extern uint32_t g_PPSInterruptMask;
 
-/** Active data ready input interrupt mask (from data_capture.c) */
-uint32_t g_ActiveDrInterruptMask;
-
 /** Current capture size (in 16 bit words). Global scope */
 volatile uint32_t g_wordsPerCapture;
 
@@ -80,9 +77,9 @@ static uint32_t EXTI_PR;
   */
 void EXTI9_5_IRQHandler()
 {
-	/* Clear exti register */
+	/* Clear exti PR register (lines 5-9) */
 	EXTI_PR = EXTI->PR;
-	EXTI->PR |= (PPS_INT_MASK|DATA_READY_INT_MASK);
+	EXTI->PR |= 0x1F << 5;
 
 	/* Check if is PPS interrupt */
 	if(EXTI_PR & (PPS_INT_MASK))
@@ -117,12 +114,6 @@ void EXTI9_5_IRQHandler()
 	/* Get element handle */
 	BufferElementHandle = BufAddElement();
 
-	/* Set flag indicating capture is running */
-	g_captureInProgress = 1;
-
-	/* Set words captured to 0 */
-	WordsCaptured = 0;
-
 	/* Add timestamp to buffer */
 	*(uint32_t *) BufferElementHandle = SampleTimestampS;
 	*(uint32_t *) (BufferElementHandle + 4) = SampleTimestampUs;
@@ -138,6 +129,12 @@ void EXTI9_5_IRQHandler()
 
 	/* Offset buffer element handle by 10 bytes (timestamp + sig) */
 	BufferElementHandle += 10;
+
+	/* Set flag indicating capture is running */
+	g_captureInProgress = 1;
+
+	/* Set words captured to 0 */
+	WordsCaptured = 0;
 
 	/*Set timer value to 0 */
 	TIM4->CNT = 0;
