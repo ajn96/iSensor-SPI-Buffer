@@ -17,7 +17,7 @@
 /** Enum for available LED's */
 typedef enum LED
 {
-	Red = 0,
+	Blue = 0,
 	Green = 1
 }LED;
 

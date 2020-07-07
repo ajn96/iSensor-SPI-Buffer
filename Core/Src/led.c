@@ -24,7 +24,7 @@ void TurnOnLED(LED light)
 {
 	switch(light)
 	{
-	case Red:
+	case Blue:
 		/*PC0 low */
 		GPIOC->ODR &= ~GPIO_PIN_0;
 		break;
@@ -49,7 +49,7 @@ void TurnOffLED(LED light)
 {
 	switch(light)
 	{
-	case Red:
+	case Blue:
 		/*PC0 high */
 		GPIOC->ODR |= GPIO_PIN_0;
 		break;

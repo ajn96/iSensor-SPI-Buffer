@@ -57,11 +57,11 @@ void UpdateUserInterrupt()
 	/* Apply error to LEDs */
 	if(error)
 	{
-		TurnOnLED(Red);
+		TurnOnLED(Blue);
 	}
 	else
 	{
-		TurnOffLED(Red);
+		TurnOffLED(Blue);
 	}
 
 	/* Update interrupt output pins */
