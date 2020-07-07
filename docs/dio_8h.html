@@ -70,6 +70,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -88,6 +89,11 @@ $(function() {
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_d_i_o_config.html">DIOConfig</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a8fc55dc20edabab3d19c20221f5c28e0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dio_8h.html#a8fc55dc20edabab3d19c20221f5c28e0">DATA_READY_INT_MASK</a>&#160;&#160;&#160;GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_9</td></tr>
+<tr class="separator:a8fc55dc20edabab3d19c20221f5c28e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -111,7 +117,23 @@ Functions</h2></td></tr>
 <p>Copyright (c) Analog Devices Inc, 2020 All Rights Reserved.</p>
 <dl class="section date"><dt>Date</dt><dd>6/26/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
-</div><h2 class="groupheader">Typedef Documentation</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a8fc55dc20edabab3d19c20221f5c28e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fc55dc20edabab3d19c20221f5c28e0">&#9670;&nbsp;</a></span>DATA_READY_INT_MASK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DATA_READY_INT_MASK&#160;&#160;&#160;GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_9</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Mask for EXTI interrupt sources which come from the IMU data ready signal </p>
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
 <a id="ad9566a73aa524180d467768ff9f132f5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad9566a73aa524180d467768ff9f132f5">&#9670;&nbsp;</a></span>DIOConfig</h2>
 
@@ -186,7 +208,7 @@ Functions</h2></td></tr>
 
 <p>Validates DIO_OUTPUT_CONFIG settings and applies to GPIO. </p>
 <p>General procedure is as follows:</p>
-<p>passPins Set SW_IN1 - SW_IN4 output values based on passPins. These act as inputs to the ADG1611 analog switch. For each bit set in passPins, configure the corresponding DIOx_Slave signal as an input (tristate).</p>
+<p>passPins Set SW_IN1 - SW_IN4 output values based on passPins. These act as inputs to the ADG1611 analog switch. For each bit set in passPins, configure the corresponding DIOx_Slave signal as an input (tristate). Only perform this configuration if the pin is not currently acting as a PPS input</p>
 <p>watermarkPins Configure selected watermark interrupt pins as output GPIO</p>
 <p>overflowPins Configure selected overflow interrupt pins as output GPIO</p>
 <p>errorPins Configure selected error interrupt pins as output GPIO</p>

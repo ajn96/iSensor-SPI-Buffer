@@ -98,6 +98,8 @@ Variables</h2></td></tr>
 <tr class="separator:ad9abdec236745828926dbed3d25cfad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f243dba51236f2b5163a285092bae63"><td class="memItemLeft" align="right" valign="top">volatile <a class="el" href="struct_d_i_o_config.html">DIOConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dio_8c.html#a6f243dba51236f2b5163a285092bae63">g_pinConfig</a> = {}</td></tr>
 <tr class="separator:a6f243dba51236f2b5163a285092bae63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cd1b75a16b5fa80d7511efc16bd69e0"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dio_8c.html#a2cd1b75a16b5fa80d7511efc16bd69e0">g_DrInterruptMask</a></td></tr>
+<tr class="separator:a2cd1b75a16b5fa80d7511efc16bd69e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation file for iSensor-SPI-Buffer DIO interfacing module. </p>
@@ -163,7 +165,7 @@ Variables</h2></td></tr>
 
 <p>Validates DIO_OUTPUT_CONFIG settings and applies to GPIO. </p>
 <p>General procedure is as follows:</p>
-<p>passPins Set SW_IN1 - SW_IN4 output values based on passPins. These act as inputs to the ADG1611 analog switch. For each bit set in passPins, configure the corresponding DIOx_Slave signal as an input (tristate).</p>
+<p>passPins Set SW_IN1 - SW_IN4 output values based on passPins. These act as inputs to the ADG1611 analog switch. For each bit set in passPins, configure the corresponding DIOx_Slave signal as an input (tristate). Only perform this configuration if the pin is not currently acting as a PPS input</p>
 <p>watermarkPins Configure selected watermark interrupt pins as output GPIO</p>
 <p>overflowPins Configure selected overflow interrupt pins as output GPIO</p>
 <p>errorPins Configure selected error interrupt pins as output GPIO</p>
@@ -172,6 +174,21 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a2cd1b75a16b5fa80d7511efc16bd69e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cd1b75a16b5fa80d7511efc16bd69e0">&#9670;&nbsp;</a></span>g_DrInterruptMask</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t g_DrInterruptMask</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Interrupt mask for the data ready EXTI interrupt. Global scope </p>
+
+</div>
+</div>
 <a id="a6f243dba51236f2b5163a285092bae63"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6f243dba51236f2b5163a285092bae63">&#9670;&nbsp;</a></span>g_pinConfig</h2>
 

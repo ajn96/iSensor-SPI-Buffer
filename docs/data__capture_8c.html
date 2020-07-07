@@ -97,6 +97,12 @@ Variables</h2></td></tr>
 <tr class="separator:a65a6f223155b319c75cb6c1a54e7cdf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07af1c87664cfacf9460801271ab0dec"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="data__capture_8c.html#a07af1c87664cfacf9460801271ab0dec">g_captureInProgress</a></td></tr>
 <tr class="separator:a07af1c87664cfacf9460801271ab0dec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8612b680a1efebe782532fc810863fca"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="data__capture_8c.html#a8612b680a1efebe782532fc810863fca">g_PPSInterruptMask</a></td></tr>
+<tr class="separator:a8612b680a1efebe782532fc810863fca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cd1b75a16b5fa80d7511efc16bd69e0"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="data__capture_8c.html#a2cd1b75a16b5fa80d7511efc16bd69e0">g_DrInterruptMask</a></td></tr>
+<tr class="separator:a2cd1b75a16b5fa80d7511efc16bd69e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50b5211d8c4765f7e600ea2f5439677b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="data__capture_8c.html#a50b5211d8c4765f7e600ea2f5439677b">g_ActiveDrInterruptMask</a></td></tr>
+<tr class="separator:a50b5211d8c4765f7e600ea2f5439677b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>iSensor-SPI-Buffer autonomous IMU data acquisition functions. </p>
@@ -147,6 +153,21 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a50b5211d8c4765f7e600ea2f5439677b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50b5211d8c4765f7e600ea2f5439677b">&#9670;&nbsp;</a></span>g_ActiveDrInterruptMask</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t g_ActiveDrInterruptMask</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Track EXTI interrupt mask for active data ready signal. Global scope </p>
+
+</div>
+</div>
 <a id="a07af1c87664cfacf9460801271ab0dec"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a07af1c87664cfacf9460801271ab0dec">&#9670;&nbsp;</a></span>g_captureInProgress</h2>
 
@@ -159,6 +180,38 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Track if there is currently a capture in progress </p>
+
+</div>
+</div>
+<a id="a2cd1b75a16b5fa80d7511efc16bd69e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cd1b75a16b5fa80d7511efc16bd69e0">&#9670;&nbsp;</a></span>g_DrInterruptMask</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t g_DrInterruptMask</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Data ready input interrupt mask (from <a class="el" href="dio_8c.html" title="Implementation file for iSensor-SPI-Buffer DIO interfacing module.">dio.c</a>)</p>
+<p>Interrupt mask for the data ready EXTI interrupt. Global scope </p>
+
+</div>
+</div>
+<a id="a8612b680a1efebe782532fc810863fca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8612b680a1efebe782532fc810863fca">&#9670;&nbsp;</a></span>g_PPSInterruptMask</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t g_PPSInterruptMask</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>PPS input interrupt mask (from <a class="el" href="timer_8c.html" title="Implementation for for iSensor-SPI-Buffer timer module. Covers microsecond timer and PPS timer.">timer.c</a>)</p>
+<p>PPS interrupt source. Global scope </p>
 
 </div>
 </div>

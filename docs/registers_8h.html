@@ -76,9 +76,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Header file for iSensor-SPI-Buffer register interfacing.  
+<p>Header file for iSensor-SPI-Buffer register interfacing module.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;<a class="el" href="imu__spi_8h_source.html">imu_spi.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="imu__spi_8h_source.html">imu_spi.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="main_8h_source.html">main.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="buffer_8h_source.html">buffer.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="flash_8h_source.html">flash.h</a>&quot;</code><br />
@@ -123,14 +123,17 @@ Macros</h2></td></tr>
 <tr class="memitem:a8c217977b0a8818bd7b45f9ff124b310"><td class="memItemLeft" align="right" valign="top"><a id="a8c217977b0a8818bd7b45f9ff124b310"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>USER_SPI_CONFIG_REG</b>&#160;&#160;&#160;0x09</td></tr>
 <tr class="separator:a8c217977b0a8818bd7b45f9ff124b310"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a353dde61959718fe1aa262ddb245484d"><td class="memItemLeft" align="right" valign="top"><a id="a353dde61959718fe1aa262ddb245484d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_CONFIG_REG</b>&#160;&#160;&#160;0x0A</td></tr>
+<tr class="separator:a353dde61959718fe1aa262ddb245484d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fc943b899f318a4e0022f3a35cce737"><td class="memItemLeft" align="right" valign="top"><a id="a9fc943b899f318a4e0022f3a35cce737"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>USER_COMMAND_REG</b>&#160;&#160;&#160;0x0A</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>USER_COMMAND_REG</b>&#160;&#160;&#160;0x0B</td></tr>
 <tr class="separator:a9fc943b899f318a4e0022f3a35cce737"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1619a8c34a9367c84d2e61c499bfea1c"><td class="memItemLeft" align="right" valign="top"><a id="a1619a8c34a9367c84d2e61c499bfea1c"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>USER_SCR_0_REG</b>&#160;&#160;&#160;0x0B</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>USER_SCR_0_REG</b>&#160;&#160;&#160;0x0C</td></tr>
 <tr class="separator:a1619a8c34a9367c84d2e61c499bfea1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab065a69364da6c246efd5f598c2f38d1"><td class="memItemLeft" align="right" valign="top"><a id="ab065a69364da6c246efd5f598c2f38d1"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>USER_SCR_7_REG</b>&#160;&#160;&#160;0x12</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>USER_SCR_7_REG</b>&#160;&#160;&#160;0x13</td></tr>
 <tr class="separator:ab065a69364da6c246efd5f598c2f38d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa830fb8f79f5dab811c5dccd91afb514"><td class="memItemLeft" align="right" valign="top"><a id="aa830fb8f79f5dab811c5dccd91afb514"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FW_REV_REG</b>&#160;&#160;&#160;0x14</td></tr>
@@ -171,7 +174,7 @@ Macros</h2></td></tr>
 <tr class="memitem:af07de813585b278eed9451b6673cddde"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8h.html#af07de813585b278eed9451b6673cddde">BUF_WRITE_PAGE</a>&#160;&#160;&#160;254</td></tr>
 <tr class="separator:af07de813585b278eed9451b6673cddde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a796d692be39e74949494eed1fd821d97"><td class="memItemLeft" align="right" valign="top"><a id="a796d692be39e74949494eed1fd821d97"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_WRITE_0_REG</b>&#160;&#160;&#160;0x48</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_WRITE_0_REG</b>&#160;&#160;&#160;0x49</td></tr>
 <tr class="separator:a796d692be39e74949494eed1fd821d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6275bffc7803aa0028a91bc9774c1012"><td class="memItemLeft" align="right" valign="top"><a id="a6275bffc7803aa0028a91bc9774c1012"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FLASH_SIG_DRV_REG</b>&#160;&#160;&#160;0x7E</td></tr>
@@ -190,23 +193,23 @@ Macros</h2></td></tr>
 <tr class="memitem:adb4ba0ee2f0a17708328bf487937f5c9"><td class="memItemLeft" align="right" valign="top"><a id="adb4ba0ee2f0a17708328bf487937f5c9"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_RETRIEVE_REG</b>&#160;&#160;&#160;0x83</td></tr>
 <tr class="separator:adb4ba0ee2f0a17708328bf487937f5c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18d98798ae15a8e66156f8a6adcd1f9e"><td class="memItemLeft" align="right" valign="top"><a id="a18d98798ae15a8e66156f8a6adcd1f9e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_TIMESTAMP_REG</b>&#160;&#160;&#160;0x84</td></tr>
-<tr class="separator:a18d98798ae15a8e66156f8a6adcd1f9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56d4ba637eeabb42b1a2e29bfe66b59d"><td class="memItemLeft" align="right" valign="top"><a id="a56d4ba637eeabb42b1a2e29bfe66b59d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_DELTA_TIME_REG</b>&#160;&#160;&#160;0x86</td></tr>
-<tr class="separator:a56d4ba637eeabb42b1a2e29bfe66b59d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cefdef35cc848b4549c303b2b8ff209"><td class="memItemLeft" align="right" valign="top"><a id="a2cefdef35cc848b4549c303b2b8ff209"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_UTC_TIMESTAMP_REG</b>&#160;&#160;&#160;0x84</td></tr>
+<tr class="separator:a2cefdef35cc848b4549c303b2b8ff209"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee9ec1830ddec3fa46fb7a4472105363"><td class="memItemLeft" align="right" valign="top"><a id="aee9ec1830ddec3fa46fb7a4472105363"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_US_TIMESTAMP_REG</b>&#160;&#160;&#160;0x86</td></tr>
+<tr class="separator:aee9ec1830ddec3fa46fb7a4472105363"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb6f54f8119cd2fa2945a0a3fb418e7e"><td class="memItemLeft" align="right" valign="top"><a id="abb6f54f8119cd2fa2945a0a3fb418e7e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_SIG_REG</b>&#160;&#160;&#160;0x87</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_SIG_REG</b>&#160;&#160;&#160;0x88</td></tr>
 <tr class="separator:abb6f54f8119cd2fa2945a0a3fb418e7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaef4c67582b679f6f8f187cf51d0bd41"><td class="memItemLeft" align="right" valign="top"><a id="aaef4c67582b679f6f8f187cf51d0bd41"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_DATA_0_REG</b>&#160;&#160;&#160;0x88</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_DATA_0_REG</b>&#160;&#160;&#160;0x89</td></tr>
 <tr class="separator:aaef4c67582b679f6f8f187cf51d0bd41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d90879dde0a4ef3e14bcfbe31ec442b"><td class="memItemLeft" align="right" valign="top"><a id="a1d90879dde0a4ef3e14bcfbe31ec442b"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FW_REV_DEFAULT</b>&#160;&#160;&#160;0x0100</td></tr>
 <tr class="separator:a1d90879dde0a4ef3e14bcfbe31ec442b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1099031991c0f1d500a6f162e899265e"><td class="memItemLeft" align="right" valign="top"><a id="a1099031991c0f1d500a6f162e899265e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_CONFIG_DEFAULT</b>&#160;&#160;&#160;0x0200</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_CONFIG_DEFAULT</b>&#160;&#160;&#160;0x0000</td></tr>
 <tr class="separator:a1099031991c0f1d500a6f162e899265e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3d2560a79c6c88dc5a4c9129f11e27c"><td class="memItemLeft" align="right" valign="top"><a id="af3d2560a79c6c88dc5a4c9129f11e27c"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_LEN_DEFAULT</b>&#160;&#160;&#160;0x0014</td></tr>
@@ -229,8 +232,11 @@ Macros</h2></td></tr>
 <tr class="memitem:aa369458e98b943135ff31dc4e016cdd2"><td class="memItemLeft" align="right" valign="top"><a id="aa369458e98b943135ff31dc4e016cdd2"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>USER_SPI_CONFIG_DEFAULT</b>&#160;&#160;&#160;0x0007</td></tr>
 <tr class="separator:aa369458e98b943135ff31dc4e016cdd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66b0121ad2117043d300535fa08527c8"><td class="memItemLeft" align="right" valign="top"><a id="a66b0121ad2117043d300535fa08527c8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_CONFIG_DEFAULT</b>&#160;&#160;&#160;0x2000</td></tr>
+<tr class="separator:a66b0121ad2117043d300535fa08527c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1db1c844a33fc35a43faecd8e3438870"><td class="memItemLeft" align="right" valign="top"><a id="a1db1c844a33fc35a43faecd8e3438870"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FLASH_SIG_DEFAULT</b>&#160;&#160;&#160;0x9F2A</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FLASH_SIG_DEFAULT</b>&#160;&#160;&#160;0x9D2A</td></tr>
 <tr class="separator:a1db1c844a33fc35a43faecd8e3438870"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91c1db5040f254eaad35426f1f428597"><td class="memItemLeft" align="right" valign="top"><a id="a91c1db5040f254eaad35426f1f428597"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>DIO_OUTPUT_CONFIG_FLAG</b>&#160;&#160;&#160;(1 &lt;&lt; 0)</td></tr>
@@ -354,7 +360,7 @@ Functions</h2></td></tr>
 <tr class="separator:a5686c12b7d57a9c338252e749e2b2ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Header file for iSensor-SPI-Buffer register interfacing. </p>
+<div class="textblock"><p>Header file for iSensor-SPI-Buffer register interfacing module. </p>
 <p>Copyright (c) Analog Devices Inc, 2020 All Rights Reserved.</p>
 <dl class="section date"><dt>Date</dt><dd>3/18/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>

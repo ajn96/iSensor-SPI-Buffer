@@ -86,15 +86,17 @@ $(function() {
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#define WATCHDOG_BASE_FREQ      40000</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="watchdog_8h.html#aa54da28e233d61266e3a064dd192965f">   24</a></span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#define WATCHDOG_RELOAD_KEY     0x0000AAAA</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#define WATCHDOG_START_KEY      0x0000CCCC</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define WATCHDOG_UNLOCK_KEY     0x00005555</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_WATCHDOG_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#define WATCHDOG_RELOAD_KEY     0x0000AAAA</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="watchdog_8h.html#a4bc9f14cd4eb163853137869f68228c0">   27</a></span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define WATCHDOG_START_KEY      0x0000CCCC</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="watchdog_8h.html#a44d6ab64d92657ef31d5fdd310454902">   30</a></span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define WATCHDOG_UNLOCK_KEY     0x00005555</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="watchdog_8h.html#afba5e13764a7ca464de426c8fecd61eb">   33</a></span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_WATCHDOG_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="awatchdog_8h_html_a8ea40194cba4ee3987e74a1ec77091fc"><div class="ttname"><a href="watchdog_8h.html#a8ea40194cba4ee3987e74a1ec77091fc">FeedWatchDog</a></div><div class="ttdeci">void FeedWatchDog()</div><div class="ttdoc">Feeds the watchdog timer. Should be called periodically from main loop.</div><div class="ttdef"><b>Definition:</b> watchdog.c:25</div></div>
 <div class="ttc" id="awatchdog_8h_html_ae1d7795593b89a0508b7d5adb1924f69"><div class="ttname"><a href="watchdog_8h.html#ae1d7795593b89a0508b7d5adb1924f69">CheckWatchDogStatus</a></div><div class="ttdeci">void CheckWatchDogStatus()</div><div class="ttdoc">Check if system reset from independent watch dog timeout and sets the appropriate STATUS flag.</div><div class="ttdef"><b>Definition:</b> watchdog.c:35</div></div>
-<div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing.</div></div>
+<div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
 <div class="ttc" id="awatchdog_8h_html_a1e202ecb064c61a96112d66e624272f7"><div class="ttname"><a href="watchdog_8h.html#a1e202ecb064c61a96112d66e624272f7">EnableWatchDog</a></div><div class="ttdeci">void EnableWatchDog(uint32_t timeout_ms)</div><div class="ttdoc">Enables watch dog reset functionality.</div><div class="ttdef"><b>Definition:</b> watchdog.c:60</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

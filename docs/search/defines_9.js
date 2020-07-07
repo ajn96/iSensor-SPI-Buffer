@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['watchdog_5fbase_5ffreq_277',['WATCHDOG_BASE_FREQ',['../watchdog_8h.html#aa54da28e233d61266e3a064dd192965f',1,'watchdog.h']]]
+  ['vdd_5fvalue_345',['VDD_VALUE',['../stm32f3xx__hal__conf_8h.html#aae550dad9f96d52cfce5e539adadbbb4',1,'stm32f3xx_hal_conf.h']]]
 ];

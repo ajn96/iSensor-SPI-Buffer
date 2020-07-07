@@ -103,8 +103,7 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ad9abdec236745828926dbed3d25cfad5"><td class="memItemLeft" align="right" valign="top"><a id="ad9abdec236745828926dbed3d25cfad5"></a>
-volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>g_regs</b> [3 *REG_PER_PAGE]</td></tr>
+<tr class="memitem:ad9abdec236745828926dbed3d25cfad5"><td class="memItemLeft" align="right" valign="top">volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash_8c.html#ad9abdec236745828926dbed3d25cfad5">g_regs</a> [3 *REG_PER_PAGE]</td></tr>
 <tr class="separator:ad9abdec236745828926dbed3d25cfad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -253,6 +252,22 @@ volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>g_regs</
 <p>Load register values from flash memory to SRAM. </p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
 <p>After loading registers from flash, the signature of the loaded registers is compared to the signature stored in flash. If there is a mis-match, the STATUS FLASH_ERROR bit is set. Register values on page 253 - 254 are stored. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ad9abdec236745828926dbed3d25cfad5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9abdec236745828926dbed3d25cfad5">&#9670;&nbsp;</a></span>g_regs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t g_regs[3 *REG_PER_PAGE]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Global register array (from <a class="el" href="registers_8c.html" title="iSensor-SPI-Buffer register interfacing">registers.c</a>) </p>
 
 </div>
 </div>

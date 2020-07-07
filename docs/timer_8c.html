@@ -82,6 +82,9 @@ $(function() {
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a927c9c42c21c7bf05c51c6e9253e82b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a927c9c42c21c7bf05c51c6e9253e82b3">CheckPPSUnlock</a> ()</td></tr>
+<tr class="memdesc:a927c9c42c21c7bf05c51c6e9253e82b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the PPS signal is unlocked (greater than 1100ms since last PPS strobe)  <a href="timer_8c.html#a927c9c42c21c7bf05c51c6e9253e82b3">More...</a><br /></td></tr>
+<tr class="separator:a927c9c42c21c7bf05c51c6e9253e82b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad679c296af1e7b89bd58be986d71d985"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#ad679c296af1e7b89bd58be986d71d985">SleepMicroseconds</a> (uint32_t microseconds)</td></tr>
 <tr class="memdesc:ad679c296af1e7b89bd58be986d71d985"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking sleep function call.  <a href="timer_8c.html#ad679c296af1e7b89bd58be986d71d985">More...</a><br /></td></tr>
 <tr class="separator:ad679c296af1e7b89bd58be986d71d985"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -97,17 +100,24 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetPPSTimestamp</
 <tr class="memitem:aee4842c061c047f9938eccfbbecf9d34"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#aee4842c061c047f9938eccfbbecf9d34">ClearMicrosecondTimer</a> ()</td></tr>
 <tr class="memdesc:aee4842c061c047f9938eccfbbecf9d34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset TIM2 counter to 0.  <a href="timer_8c.html#aee4842c061c047f9938eccfbbecf9d34">More...</a><br /></td></tr>
 <tr class="separator:aee4842c061c047f9938eccfbbecf9d34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37f8e3e4c93dca1f52d2459e0e915d5e"><td class="memItemLeft" align="right" valign="top"><a id="a37f8e3e4c93dca1f52d2459e0e915d5e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>EnablePPSTimer</b> ()</td></tr>
+<tr class="memitem:a37f8e3e4c93dca1f52d2459e0e915d5e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a37f8e3e4c93dca1f52d2459e0e915d5e">EnablePPSTimer</a> ()</td></tr>
+<tr class="memdesc:a37f8e3e4c93dca1f52d2459e0e915d5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable PPS input for time stamp synchronization (improved long term stability over 20ppm crystal).  <a href="timer_8c.html#a37f8e3e4c93dca1f52d2459e0e915d5e">More...</a><br /></td></tr>
 <tr class="separator:a37f8e3e4c93dca1f52d2459e0e915d5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a674d0d6bc8aa368d9b71e03e7a54cd13"><td class="memItemLeft" align="right" valign="top"><a id="a674d0d6bc8aa368d9b71e03e7a54cd13"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DisablePPSTimer</b> ()</td></tr>
+<tr class="memitem:a674d0d6bc8aa368d9b71e03e7a54cd13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a674d0d6bc8aa368d9b71e03e7a54cd13">DisablePPSTimer</a> ()</td></tr>
+<tr class="memdesc:a674d0d6bc8aa368d9b71e03e7a54cd13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable PPS timer functionality.  <a href="timer_8c.html#a674d0d6bc8aa368d9b71e03e7a54cd13">More...</a><br /></td></tr>
 <tr class="separator:a674d0d6bc8aa368d9b71e03e7a54cd13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa070c28f17a0f620ec21a681b383769a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#aa070c28f17a0f620ec21a681b383769a">IncrementPPSTime</a> ()</td></tr>
+<tr class="memdesc:aa070c28f17a0f620ec21a681b383769a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment PPS timestamp by 1.  <a href="timer_8c.html#aa070c28f17a0f620ec21a681b383769a">More...</a><br /></td></tr>
+<tr class="separator:aa070c28f17a0f620ec21a681b383769a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:ad9abdec236745828926dbed3d25cfad5"><td class="memItemLeft" align="right" valign="top">volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#ad9abdec236745828926dbed3d25cfad5">g_regs</a> [3 *REG_PER_PAGE]</td></tr>
 <tr class="separator:ad9abdec236745828926dbed3d25cfad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f243dba51236f2b5163a285092bae63"><td class="memItemLeft" align="right" valign="top">volatile <a class="el" href="struct_d_i_o_config.html">DIOConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a6f243dba51236f2b5163a285092bae63">g_pinConfig</a></td></tr>
+<tr class="separator:a6f243dba51236f2b5163a285092bae63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8612b680a1efebe782532fc810863fca"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a8612b680a1efebe782532fc810863fca">g_PPSInterruptMask</a> = 0</td></tr>
+<tr class="separator:a8612b680a1efebe782532fc810863fca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation for for iSensor-SPI-Buffer timer module. Covers microsecond timer and PPS timer. </p>
@@ -115,6 +125,27 @@ Variables</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>6/26/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a927c9c42c21c7bf05c51c6e9253e82b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a927c9c42c21c7bf05c51c6e9253e82b3">&#9670;&nbsp;</a></span>CheckPPSUnlock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CheckPPSUnlock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check if the PPS signal is unlocked (greater than 1100ms since last PPS strobe) </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function should be periodically called as part of the firmware housekeeping process </p>
+
+</div>
+</div>
 <a id="aee4842c061c047f9938eccfbbecf9d34"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aee4842c061c047f9938eccfbbecf9d34">&#9670;&nbsp;</a></span>ClearMicrosecondTimer()</h2>
 
@@ -135,6 +166,49 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a674d0d6bc8aa368d9b71e03e7a54cd13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a674d0d6bc8aa368d9b71e03e7a54cd13">&#9670;&nbsp;</a></span>DisablePPSTimer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DisablePPSTimer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Disable PPS timer functionality. </p>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a id="a37f8e3e4c93dca1f52d2459e0e915d5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37f8e3e4c93dca1f52d2459e0e915d5e">&#9670;&nbsp;</a></span>EnablePPSTimer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EnablePPSTimer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable PPS input for time stamp synchronization (improved long term stability over 20ppm crystal). </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>The PPS input can be on any of the DIOx_Slave pins (host processor the iSensor-SPI-Buffer). The selected pin is configured by the PPS_SELECT field in the DIO_INPUT_CONFIG register. The trigger polarity for the PPS signal is configured by the PPS_POLARITY field in the DIO_INPUT_CONFIG register.</p>
+<p>Pins:</p>
+<p>DIO1: PB4 -&gt; EXTI4 interrupt DIO2: PB8 -&gt; EXTI9_5 interrupt, mask (1 &lt;&lt; 8) DIO3: PC7 -&gt; EXTI9_5 interrupt, mask (1 &lt;&lt; 7) DIO4: PA8 -&gt; EXTI9_5 interrupt, mask (1 &lt;&lt; 8) </p>
+
+</div>
+</div>
 <a id="a42165c313ad966bc655a7b7db5bd0264"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a42165c313ad966bc655a7b7db5bd0264">&#9670;&nbsp;</a></span>GetMicrosecondTimestamp()</h2>
 
@@ -152,6 +226,26 @@ Variables</h2></td></tr>
 
 <p>Gets the current 32-bit value from the IMU sample timestamp timer. </p>
 <dl class="section return"><dt>Returns</dt><dd>The timer value </dd></dl>
+
+</div>
+</div>
+<a id="aa070c28f17a0f620ec21a681b383769a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa070c28f17a0f620ec21a681b383769a">&#9670;&nbsp;</a></span>IncrementPPSTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void IncrementPPSTime </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Increment PPS timestamp by 1. </p>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -205,6 +299,37 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a6f243dba51236f2b5163a285092bae63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f243dba51236f2b5163a285092bae63">&#9670;&nbsp;</a></span>g_pinConfig</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile <a class="el" href="struct_d_i_o_config.html">DIOConfig</a> g_pinConfig</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Struct storing current DIO output config. (from <a class="el" href="dio_8c.html" title="Implementation file for iSensor-SPI-Buffer DIO interfacing module.">dio.c</a>)</p>
+<p>Struct storing current DIO output config. Global scope </p>
+
+</div>
+</div>
+<a id="a8612b680a1efebe782532fc810863fca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8612b680a1efebe782532fc810863fca">&#9670;&nbsp;</a></span>g_PPSInterruptMask</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t g_PPSInterruptMask = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>PPS interrupt source. Global scope </p>
+
+</div>
+</div>
 <a id="ad9abdec236745828926dbed3d25cfad5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad9abdec236745828926dbed3d25cfad5">&#9670;&nbsp;</a></span>g_regs</h2>
 

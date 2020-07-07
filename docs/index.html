@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: Main Page</title>
+<title>iSensor-SPI-Buffer: iSensor-SPI-Buffer Register Structure</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,11 +63,482 @@ $(function() {
 </iframe>
 </div>
 
-<div class="header">
+<div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">iSensor-SPI-Buffer Documentation</div>  </div>
+<div class="title">iSensor-SPI-Buffer Register Structure </div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p><a class="anchor" id="md_C"></a>:_Users_anolan3_Documents_iSensor-SPI-Buffer_REGISTER_DEFINITION</p>
+<p>Data and control interfacing to the iSensor SPI Buffer firmware from a master device is done via a set of user accessible registers. These registers can be accessed over SPI, using the standard iSensor SPI format (see ADIS16xxx datasheet), or over a USB virtual serial port command line interface (see USB CLI documentation). The register address space is split into three pages, each with 128 addresses. On each page, the PAGE ID register is stored at address 0. Writing to the PAGE ID register will select a different register page for access.</p><ul>
+<li>Registers which are marked with a "Default Value" will have the specified value loaded when a Factory Reset command is executed</li>
+<li>Registers with a R/W field marked "R" can be read. Registers marked "W" can be written. Any registers in the address space not enumerated in the register map are read only and will always read 0</li>
+<li>Registers which are marked "Flash Backup" are loaded from non-volatile memory on initialization. Issuing a Flash Update command will save the current register contents to non-volatile memory</li>
+</ul>
+<h1>Page 253 - iSensor-SPI-Buffer configuration</h1>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Address </th><th class="markdownTableHeadNone">Register Name </th><th class="markdownTableHeadNone">Default </th><th class="markdownTableHeadNone">R/W </th><th class="markdownTableHeadNone">Flash Backup </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x00 </td><td class="markdownTableBodyNone"><a href="#PAGE_ID">PAGE_ID</a> </td><td class="markdownTableBodyNone">0x00FD </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Page register. Used to read or change the currently selected register page  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x02 </td><td class="markdownTableBodyNone"><a href="#BUF_CONFIG">BUF_CONFIG</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Buffer configuration settings (SPI word size, overflow behavior)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x04 </td><td class="markdownTableBodyNone"><a href="#BUF_LEN">BUF_LEN</a> </td><td class="markdownTableBodyNone">0x0014 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Length (in bytes) of each buffered data capture  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x06 </td><td class="markdownTableBodyNone"><a href="#BUF_MAX_CNT">BUF_MAX_CNT</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Maximum entries which can be stored in the buffer. Determined by BUF_LEN and the fixed buffer memory allocation  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x08 </td><td class="markdownTableBodyNone"><a href="#DIO_INPUT_CONFIG">DIO_INPUT_CONFIG</a> </td><td class="markdownTableBodyNone">0x0011 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">DIO input configuration. Allows data ready (from IMU) and PPS (from host) input selection  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x0A </td><td class="markdownTableBodyNone"><a href="#DIO_OUTPUT_CONFIG">DIO_OUTPUT_CONFIG</a> </td><td class="markdownTableBodyNone">0x8421 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">DIO output configuration. Sets up pin pass-through and assigns interrupts  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x0C </td><td class="markdownTableBodyNone"><a href="#WATERMARK_INT_CONFIG">WATERMARK_INT_CONFIG</a> </td><td class="markdownTableBodyNone">0x0020 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Watermark interrupt configuration register  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x0E </td><td class="markdownTableBodyNone"><a href="#ERROR_INT_CONFIG">ERROR_INT_CONFIG</a> </td><td class="markdownTableBodyNone">0x03FF </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Error interrupt configuration register  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x10 </td><td class="markdownTableBodyNone"><a href="#IMU_SPI_CONFIG">IMU_SPI_CONFIG</a> </td><td class="markdownTableBodyNone">0x100F </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">IMU SPI configuration. Sets SCLK frequency to the IMU and stall time between SPI words  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x12 </td><td class="markdownTableBodyNone"><a href="#USER_SPI_CONFIG">USER_SPI_CONFIG</a> </td><td class="markdownTableBodyNone">0x0007 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">User SPI configuration (SPI mode, etc.)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x14 </td><td class="markdownTableBodyNone"><a href="#USB_CONFIG">USB_CONFIG</a> </td><td class="markdownTableBodyNone">0x2000 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">USB API configuration  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x16 </td><td class="markdownTableBodyNone"><a href="#USER_COMMAND">USER_COMMAND</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">W </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Command register (flash update, factory reset, clear buffer, software reset, etc)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x18 </td><td class="markdownTableBodyNone"><a href="#USER_SCR_N">USER_SCR_0</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">User scratch 0 register  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">...  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x26 </td><td class="markdownTableBodyNone"><a href="#USER_SCR_N">USER_SCR_7</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">User scratch 7 register  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x28 </td><td class="markdownTableBodyNone"><a href="#FW_REV">FW_REV</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Firmware revision  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x2A </td><td class="markdownTableBodyNone"><a href="#ENDURANCE">ENDURANCE</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Flash update counter  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x40 </td><td class="markdownTableBodyNone"><a href="#STATUS">STATUS</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Device status register. Clears on read  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x42 </td><td class="markdownTableBodyNone"><a href="#BUF_CNT">BUF_CNT</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">The number of samples in buffer  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x44 </td><td class="markdownTableBodyNone"><a href="#FAULT_CODE">FAULT_CODE</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Fault code, stored in case of a hard fault exception. This register is stored on a separate flash page from the primary register array  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x46 </td><td class="markdownTableBodyNone"><a href="#UTC_TIMESTAMP_LWR">UTC_TIMESTAMP_LWR</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Lower 16 bits of UTC timestamp (PPS counter)  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x48 </td><td class="markdownTableBodyNone"><a href="#UTC_TIMESTAMP_UPR">UTC_TIMESTAMP_UPR</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Upper 16 bits of UTC timestamp (PPS counter)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x4A </td><td class="markdownTableBodyNone"><a href="#TIMESTAMP_LWR">TIMESTAMP_LWR</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Lower 16 bits of microsecond timestamp  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x4C </td><td class="markdownTableBodyNone"><a href="#TIMESTAMP_UPR">TIMESTAMP_UPR</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Upper 16 bits of microsecond timestamp  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x70 </td><td class="markdownTableBodyNone"><a href="#FW_DAY_MONTH">FW_DAY_MONTH</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Firmware build date  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x72 </td><td class="markdownTableBodyNone"><a href="#FW_YEAR">FW_YEAR</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Firmware build year  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x74 </td><td class="markdownTableBodyNone"><a href="#DEV_SN_N">DEV_SN_0</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Processor core serial number register, word 0  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">...  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x7E </td><td class="markdownTableBodyNone"><a href="#DEV_SN_N">DEV_SN_5</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Processor core serial number register, word 5  </td></tr>
+</table>
+<h1>Page 254 - Buffer write data</h1>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Address </th><th class="markdownTableHeadNone">Register Name </th><th class="markdownTableHeadNone">Default </th><th class="markdownTableHeadNone">R/W </th><th class="markdownTableHeadNone">Flash Backup </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x00 </td><td class="markdownTableBodyNone"><a href="#PAGE_ID">PAGE_ID</a> </td><td class="markdownTableBodyNone">0x00FE </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Page register. Used to change the currently selected register page  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x12 </td><td class="markdownTableBodyNone"><a href="#BUF_WRITE_N">BUF_WRITE_0</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">First transmit data register (data sent to IMU DIN)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">...  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x50 </td><td class="markdownTableBodyNone"><a href="#BUF_WRITE_N">BUF_WRITE_31</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Last transmit data register  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x7C </td><td class="markdownTableBodyNone"><a href="#FLASH_SIG_DRV">FLASH_SIG_DRV</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Derived flash memory signature register (determined at initialization)  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x7E </td><td class="markdownTableBodyNone"><a href="#FLASH_SIG">FLASH_SIG</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Stored flash memory signature register  </td></tr>
+</table>
+<h1>Page 255 - Buffer output registers</h1>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Address </th><th class="markdownTableHeadNone">Register Name </th><th class="markdownTableHeadNone">Default </th><th class="markdownTableHeadNone">R/W </th><th class="markdownTableHeadNone">Flash Backup </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x00 </td><td class="markdownTableBodyNone"><a href="#PAGE_ID">PAGE_ID</a> </td><td class="markdownTableBodyNone">0x00FF </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Page register. Used to change the currently selected register page  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x02 </td><td class="markdownTableBodyNone"><a href="#STATUS">STATUS_1</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Mirror of the STATUS register. Clears on read  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x04 </td><td class="markdownTableBodyNone"><a href="#BUF_CNT">BUF_CNT_1</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">The number of samples stored in the buffer. Write 0 to this register to clear the buffer. Other writes are ignored  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x06 </td><td class="markdownTableBodyNone"><a href="#BUF_RETRIEVE">BUF_RETRIEVE</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Read this register to dequeue new data from buffer to buffer output registers  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x08 </td><td class="markdownTableBodyNone"><a href="#BUF_UTC_TIME_LWR">BUF_UTC_TIME_LWR</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Lower 16 bits of buffer entry UTC timestamp (driven by PPS input signal)  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x0A </td><td class="markdownTableBodyNone"><a href="#BUF_UTC_TIME_UPR">BUF_UTC_TIME_UPR</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Upper 16 bits of buffer entry UTC timestamp (driven by PPS input signal)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x0C </td><td class="markdownTableBodyNone"><a href="#BUF_TIMESTAMP_LWR">BUF_TIMESTAMP_LWR</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Lower 16 bits of buffer entry microsecond timestamp  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x0E </td><td class="markdownTableBodyNone"><a href="#BUF_TIMESTAMP_UPR">BUF_TIMESTAMP_UPR</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Upper 16 bits of buffer entry microsecond timestamp  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x10 </td><td class="markdownTableBodyNone"><a href="#BUF_SIG">BUF_SIG</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Buffer entry checksum register  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x12 </td><td class="markdownTableBodyNone"><a href="#BUF_DATA_N">BUF_DATA_0</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">First buffer output register (data received from IMU DOUT)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">...  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x50 </td><td class="markdownTableBodyNone"><a href="#BUF_DATA_N">BUF_DATA_31</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Last buffer output register  </td></tr>
+</table>
+<h1>iSensor-SPI-Buffer detailed register descriptions</h1>
+<h2>PAGE_ID</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">PAGE </td><td class="markdownTableBodyNone">Selected page. Setting the page to a value outside [253-255] will result in SPI traffic being passed to the IMU.  </td></tr>
+</table>
+<h2>BUF_CONFIG</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">OVERFLOW </td><td class="markdownTableBodyNone">Buffer overflow behavior. 0 stop sampling, 1 replace oldest data  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">BURST </td><td class="markdownTableBodyNone">IMU burst data capture enable  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:2 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+</table>
+<p>When the BURST bit is set, each buffered data capture from the IMU is performed as a single SPI burst transaction (drop CS, clock out all data, raise CS). The length of the burst transaction is determined by BUF_LEN. When the BURST bit is cleared, IMU data is captured using a sequence of 16 bit SPI words.</p>
+<h2>BUF_LEN</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Bits </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">LEN </td><td class="markdownTableBodyNone">Length (in bytes) of each buffer entry. Valid range 2 - 64  </td></tr>
+</table>
+<h2>BUF_MAX_CNT</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Bits </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">MAX </td><td class="markdownTableBodyNone">Total number of entries which can be stored in the buffer. Updates automatically when BUF_LEN is changed  </td></tr>
+</table>
+<h2>DIO_INPUT_CONFIG</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">3:0 </td><td class="markdownTableBodyNone">DR_SELECT </td><td class="markdownTableBodyNone">Select which IMU DIO ouput pin is treated as data ready. Can only select one pin  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">4 </td><td class="markdownTableBodyNone">DR_POLARITY </td><td class="markdownTableBodyNone">Data ready trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">7:5 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">11:8 </td><td class="markdownTableBodyNone">PPS_SELECT </td><td class="markdownTableBodyNone">Select which host processor DIO output pin acts as a Pulse Per Second (PPS) input, for timebase synchronization  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">12 </td><td class="markdownTableBodyNone">PPS_POLARITY </td><td class="markdownTableBodyNone">PPS trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">15:13 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+</table>
+<p>For each field in DIO_INPUT_CONFIG, the following pin mapping is made:</p><ul>
+<li>Bit0 -&gt; DIO1</li>
+<li>Bit1 -&gt; DIO2</li>
+<li>Bit2 -&gt; DIO3</li>
+<li>Bit3 -&gt; DIO4</li>
+</ul>
+<p>The following default values will be used for DIO_INPUT_CONFIG:</p><ul>
+<li>DR_SELECT: 0x1. DIO1 is used for data ready</li>
+<li>DR_POLARITY: 0x1. Data ready is posedge triggered</li>
+<li>PPS_SELECT: 0x0. PPS input is disabled by default</li>
+<li>PPS_POLARITY: 0x0. PPS triggers on falling edge</li>
+</ul>
+<h2>DIO_OUTPUT_CONFIG</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">3:0 </td><td class="markdownTableBodyNone">PIN_PASS </td><td class="markdownTableBodyNone">Select which pins are directly connected from the host processor to the IMU using an ADG1611 analog switch  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">7:4 </td><td class="markdownTableBodyNone">WATERMARK_INT </td><td class="markdownTableBodyNone">Select which pins are driven with the buffer watermark interrupt signal from the iSensor-SPI-Buffer firmware  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">11:8 </td><td class="markdownTableBodyNone">OVERFLOW_INT </td><td class="markdownTableBodyNone">Select which pins are driven with the buffer overflow interrupt signal from the iSensor-SPI-Buffer firmware  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">15:12 </td><td class="markdownTableBodyNone">ERROR_INT </td><td class="markdownTableBodyNone">Select which pins are driven with the error interrupt signal from the iSensor-SPI-Buffer firmware  </td></tr>
+</table>
+<p>For each field in DIO_OUTPUT_CONFIG, the following pin mapping is made:</p><ul>
+<li>Bit0 -&gt; DIO1</li>
+<li>Bit1 -&gt; DIO2</li>
+<li>Bit2 -&gt; DIO3</li>
+<li>Bit3 -&gt; DIO4</li>
+</ul>
+<p>The following default values will be used for DIO_OUTPUT_CONFIG:</p><ul>
+<li>PIN_PASS: 0x1. DIO1 (typically acts as IMU data ready) will be passed through using an Analog Switch. This allows for direct reading of the data ready signal</li>
+<li>WATERMARK_INT: 0x2. The buffer watermark interrupt is applied to DIO2 by default</li>
+<li>OVERFLOW_INT: 0x4. The buffer overflow interrupt is applied to DIO3 by default</li>
+<li>ERROR_INT: 0x8. The error interrupt is applied to DIO4 by default</li>
+</ul>
+<h2>WATERMARK_INT_CONFIG</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Bits </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">WATERMARK </td><td class="markdownTableBodyNone">Number of elements stored in buffer before asserting the iSensor-SPI-Buffer data ready interrupt. Range 0 - BUF_MAX_CNT  </td></tr>
+</table>
+<h2>ERROR_INT_CONFIG</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Bits </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">STATUS_MASK </td><td class="markdownTableBodyNone">Bitmask to set which bits in the iSensor-SPI-Buffer status register error bits will generate an interrupt when set. Set to 0xFFFF to enable all error interrupts, 0x0000 to disable all  </td></tr>
+</table>
+<h2>IMU_SPI_CONFIG</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">7:0 </td><td class="markdownTableBodyNone">STALL </td><td class="markdownTableBodyNone">Stall time between SPI words (in microseconds). Valid range 2us - 255us  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">8 </td><td class="markdownTableBodyNone">SCLK_SCALE_2 </td><td class="markdownTableBodyNone">Sets SCLK prescaler to 2 (18MHz)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">9 </td><td class="markdownTableBodyNone">SCLK_SCALE_4 </td><td class="markdownTableBodyNone">Sets SCLK prescaler to 4 (9MHz)  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">10 </td><td class="markdownTableBodyNone">SCLK_SCALE_8 </td><td class="markdownTableBodyNone">Sets SCLK prescaler to 8 (4.5MHz)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">11 </td><td class="markdownTableBodyNone">SCLK_SCALE_16 </td><td class="markdownTableBodyNone">Sets SCLK prescaler to 16 (2.25MHz)  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">12 </td><td class="markdownTableBodyNone">SCLK_SCALE_32 </td><td class="markdownTableBodyNone">Sets SCLK prescaler to 32 (1.125MHz). Default option selected which will work with all iSensor IMU products  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">13 </td><td class="markdownTableBodyNone">SCLK_SCALE_64 </td><td class="markdownTableBodyNone">Sets SCLK prescaler to 64 (562.5KHz)  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">14 </td><td class="markdownTableBodyNone">SCLK_SCALE_128 </td><td class="markdownTableBodyNone">Sets SCLK prescaler to 128 (281.25KHz)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15 </td><td class="markdownTableBodyNone">SCLK_SCALE_256 </td><td class="markdownTableBodyNone">Sets SCLK prescaler to 256 (140.625KHz)  </td></tr>
+</table>
+<h2>USER_SPI_CONFIG</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">CPHA </td><td class="markdownTableBodyNone">SPI clock phase  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">CPOL </td><td class="markdownTableBodyNone">SPI clock polarity  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">2 </td><td class="markdownTableBodyNone">MSB_FIRST </td><td class="markdownTableBodyNone">1 = transmit MSB first, 0 = transmit LSB first  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">14:3 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15 </td><td class="markdownTableBodyNone">BUF_BURST </td><td class="markdownTableBodyNone">Enable burst read of buffer output data registers, using SPI DMA  </td></tr>
+</table>
+<p>When BUF_BURST is enabled and the buffer retrieve register is read, the slave SPI interface DMA is configured to clock out the full buffer entry, starting with the timestamp. Multiple buffer burst reads can be chained together by sending a BUF_RETRIEVE read request at the start of the burst data capture, which will trigger a second buffer burst output after the first read is completed. After a buffer burst output has been enabled, the iSensor-SPI-Buffer slave SPI port will not return to "normal" mode until the full buffer entry has been read (BUF_LEN + 10 bytes clocked out).</p>
+<h2>USB_CONFIG</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">STREAM </td><td class="markdownTableBodyNone">USB data stream running  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">7:2 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:8 </td><td class="markdownTableBodyNone">DELIM </td><td class="markdownTableBodyNone">Register read value delimiter character (ASCII), for USB CLI. Defaults to space character  </td></tr>
+</table>
+<p>For more details on the iSensor-SPI-Buffer USB interface, see the <a href="https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/USB_CLI.md">USB_CLI</a> document</p>
+<h2>USER_COMMAND</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">CLEAR_BUF </td><td class="markdownTableBodyNone">Clears buffer contents  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">CLEAR_FAULT </td><td class="markdownTableBodyNone">Clears any fault data logged in flash memory. Until this command is run, status FAULT bit will never clear  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">2 </td><td class="markdownTableBodyNone">FACTORY_RESET </td><td class="markdownTableBodyNone">Restores firmware to a factory default state  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">3 </td><td class="markdownTableBodyNone">FLASH_UPDATE </td><td class="markdownTableBodyNone">Save all non-volatile registers to flash memory  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">4 </td><td class="markdownTableBodyNone">PPS_ENABLE </td><td class="markdownTableBodyNone">Enable PPS timestamp synchronization. Must have PPS_SELECT defined before enabling PPS. The UTC timestamp will start counting up on the next PPS signal  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">5 </td><td class="markdownTableBodyNone">PPS_DISABLE </td><td class="markdownTableBodyNone">Disable PPS timestamp synchronization. The microsecond timestamp register will continue free running.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">14:6 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">15 </td><td class="markdownTableBodyNone">RESET </td><td class="markdownTableBodyNone">Software reset  </td></tr>
+</table>
+<p>While commands are being executed, the iSensor-SPI-Buffer slave SPI port is disabled, and all interrupt signals are brought low.</p>
+<h2>USER_SCR_N</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">USER_SCR </td><td class="markdownTableBodyNone">User scratch register. Available for end user use  </td></tr>
+</table>
+<h2>STATUS</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">BUF_WATERMARK </td><td class="markdownTableBodyNone">Set when buffer watermark interrupt condition is met (data ready interrupt)  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">BUF_FULL </td><td class="markdownTableBodyNone">Set when buffer is full (overflow interrupt)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">2 </td><td class="markdownTableBodyNone">SPI_ERROR </td><td class="markdownTableBodyNone">SPI error reported by the user SPI or IMU SPI peripheral  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">3 </td><td class="markdownTableBodyNone">SPI_OVERFLOW </td><td class="markdownTableBodyNone">User SPI data overflow (min stall time violated). This bit is set when a user SPI interrupt is received, and the previous user SPI interrupt is still being processed  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">4 </td><td class="markdownTableBodyNone">OVERRUN </td><td class="markdownTableBodyNone">Data capture overrun. Set when processor receives an IMU data ready interrupt and has not finished the previous data capture  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">5 </td><td class="markdownTableBodyNone">DMA_ERROR </td><td class="markdownTableBodyNone">Set when processor DMA peripheral reports an error (user SPI DMA for burst read or IMU SPI DMA)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">6 </td><td class="markdownTableBodyNone">PPS_UNLOCK </td><td class="markdownTableBodyNone">Set when the PPS synchronization clock is enabled, but no PPS signal has been received for over 1100ms  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">11:7 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">12 </td><td class="markdownTableBodyNone">FLASH_ERROR </td><td class="markdownTableBodyNone">Set when the register signature stored in flash (stored during flash update) does not match signature calculated from SRAM register contents at initialization. Sticky  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">13 </td><td class="markdownTableBodyNone">FLASH_UPDATE_ERROR </td><td class="markdownTableBodyNone">Set when the flash update routine fails. Sticky  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">14 </td><td class="markdownTableBodyNone">FAULT </td><td class="markdownTableBodyNone">Set when the processor core generates a fault exception (bus fault, memory fault, hard fault, initialization error). Fault exceptions will force a system reset. Sticky  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">15 </td><td class="markdownTableBodyNone">WATCHDOG </td><td class="markdownTableBodyNone">Set when the processor has reset due to a watchdog timeout. Sticky  </td></tr>
+</table>
+<p>Excluding bits identified as sticky, this register clears on read. The values in this register are used to generate an error interrupt, if error interrupts are enabled.</p>
+<h2>UTC_TIME_LWR</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">UTC_TIME </td><td class="markdownTableBodyNone">Lower 16 bits of the 32-bit UTC timestamp  </td></tr>
+</table>
+<h2>UTC_TIME_UPR</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">UTC_TIME </td><td class="markdownTableBodyNone">Upper 16 bits of the 32-bit UTC timestamp  </td></tr>
+</table>
+<p>The UTC timestamp is a 32-bit value which represents the number of seconds since Jan 01 1970. This register must be set by a master device (no RTC). When a PPS input is enabled using the command register PPS_ENABLE bit, and a PPS pin assigned in DIO_INPUT_CONFIG, this register will count up once per PPS interrupt.</p>
+<h2>TIMESTAMP_LWR</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">TIMESTAMP </td><td class="markdownTableBodyNone">Lower 16 bits of the 32-bit microsecond timestamp  </td></tr>
+</table>
+<h2>TIMESTAMP_UPR</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">TIMESTAMP </td><td class="markdownTableBodyNone">Upper 16 bits of the 32-bit microsecond timestamp  </td></tr>
+</table>
+<p>This register is a 32-bit microsecond timestamp which starts counting up as soon as the iSensor-SPI-Buffer firmware finishes initialization.</p>
+<p>When a PPS input is enabled using the command register PPS_ENABLE, and a PPS pin is assigned in DIO_INPUT_CONFIG, this timestamp will reset to 0 every time a PPS pulse is received. This PPS functionality allows the iSensor-SPI-Buffer firmware to track the "wall" time with microsecond accuracy. Since the microsecond timestamp is reset every second, any error accumulation (due to 20ppm crystal) should be minimal.</p>
+<h2>FW_DAY_MONTH</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">7:0 </td><td class="markdownTableBodyNone">MONTH </td><td class="markdownTableBodyNone">Firmware program month, in BCD  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">15:8 </td><td class="markdownTableBodyNone">DAY </td><td class="markdownTableBodyNone">Firmware program day, in BCD  </td></tr>
+</table>
+<p>For example, April 24th would be represented by 0x2404.</p>
+<h2>FW_YEAR</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">YEAR </td><td class="markdownTableBodyNone">Firmware program year, in BCD  </td></tr>
+</table>
+<p>For example, the year 2020 would be represented by 0x2020.</p>
+<h2>FW_REV</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">7:0 </td><td class="markdownTableBodyNone">MINOR </td><td class="markdownTableBodyNone">Minor firmware revision number, in BCD  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">15:8 </td><td class="markdownTableBodyNone">MAJOR </td><td class="markdownTableBodyNone">Major firmware revision number, in BCD  </td></tr>
+</table>
+<p>This rev corresponds to the release tag for the firmware. For example, rev 1.15 would be represented by 0x0115 in FW_REV.</p>
+<h2>DEV_SN_N</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">SN </td><td class="markdownTableBodyNone">These six registers contain the 96 bit unique serial number in the STM32 processor core  </td></tr>
+</table>
+<h2>BUF_WRITE_N</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">WRITE_N </td><td class="markdownTableBodyNone">Write data to transmit on MOSI line while capturing a buffered data entry  </td></tr>
+</table>
+<h2>FLASH_SIG_DRV</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">SIGNATURE </td><td class="markdownTableBodyNone">Derived signature for all registers stored to flash memory. This value is determined at initialization and compared to "FLASH_SIG" to determine if flash memory contents are valid  </td></tr>
+</table>
+<h2>FLASH_SIG</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">SIGNATURE </td><td class="markdownTableBodyNone">Signature for all registers stored to flash memory. This value is stored in flash, and is updated when a flash update command is executed  </td></tr>
+</table>
+<h2>BUF_CNT</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">CNT </td><td class="markdownTableBodyNone">Number of entries currently stored in the buffer. Write 0 to clear buffer (only on page 255). All other writes ignored  </td></tr>
+</table>
+<h2>BUF_RETRIEVE</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">RETRIEVE </td><td class="markdownTableBodyNone">Read to place a new sample from the buffer into the BUF_READ output registers. Will always contain 0  </td></tr>
+</table>
+<h2>BUF_UTC_TIME_LWR</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">TIMESTAMP </td><td class="markdownTableBodyNone">Lower 16 bits of the 32-bit buffer entry UTC timestamp value which is stored at the start of each data capture. Resolution: 1LSB = 1 second (driven by PPS input)  </td></tr>
+</table>
+<h2>BUF_UTC_TIME_UPR</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">TIMESTAMP </td><td class="markdownTableBodyNone">Upper 16 bits of the 32-bit buffer entry UTC timestamp.  </td></tr>
+</table>
+<h2>BUF_TIMESTAMP_LWR</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">TIMESTAMP </td><td class="markdownTableBodyNone">Lower 16 bits of a 32-bit buffer entry timestamp value which is stored at the start of each data capture. Resolution: 1LSB = 1us  </td></tr>
+</table>
+<h2>BUF_TIMESTAMP_UPR</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">TIMESTAMP </td><td class="markdownTableBodyNone">Upper 16 bits of a 32-bit buffer entry timestamp.  </td></tr>
+</table>
+<h2>BUF_SIG</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">SIGNATURE </td><td class="markdownTableBodyNone">Buffer signature. This is the sum of all 16-bit words stored in the buffer (including timestamp)  </td></tr>
+</table>
+<h2>BUF_DATA_N</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">READ_N </td><td class="markdownTableBodyNone">Read data received on the MISO line while capturing a buffered data entry  </td></tr>
+</table>
+</div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

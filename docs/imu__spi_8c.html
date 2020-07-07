@@ -91,8 +91,8 @@ Functions</h2></td></tr>
 <tr class="memitem:ae35146a7cc10e15dd1cb67520515c43c"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#ae35146a7cc10e15dd1cb67520515c43c">ImuWriteReg</a> (uint8_t RegAddr, uint8_t RegValue)</td></tr>
 <tr class="memdesc:ae35146a7cc10e15dd1cb67520515c43c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes an 8 bit value to the IMU.  <a href="imu__spi_8c.html#ae35146a7cc10e15dd1cb67520515c43c">More...</a><br /></td></tr>
 <tr class="separator:ae35146a7cc10e15dd1cb67520515c43c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af83f777aa978e03f1c4a74c719b45de2"><td class="memItemLeft" align="right" valign="top"><a id="af83f777aa978e03f1c4a74c719b45de2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ConfigureImuCsTimer</b> (uint32_t period)</td></tr>
+<tr class="memitem:af83f777aa978e03f1c4a74c719b45de2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#af83f777aa978e03f1c4a74c719b45de2">ConfigureImuCsTimer</a> (uint32_t period)</td></tr>
+<tr class="memdesc:af83f777aa978e03f1c4a74c719b45de2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the TIM3 period for use in PWM mode to drive CS.  <a href="imu__spi_8c.html#af83f777aa978e03f1c4a74c719b45de2">More...</a><br /></td></tr>
 <tr class="separator:af83f777aa978e03f1c4a74c719b45de2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a814e8222e8a4eda9663f65501d41580a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#a814e8222e8a4eda9663f65501d41580a">InitImuCsTimer</a> ()</td></tr>
 <tr class="memdesc:a814e8222e8a4eda9663f65501d41580a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inits TIM3 for use in PWM mode to drive CS.  <a href="imu__spi_8c.html#a814e8222e8a4eda9663f65501d41580a">More...</a><br /></td></tr>
@@ -111,8 +111,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ConfigureImuCsTimer</
 Variables</h2></td></tr>
 <tr class="memitem:ac7374f4f68aaef9867e081e6cb59e3d9"><td class="memItemLeft" align="right" valign="top">SPI_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#ac7374f4f68aaef9867e081e6cb59e3d9">g_spi1</a></td></tr>
 <tr class="separator:ac7374f4f68aaef9867e081e6cb59e3d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9abdec236745828926dbed3d25cfad5"><td class="memItemLeft" align="right" valign="top"><a id="ad9abdec236745828926dbed3d25cfad5"></a>
-volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>g_regs</b> [3 *REG_PER_PAGE]</td></tr>
+<tr class="memitem:ad9abdec236745828926dbed3d25cfad5"><td class="memItemLeft" align="right" valign="top">volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#ad9abdec236745828926dbed3d25cfad5">g_regs</a> [3 *REG_PER_PAGE]</td></tr>
 <tr class="separator:ad9abdec236745828926dbed3d25cfad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9261cf9a55e8094595049f94eb83ea8"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#ab9261cf9a55e8094595049f94eb83ea8">g_imuStallTimeUs</a> = 25</td></tr>
 <tr class="separator:ab9261cf9a55e8094595049f94eb83ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,6 +122,34 @@ volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>g_regs</
 <dl class="section date"><dt>Date</dt><dd>3/18/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="af83f777aa978e03f1c4a74c719b45de2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af83f777aa978e03f1c4a74c719b45de2">&#9670;&nbsp;</a></span>ConfigureImuCsTimer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ConfigureImuCsTimer </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>period</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the TIM3 period for use in PWM mode to drive CS. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">period</td><td>Timer ticks period for TIM3. This corresponds to the CS low pulse width</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>TIM3 will be disabled (CS high) by this function. It should not be called while a data capture is in progress. </p>
+
+</div>
+</div>
 <a id="adfad8c7379c01cb09a7e3754c33e169b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adfad8c7379c01cb09a7e3754c33e169b">&#9670;&nbsp;</a></span>ConfigureImuSpiTimer()</h2>
 
@@ -321,6 +348,21 @@ volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>g_regs</
       </table>
 </div><div class="memdoc">
 <p>track stall time (microseconds) </p>
+
+</div>
+</div>
+<a id="ad9abdec236745828926dbed3d25cfad5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9abdec236745828926dbed3d25cfad5">&#9670;&nbsp;</a></span>g_regs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t g_regs[3 *REG_PER_PAGE]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Global register array (from <a class="el" href="registers_8c.html" title="iSensor-SPI-Buffer register interfacing">registers.c</a>) </p>
 
 </div>
 </div>
