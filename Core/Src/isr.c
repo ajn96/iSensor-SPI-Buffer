@@ -16,9 +16,6 @@ volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 /** Buffer internal count variable (from buffer.c) */
 volatile extern uint32_t g_bufCount;
 
-/** IMU stall time (from imu_spi.c) */
-extern uint32_t g_imuStallTimeUs;
-
 /** User SPI Rx DMA (from main.c) */
 extern DMA_HandleTypeDef g_dma_spi2_rx;
 
@@ -30,9 +27,6 @@ extern DMA_HandleTypeDef g_dma_spi1_rx;
 
 /** IMU SPI Rx DMA (from main.c) */
 extern DMA_HandleTypeDef g_dma_spi1_tx;
-
-/** PPS input interrupt mask (from timer.c) */
-extern uint32_t g_PPSInterruptMask;
 
 /** Current capture size (in 16 bit words). Global scope */
 volatile uint32_t g_wordsPerCapture;
@@ -133,21 +127,30 @@ void EXTI9_5_IRQHandler()
 	/* Set flag indicating capture is running */
 	g_captureInProgress = 1;
 
-	/* Set words captured to 0 */
-	WordsCaptured = 0;
+	if(g_regs[BUF_CONFIG_REG] & 0x2)
+	{
+		/* Burst SPI data capture */
+	}
+	else
+	{
+		/* Register SPI data capture */
 
-	/*Set timer value to 0 */
-	TIM4->CNT = 0;
-	/* Enable timer */
-	TIM4->CR1 |= 0x1;
-	/* Clear timer interrupt flag */
-	TIM4->SR &= ~TIM_SR_UIF;
+		/* Set words captured to 0 */
+		WordsCaptured = 0;
 
-	/* Send first 16 bit word */
-	TIM3->CR1 &= ~0x1;
-	TIM3->CNT = 0;
-	TIM3->CR1 |= 0x1;
-	SPI1->DR = g_regs[BUF_WRITE_0_REG];
+		/*Set timer value to 0 */
+		TIM4->CNT = 0;
+		/* Enable timer */
+		TIM4->CR1 |= 0x1;
+		/* Clear timer interrupt flag */
+		TIM4->SR &= ~TIM_SR_UIF;
+
+		/* Send first 16 bit word */
+		TIM3->CR1 &= ~0x1;
+		TIM3->CNT = 0;
+		TIM3->CR1 |= 0x1;
+		SPI1->DR = g_regs[BUF_WRITE_0_REG];
+	}
 }
 
 /**
