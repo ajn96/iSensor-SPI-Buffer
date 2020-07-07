@@ -20,7 +20,7 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 | 0x10 | [IMU_SPI_CONFIG](#IMU_SPI_CONFIG) | 0x100F | R/W | T | IMU SPI configuration. Sets SCLK frequency to the IMU and stall time between SPI words |
 | 0x12 | [USER_SPI_CONFIG](#USER_SPI_CONFIG) | 0x0007 | R/W | T | User SPI configuration (SPI mode, etc.) |
 | 0x14 | [USB_CONFIG](#USB_CONFIG) | 0x2000 | R/W | T | USB API configuration |
-| 0x16 | [USER_COMMAND](#USER_COMMAND) | N/A | W | T | Command register (flash update, factory reset, clear buffer, software reset, etc) |
+| 0x16 | [USER_COMMAND](#USER_COMMAND) | N/A | W | F | Command register (flash update, factory reset, clear buffer, software reset, etc) |
 | 0x18 | [USER_SCR_0](#USER_SCR_N) | 0x0000 | R/W | T | User scratch 0 register |
 | ... | ... | ... | ... | ... | ... |
 | 0x26 | [USER_SCR_7](#USER_SCR_N) | 0x0000 | R/W | T | User scratch 7 register |
