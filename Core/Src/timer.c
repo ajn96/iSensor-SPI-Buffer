@@ -27,6 +27,29 @@ uint32_t g_PPSInterruptMask = 0;
 static TIM_HandleTypeDef htim2;
 
 /**
+  * @brief Check if the PPS signal is unlocked (greater than 1100ms since last PPS strobe)
+  *
+  * @return void
+  *
+  * This function should be periodically called as part of the firmware housekeeping process
+ **/
+void CheckPPSUnlock()
+{
+	/* Exit if PPS input is disabled */
+	if(g_pinConfig.ppsPin == 0)
+	{
+		return;
+	}
+
+	/* If microsecond timestamp is greater than 1,100,000 (1.1 seconds) then unlock has occurred */
+	if(GetMicrosecondTimestamp() > 1100000)
+	{
+		g_regs[STATUS_0_REG] |= STATUS_PPS_UNLOCK;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+	}
+}
+
+/**
   * @brief Blocking sleep function call
   *
   * @param microseconds The number of microseconds to sleep

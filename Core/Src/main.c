@@ -161,9 +161,12 @@ int main(void)
 	  {
 		  /* Check user interrupt generation status */
 		  UpdateUserInterrupt();
+
+		  /* Check that PPS isn't unlocked */
+		  CheckPPSUnlock();
 	  }
 
-	  /* Handle any command line activity */
+	  /* Handle any USB command line activity */
 	  USBSerialHandler();
 
 	  /* Feed watch dog timer */
