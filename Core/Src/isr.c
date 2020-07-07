@@ -19,11 +19,17 @@ volatile extern uint32_t g_bufCount;
 /** IMU stall time (from imu_spi.c) */
 extern uint32_t g_imuStallTimeUs;
 
-/** SPI Rx DMA (from main.c) */
+/** User SPI Rx DMA (from main.c) */
 extern DMA_HandleTypeDef g_dma_spi2_rx;
 
-/** SPI Rx DMA (from main.c) */
+/** User SPI Rx DMA (from main.c) */
 extern DMA_HandleTypeDef g_dma_spi2_tx;
+
+/** IMU SPI Rx DMA (from main.c) */
+extern DMA_HandleTypeDef g_dma_spi1_rx;
+
+/** IMU SPI Rx DMA (from main.c) */
+extern DMA_HandleTypeDef g_dma_spi1_tx;
 
 /** PPS input interrupt mask (from timer.c) */
 extern uint32_t g_PPSInterruptMask;
@@ -301,7 +307,23 @@ void SPI2_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles DMA1 channel4 global interrupt (spi2 RX done).
+  * @brief This function handles DMA1 channel2 global interrupt (spi1 Rx).
+  */
+void DMA1_Channel2_IRQHandler(void)
+{
+  HAL_DMA_IRQHandler(&g_dma_spi1_rx);
+}
+
+/**
+  * @brief This function handles DMA1 channel3 global interrupt (spi1 Tx).
+  */
+void DMA1_Channel3_IRQHandler(void)
+{
+  HAL_DMA_IRQHandler(&g_dma_spi1_tx);
+}
+
+/**
+  * @brief This function handles DMA1 channel4 global interrupt (spi2 Rx).
   *
   * @return void
   */
@@ -311,7 +333,7 @@ void DMA1_Channel4_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles DMA1 channel5 global interrupt (spi2 TX done).
+  * @brief This function handles DMA1 channel5 global interrupt (spi2 Tx).
   *
   * @return void
   */

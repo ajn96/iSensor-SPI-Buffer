@@ -23,7 +23,9 @@ void SPI2_IRQHandler(void);
 void DMA1_Channel4_IRQHandler(void);
 void DMA1_Channel5_IRQHandler(void);
 
-/* Slave SPI port related interrupts */
+/* IMU SPI port related interrupts */
+void DMA1_Channel2_IRQHandler(void);
+void DMA1_Channel3_IRQHandler(void);
 
 /* Data ready related interrupts */
 void EXTI9_5_IRQHandler();

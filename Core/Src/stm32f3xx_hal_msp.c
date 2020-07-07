@@ -220,71 +220,73 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
 */
 void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi)
 {
-  if(hspi->Instance==SPI1)
-  {
-  /* USER CODE BEGIN SPI1_MspDeInit 0 */
+	if(hspi->Instance==SPI1)
+	{
+	/* USER CODE BEGIN SPI1_MspDeInit 0 */
 
-  /* USER CODE END SPI1_MspDeInit 0 */
-    /* Peripheral clock disable */
-    __HAL_RCC_SPI1_CLK_DISABLE();
-  
-    /**SPI1 GPIO Configuration    
-    PA5     ------> SPI1_SCK
-    PA6     ------> SPI1_MISO
-    PA7     ------> SPI1_MOSI 
-    */
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7);
+	/* USER CODE END SPI1_MspDeInit 0 */
+	/* Peripheral clock disable */
+	__HAL_RCC_SPI1_CLK_DISABLE();
 
-  /* USER CODE BEGIN SPI1_MspDeInit 1 */
+	/**SPI1 GPIO Configuration
+	PA5     ------> SPI1_SCK
+	PA6     ------> SPI1_MISO
+	PA7     ------> SPI1_MOSI
+	*/
+	HAL_GPIO_DeInit(GPIOA, GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7);
 
-  /* USER CODE END SPI1_MspDeInit 1 */
-  }
-  else if(hspi->Instance==SPI2)
-  {
-  /* USER CODE BEGIN SPI2_MspDeInit 0 */
+	/* SPI1 DMA DeInit */
+	HAL_DMA_DeInit(hspi->hdmarx);
+	HAL_DMA_DeInit(hspi->hdmatx);
+	/* USER CODE BEGIN SPI1_MspDeInit 1 */
 
-  /* USER CODE END SPI2_MspDeInit 0 */
-    /* Peripheral clock disable */
-    __HAL_RCC_SPI2_CLK_DISABLE();
-  
-    /**SPI2 GPIO Configuration    
-    PB12     ------> SPI2_NSS
-    PB13     ------> SPI2_SCK
-    PB14     ------> SPI2_MISO
-    PB15     ------> SPI2_MOSI 
-    */
-    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15);
+	/* USER CODE END SPI1_MspDeInit 1 */
+	}
+	else if(hspi->Instance==SPI2)
+	{
+	/* USER CODE BEGIN SPI2_MspDeInit 0 */
 
-    /* SPI2 DMA DeInit */
-    HAL_DMA_DeInit(hspi->hdmarx);
-    HAL_DMA_DeInit(hspi->hdmatx);
-  /* USER CODE BEGIN SPI2_MspDeInit 1 */
+	/* USER CODE END SPI2_MspDeInit 0 */
+	/* Peripheral clock disable */
+	__HAL_RCC_SPI2_CLK_DISABLE();
 
-  /* USER CODE END SPI2_MspDeInit 1 */
-  }
-  else if(hspi->Instance==SPI3)
-  {
-  /* USER CODE BEGIN SPI3_MspDeInit 0 */
+	/**SPI2 GPIO Configuration
+	PB12     ------> SPI2_NSS
+	PB13     ------> SPI2_SCK
+	PB14     ------> SPI2_MISO
+	PB15     ------> SPI2_MOSI
+	*/
+	HAL_GPIO_DeInit(GPIOB, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15);
 
-  /* USER CODE END SPI3_MspDeInit 0 */
-    /* Peripheral clock disable */
-    __HAL_RCC_SPI3_CLK_DISABLE();
-  
-    /**SPI3 GPIO Configuration    
-    PA15     ------> SPI3_NSS
-    PC10     ------> SPI3_SCK
-    PC11     ------> SPI3_MISO
-    PC12     ------> SPI3_MOSI 
-    */
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_15);
+	/* SPI2 DMA DeInit */
+	HAL_DMA_DeInit(hspi->hdmarx);
+	HAL_DMA_DeInit(hspi->hdmatx);
+	/* USER CODE BEGIN SPI2_MspDeInit 1 */
 
-    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12);
+	/* USER CODE END SPI2_MspDeInit 1 */
+	}
+	else if(hspi->Instance==SPI3)
+	{
+	/* USER CODE BEGIN SPI3_MspDeInit 0 */
 
-  /* USER CODE BEGIN SPI3_MspDeInit 1 */
+	/* USER CODE END SPI3_MspDeInit 0 */
+	/* Peripheral clock disable */
+	__HAL_RCC_SPI3_CLK_DISABLE();
 
-  /* USER CODE END SPI3_MspDeInit 1 */
-  }
+	/**SPI3 GPIO Configuration
+	PA15     ------> SPI3_NSS
+	PC10     ------> SPI3_SCK
+	PC11     ------> SPI3_MISO
+	PC12     ------> SPI3_MOSI
+	*/
+	HAL_GPIO_DeInit(GPIOA, GPIO_PIN_15);
 
+	HAL_GPIO_DeInit(GPIOC, GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12);
+
+	/* USER CODE BEGIN SPI3_MspDeInit 1 */
+
+	/* USER CODE END SPI3_MspDeInit 1 */
+	}
 }
 
 /**
