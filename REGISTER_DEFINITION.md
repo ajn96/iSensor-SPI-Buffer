@@ -10,14 +10,14 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 | Address | Register Name | Default | R/W | Flash Backup | Description |
 | --- | --- | --- | --- | --- | --- |
 | 0x00 | [PAGE_ID](#PAGE_ID) | 0x00FD | R/W | T | Page register. Used to read or change the currently selected register page |
-| 0x02 | [BUF_CONFIG](#BUF_CONFIG) | 0x0200 | R/W | T | Buffer configuration settings (SPI word size, overflow behavior) |
+| 0x02 | [BUF_CONFIG](#BUF_CONFIG) | 0x0000 | R/W | T | Buffer configuration settings (SPI word size, overflow behavior) |
 | 0x04 | [BUF_LEN](#BUF_LEN) | 0x0014 | R/W | T | Length (in bytes) of each buffered data capture |
 | 0x06 | [BUF_MAX_CNT](#BUF_MAX_CNT) | N/A | R | T | Maximum entries which can be stored in the buffer. Determined by BUF_LEN and the fixed buffer memory allocation |
 | 0x08 | [DIO_INPUT_CONFIG](#DIO_INPUT_CONFIG) | 0x0011 | R/W | T | DIO input configuration. Allows data ready (from IMU) and PPS (from host) input selection |
 | 0x0A | [DIO_OUTPUT_CONFIG](#DIO_OUTPUT_CONFIG) | 0x8421 | R/W | T | DIO output configuration. Sets up pin pass-through and assigns interrupts |
 | 0x0C | [WATERMARK_INT_CONFIG](#WATERMARK_INT_CONFIG) | 0x0020 | R/W | T | Watermark interrupt configuration register |
 | 0x0E | [ERROR_INT_CONFIG](#ERROR_INT_CONFIG) | 0x03FF | R/W | T | Error interrupt configuration register |
-| 0x10 | [IMU_SPI_CONFIG](#IMU_SPI_CONFIG) | 0x2014 | R/W | T | IMU SPI configuration. Sets SCLK frequency to the IMU and stall time between SPI words |
+| 0x10 | [IMU_SPI_CONFIG](#IMU_SPI_CONFIG) | 0x100F | R/W | T | IMU SPI configuration. Sets SCLK frequency to the IMU and stall time between SPI words |
 | 0x12 | [USER_SPI_CONFIG](#USER_SPI_CONFIG) | 0x0007 | R/W | T | User SPI configuration (SPI mode, etc.) |
 | 0x14 | [USB_CONFIG](#USB_CONFIG) | 0x2000 | R/W | T | USB API configuration |
 | 0x16 | [USER_COMMAND](#USER_COMMAND) | N/A | W | T | Command register (flash update, factory reset, clear buffer, software reset, etc) |
@@ -80,8 +80,10 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 | Bit | Name | Description |
 | --- | --- | --- |
 | 0 | OVERFLOW | Buffer overflow behavior. 0 stop sampling, 1 replace oldest data |
-| 7:1 | RESERVED | Currently unused |
-| 15:8 | SPIWORDSIZE | SPI word size for buffered capture (in bytes). Valid range 2 - 64 |
+| 1 | BURST | IMU burst data capture enable |
+| 15:2 | RESERVED | Currently unused |
+
+When the BURST bit is set, each buffered data capture from the IMU is performed as a single SPI burst transaction (drop CS, clock out all data, raise CS). The length of the burst transaction is determined by BUF_LEN. When the BURST bit is cleared, IMU data is captured using a sequence of 16 bit SPI words.
 
 ## BUF_LEN
 
@@ -156,10 +158,10 @@ The following default values will be used for DIO_OUTPUT_CONFIG:
 | --- | --- | --- |
 | 7:0 | STALL | Stall time between SPI words (in microseconds). Valid range 2us - 255us |
 | 8 | SCLK_SCALE_2 | Sets SCLK prescaler to 2 (18MHz) |
-| 9 | SCLK_SCALE_4 | Sets SCLK prescaler to 4 (9MHz). Default option selected |
+| 9 | SCLK_SCALE_4 | Sets SCLK prescaler to 4 (9MHz) |
 | 10 | SCLK_SCALE_8 | Sets SCLK prescaler to 8 (4.5MHz) |
 | 11 | SCLK_SCALE_16 | Sets SCLK prescaler to 16 (2.25MHz) |
-| 12 | SCLK_SCALE_32 | Sets SCLK prescaler to 32 (1.125MHz) |
+| 12 | SCLK_SCALE_32 | Sets SCLK prescaler to 32 (1.125MHz). Default option selected which will work with all iSensor IMU products |
 | 13 | SCLK_SCALE_64 | Sets SCLK prescaler to 64 (562.5KHz) |
 | 14 | SCLK_SCALE_128 | Sets SCLK prescaler to 128 (281.25KHz) |
 | 15 | SCLK_SCALE_256 | Sets SCLK prescaler to 256 (140.625KHz) |
@@ -172,7 +174,9 @@ The following default values will be used for DIO_OUTPUT_CONFIG:
 | 1 | CPOL | SPI clock polarity |
 | 2 | MSB_FIRST | 1 = transmit MSB first, 0 = transmit LSB first |
 | 14:3 | RESERVED | Currently unused |
-| 15 | BUF_BURST | Enable burst read of buffered data, using SPI DMA |
+| 15 | BUF_BURST | Enable burst read of buffer output data registers, using SPI DMA |
+
+When BUF_BURST is enabled and the buffer retrieve register is read, the slave SPI interface DMA is configured to clock out the full buffer entry, starting with the timestamp. Multiple buffer burst reads can be chained together by sending a BUF_RETRIEVE read request at the start of the burst data capture, which will trigger a second buffer burst output after the first read is completed. After a buffer burst output has been enabled, the iSensor-SPI-Buffer slave SPI port will not return to "normal" mode until the full buffer entry has been read (BUF_LEN + 10 bytes clocked out).
 
 ## USB_CONFIG
 
@@ -180,9 +184,9 @@ The following default values will be used for DIO_OUTPUT_CONFIG:
 | --- | --- | --- |
 | 0 | STREAM | USB data stream running |
 | 7:2 | RESERVED | Currently unused |
-| 15:8 | DELIM | Register read value delimiter character (ASCII), for USB CLI. Defaults to space |
+| 15:8 | DELIM | Register read value delimiter character (ASCII), for USB CLI. Defaults to space character |
 
-For more details on the iSensor-SPI-Buffer USB interface, see the USB_CLI document
+For more details on the iSensor-SPI-Buffer USB interface, see the [USB_CLI](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/USB_CLI.md) document
 
 ## USER_COMMAND
 
@@ -197,11 +201,13 @@ For more details on the iSensor-SPI-Buffer USB interface, see the USB_CLI docume
 | 14:6 | RESERVED | Currently unused |
 | 15 | RESET | Software reset |
 
+While commands are being executed, the iSensor-SPI-Buffer slave SPI port is disabled, and all interrupt signals are brought low.
+
 ## USER_SCR_N
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 15:0 | USER_SCR | User scratch value. Available for end user use |
+| 15:0 | USER_SCR | User scratch register. Available for end user use |
 
 ## STATUS
 

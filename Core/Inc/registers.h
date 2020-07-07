@@ -84,7 +84,7 @@ void BufDequeueToOutputRegs();
 
 /* Register (non-zero) default values */
 #define FW_REV_DEFAULT				0x0100
-#define BUF_CONFIG_DEFAULT			0x0200
+#define BUF_CONFIG_DEFAULT			0x0000
 #define BUF_LEN_DEFAULT				0x0014
 #define DIO_INPUT_CONFIG_DEFAULT	0x0011
 #define DIO_OUTPUT_CONFIG_DEFAULT	0x8421
@@ -93,7 +93,7 @@ void BufDequeueToOutputRegs();
 #define IMU_SPI_CONFIG_DEFAULT		0x100F
 #define USER_SPI_CONFIG_DEFAULT		0x0007
 #define USB_CONFIG_DEFAULT			0x2000
-#define FLASH_SIG_DEFAULT			0x9F2A
+#define FLASH_SIG_DEFAULT			0x9D2A
 
 /* Update flags definitions */
 #define DIO_OUTPUT_CONFIG_FLAG		(1 << 0)

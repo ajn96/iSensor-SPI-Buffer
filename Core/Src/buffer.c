@@ -199,7 +199,7 @@ void BufReset()
 	g_bufNumWords32 = buf_increment >> 2;
 
 	/* Mask out unused bits in BUF_CONFIG */
-	g_regs[BUF_CONFIG_REG] &= 0xFF01;
+	g_regs[BUF_CONFIG_REG] &= 0x3;
 
 	/* Get replacement setting */
 	buf_replaceOldest = (g_regs[BUF_CONFIG_REG] & 0x1);
