@@ -21,9 +21,13 @@ uint8_t* BufTakeElement();
 uint8_t* BufAddElement();
 uint32_t BufCanAddElement();
 
+/** Buffer memory allocation */
 #define BUF_SIZE	0xA000
 
+/** Smallest buffer data entry size. Real size is +10 bytes */
 #define BUF_MIN_ENTRY	2
+
+/** Largest buffer data entry size. Real size is +10 bytes */
 #define BUF_MAX_ENTRY	64
 
 #endif /* INC_BUFFER_H_ */

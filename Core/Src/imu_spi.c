@@ -16,7 +16,7 @@ static void ApplySclkDivider(uint32_t preScalerSetting);
 /* Get reference to master SPI instance (SPI1) */
 extern SPI_HandleTypeDef g_spi1;
 
-/* Global register array */
+/** Global register array (from registers.c) */
 volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
 /** track stall time (microseconds) */
@@ -111,6 +111,15 @@ uint16_t ImuWriteReg(uint8_t RegAddr, uint8_t RegValue)
 	return ImuSpiTransfer(writeRequest);
 }
 
+/**
+ * @brief Sets the TIM3 period for use in PWM mode to drive CS
+ *
+ * @return void
+ *
+ * @param period Timer ticks period for TIM3. This corresponds to the CS low pulse width
+ *
+ * TIM3 will be disabled (CS high) by this function. It should not be called while a data capture is in progress.
+ */
 void ConfigureImuCsTimer(uint32_t period)
 {
 	/* Disable */

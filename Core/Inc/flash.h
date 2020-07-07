@@ -31,11 +31,23 @@ uint16_t CalcRegSig(uint16_t * regs, uint32_t count);
 #define FLASH_ERROR_ADDR		0x08010000
 
 /* Error codes stored in flash */
+
+/** No error */
 #define ERROR_NONE				0
+
+/** Initialization error (in application firmware) */
 #define ERROR_INIT				(1 << 0)
+
+/** Hard fault exception */
 #define ERROR_HARDFAULT			(1 << 1)
+
+/** Memory access exception */
 #define ERROR_MEM				(1 << 2)
+
+/** Bus fault exception */
 #define ERROR_BUS				(1 << 3)
+
+/** Usage fault exception */
 #define ERROR_USAGE				(1 << 4)
 
 #endif /* INC_FLASH_H_ */

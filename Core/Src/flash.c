@@ -13,7 +13,7 @@
 /* Local function prototypes */
 static void PrepareRegsForFlash();
 
-/* Global register array */
+/** Global register array (from registers.c) */
 volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
 /**

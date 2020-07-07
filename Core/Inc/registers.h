@@ -5,14 +5,14 @@
   * @file		registers.h
   * @date		3/18/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		Header file for iSensor-SPI-Buffer register interfacing
+  * @brief		Header file for iSensor-SPI-Buffer register interfacing module
  **/
 
 #ifndef INC_REGISTERS_H_
 #define INC_REGISTERS_H_
 
 /* Includes */
-#include <imu_spi.h>
+#include "imu_spi.h"
 #include "main.h"
 #include "buffer.h"
 #include "flash.h"

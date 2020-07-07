@@ -39,6 +39,7 @@ void UpdateDIOInputConfig();
 void UpdateDIOOutputConfig();
 uint32_t GetHardwareID();
 
+/** Mask for EXTI interrupt sources which come from the IMU data ready signal */
 #define DATA_READY_INT_MASK 	GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_9
 
 #endif /* INC_DIO_H_ */
