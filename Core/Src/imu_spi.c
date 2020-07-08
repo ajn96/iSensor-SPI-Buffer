@@ -28,6 +28,26 @@ static TIM_HandleTypeDef htim3;
 /** TIM4 HAL handle */
 static TIM_HandleTypeDef htim4;
 
+void EnableImuSpiDMA()
+{
+
+}
+
+void DisableImuSpiDMA()
+{
+
+}
+
+void StartImuBurst(uint8_t* bufEntry)
+{
+	/* Drop CS */
+	TIM3->CR1 = 0x1;
+	TIM3->CNT = 0x0;
+	TIM3->CR1 = 0x0;
+	/* Burst SPI data capture */
+	HAL_SPI_TransmitReceive_DMA(&g_spi1, (uint8_t*) &g_regs[BUF_WRITE_0_REG], bufEntry, g_regs[BUF_LEN_REG]);
+}
+
 /**
   * @brief Basic IMU SPI data transfer function (protocol agnostic).
   *

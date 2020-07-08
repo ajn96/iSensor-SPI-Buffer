@@ -10,6 +10,8 @@
 
 #include "isr.h"
 
+static void FinishImuBurst();
+
 /** Global register array (from registers.c) */
 volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
@@ -27,6 +29,8 @@ extern DMA_HandleTypeDef g_dma_spi1_rx;
 
 /** IMU SPI Rx DMA (from main.c) */
 extern DMA_HandleTypeDef g_dma_spi1_tx;
+
+extern SPI_HandleTypeDef g_spi1;
 
 /** Current capture size (in 16 bit words). Global scope */
 volatile uint32_t g_wordsPerCapture;
@@ -57,6 +61,8 @@ static uint32_t SPIMISO;
 
 /** EXTI pending request register */
 static uint32_t EXTI_PR;
+
+static uint32_t ImuDMADone;
 
 /**
   * @brief IMU data ready ISR. Kicks off data capture process.
@@ -129,7 +135,8 @@ void EXTI9_5_IRQHandler()
 
 	if(g_regs[BUF_CONFIG_REG] & 0x2)
 	{
-		/* Burst SPI data capture */
+		ImuDMADone = 0;
+		StartImuBurst(BufferElementHandle);
 	}
 	else
 	{
@@ -312,6 +319,15 @@ void SPI2_IRQHandler(void)
 void DMA1_Channel2_IRQHandler(void)
 {
   HAL_DMA_IRQHandler(&g_dma_spi1_rx);
+  if(ImuDMADone == 0)
+  {
+	  ImuDMADone = 1;
+  }
+  else
+  {
+	  /* Both are done */
+	  FinishImuBurst();
+  }
 }
 
 /**
@@ -320,6 +336,37 @@ void DMA1_Channel2_IRQHandler(void)
 void DMA1_Channel3_IRQHandler(void)
 {
   HAL_DMA_IRQHandler(&g_dma_spi1_tx);
+  if(ImuDMADone == 0)
+  {
+	  ImuDMADone = 1;
+  }
+  else
+  {
+	  FinishImuBurst();
+  }
+}
+
+static void FinishImuBurst()
+{
+	/* Bring CS high */
+	TIM3->CR1 &= ~0x1;
+	TIM3->CNT = 0xFFFF;
+
+	/* Build buffer signature */
+	uint16_t * RxData = (uint16_t *) BufferElementHandle;
+	for(int reg = 0; reg < (g_regs[BUF_LEN_REG] / 2); reg++)
+	{
+		BufferSignature += RxData[reg];
+	}
+	/* Save to buffer entry */
+	BufferSigHandle[0] = BufferSignature;
+
+	/* Update buffer count regs with new count */
+	g_regs[BUF_CNT_0_REG] = g_bufCount;
+	g_regs[BUF_CNT_1_REG] = g_regs[BUF_CNT_0_REG];
+
+	/* Mark capture as done */
+	g_captureInProgress = 0;
 }
 
 /**

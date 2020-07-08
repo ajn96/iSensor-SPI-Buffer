@@ -23,6 +23,11 @@ uint16_t ImuReadReg(uint8_t RegAddr);
 uint16_t ImuWriteReg(uint8_t RegAddr, uint8_t RegValue);
 void UpdateImuSpiConfig();
 
+void EnableImuSpiDMA();
+void DisableImuSpiDMA();
+
+void StartImuBurst(uint8_t * bufEntry);
+
 /* Timer config */
 void InitImuCsTimer();
 void ConfigureImuCsTimer(uint32_t period);
