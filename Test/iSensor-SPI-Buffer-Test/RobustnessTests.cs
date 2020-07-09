@@ -30,10 +30,10 @@ namespace iSensor_SPI_Buffer_Test
             bool goodData = true;
             uint buffersRead;
             uint max;
-            double freq = 3500;
+            double freq = 1000;
 
-            /* Want stall time 3us, sclk freq 9MHz */
-            WriteUnsigned("IMU_SPI_CONFIG", 0x203, true);
+            /* Want stall time 5us, sclk freq 9MHz */
+            WriteUnsigned("IMU_SPI_CONFIG", 0x205, true);
 
             /* Set writedata regs */
             uint index = 1;
