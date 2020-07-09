@@ -49,6 +49,41 @@ The code contained in this repository was developed using the freely available [
 
 A [TC2030-IDC cable](https://www.tag-connect.com/product/tc2030-idc-6-pin-tag-connect-plug-of-nails-spring-pin-cable-with-legs) must be used to interface with the SWD pads on the Rev B PCB. Development was originally done on an [NUCLEO-F303RE](https://www.st.com/en/evaluation-tools/nucleo-f303re.html) development board. When programming a buffer board, we've continued to use the NUCLEO as the SWD programmer. 
 
+## Recovering From a Bad SPI Configuration
+
+This buffer firmware includes a feature that allows the host SPI peripheral on the buffer board to be reconfigured to suit the host's needs. Because of this, it's possible to lock yourself out of the buffer board. A bad SPI configuration will usually look like the buffer board is returning the same value repeatedly for all registers. Note that the buffer board returning 0xFFFF or 0x0000 could be caused by other issues (no power to the buffer board, bad connection to the IMU, etc.) A bad SPI configuration will look similar to the image below.
+
+![SPI Misconfigured](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/spi_misconfigured.JPG)
+
+Recovering from a bad configuration requires using the USB CLI to communicate with the buffer board's firmware. While not mandatory, we recommend changing the jumper on the buffer board to USB power mode. The jumper just needs to be repositioned as shown below. 
+
+![USB Jumper Setting](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/jumper_usb.jpg)
+
+Using a terminal program such as [TeraTerm](https://ttssh2.osdn.jp/index.html.en) or [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/) in Windows, connect to the board using the enumerated COM port. The virtual USB port will automatically detect the host serial settings, so additional configuration is usually unnecessary. 
+
+![PuTTY Connection](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/putty_connection.JPG)
+
+Once connected to the CLI, you can verify that the board is communicating correctly by typing `help` into the console. You should see a message like the one shown below.
+
+![CLI Help Print](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_help_unbrick.JPG)
+
+After you've verified that the CLI is working correctly, type the following commands into the terminal. Each line should be terminated with a carriage return.
+
+`write 0 fd
+write 12 7
+write 13 0
+write 16 8
+write 17 0`
+
+![CLI Unbrick Commands](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_commands_unbrick.JPG)
+
+Once you've entered the last line, reboot the buffer board and try connecting again. The board should now be reset to SPI Mode 3 with CS active low. These settings should have also been committed to flash, so they should persist throughout reboots. 
+
+## Linux Driver Support
+
+Support for the SPI Buffer Board in Linux was developed by [spalani7](https://github.com/spalani7). His repository is located  [here](https://github.com/spalani7/adi_imu_driver). 
+
+
 ## Design Requirements and Features
 
 ### IMU Register Interface
