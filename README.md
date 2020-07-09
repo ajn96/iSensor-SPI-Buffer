@@ -15,11 +15,13 @@ Additional hardware and software resources are linked below.
 
 [Firmware Documentation (Doxygen)](https://ajn96.github.io/iSensor-SPI-Buffer/files.html)
 
+A video walkthrough and tutorial of the SPI Buffer Board's features is hosted on YouTube. The video is linked below.
+
+[![](http://img.youtube.com/vi/azpeXvWH4VI/0.jpg)](http://www.youtube.com/watch?v=azpeXvWH4VI "iSensor SPI Buffer Board Walkthrough 07/09/2020")
+
 ## Hardware Platform
 
 This firmware is designed to operate in the STMicro processor family - specifically the STM32F303 processor. The STM32F303RET6 variant of the processor family was chosen for this application because of its large SRAM and low cost. 
-
-![iSensor SPI Buffer Top Image](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/top_image.jpg)
 
 ![iSensor SPI Buffer Isometric Image](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/back_iso_image.jpg)
 
