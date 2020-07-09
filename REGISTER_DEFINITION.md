@@ -228,6 +228,15 @@ While commands are being executed, the iSensor-SPI-Buffer slave SPI port is disa
 
 Excluding bits identified as sticky, this register clears on read. The values in this register are used to generate an error interrupt, if error interrupts are enabled.
 
+## FAULT_CODE
+
+| Bit | Name | Description |
+| --- | --- | --- |
+| 4:0 | FAULT_SRC | Fault source value. Fault types are defined in flash module https://ajn96.github.io/iSensor-SPI-Buffer/flash_8h.html  |
+| 15:5 | RESERVED | Currently unused |
+
+The FAULT_CODE register is stored on a different flash page from the register array. It can only be cleared with a CLEAR_FAULT command.
+
 ## UTC_TIME_LWR
 
 | Bit | Name | Description |
