@@ -37,13 +37,17 @@ Revision B of the PCB design includes the following features:
 
 The iSensor SPI Buffer was designed to sit between an iSensor IMU and the SPI host without changing any existing PCB designs. 
 
-**Note:** A [TC2030-IDC cable](https://www.tag-connect.com/product/tc2030-idc-6-pin-tag-connect-plug-of-nails-spring-pin-cable-with-legs) must be used to interface with the SWD pads on the Rev B PCB. 
-
 ![iSensor SPI Buffer Mounted Image](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/mounted_image.jpg)
 
-## Development Environment
+## Development Environment and Hardware
 
-The code contained in this repository was developed using the freely available [STM32 Cube IDE](https://my.st.com/content/my_st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-ides/stm32cubeide). 
+### Software / IDE
+
+The code contained in this repository was developed using the freely available [STM32 Cube IDE](https://my.st.com/content/my_st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-ides/stm32cubeide). A compatible project file is also included in this repository to make getting stared as easy as possible. 
+
+### Hardware
+
+A [TC2030-IDC cable](https://www.tag-connect.com/product/tc2030-idc-6-pin-tag-connect-plug-of-nails-spring-pin-cable-with-legs) must be used to interface with the SWD pads on the Rev B PCB. Development was originally done on an [NUCLEO-F303RE](https://www.st.com/en/evaluation-tools/nucleo-f303re.html) development board. When programming a buffer board, we've continued to use the NUCLEO as the SWD programmer. 
 
 ## Design Requirements and Features
 
