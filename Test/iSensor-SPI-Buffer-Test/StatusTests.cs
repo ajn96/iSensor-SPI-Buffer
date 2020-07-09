@@ -56,24 +56,5 @@ namespace iSensor_SPI_Buffer_Test
             Console.WriteLine("Status: 0x" + status.ToString("X4"));
             Assert.AreEqual(0, status & (1 << STATUS_BUF_FULL), "ERROR: Expected BUF_FULL status bit to be cleared");
         }
-
-        [Test]
-        public void StatusTCTest()
-        {
-            InitializeTestCase();
-
-            uint oldTc, expectedTc;
-
-            oldTc = (ReadUnsigned("STATUS") >> 12);
-            for (int trial = 0; trial < 32; trial++)
-            {
-                expectedTc = (oldTc + 3) & 0xF;
-                oldTc = (ReadUnsigned("STATUS") >> 12);
-                Console.WriteLine("Status TC: " + oldTc.ToString());
-                Assert.AreEqual(expectedTc, oldTc, "ERROR: Invalid TC");
-            }
-        }
-
-
     }
 }
