@@ -29,20 +29,22 @@ namespace iSensor_SPI_Buffer_Test
         public const int COMMAND_CLEAR_FAULT = 1;
         public const int COMMAND_FACTORY_RESET = 2;
         public const int COMMAND_FLASH_UPDATE = 3;
+        public const int COMMAND_PPS_START = 4;
+        public const int COMMAND_PPS_STOP = 5;
         public const int COMMAND_RESET = 15;
 
         /* Status bits */
-        public const int STATUS_SPI_ERROR = 0;
-        public const int STATUS_SPI_OVERFLOW = 1;
-        public const int STATUS_OVERRUN = 2;
-        public const int STATUS_DMA_ERROR = 3;
-        public const int STATUS_FLASH_ERROR = 6;
-        public const int STATUS_FLASH_UPDATE_ERROR = 7;
-        public const int STATUS_FAULT = 8;
-        public const int STATUS_WATCHDOG = 9;
-        public const int STATUS_BUF_FULL = 10;
-        public const int STATUS_BUF_INTERRUPT = 11;
-        public const int STATUS_TC = 12; //<-4 bits
+        public const int STATUS_BUF_WATERMARK = 0;
+        public const int STATUS_BUF_FULL = 1;
+        public const int STATUS_SPI_ERROR = 2;
+        public const int STATUS_SPI_OVERFLOW = 3;
+        public const int STATUS_OVERRUN = 4;
+        public const int STATUS_DMA_ERROR = 5;
+        public const int STATUS_PPS_UNLOCK = 6;
+        public const int STATUS_FLASH_ERROR = 12;
+        public const int STATUS_FLASH_UPDATE_ERROR = 13;
+        public const int STATUS_FAULT = 14;
+        public const int STATUS_WATCHDOG = 15;
 
         [TestFixtureSetUp(), Timeout(5000)]
         public void TestFixtureSetup()
