@@ -19,7 +19,7 @@ Commands are sent to the CLI over the virtual COM port. Each command starts with
 | Command | arg0 | arg1 | arg2 | Description |
 | --- | --- | --- | --- | --- |
 | help | N/A | N/A | N/A | List available CLI options |
-| reset | N/A | N/A | N/A | Trigger a system reset. This will reset the page to 253 (default page). May have to reset terminal emulator after a reset |
+| freset | N/A | N/A | N/A | Trigger a factory reset and flash update. This command restores all registers to their default values and then issues a flash update command to save registers to non-volatile memory  |
 | read | Register address | N/A | N/A | Read a single register, at the address provided |
 | read | Start address | End address | N/A | Read multiple registers, accross the address range provided. Each register value is seperated by the USB delimiter character |
 | read | Start address | End address | Number of reads | Read multiple registers, accross the address range provided, number of reads times. Each set of reads is terminated by a new line |

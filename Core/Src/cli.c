@@ -39,13 +39,13 @@ static uint8_t CurrentCommand[64];
 static uint8_t EchoBuf[4];
 
 /** Print string for invalid command */
-static uint8_t InvalidCmdStr[] = "\r\nError: Invalid command!\r\n";
+static uint8_t InvalidCmdStr[] = "Error: Invalid command!\r\n";
 
 /** Print string for newline */
 static uint8_t NewLineStr[] = "\r\n";
 
 /** Print string for invalid argument */
-static uint8_t InvalidArgStr[] = "\r\nError: Invalid argument!\r\n";
+static uint8_t InvalidArgStr[] = "Error: Invalid argument!\r\n";
 
 /** Print string for help command */
 static uint8_t HelpStr[] = "All numeric values are in hex. [] arguments are optional\r\n"
@@ -66,8 +66,8 @@ static const uint8_t WriteCmd[] = "write ";
 /** String literal for help command */
 static const uint8_t HelpCmd[] = "help";
 
-/** String literal for reset command */
-static const uint8_t ResetCmd[] = "reset";
+/** String literal for factory reset command */
+static const uint8_t ResetCmd[] = "freset";
 
 /** String literal for read buffer command */
 static const uint8_t ReadBufCmd[] = "readbuf";
@@ -338,8 +338,12 @@ static void ParseCommand()
 	}
 	if(validCmd)
 	{
-		/* Reset and return */
-		NVIC_SystemReset();
+		/* Perform factory reset */
+		g_regs[USER_COMMAND_REG] = (1 << CMD_FACTORY_RESET);
+		ProcessCommand();
+		/* Perform flash update */
+		g_regs[USER_COMMAND_REG] = (1 << CMD_FLASH_UPDATE);
+		ProcessCommand();
 		return;
 	}
 
