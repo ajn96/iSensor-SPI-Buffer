@@ -120,6 +120,9 @@ int main(void)
   /* Link DMA channels */
   DMA_Link();
 
+  /* Init temp sensor (ADC1) */
+  TempInit();
+
   /* Clear all update flags before entering loop (shouldn't be set anyways, but it doesn't hurt) */
   g_update_flags = 0;
 
@@ -174,6 +177,9 @@ int main(void)
 
 		  /* Check that PPS isn't unlocked */
 		  CheckPPSUnlock();
+
+		  /* Update temp register value */
+		  UpdateTemp();
 	  }
 
 	  /* Handle any USB command line activity */
