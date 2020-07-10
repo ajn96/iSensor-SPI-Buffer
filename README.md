@@ -69,17 +69,13 @@ Once connected to the CLI, you can verify that the board is communicating correc
 
 ![CLI Help Print](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_help_unbrick.JPG)
 
-After you've verified that the CLI is working correctly, type the following commands into the terminal. Each line should be terminated with a carriage return.
+After you've verified that the CLI is working correctly, type the following command, followed by a carriage return.
 
-`write 0 fd
-write 12 7
-write 13 0
-write 16 8
-write 17 0`
+`freset`
 
-![CLI Unbrick Commands](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_commands_unbrick.JPG)
+![CLI Unbrick Commands](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_reset.JPG)
 
-Once you've entered the last line, reboot the buffer board and try connecting again. The board should now be reset to SPI Mode 3 with CS active low. These settings should have also been committed to flash, so they should persist throughout reboots. 
+This will execute a consecutive factory reset and flash update command. The board should now be reset to SPI Mode 3 with CS active low. The default settings should have also been committed to flash, so they should persist throughout reboots. 
 
 ## Linux Driver Support
 
