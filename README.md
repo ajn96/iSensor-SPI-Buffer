@@ -73,9 +73,7 @@ After you've verified that the CLI is working correctly, type the following comm
 
 `freset`
 
-![CLI Unbrick Commands](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_reset.JPG)
-
-This will execute a consecutive factory reset and flash update command. The board should now be reset to SPI Mode 3 with CS active low. The default settings should have also been committed to flash, so they should persist throughout reboots. 
+This will execute a factory reset command, followed by and flash update command. The board should now be reset to SPI Mode 3 with CS active low. The default register settings will have also been committed to flash, so they should persist throughout reboots. 
 
 ## Linux Driver Support
 
