@@ -268,6 +268,14 @@ This register is a 32-bit microsecond timestamp which starts counting up as soon
 
 When a PPS input is enabled using the command register PPS_ENABLE, and a PPS pin is assigned in DIO_INPUT_CONFIG, this timestamp will reset to 0 every time a PPS pulse is received. This PPS functionality allows the iSensor-SPI-Buffer firmware to track the "wall" time with microsecond accuracy. Since the microsecond timestamp is reset every second, any error accumulation (due to 20ppm crystal) should be minimal. 
 
+The plot below shows the UTC_TIME_LWR and TIMESTAMP_UPR register with a 1Hz PPS signal applied. Each time a PPS edge is recieved, the TIMESTAMP_UPR (and lower, not shown) are reset to 0, and the UTC_TIME_LWR register increments.
+
+![Timestamp Plot](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/PPS_Timestamp.png)
+
+If the PPS signal is lost, the internal microsecond timer will continue counting up, and the STATUS PPS Unlock bit will set. The plot below shows that behavior.
+
+![PPS Unlock Plot](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/PPS_Unlock.png)
+
 ## FW_DAY_MONTH
 
 | Bit | Name | Description |
