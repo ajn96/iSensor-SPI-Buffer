@@ -339,10 +339,10 @@ static void ParseCommand()
 	if(validCmd)
 	{
 		/* Perform factory reset */
-		g_regs[USER_COMMAND_REG] = (1 << CMD_FACTORY_RESET);
+		g_regs[USER_COMMAND_REG] = CMD_FACTORY_RESET;
 		ProcessCommand();
 		/* Perform flash update */
-		g_regs[USER_COMMAND_REG] = (1 << CMD_FLASH_UPDATE);
+		g_regs[USER_COMMAND_REG] = CMD_FLASH_UPDATE;
 		ProcessCommand();
 		return;
 	}

@@ -31,14 +31,17 @@ Commands are sent to the CLI over the virtual COM port. Each command starts with
 Help Command
 ![Help](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_help.JPG)
 
+Factory Reset Command
+![Factory Reset](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_reset.JPG)
+
 Register Read Command
-![Help](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_read.JPG)
+![Read](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_read.JPG)
 
 Register Write Command
-![Help](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_write.JPG)
+![Write](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_write.JPG)
 
 Delim Set Command
-![Help](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_delim.JPG)
+![Delim](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_delim.JPG)
 
 Read Buffer Command
-![Help](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_readbuf.JPG)
+![ReadBuf](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_readbuf.JPG)
