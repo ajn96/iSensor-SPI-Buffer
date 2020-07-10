@@ -12,6 +12,7 @@
 
 static void ADC1Init();
 static void ADC1Start();
+static uint16_t ScaleTempData(uint32_t rawTemp);
 
 /** HAL ADC handle */
 static ADC_HandleTypeDef hadc1;
@@ -28,7 +29,18 @@ void TempInit()
 
 void UpdateTemp()
 {
-	g_regs[TEMP_REG] = hadc1.Instance->DR;
+	g_regs[TEMP_REG] = ScaleTempData(hadc1.Instance->DR);
+}
+
+static uint16_t ScaleTempData(uint32_t rawTemp)
+{
+	/* Temp (in C, 10LSB per degree) = 800 / (TS_CAL2  - TS_CAL1) * (val - TS_CAL1) + 300 */
+	uint32_t divisor, result;
+
+	divisor = ((*TS_CAL2) - (*TS_CAL1)) * (rawTemp - (*TS_CAL1));
+	result = 800 / divisor;
+	result += 300;
+	return result & 0xFFFF;
 }
 
 /**
@@ -50,7 +62,7 @@ static void ADC1Init()
 	hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
 	hadc1.Init.NbrOfConversion = 1;
 	hadc1.Init.DMAContinuousRequests = DISABLE;
-	hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+	hadc1.Init.EOCSelection = DISABLE;
 	hadc1.Init.LowPowerAutoWait = DISABLE;
 	hadc1.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
 	if (HAL_ADC_Init(&hadc1) != HAL_OK)
@@ -68,6 +80,6 @@ static void ADC1Init()
 
 static void ADC1Start()
 {
-	hadc1.Instance->CR |= (1 << 23);
+	ADC12_COMMON->CCR |= (1 << 23);
 	HAL_ADC_Start(&hadc1);
 }

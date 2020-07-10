@@ -17,4 +17,7 @@
 void TempInit();
 void UpdateTemp();
 
+#define TS_CAL1 		((uint16_t*) ((uint32_t) 0x1FFFF7B8))
+#define TS_CAL2 		((uint16_t*) ((uint32_t) 0x1FFFF7C2))
+
 #endif /* INC_ADC_H_ */
