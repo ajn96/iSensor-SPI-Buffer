@@ -48,7 +48,7 @@ static uint8_t NewLineStr[] = "\r\n";
 static uint8_t InvalidArgStr[] = "\r\nError: Invalid argument!\r\n";
 
 /** Print string for help command */
-static uint8_t HelpStr[] = "\r\nAll numeric values are in hex. [] arguments are optional\r\n"
+static uint8_t HelpStr[] = "All numeric values are in hex. [] arguments are optional\r\n"
 		"help: Print available commands\r\n"
 		"reset: Performs a software reset\r\n"
 		"read startAddr [endAddr = addr] [numReads = 1]: Read registers starting at startAddr and ending at endAddr numReads times\r\n"
@@ -116,7 +116,7 @@ void USBSerialHandler()
 			/* Command is too long */
 			if(commandIndex > 64)
 			{
-				BlockingUSBTransmit(InvalidCmdStr, sizeof(InvalidCmdStr), 10);
+				BlockingUSBTransmit(InvalidCmdStr, sizeof(InvalidCmdStr), 20);
 				commandIndex = 0;
 			}
 			/* Backspace typed in console */
@@ -126,18 +126,27 @@ void USBSerialHandler()
 				if(commandIndex > 0)
 					commandIndex--;
 				/* Echo \b, space, \b to console */
-				EchoBuf[0] = '\b';
-				EchoBuf[1] = ' ';
-				EchoBuf[2] = '\b';
-				BlockingUSBTransmit(EchoBuf, 3, 10);
+				if(!(g_regs[USB_CONFIG_REG] & USB_ECHO_BITM))
+				{
+					EchoBuf[0] = '\b';
+					EchoBuf[1] = ' ';
+					EchoBuf[2] = '\b';
+					BlockingUSBTransmit(EchoBuf, 3, 20);
+				}
 			}
 			/* carriage return char (end of command) */
 			else if(UserRxBufferFS[bufIndex] == '\r')
 			{
+				/* Send newline char if CLI echo is enabled */
+				if(!(g_regs[USB_CONFIG_REG] & USB_ECHO_BITM))
+				{
+					BlockingUSBTransmit(NewLineStr, sizeof(NewLineStr), 20);
+				}
 				/* Place a string terminator */
 				CurrentCommand[commandIndex] = 0;
 				/* Parse command */
 				ParseCommand();
+				/* Clear command buffer */
 				for(int i = 0; i < sizeof(CurrentCommand); i++)
 					CurrentCommand[i] = 0;
 				commandIndex = 0;
@@ -149,8 +158,11 @@ void USBSerialHandler()
 				CurrentCommand[commandIndex] = UserRxBufferFS[bufIndex];
 				commandIndex++;
 				/* Echo to console */
-				EchoBuf[0] = UserRxBufferFS[bufIndex];
-				BlockingUSBTransmit(EchoBuf, 1, 5);
+				if(!(g_regs[USB_CONFIG_REG] & USB_ECHO_BITM))
+				{
+					EchoBuf[0] = UserRxBufferFS[bufIndex];
+					BlockingUSBTransmit(EchoBuf, 1, 20);
+				}
 			}
 		}
 	}
@@ -183,7 +195,7 @@ void USBReadBuf()
 		{
 			readVal = ReadReg(addr);
 			UShortToHex(writeBufPtr, readVal);
-			writeBufPtr[4] = g_regs[USB_CONFIG_REG] >> 8;
+			writeBufPtr[4] = g_regs[USB_CONFIG_REG] >> USB_DELIM_BITP;
 			writeBufPtr += 5;
 			count += 5;
 		}
@@ -191,7 +203,7 @@ void USBReadBuf()
 		UShortToHex(writeBufPtr, readVal);
 		writeBufPtr += 4;
 		count += 4;
-		/* Insert newline */
+		/* Insert newline at end */
 		writeBufPtr[0] = '\r';
 		writeBufPtr[1] = '\n';
 		writeBufPtr += 2;
@@ -256,8 +268,6 @@ static void ParseCommand()
 	}
 	if(validCmd)
 	{
-		/* Print newline to console */
-		BlockingUSBTransmit(NewLineStr, sizeof(NewLineStr), 10);
 		/* Call read buf handler */
 		USBReadBuf();
 		return;
@@ -293,7 +303,7 @@ static void ParseCommand()
 	if(validCmd)
 	{
 		/* Print help string and return */
-		CDC_Transmit_FS(HelpStr, sizeof(HelpStr));
+		BlockingUSBTransmit(HelpStr, sizeof(HelpStr), 20);
 		return;
 	}
 
@@ -310,11 +320,9 @@ static void ParseCommand()
 	if(validCmd)
 	{
 		/* Clear delim char in USB config */
-		g_regs[USB_CONFIG_REG] &= 0xFF;
+		g_regs[USB_CONFIG_REG] &= ~USB_DELIM_BITM;
 		/* Set new value */
-		g_regs[USB_CONFIG_REG] |= (CurrentCommand[6] << 8);
-		/* Send newline */
-		CDC_Transmit_FS(NewLineStr, sizeof(NewLineStr));
+		g_regs[USB_CONFIG_REG] |= (CurrentCommand[6] << USB_DELIM_BITP);
 		return;
 	}
 
@@ -335,8 +343,8 @@ static void ParseCommand()
 		return;
 	}
 
-	/* Send invalid command string */
-	CDC_Transmit_FS(InvalidCmdStr, sizeof(InvalidCmdStr));
+	/* Else end invalid command string */
+	BlockingUSBTransmit(InvalidCmdStr, sizeof(InvalidCmdStr), 20);
 }
 
 /**
@@ -346,7 +354,13 @@ static void ParseCommand()
   */
 static void Read()
 {
+	/* Parameters */
 	uint32_t startAddr, endAddr, numReads;
+
+	uint8_t* writeBufPtr;
+	uint16_t readVal;
+	uint32_t count = 0;
+
 	ParseCommandArgs();
 	if(numArgs == 0)
 	{
@@ -383,24 +397,16 @@ static void Read()
 		return;
 	}
 
-	uint8_t* writeBufPtr = UserRxBufferFS;
-	uint16_t readVal;
-	uint32_t count = 0;
-
-	/* Insert initial new line */
-	writeBufPtr[0] = '\r';
-	writeBufPtr[1] = '\n';
-	writeBufPtr += 2;
-	count += 2;
-
 	/* Perform read */
 	for(int i = 0; i<numReads; i++)
 	{
+		writeBufPtr = UserRxBufferFS;
+		count = 0;
 		for(uint32_t addr = startAddr; addr < endAddr; addr += 2)
 		{
 			readVal = ReadReg(addr);
 			UShortToHex(writeBufPtr, readVal);
-			writeBufPtr[4] = g_regs[USB_CONFIG_REG] >> 8;
+			writeBufPtr[4] = g_regs[USB_CONFIG_REG] >> USB_DELIM_BITP;
 			writeBufPtr += 5;
 			count += 5;
 		}
@@ -416,8 +422,6 @@ static void Read()
 		count += 2;
 		/* Transmit */
 		BlockingUSBTransmit(UserRxBufferFS, count, 20);
-		writeBufPtr = UserRxBufferFS;
-		count = 0;
 	}
 }
 
@@ -436,7 +440,7 @@ static void Write()
 	ParseCommandArgs();
 	if(numArgs != 2)
 	{
-		CDC_Transmit_FS(InvalidArgStr, sizeof(InvalidArgStr));
+		BlockingUSBTransmit(InvalidArgStr, sizeof(InvalidArgStr), 20);
 		return;
 	}
 	/* Mask addr to 7 bits, value to 8 bits */
@@ -444,7 +448,6 @@ static void Write()
 	args[1] &= 0xFF;
 
 	WriteReg(args[0], args[1]);
-	CDC_Transmit_FS(NewLineStr, sizeof(NewLineStr));
 }
 
 /**
@@ -460,20 +463,19 @@ static void Stream()
 	ParseCommandArgs();
 	if(numArgs != 1)
 	{
-		CDC_Transmit_FS(InvalidArgStr, sizeof(InvalidArgStr));
+		BlockingUSBTransmit(InvalidArgStr, sizeof(InvalidArgStr), 20);
 		return;
 	}
 
 	/* Set/clear stream interrupt enable flag */
 	if(args[0])
 	{
-		g_regs[USB_CONFIG_REG] |= 1;
+		g_regs[USB_CONFIG_REG] |= USB_STREAM_BITM;
 	}
 	else
 	{
-		g_regs[USB_CONFIG_REG] &= ~1;
+		g_regs[USB_CONFIG_REG] &= ~USB_STREAM_BITM;
 	}
-	CDC_Transmit_FS(NewLineStr, sizeof(NewLineStr));
 }
 
 /**

@@ -19,6 +19,14 @@
 void USBSerialHandler();
 void USBReadBuf();
 
+#define USB_STREAM_BITM				(1 << 0)
+#define USB_ECHO_BITM				(1 << 1)
+#define USB_DELIM_BITM				(0xFF00)
+
+#define USB_STREAM_BITP				0
+#define USB_ECHO_BITP				1
+#define USB_DELIM_BITP				8
+
 /** Buffer output base address (on page 255) */
 #define BUF_BASE_ADDR			8
 

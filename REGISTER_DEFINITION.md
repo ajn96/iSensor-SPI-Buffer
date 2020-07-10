@@ -183,6 +183,7 @@ When BUF_BURST is enabled and the buffer retrieve register is read, the slave SP
 | Bit | Name | Description |
 | --- | --- | --- |
 | 0 | STREAM | USB data stream running |
+| 1 | ECHO_DISABLE | Disable command echo to CLI. By default, all characters sent to the CLI input are echoed to the output. Disabling this functionality allows for easier CLI scripting |
 | 7:2 | RESERVED | Currently unused |
 | 15:8 | DELIM | Register read value delimiter character (ASCII), for USB CLI. Defaults to space character |
 
