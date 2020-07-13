@@ -1,6 +1,6 @@
 # iSensor-SPI-Buffer Register Structure
 
-Data and control interfacing to the iSensor SPI Buffer firmware from a master device is done via a set of user accessible registers. These registers can be accessed over SPI, using the standard iSensor SPI format (see ADIS16xxx datasheet), or over a USB virtual serial port command line interface (see USB CLI documentation). The register address space is split into three pages, each with 128 addresses. On each page, the PAGE ID register is stored at address 0. Writing to the PAGE ID register will select a different register page for access. 
+Data and control interfacing to the iSensor SPI Buffer firmware from a master device is done via a set of 16-bit user accessible registers. These registers can be accessed over SPI, using the standard iSensor SPI format (see ADIS16xxx datasheet), or over a USB virtual serial port command line interface (see USB CLI documentation). The register address space is split into three pages, each comprised of 128 addresses. On each page, the PAGE ID register is stored at address 0. Writing to the PAGE ID register will select a different register page for access. 
 * Registers which are marked with a "Default Value" will have the specified value loaded when a Factory Reset command is executed
 * Registers with a R/W field marked "R" can be read. Registers marked "W" can be written. Any registers in the address space not enumerated in the register map are read only and will always read 0
 * Registers which are marked "Flash Backup" are loaded from non-volatile memory on initialization. Issuing a Flash Update command will save the current register contents to non-volatile memory
@@ -12,14 +12,14 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 | 0x00 | [PAGE_ID](#PAGE_ID) | 0x00FD | R/W | T | Page register. Used to read or change the currently selected register page |
 | 0x02 | [BUF_CONFIG](#BUF_CONFIG) | 0x0000 | R/W | T | Buffer configuration settings (SPI word size, overflow behavior) |
 | 0x04 | [BUF_LEN](#BUF_LEN) | 0x0014 | R/W | T | Length (in bytes) of each buffered data capture |
-| 0x06 | [BUF_MAX_CNT](#BUF_MAX_CNT) | N/A | R | T | Maximum entries which can be stored in the buffer. Determined by BUF_LEN and the fixed buffer memory allocation |
+| 0x06 | [BUF_MAX_CNT](#BUF_MAX_CNT) | N/A | R | T | Maximum entries which can be stored in the buffer. Determined by BUF_LEN and the fixed buffer memory allocation size |
 | 0x08 | [DIO_INPUT_CONFIG](#DIO_INPUT_CONFIG) | 0x0011 | R/W | T | DIO input configuration. Allows data ready (from IMU) and PPS (from host) input selection |
-| 0x0A | [DIO_OUTPUT_CONFIG](#DIO_OUTPUT_CONFIG) | 0x8421 | R/W | T | DIO output configuration. Sets up pin pass-through and assigns interrupts |
-| 0x0C | [WATERMARK_INT_CONFIG](#WATERMARK_INT_CONFIG) | 0x0020 | R/W | T | Watermark interrupt configuration register |
-| 0x0E | [ERROR_INT_CONFIG](#ERROR_INT_CONFIG) | 0x03FF | R/W | T | Error interrupt configuration register |
-| 0x10 | [IMU_SPI_CONFIG](#IMU_SPI_CONFIG) | 0x100F | R/W | T | IMU SPI configuration. Sets SCLK frequency to the IMU and stall time between SPI words |
+| 0x0A | [DIO_OUTPUT_CONFIG](#DIO_OUTPUT_CONFIG) | 0x8421 | R/W | T | DIO output configuration. Sets up pin pass-through and assigns interrupt outputs (error, watermark, overflow) |
+| 0x0C | [WATERMARK_INT_CONFIG](#WATERMARK_INT_CONFIG) | 0x0020 | R/W | T | Watermark interrupt configuration register. Number of samples which must be enqueued in the buffer to trigger a watermark interrupt |
+| 0x0E | [ERROR_INT_CONFIG](#ERROR_INT_CONFIG) | 0x03FF | R/W | T | Error interrupt configuration register. Bitmask for STATUS register to determine which bits should trigger an error interrupt |
+| 0x10 | [IMU_SPI_CONFIG](#IMU_SPI_CONFIG) | 0x100F | R/W | T | IMU SPI configuration. Set SCLK frequency to the IMU and stall time between IMU SPI words |
 | 0x12 | [USER_SPI_CONFIG](#USER_SPI_CONFIG) | 0x0007 | R/W | T | User SPI configuration (SPI mode, etc.) |
-| 0x14 | [USB_CONFIG](#USB_CONFIG) | 0x2000 | R/W | T | USB API configuration |
+| 0x14 | [USB_CONFIG](#USB_CONFIG) | 0x2000 | R/W | T | USB CLI configuration |
 | 0x16 | [USER_COMMAND](#USER_COMMAND) | N/A | W | F | Command register (flash update, factory reset, clear buffer, software reset, etc) |
 | 0x18 | [USER_SCR_0](#USER_SCR_N) | 0x0000 | R/W | T | User scratch 0 register |
 | ... | ... | ... | ... | ... | ... |
@@ -27,13 +27,13 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 | 0x28 | [FW_REV](#FW_REV) | N/A | R | T | Firmware revision |
 | 0x2A | [ENDURANCE](#ENDURANCE) | N/A | R | T | Flash update counter |
 | 0x40 | [STATUS](#STATUS) | N/A | R | F | Device status register. Clears on read |
-| 0x42 | [BUF_CNT](#BUF_CNT) | 0x0000 | R | F | The number of samples in buffer |
-| 0x44 | [FAULT_CODE](#FAULT_CODE) | 0x0000 | R | N/A | Fault code, stored in case of a hard fault exception. This register is stored on a separate flash page from the primary register array |
+| 0x42 | [BUF_CNT](#BUF_CNT) | 0x0000 | R | F | The current number of samples stored in buffer |
+| 0x44 | [FAULT_CODE](#FAULT_CODE) | 0x0000 | R | N/A | Fault code, stored in case of a hard fault exception. This register is stored on a separate flash page from the primary register array and can only be cleared with a FAULT_CLEAR command |
 | 0x46 | [UTC_TIMESTAMP_LWR](#UTC_TIMESTAMP_LWR) | 0x0000 | R/W | F | Lower 16 bits of UTC timestamp (PPS counter) |
 | 0x48 | [UTC_TIMESTAMP_UPR](#UTC_TIMESTAMP_UPR) | 0x0000 | R/W | F | Upper 16 bits of UTC timestamp (PPS counter) |
 | 0x4A | [TIMESTAMP_LWR](#TIMESTAMP_LWR) | 0x0000 | R | F | Lower 16 bits of microsecond timestamp |
 | 0x4C | [TIMESTAMP_UPR](#TIMESTAMP_UPR) | 0x0000 | R | F | Upper 16 bits of microsecond timestamp |
-| 0x70 | [FW_DAY_MONTH](#FW_DAY_MONTH) | N/A | R | T | Firmware build date |
+| 0x70 | [FW_DAY_MONTH](#FW_DAY_MONTH) | N/A | R | T | Firmware build day and month |
 | 0x72 | [FW_YEAR](#FW_YEAR) | N/A | R | T | Firmware build year |
 | 0x74 | [DEV_SN_0](#DEV_SN_N) | N/A | R | T | Processor core serial number register, word 0 |
 | ... | ... | ... | ... | ... | ... |
@@ -63,7 +63,7 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 | 0x0C | [BUF_TIMESTAMP_LWR](#BUF_TIMESTAMP_LWR) | 0x0000 | R | F | Lower 16 bits of buffer entry microsecond timestamp |
 | 0x0E | [BUF_TIMESTAMP_UPR](#BUF_TIMESTAMP_UPR) | 0x0000 | R | F | Upper 16 bits of buffer entry microsecond timestamp |
 | 0x10 | [BUF_SIG](#BUF_SIG) | 0x0000 | R | F | Buffer entry checksum register |
-| 0x12 | [BUF_DATA_0](#BUF_DATA_N) | 0x0000 | R | F | First buffer output register (data received from IMU DOUT) |
+| 0x12 | [BUF_DATA_0](#BUF_DATA_N) | 0x0000 | R | F | First buffer output register (data received from IMU DOUT while transmitting BUF_WRITE_0 data) |
 | ... | ... | ... | ... | ... | ... |
 | 0x50 | [BUF_DATA_31](#BUF_DATA_N) | 0x0000 | R | F | Last buffer output register |
 
@@ -73,7 +73,7 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 15:0 | PAGE | Selected page. Setting the page to a value outside [253-255] will result in SPI traffic being passed to the IMU. |
+| 15:0 | PAGE | Selected page. Setting the page to a value outside [253-255] will result in SPI traffic being passed to the IMU. Setting the page to 255 will start the buffered data capture process. |
 
 ## BUF_CONFIG
 
@@ -264,15 +264,15 @@ The UTC timestamp is a 32-bit value which represents the number of seconds since
 | --- | --- | --- |
 | 15:0 | TIMESTAMP | Upper 16 bits of the 32-bit microsecond timestamp |
 
-This register is a 32-bit microsecond timestamp which starts counting up as soon as the iSensor-SPI-Buffer firmware finishes initialization. 
+These combined registers form a 32-bit microsecond timestamp which starts counting up as soon as the iSensor-SPI-Buffer firmware finishes initialization and enters its cyclic executive loop.
 
-When a PPS input is enabled using the command register PPS_ENABLE, and a PPS pin is assigned in DIO_INPUT_CONFIG, this timestamp will reset to 0 every time a PPS pulse is received. This PPS functionality allows the iSensor-SPI-Buffer firmware to track the "wall" time with microsecond accuracy. Since the microsecond timestamp is reset every second, any error accumulation (due to 20ppm crystal) should be minimal. 
+When a pulse per second (PPS) input is enabled using the PPS_ENABLE command, and a PPS pin is assigned in DIO_INPUT_CONFIG, this microsecond timestamp will reset to 0 every time a PPS pulse is received. This PPS functionality allows the iSensor-SPI-Buffer firmware to track the "wall" time with microsecond accuracy and high long term stability (from PPS clock). Since the microsecond timestamp is reset every second, any error accumulation (due to 20ppm crystal) should be minimal.
 
-The plot below shows the UTC_TIME_LWR and TIMESTAMP_UPR register with a 1Hz PPS signal applied. Each time a PPS edge is recieved, the TIMESTAMP_UPR (and lower, not shown) are reset to 0, and the UTC_TIME_LWR register increments.
+The plot below shows the UTC_TIME_LWR and TIMESTAMP_UPR register with a 1Hz PPS signal applied. Each time a PPS edge is received, the TIMESTAMP_UPR (and lower, not shown) are reset to 0, and the UTC_TIME_LWR register increments.
 
 ![Timestamp Plot](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/PPS_Timestamp.png)
 
-If the PPS signal is lost, the internal microsecond timer will continue counting up, and the STATUS PPS Unlock bit will set. The plot below shows that behavior.
+If the PPS signal is lost, the internal microsecond timer will continue counting up, and the STATUS PPS Unlock bit will set. This allows a master device to continue tracking sample timestamps for a significant time even if the PPS signal is lost. The plot below shows that behavior.
 
 ![PPS Unlock Plot](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/PPS_Unlock.png)
 
@@ -283,7 +283,7 @@ If the PPS signal is lost, the internal microsecond timer will continue counting
 | 7:0 | MONTH | Firmware program month, in BCD |
 | 15:8 | DAY | Firmware program day, in BCD |
 
-For example, April 24th would be represented by 0x2404.
+For example, April 24th would be represented by 0x2404. The DAY/MONTH/YEAR values are generated automatically at compile time using the C DATE preprocessor macro. 
 
 ## FW_YEAR
 
@@ -291,7 +291,7 @@ For example, April 24th would be represented by 0x2404.
 | --- | --- | --- |
 | 15:0 | YEAR | Firmware program year, in BCD |
 
-For example, the year 2020 would be represented by 0x2020.
+For example, the year 2020 would be represented by 0x2020. The DAY/MONTH/YEAR values are generated automatically at compile time using the C DATE preprocessor macro. 
 
 ## FW_REV
 
@@ -313,6 +313,8 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | WRITE_N | Write data to transmit on MOSI line while capturing a buffered data entry |
+
+
 
 ## FLASH_SIG_DRV
 
