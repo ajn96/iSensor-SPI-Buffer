@@ -45,6 +45,9 @@ SPI_HandleTypeDef g_spi2;
 /** SPI handle for SD card master port. Global scope */
 SPI_HandleTypeDef g_spi3;
 
+/** Track the cyclic executive state */
+static uint32_t state;
+
 /**
   * @brief The application entry point.
   *
@@ -123,70 +126,114 @@ int main(void)
   /* Init temp sensor (ADC1) */
   TempInit();
 
+  /* Set state to 0 */
+  state = 0;
+
   /* Clear all update flags before entering loop (shouldn't be set anyways, but it doesn't hurt) */
   g_update_flags = 0;
 
   /* Infinite loop */
   while(1)
   {
-	  /* Process buf dequeue (high priority) */
+	  /* Process buf dequeue every loop iteration (high priority) */
 	  if(g_update_flags & DEQUEUE_BUF_FLAG)
 	  {
 		  g_update_flags &= ~DEQUEUE_BUF_FLAG;
 		  BufDequeueToOutputRegs();
 	  }
-	  /* Process other register update flags (lower priority, done in priority order) */
-	  else if(g_update_flags)
+
+	  /* Check user interrupt generation status */
+	  UpdateUserInterrupt();
+
+	  /* Feed watch dog timer */
+	  FeedWatchDog();
+
+	  /* State machine for non-timing critical processing tasks */
+	  switch(state)
 	  {
+	  case 0:
+		  /* Handle capture enable */
 		  if(g_update_flags & ENABLE_CAPTURE_FLAG)
 		  {
 			  g_update_flags &= ~ENABLE_CAPTURE_FLAG;
 			  EnableDataCapture();
 		  }
-		  else if(g_update_flags & USER_COMMAND_FLAG)
+		  /* Advance to next state */
+		  state = 1;
+		  break;
+	  case 1:
+		  /* Handle user commands */
+		  if(g_update_flags & USER_COMMAND_FLAG)
 		  {
 			  g_update_flags &= ~USER_COMMAND_FLAG;
 			  ProcessCommand();
 		  }
-		  else if(g_update_flags & DIO_INPUT_CONFIG_FLAG)
+		  /* Advance to next state */
+		  state = 2;
+		  break;
+	  case 2:
+		  /* Handle change to DIO input config */
+		  if(g_update_flags & DIO_INPUT_CONFIG_FLAG)
 		  {
 			  g_update_flags &= ~DIO_INPUT_CONFIG_FLAG;
 			  UpdateDIOInputConfig();
 		  }
-		  else if(g_update_flags & DIO_OUTPUT_CONFIG_FLAG)
+		  /* Advance to next state */
+		  state = 3;
+		  break;
+	  case 3:
+		  /* Handle capture DIO output config change */
+		  if(g_update_flags & DIO_OUTPUT_CONFIG_FLAG)
 		  {
 			  g_update_flags &= ~DIO_OUTPUT_CONFIG_FLAG;
 			  UpdateDIOOutputConfig();
 		  }
-		  else if(g_update_flags & IMU_SPI_CONFIG_FLAG)
+		  /* Advance to next state */
+		  state = 4;
+		  break;
+	  case 4:
+		  /* Handle change to IMU SPI config */
+		  if(g_update_flags & IMU_SPI_CONFIG_FLAG)
 		  {
 			  g_update_flags &= ~IMU_SPI_CONFIG_FLAG;
 			  UpdateImuSpiConfig();
 		  }
-		  else if(g_update_flags & USER_SPI_CONFIG_FLAG)
+		  /* Advance to next state */
+		  state = 5;
+		  break;
+	  case 5:
+		  /* Handle change to user SPI config */
+		  if(g_update_flags & USER_SPI_CONFIG_FLAG)
 		  {
 			  g_update_flags &= ~USER_SPI_CONFIG_FLAG;
 			  UpdateUserSpiConfig();
 		  }
-	  }
-	  /* Housekeeping and interrupt generation */
-	  else
-	  {
-		  /* Check user interrupt generation status */
-		  UpdateUserInterrupt();
-
+		  /* Advance to next state */
+		  state = 6;
+		  break;
+	  case 6:
 		  /* Check that PPS isn't unlocked */
 		  CheckPPSUnlock();
-
+		  /* Advance to next state */
+		  state = 7;
+		  break;
+	  case 7:
 		  /* Update temp register value */
 		  UpdateTemp();
+		  /* Advance to next state */
+		  state = 8;
+		  break;
+	  case 8:
+		  /* Handle any USB command line activity */
+		  USBSerialHandler();
+		  /* Go back to first state */
+		  state = 0;
+		  break;
+	  default:
+		  /* Should not get here, go back to first state */
+		  state = 0;
+		  break;
 	  }
-
-	  /* Handle any USB command line activity */
-	  USBSerialHandler();
-
-	  /* Feed watch dog timer */
-	  FeedWatchDog();
   }
 
   /* Should never get here */
