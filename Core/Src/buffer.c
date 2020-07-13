@@ -208,7 +208,12 @@ void BufReset()
 	buf_maxCount = BUF_SIZE / buf_increment;
 	buf_lastEntryIndex = (buf_maxCount - 1) * buf_increment;
 
-	/* Update buffer count register */
+	/* Reduce max count by 1 to allow for one "empty" space between head and tail when the buffer
+	 * is full. This prevents issues when the buffer is full, user dequeues, and the data gets
+	 * overwritten by the IMU interrupt before it can be retrieved */
+	buf_maxCount--;
+
+	/* Update buffer count register to 0 */
 	g_regs[BUF_CNT_0_REG] = 0;
 	g_regs[BUF_CNT_1_REG] = 0;
 
