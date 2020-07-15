@@ -190,6 +190,9 @@ void TIM4_IRQHandler()
 	/* Clear timer interrupt flag */
 	TIM4->SR &= ~TIM_SR_UIF;
 
+	/* Reset timer count. Want to reset it to give a 0.74us offset */
+	TIM4->CNT = 53;
+
 	/* Disable CS timer */
 	TIM3->CR1 = 0;
 	TIM3->CNT = 0xFFFF;
