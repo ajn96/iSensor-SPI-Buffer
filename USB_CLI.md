@@ -45,3 +45,7 @@ Delim Set Command
 
 Read Buffer Command
 ![ReadBuf](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_readbuf.JPG)
+
+Stream Command (WATERMARK_INT_CONFIG set to 64)
+
+![Stream](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_stream.JPG)
