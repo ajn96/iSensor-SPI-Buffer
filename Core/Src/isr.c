@@ -11,12 +11,16 @@
 #include "isr.h"
 
 static void FinishImuBurst();
+static void FinishSlaveSpiBurst();
 
 /** Global register array (from registers.c) */
 volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
 /** Buffer internal count variable (from buffer.c) */
 volatile extern uint32_t g_bufCount;
+
+/* Update processing required (from registers.c) */
+volatile extern uint32_t g_update_flags;
 
 /** User SPI Rx DMA (from main.c) */
 extern DMA_HandleTypeDef g_dma_spi2_rx;
@@ -31,6 +35,9 @@ extern DMA_HandleTypeDef g_dma_spi1_rx;
 extern DMA_HandleTypeDef g_dma_spi1_tx;
 
 extern SPI_HandleTypeDef g_spi1;
+
+/** Buffer to receive burst DMA data (from master) into */
+extern uint8_t g_BurstRxData[74];
 
 /** Current capture size (in 16 bit words). Global scope */
 volatile uint32_t g_wordsPerCapture;
@@ -62,7 +69,9 @@ static uint32_t SPIMISO;
 /** EXTI pending request register */
 static uint32_t EXTI_PR;
 
-static uint32_t ImuDMADone;
+static volatile uint32_t ImuDMADone;
+
+static volatile uint32_t SlaveSpiDMADone = 0;
 
 /**
   * @brief IMU data ready ISR. Kicks off data capture process.
@@ -380,6 +389,10 @@ static void FinishImuBurst()
 void DMA1_Channel4_IRQHandler(void)
 {
 	HAL_DMA_IRQHandler(&g_dma_spi2_rx);
+	if(SlaveSpiDMADone == 0)
+		SlaveSpiDMADone = 1;
+	else
+		FinishSlaveSpiBurst();
 }
 
 /**
@@ -389,7 +402,33 @@ void DMA1_Channel4_IRQHandler(void)
   */
 void DMA1_Channel5_IRQHandler(void)
 {
+	/* Clear interrupt flags */
 	HAL_DMA_IRQHandler(&g_dma_spi2_tx);
+	if(SlaveSpiDMADone == 0)
+		SlaveSpiDMADone = 1;
+	else
+		FinishSlaveSpiBurst();
+}
+
+static void FinishSlaveSpiBurst()
+{
+	/* Reset slave SPI DMA done flag */
+	SlaveSpiDMADone = 0;
+
+	/* If Rx data has address for buf_retrieve then set up another burst */
+	if(g_BurstRxData[1] == 6)
+	{
+		/* Set update flag for main loop */
+		g_update_flags |= DEQUEUE_BUF_FLAG;
+	}
+	/* Else restore register SPI mode */
+	else
+	{
+		/* Disable SPI DMA */
+		CLEAR_BIT(SPI2->CR2, SPI_CR2_TXDMAEN | SPI_CR2_RXDMAEN);
+		/* Re-enable SPI interrupt */
+		HAL_NVIC_EnableIRQ(SPI2_IRQn);
+	}
 }
 
 /**

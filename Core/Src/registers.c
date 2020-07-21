@@ -25,6 +25,9 @@ extern uint32_t g_bufNumWords32;
 /** Register update flags for main loop processing. Global scope */
 volatile uint32_t g_update_flags = 0;
 
+/** Pointer to buffer entry. Will be 0 if no buffer entry "loaded" to output registers */
+volatile uint16_t* g_CurrentBufEntry;
+
 /** iSensor-SPI-Buffer global register array (read-able via SPI). Global scope */
 uint16_t g_regs[3 * REG_PER_PAGE] __attribute__((aligned (32))) = {
 
@@ -74,9 +77,6 @@ BUF_READ_PAGE, 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, /* 0x80 - 0x87 
 /** Selected page. Starts on 253 (config page) */
 static volatile uint32_t selected_page = BUF_CONFIG_PAGE;
 
-/** Pointer to buffer entry. Will be 0 if no buffer entry "loaded" to output registers */
-static uint16_t* CurrentBufEntry;
-
 /**
   * @brief Dequeues an entry from the buffer and loads it to the primary output registers
   *
@@ -91,7 +91,7 @@ static uint16_t* CurrentBufEntry;
 void BufDequeueToOutputRegs()
 {
 	/* Get element from the buffer */
-	CurrentBufEntry = (uint16_t *) BufTakeElement();
+	g_CurrentBufEntry = (uint16_t *) BufTakeElement();
 
 	/* Check if burst read mode is enabled */
 	if(g_regs[USER_SPI_CONFIG_REG] & SPI_CONF_BURST_RD)
@@ -140,15 +140,15 @@ uint16_t ReadReg(uint8_t regAddr)
 			else
 			{
 				/* Set current buf entry to 0 */
-				CurrentBufEntry = 0;
+				g_CurrentBufEntry = 0;
 			}
 		}
 
 		if(regIndex > BUF_RETRIEVE_REG)
 		{
-			if(CurrentBufEntry && (regIndex < g_bufLastRegIndex))
+			if(g_CurrentBufEntry && (regIndex < g_bufLastRegIndex))
 			{
-				return CurrentBufEntry[regIndex - BUF_UTC_TIMESTAMP_REG];
+				return g_CurrentBufEntry[regIndex - BUF_UTC_TIMESTAMP_REG];
 			}
 			else
 			{
