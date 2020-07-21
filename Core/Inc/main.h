@@ -23,7 +23,7 @@
 #include "timer.h"
 #include "dio.h"
 #include "usb_device.h"
-#include "adc.h"
+#include "temp.h"
 
 /* Public function prototypes */
 void Error_Handler(void);

@@ -2,13 +2,13 @@
   * Copyright (c) Analog Devices Inc, 2020
   * All Rights Reserved.
   *
-  * @file		adc.c
+  * @file		temp.c
   * @date		7/10/2020
   * @author		A. Nolan (alex.nolan@analog.com)
   * @brief		Implementation file for iSensor-SPI-Buffer ADC module (for temp sensor)
  **/
 
-#include "adc.h"
+#include "temp.h"
 
 static void ADC1Init();
 static void ADC1Start();
@@ -34,11 +34,12 @@ void UpdateTemp()
 
 static uint16_t ScaleTempData(uint32_t rawTemp)
 {
-	/* Temp (in C, 10LSB per degree) = 800 / (TS_CAL2  - TS_CAL1) * (val - TS_CAL1) + 300 */
-	uint32_t divisor, result;
+	/* Temp (in C, 10LSB per degree) = (800 / (TS_CAL2  - TS_CAL1)) * (val - TS_CAL1) + 300 */
+	int32_t divisor, result;
 
-	divisor = ((*TS_CAL2) - (*TS_CAL1)) * (rawTemp - (*TS_CAL1));
-	result = 800 / divisor;
+	divisor = (*TS_CAL2) - (*TS_CAL1);
+	result = 800 * (rawTemp - (*TS_CAL1));
+	result = result / divisor;
 	result += 300;
 	return result & 0xFFFF;
 }
@@ -51,6 +52,7 @@ static uint16_t ScaleTempData(uint32_t rawTemp)
 static void ADC1Init()
 {
 	ADC_MultiModeTypeDef multimode = {0};
+	ADC_ChannelConfTypeDef sConfig = {0};
 
 	/* Common config */
 	hadc1.Instance = ADC1;
@@ -73,6 +75,16 @@ static void ADC1Init()
 	/* Configure the ADC multi-mode */
 	multimode.Mode = ADC_MODE_INDEPENDENT;
 	if (HAL_ADCEx_MultiModeConfigChannel(&hadc1, &multimode) != HAL_OK)
+	{
+		Error_Handler();
+	}
+
+	/* Configure the ADC channel */
+	sConfig.Channel = ADC_CHANNEL_TEMPSENSOR;
+	sConfig.Rank = 1;
+	sConfig.SamplingTime = ADC_SAMPLETIME_601CYCLES_5;
+	sConfig.Offset = 0;
+	if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
 	{
 		Error_Handler();
 	}
