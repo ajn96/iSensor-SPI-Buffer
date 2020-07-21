@@ -188,7 +188,7 @@ void USBReadBuf()
 
 	for(buf = 0; buf < numBufs; buf++)
 	{
-		writeBufPtr = UserRxBufferFS;
+		writeBufPtr = UserTxBufferFS;
 		count = 0;
 		BufDequeueToOutputRegs();
 		for(addr = BUF_BASE_ADDR; addr < bufLastAddr; addr += 2)
@@ -208,7 +208,7 @@ void USBReadBuf()
 		writeBufPtr[1] = '\n';
 		writeBufPtr += 2;
 		count += 2;
-		BlockingUSBTransmit(UserRxBufferFS, count, 20);
+		BlockingUSBTransmit(UserTxBufferFS, count, 20);
 	}
 }
 
@@ -404,7 +404,7 @@ static void Read()
 	/* Perform read */
 	for(int i = 0; i<numReads; i++)
 	{
-		writeBufPtr = UserRxBufferFS;
+		writeBufPtr = UserTxBufferFS;
 		count = 0;
 		for(uint32_t addr = startAddr; addr < endAddr; addr += 2)
 		{
@@ -425,7 +425,7 @@ static void Read()
 		writeBufPtr += 2;
 		count += 2;
 		/* Transmit */
-		BlockingUSBTransmit(UserRxBufferFS, count, 20);
+		BlockingUSBTransmit(UserTxBufferFS, count, 20);
 	}
 }
 
