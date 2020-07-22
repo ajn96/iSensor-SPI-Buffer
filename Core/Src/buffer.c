@@ -186,6 +186,9 @@ void BufReset()
 	if(g_regs[BUF_LEN_REG] > BUF_MAX_ENTRY)
 		g_regs[BUF_LEN_REG] = BUF_MAX_ENTRY;
 
+	/* Buffer length must be multiple of 2 (SPI runs in 16 bit mode) */
+	g_regs[BUF_LEN_REG] &= ~(0x1);
+
 	/* Set the index for the last buffer entry */
 	g_bufLastRegIndex = (BUF_DATA_0_REG + (g_regs[BUF_LEN_REG] >> 1));
 
