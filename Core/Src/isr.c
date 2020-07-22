@@ -106,7 +106,8 @@ void EXTI9_5_IRQHandler()
 	/* If capture in progress then set error flag and exit */
 	if(g_captureInProgress)
 	{
-		g_captureInProgress = TIM4->CR1 & 0x1;
+		/* If SPI DMA and timer 4 are not running then capture is not actually in progress */
+		g_captureInProgress = (TIM4->CR1 | g_dma_spi1_tx.Instance->CCR) & 0x1;
 		g_regs[STATUS_0_REG] |= STATUS_OVERRUN;
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 		return;
@@ -326,36 +327,66 @@ void SPI2_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles DMA1 channel2 global interrupt (spi1 Rx).
+  * @brief This function handles DMA1 channel2 global interrupt (spi1 (IMU) Rx).
   */
 void DMA1_Channel2_IRQHandler(void)
 {
-  HAL_DMA_IRQHandler(&g_dma_spi1_rx);
-  if(ImuDMADone == 0)
-  {
+	uint32_t flags = g_dma_spi1_rx.DmaBaseAddress->ISR;
+
+	/* Clear interrupt enable */
+	g_dma_spi1_rx.Instance->CCR &= ~(DMA_IT_TC | DMA_IT_TE);
+
+	/* Clear interrupt flags */
+	g_dma_spi1_rx.DmaBaseAddress->IFCR = (DMA_FLAG_TC1|DMA_FLAG_TE1) << g_dma_spi1_rx.ChannelIndex;
+
+	/* Check for error interrupt */
+	if(flags & (DMA_FLAG_TE1 << g_dma_spi1_rx.ChannelIndex))
+	{
+		g_regs[STATUS_0_REG] |= STATUS_DMA_ERROR;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+	}
+
+	/* Check if both interrupts complete */
+	if(ImuDMADone == 0)
+	{
 	  ImuDMADone = 1;
-  }
-  else
-  {
+	}
+	else
+	{
 	  /* Both are done */
 	  FinishImuBurst();
-  }
+	}
 }
 
 /**
-  * @brief This function handles DMA1 channel3 global interrupt (spi1 Tx).
+  * @brief This function handles DMA1 channel3 global interrupt (spi1 (IMU) Tx).
   */
 void DMA1_Channel3_IRQHandler(void)
 {
-  HAL_DMA_IRQHandler(&g_dma_spi1_tx);
-  if(ImuDMADone == 0)
-  {
+	uint32_t flags = g_dma_spi1_tx.DmaBaseAddress->ISR;
+
+	/* Clear interrupt enable */
+	g_dma_spi1_tx.Instance->CCR &= ~(DMA_IT_TC | DMA_IT_TE);
+
+	/* Clear interrupt flags */
+	g_dma_spi1_tx.DmaBaseAddress->IFCR = (DMA_FLAG_TC1|DMA_FLAG_TE1) << g_dma_spi1_tx.ChannelIndex;
+
+	/* Check for error interrupt */
+	if(flags & (DMA_FLAG_TE1 << g_dma_spi1_tx.ChannelIndex))
+	{
+		g_regs[STATUS_0_REG] |= STATUS_DMA_ERROR;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+	}
+
+	/* Check if both interrupts complete */
+	if(ImuDMADone == 0)
+	{
 	  ImuDMADone = 1;
-  }
-  else
-  {
+	}
+	else
+	{
 	  FinishImuBurst();
-  }
+	}
 }
 
 static void FinishImuBurst()
@@ -363,6 +394,9 @@ static void FinishImuBurst()
 	/* Bring CS high */
 	TIM3->CR1 &= ~0x1;
 	TIM3->CNT = 0xFFFF;
+
+	/* Add in last byte */
+	//BufferElementHandle[g_regs[BUF_LEN_REG] - 1] = SPI1->DR;
 
 	/* Build buffer signature */
 	uint16_t * RxData = (uint16_t *) BufferElementHandle;
@@ -382,7 +416,7 @@ static void FinishImuBurst()
 }
 
 /**
-  * @brief This function handles DMA1 channel4 global interrupt (spi2 Rx).
+  * @brief This function handles DMA1 channel4 global interrupt (spi2 (user) Rx).
   *
   * @return void
   */
@@ -396,7 +430,7 @@ void DMA1_Channel4_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles DMA1 channel5 global interrupt (spi2 Tx).
+  * @brief This function handles DMA1 channel5 global interrupt (spi2 (user) Tx).
   *
   * @return void
   */
