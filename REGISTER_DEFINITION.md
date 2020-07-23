@@ -85,6 +85,7 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 | 14:2 | RESERVED | Currently unused |
 | 15 | BUF_BURST | Enables burst reading of buffer output data registers, over the user SPI port |
 
+**IMU_BURST**
 When the IMU_BURST bit is set, each buffered data capture from the IMU is performed as a single SPI burst transaction (drop CS, clock out all data, raise CS). The length of the burst transaction is determined by BUF_LEN. When the IMU_BURST bit is cleared, IMU data is captured using a sequence of 16 bit SPI words. When the selected page is changed to an IMU page (page != (253, 254, 255)), the IMU SPI port will be restored to register mode, regardless of the BUF_CONFIG setting. The IMU burst data capture will be enabled again when page 255 (buffed data capture page) is re-selected, and the IMU_BURST bit is set.
 
 IMU burst data capture (BUF_CONFIG[1] == 1), with IMU SPI MISO wired to MOSI:
@@ -95,9 +96,8 @@ Same IMU Data Capture in register mode (BUF_CONFIG[1] == 0):
 
 ![IMU Register mode](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/imu_registermode.JPG)
 
-
-
-When the BUF_BURST bit is set and the buffer retrieve register is read, the user SPI interface is configured to clock out the full buffer entry, starting with the timestamp. Multiple buffer burst reads can be chained together by sending a BUF_RETRIEVE read request at the start of the burst data capture, which will trigger a second buffer burst output after the first read is completed, and so on. After a buffer burst output has been enabled, the iSensor-SPI-Buffer slave SPI port will not return to "normal" mode until the full buffer entry has been read (BUF_LEN + 12 bytes clocked out). More detail about the buffer burst output is included in the  [buffer burst output](#BUFFER_BURST_OUTPUT) section
+**BUF_BURST**
+When the BUF_BURST bit is set and the buffer retrieve register is read, the user SPI interface is configured to clock out the full buffer entry, starting with the timestamp. Multiple buffer burst reads can be chained together by sending a BUF_RETRIEVE read request at the start of the burst data capture, which will trigger a second buffer burst output after the first read is completed, and so on. After a buffer burst output has been enabled, the iSensor-SPI-Buffer slave SPI port will not return to "normal" mode until the full buffer entry has been read (BUF_LEN + 12 bytes clocked out). More detail about the buffer burst output is included in the  [buffer burst output](#buffer-burst-output) section
 
 ## BUF_LEN
 
@@ -233,7 +233,7 @@ While commands are being executed, the iSensor-SPI-Buffer slave SPI port is disa
 | 5 | DMA_ERROR | Set when processor DMA peripheral reports an error (user SPI DMA for burst read or IMU SPI DMA) |
 | 6 | PPS_UNLOCK | Set when the PPS synchronization clock is enabled, but no PPS signal has been received for over 1100ms |
 | 7 | TEMP_WARNING | Set when the SPI buffer internal temperature sensor measures a value outside [-40C - 85C] |
-| 11:7 | RESERVED | Currently unused |
+| 11:8 | RESERVED | Currently unused |
 | 12 | FLASH_ERROR | Set when the register signature stored in flash (stored during flash update) does not match signature calculated from SRAM register contents at initialization. Sticky |
 | 13 | FLASH_UPDATE_ERROR | Set when the flash update routine fails. Sticky |
 | 14 | FAULT | Set when the processor core generates a fault exception (bus fault, memory fault, hard fault, initialization error). Fault exceptions will force a system reset. Sticky |
