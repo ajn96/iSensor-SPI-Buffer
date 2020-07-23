@@ -222,6 +222,7 @@ While commands are being executed, the iSensor-SPI-Buffer slave SPI port is disa
 | 4 | OVERRUN | Data capture overrun. Set when processor receives an IMU data ready interrupt and has not finished the previous data capture |
 | 5 | DMA_ERROR | Set when processor DMA peripheral reports an error (user SPI DMA for burst read or IMU SPI DMA) |
 | 6 | PPS_UNLOCK | Set when the PPS synchronization clock is enabled, but no PPS signal has been received for over 1100ms |
+| 7 | TEMP_WARNING | Set when the SPI buffer internal temperature sensor measures a value outside [-40C - 85C] |
 | 11:7 | RESERVED | Currently unused |
 | 12 | FLASH_ERROR | Set when the register signature stored in flash (stored during flash update) does not match signature calculated from SRAM register contents at initialization. Sticky |
 | 13 | FLASH_UPDATE_ERROR | Set when the flash update routine fails. Sticky |

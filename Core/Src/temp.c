@@ -12,7 +12,7 @@
 
 static void ADC1Init();
 static void ADC1Start();
-static uint16_t ScaleTempData(uint32_t rawTemp);
+static int16_t ScaleTempData(uint32_t rawTemp);
 
 /** HAL ADC handle */
 static ADC_HandleTypeDef hadc1;
@@ -20,21 +20,53 @@ static ADC_HandleTypeDef hadc1;
 /** Global register array. (from registers.c) */
 extern volatile uint16_t g_regs[];
 
+/**
+  * @brief Init temp sensor
+  *
+  * @return void
+  *
+  * This function should be called once as part of the firmware initialization process
+  */
 void TempInit()
 {
 	ADC1Init();
 	ADC1Start();
 }
 
-
+/**
+  * @brief Read ADC temperature sensor output and load to output register
+  *
+  * @return void
+  *
+  * This function should be called periodically from the cyclic executive. It
+  * updates the temperature sensor output value and flags any temperature over range
+  * events in the STATUS register (outside -40C to 85C)
+  */
 void UpdateTemp()
 {
-	g_regs[TEMP_REG] = ScaleTempData(hadc1.Instance->DR);
+	/* Read value from ADC and scale */
+	int16_t temp = ScaleTempData(hadc1.Instance->DR);
+
+	/* Load to output reg */
+	g_regs[TEMP_REG] = (uint16_t) temp;
+
+	/* Check for alarm */
+	if((temp > 850)||(temp < -400))
+	{
+		g_regs[STATUS_0_REG] |= STATUS_TEMP_WARNING;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+	}
 }
 
-static uint16_t ScaleTempData(uint32_t rawTemp)
+/**
+  * @brief Scale raw ADC temperature data to temp output
+  *
+  * @return temp value (10LSB = 1C)
+  *
+  * Temp (in C, 10LSB per degree) = (800 / (TS_CAL2  - TS_CAL1)) * (val - TS_CAL1) + 300
+  */
+static int16_t ScaleTempData(uint32_t rawTemp)
 {
-	/* Temp (in C, 10LSB per degree) = (800 / (TS_CAL2  - TS_CAL1)) * (val - TS_CAL1) + 300 */
 	int32_t divisor, result;
 
 	divisor = (*TS_CAL2) - (*TS_CAL1);
@@ -46,8 +78,14 @@ static uint16_t ScaleTempData(uint32_t rawTemp)
 
 /**
   * @brief ADC1 Initialization Function
-  * @param None
-  * @retval None
+  *
+  * @return None
+  *
+  * Initializes ADC1 in continuous sampling mode. Only a single
+  * input is converted (temp sensor input channel). The sample time
+  * is set to 601 ADC cycles. The ADC is clocked from 72MHz core clock
+  * divided by 8. 601 cycles / (72MHz/8) -> 66us. The Temp sensor
+  * requires a minimum 10us setting time for accurate measurements.
   */
 static void ADC1Init()
 {
@@ -90,6 +128,13 @@ static void ADC1Init()
 	}
 }
 
+/**
+  * @brief ADC1 Enable Function
+  *
+  * @return None
+  *
+  * Enables on-die temperature sensor and starts ADC1
+  */
 static void ADC1Start()
 {
 	ADC12_COMMON->CCR |= (1 << 23);

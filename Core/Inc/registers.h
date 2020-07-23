@@ -129,6 +129,7 @@ void BufDequeueToOutputRegs();
 #define STATUS_OVERRUN				(1 << 4)
 #define STATUS_DMA_ERROR			(1 << 5)
 #define STATUS_PPS_UNLOCK			(1 << 6)
+#define STATUS_TEMP_WARNING			(1 << 7)
 #define STATUS_FLASH_ERROR			(1 << 12)
 #define STATUS_FLASH_UPDATE			(1 << 13)
 #define STATUS_FAULT				(1 << 14)
