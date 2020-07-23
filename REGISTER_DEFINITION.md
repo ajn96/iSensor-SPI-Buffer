@@ -280,11 +280,13 @@ If the PPS signal is lost, the internal microsecond timer will continue counting
 
 ## TEMP
 
-| Bit  | Name | Description                                              |
-| ---- | ---- | -------------------------------------------------------- |
-| 15:0 | TEMP | Temp sensor output. 1 degree C = 10LSB. Value of 0 -> 0C |
+| Bit  | Name | Description                                                 |
+| ---- | ---- | ----------------------------------------------------------- |
+| 15:0 | TEMP | Temp sensor output. 1 degree C = 10LSB. Value of 0LSB -> 0C |
 
-This value is sourced from the thermistor embedded in the STM32F303 package. The temperature value is scaled using a two point temperature calibration provided by ST (measurements taken at 30C and 110C). Even though temperature output is calibrated, the measurement is very susceptible to heat from the STM32 processor core.
+This value is sourced from the thermistor embedded in the STM32F303 package. The temperature value is scaled using a two point temperature calibration provided by ST (measurements taken at 30C and 110C). Even though temperature output is calibrated, the measurement is very susceptible to heat from the STM32 processor core. If the temperature measurement ever goes out of range [-40C to 85C] a temperature warning flag will be set in the STATUS register.
+
+![Temp warning plot](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/status_temp_warning.png)
 
 ## FW_DAY_MONTH
 
