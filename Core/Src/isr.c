@@ -521,8 +521,11 @@ static void FinishSlaveSpiBurst()
 	SlaveSpiDMADone = 0;
 
 	/* If Rx data has address for buf_retrieve then set up another burst */
-	if(g_BurstRxData[1] == 6)
+	if((g_BurstRxData[1] == 6) && (g_regs[BUF_CNT_0_REG] > 0))
 	{
+		/* Load 0 into user SPI output */
+		SPI2->DR = 0;
+
 		/* Set update flag for main loop */
 		g_update_flags |= DEQUEUE_BUF_FLAG;
 	}

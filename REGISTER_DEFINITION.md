@@ -10,7 +10,7 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 | Address | Register Name | Default | R/W | Flash Backup | Description |
 | --- | --- | --- | --- | --- | --- |
 | 0x00 | [PAGE_ID](#PAGE_ID) | 0x00FD | R/W | T | Page register. Used to read or change the currently selected register page |
-| 0x02 | [BUF_CONFIG](#BUF_CONFIG) | 0x0000 | R/W | T | Buffer configuration settings (SPI word size, overflow behavior) |
+| 0x02 | [BUF_CONFIG](#BUF_CONFIG) | 0x0000 | R/W | T | Buffer configuration settings (overflow behavior, IMU burst data capture, user SPI burst output for buffer contents). |
 | 0x04 | [BUF_LEN](#BUF_LEN) | 0x0014 | R/W | T | Length (in bytes) of each buffered data capture |
 | 0x06 | [BUF_MAX_CNT](#BUF_MAX_CNT) | N/A | R | T | Maximum entries which can be stored in the buffer. Determined by BUF_LEN and the fixed buffer memory allocation size |
 | 0x08 | [DIO_INPUT_CONFIG](#DIO_INPUT_CONFIG) | 0x0011 | R/W | T | DIO input configuration. Allows data ready (from IMU) and PPS (from host) input selection |
@@ -81,16 +81,29 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 | Bit | Name | Description |
 | --- | --- | --- |
 | 0 | OVERFLOW | Buffer overflow behavior. 0 stop sampling, 1 replace oldest data |
-| 1 | BURST | IMU burst data capture enable |
-| 15:2 | RESERVED | Currently unused |
+| 1 | IMU_BURST | Enables IMU burst data capture for buffer entries (IMU <-> iSensor-SPI-Buffer SPI port) |
+| 14:2 | RESERVED | Currently unused |
+| 15 | BUF_BURST | Enables burst reading of buffer output data registers, over the user SPI port |
 
-When the BURST bit is set, each buffered data capture from the IMU is performed as a single SPI burst transaction (drop CS, clock out all data, raise CS). The length of the burst transaction is determined by BUF_LEN. When the BURST bit is cleared, IMU data is captured using a sequence of 16 bit SPI words.
+When the IMU_BURST bit is set, each buffered data capture from the IMU is performed as a single SPI burst transaction (drop CS, clock out all data, raise CS). The length of the burst transaction is determined by BUF_LEN. When the IMU_BURST bit is cleared, IMU data is captured using a sequence of 16 bit SPI words. When the selected page is changed to an IMU page (page != (253, 254, 255)), the IMU SPI port will be restored to register mode, regardless of the BUF_CONFIG setting. The IMU burst data capture will be enabled again when page 255 (buffed data capture page) is re-selected, and the IMU_BURST bit is set.
+
+IMU burst data capture (BUF_CONFIG[1] == 1), with IMU SPI MISO wired to MOSI:
+
+![IMU Burst](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/imu_burst.JPG)
+
+Same IMU Data Capture in register mode (BUF_CONFIG[1] == 0):
+
+![IMU Register mode](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/imu_registermode.JPG)
+
+
+
+When the BUF_BURST bit is set and the buffer retrieve register is read, the user SPI interface is configured to clock out the full buffer entry, starting with the timestamp. Multiple buffer burst reads can be chained together by sending a BUF_RETRIEVE read request at the start of the burst data capture, which will trigger a second buffer burst output after the first read is completed, and so on. After a buffer burst output has been enabled, the iSensor-SPI-Buffer slave SPI port will not return to "normal" mode until the full buffer entry has been read (BUF_LEN + 12 bytes clocked out). More detail about the buffer burst output is included in the  [buffer burst output](#BUFFER_BURST_OUTPUT) section
 
 ## BUF_LEN
 
 | Name | Bits | Description |
 | --- | --- | --- |
-| 15:0 | LEN | Length (in bytes) of each buffer entry. Valid range 2 - 64 |
+| 15:0 | LEN | Length (in bytes) of each buffer entry. Valid range 2 - 64. Must be a multiple of 2 (16 bit word size) |
 
 ## BUF_MAX_CNT
 
@@ -174,10 +187,7 @@ The following default values will be used for DIO_OUTPUT_CONFIG:
 | 0 | CPHA | SPI clock phase |
 | 1 | CPOL | SPI clock polarity |
 | 2 | MSB_FIRST | 1 = transmit MSB first, 0 = transmit LSB first |
-| 14:3 | RESERVED | Currently unused |
-| 15 | BUF_BURST | Enable burst read of buffer output data registers, using SPI DMA |
-
-When BUF_BURST is enabled and the buffer retrieve register is read, the slave SPI interface DMA is configured to clock out the full buffer entry, starting with the timestamp. Multiple buffer burst reads can be chained together by sending a BUF_RETRIEVE read request at the start of the burst data capture, which will trigger a second buffer burst output after the first read is completed. After a buffer burst output has been enabled, the iSensor-SPI-Buffer slave SPI port will not return to "normal" mode until the full buffer entry has been read (BUF_LEN + 10 bytes clocked out).
+| 15:3 | RESERVED | Currently unused |
 
 ## USB_CONFIG
 
@@ -387,3 +397,33 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | READ_N | Read data received on the MISO line while capturing a buffered data entry |
+
+# Buffer Burst Output
+
+Burst output functionality for buffered data is provided to allow faster dequeuing of accumulated buffer entries over the user SPI port. Each burst buffer output includes all the data from a single buffer entry, and can be read without toggling chip select, allowing for significantly faster throughput. In addition, the data is moved from the buffer output register to the user SPI port using a DMA peripheral, which offloads work from the CPU. This potentially allows for higher IMU data rates, without experiencing overrun. 
+
+### Triggering a buffer burst read
+
+* First, the BUF_BURST bit must be set in the BUF_CONFIG register. If this bit is not set, all buffered data must be read in register mode (16-bit SPI transactions for each word read)
+* The iSensor-SPI-Buffer firmware needs to be set to page 255 (to start the buffered data capture process)
+* Once at least one IMU data sample has been accumulated in the buffer, reading the BUF_RETRIEVE register will set up the first buffer burst output (send 0x0600 to the iSensor-SPI-Buffer in a single 16 bit word)
+  * Note: To simplify the interface code for the master device, it is possible to make the first read of BUF_RETRIEVE be a "burst" read (SPI word of length BUF_LEN + 12 bytes). The extra data clocked back after sending the first BUF_RETRIEVE read request will not contain valid data however.
+* After sending the first BUF_RETRIEVE read request, the following SPI word must be BUF_LEN + 12 bytes long, to receive an entire buffer entry. To chain a second burst read, the master device must transmit 0x0600 (read of BUF_RETRIEVE) to the iSensor-SPI-Buffer in the first two bytes of the SPI word (effectively requesting another buffer burst output). If a read request for BUF_RETRIEVE is not sent, the first two bytes from the burst are processed as a standard SPI command, and the user SPI port is placed back in 16-bit register mode.
+
+### Buffer burst data format
+
+| SPI Word Number (16 bit words) | Master -> iSensor-SPI-Buffer | iSensor-SPI-Buffer -> Master |
+| ------------------------------ | ---------------------------- | ---------------------------- |
+| 0                              | 0x0600                       | 0x0000                       |
+| 1                              | 0x0000 (Don't care)          | BUF_UTC_TIME_LWR             |
+| 2                              | 0x0000 (Don't care)          | BUF_UTC_TIME_UPR             |
+| 3                              | 0x0000 (Don't care)          | BUF_TIMESTAMP_LWR            |
+| 4                              | 0x0000 (Don't care)          | BUF_TIMESTAMP_UPR            |
+| 5                              | 0x0000 (Don't care)          | BUF_SIG                      |
+| 6                              | 0x0000 (Don't care)          | BUF_DATA_0                   |
+| n                              | 0x0000 (Don't care)          | BUF_DATA_N                   |
+
+
+
+
+
