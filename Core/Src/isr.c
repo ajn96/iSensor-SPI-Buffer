@@ -10,6 +10,7 @@
 
 #include "isr.h"
 
+/* Private function prototypes */
 static void FinishImuBurst();
 static void FinishSlaveSpiBurst();
 
@@ -328,6 +329,8 @@ void SPI2_IRQHandler(void)
 
 /**
   * @brief This function handles DMA1 channel2 global interrupt (spi1 (IMU) Rx).
+  *
+  * @return void
   */
 void DMA1_Channel2_IRQHandler(void)
 {
@@ -344,6 +347,7 @@ void DMA1_Channel2_IRQHandler(void)
 	{
 		g_regs[STATUS_0_REG] |= STATUS_DMA_ERROR;
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+		FinishImuBurst();
 	}
 
 	/* Check if both interrupts complete */
@@ -360,6 +364,8 @@ void DMA1_Channel2_IRQHandler(void)
 
 /**
   * @brief This function handles DMA1 channel3 global interrupt (spi1 (IMU) Tx).
+  *
+  * @return void
   */
 void DMA1_Channel3_IRQHandler(void)
 {
@@ -376,6 +382,7 @@ void DMA1_Channel3_IRQHandler(void)
 	{
 		g_regs[STATUS_0_REG] |= STATUS_DMA_ERROR;
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+		FinishImuBurst();
 	}
 
 	/* Check if both interrupts complete */
@@ -389,14 +396,26 @@ void DMA1_Channel3_IRQHandler(void)
 	}
 }
 
+/**
+  * @brief Cleans up an IMU burst data read
+  *
+  * @return void
+  *
+  * This function is called once the SPI1 Tx and Rx DMA interrupts
+  * have both fired, or a single error interrupt has been generated.
+  * SPI1 uses DMA1, channel 2/3. These channels have lower priority
+  * than the user SPI DMA channels, which also use DMA peripheral 1.
+  *
+  * This function brings CS high, calculates the buffer signature,
+  * and updates the buffer count / capture state variables. Before
+  * this function is called, DMA interrupts should be disabled (by
+  * their respective ISR's)
+  */
 static void FinishImuBurst()
 {
 	/* Bring CS high */
 	TIM3->CR1 &= ~0x1;
 	TIM3->CNT = 0xFFFF;
-
-	/* Add in last byte */
-	//BufferElementHandle[g_regs[BUF_LEN_REG] - 1] = SPI1->DR;
 
 	/* Build buffer signature */
 	uint16_t * RxData = (uint16_t *) BufferElementHandle;
@@ -404,7 +423,7 @@ static void FinishImuBurst()
 	{
 		BufferSignature += RxData[reg];
 	}
-	/* Save to buffer entry */
+	/* Save signature to buffer entry */
 	BufferSigHandle[0] = BufferSignature;
 
 	/* Update buffer count regs with new count */
@@ -422,7 +441,23 @@ static void FinishImuBurst()
   */
 void DMA1_Channel4_IRQHandler(void)
 {
-	HAL_DMA_IRQHandler(&g_dma_spi2_rx);
+	uint32_t flags = g_dma_spi2_rx.DmaBaseAddress->ISR;
+
+	/* Clear interrupt enable */
+	g_dma_spi2_rx.Instance->CCR &= ~(DMA_IT_TC | DMA_IT_TE);
+
+	/* Clear interrupt flags */
+	g_dma_spi2_rx.DmaBaseAddress->IFCR = (DMA_FLAG_TC1|DMA_FLAG_TE1) << g_dma_spi2_rx.ChannelIndex;
+
+	/* Check for error interrupt */
+	if(flags & (DMA_FLAG_TE1 << g_dma_spi2_rx.ChannelIndex))
+	{
+		g_regs[STATUS_0_REG] |= STATUS_DMA_ERROR;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+		FinishSlaveSpiBurst();
+	}
+
+	/* Check if total transfer is done */
 	if(SlaveSpiDMADone == 0)
 		SlaveSpiDMADone = 1;
 	else
@@ -436,14 +471,47 @@ void DMA1_Channel4_IRQHandler(void)
   */
 void DMA1_Channel5_IRQHandler(void)
 {
+	uint32_t flags = g_dma_spi2_tx.DmaBaseAddress->ISR;
+
+	/* Clear interrupt enable */
+	g_dma_spi2_tx.Instance->CCR &= ~(DMA_IT_TC | DMA_IT_TE);
+
 	/* Clear interrupt flags */
-	HAL_DMA_IRQHandler(&g_dma_spi2_tx);
+	g_dma_spi2_tx.DmaBaseAddress->IFCR = (DMA_FLAG_TC1|DMA_FLAG_TE1) << g_dma_spi2_tx.ChannelIndex;
+
+	/* Check for error interrupt */
+	if(flags & (DMA_FLAG_TE1 << g_dma_spi2_tx.ChannelIndex))
+	{
+		g_regs[STATUS_0_REG] |= STATUS_DMA_ERROR;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+		FinishSlaveSpiBurst();
+	}
+
+	/* Check if total transfer is done */
 	if(SlaveSpiDMADone == 0)
 		SlaveSpiDMADone = 1;
 	else
 		FinishSlaveSpiBurst();
 }
 
+/**
+  * @brief Cleans up a burst data read from a master device
+  *
+  * @return void
+  *
+  * This function is called once the SPI2 Tx and Rx DMA interrupts
+  * have both fired, or a single error interrupt has been generated.
+  * SPI2 uses DMA1, channel 4/5. These channels have higher priority
+  * than the user SPI DMA channels, which also use DMA peripheral 1.
+  *
+  * This function reacts based on the data received from the master
+  * device during the burst. If the master clocked out the address of
+  * BUF_RETRIEVE register in the first byte, this function triggers another
+  * buffer dequeue operation (which will set up another burst). If the first
+  * byte received does not address the BUF_RETRIEVE register, then the SPI is returned
+  * to register mode, and the standard SPI read/write routine is called with the
+  * values received in the first two bytes.
+  */
 static void FinishSlaveSpiBurst()
 {
 	/* Reset slave SPI DMA done flag */
@@ -458,10 +526,23 @@ static void FinishSlaveSpiBurst()
 	/* Else restore register SPI mode */
 	else
 	{
-		/* Disable SPI DMA */
-		CLEAR_BIT(SPI2->CR2, SPI_CR2_TXDMAEN | SPI_CR2_RXDMAEN);
-		/* Re-enable SPI interrupt */
-		HAL_NVIC_EnableIRQ(SPI2_IRQn);
+		/* Disable burst */
+		BurstReadDisable();
+
+		/* Process data received in bytes 0 - 1 */
+		if(g_BurstRxData[0] & 0x80)
+		{
+			/* Write */
+			SPIMISO = WriteReg(g_BurstRxData[0] & 0x7F, g_BurstRxData[1]);
+		}
+		else
+		{
+			/* Read */
+			SPIMISO = ReadReg(g_BurstRxData[0]);
+		}
+
+		/* Transmit data back */
+		SPI2->DR = SPIMISO;
 	}
 }
 

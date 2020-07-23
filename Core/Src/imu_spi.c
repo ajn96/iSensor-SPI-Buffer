@@ -48,17 +48,19 @@ void DisableImuSpiDMA()
 
 void StartImuBurst(uint8_t* bufEntry)
 {
-	/* Drop CS */
-	TIM3->CNT = 0x0;
-	TIM3->CR1 = 0x0;
-
-	/* Burst SPI data capture */
+	/* Flush SPI FIFO */
 	for(int i = 0; i < 4; i++)
 	{
 		SpiData = SPI1->DR;
 	}
 
-	/* Reset the threshold bit */
+	/* Drop CS */
+	TIM3->CNT = 0x0;
+	TIM3->CR1 = 0x0;
+
+	/* Burst SPI data capture */
+
+	/* Reset the DMA threshold bit */
 	CLEAR_BIT(SPI1->CR2, SPI_CR2_LDMATX | SPI_CR2_LDMARX);
 
 	/************ Enable the Rx DMA Stream/Channel  *********************/
@@ -70,7 +72,7 @@ void StartImuBurst(uint8_t* bufEntry)
 	g_spi1.hdmarx->Instance->CCR &= ~DMA_CCR_EN;
 
 	/* Clear all flags */
-	g_spi1.hdmarx->DmaBaseAddress->IFCR  = (DMA_FLAG_GL1 << g_spi1.hdmarx->ChannelIndex);
+	g_spi1.hdmarx->DmaBaseAddress->IFCR  = (DMA_FLAG_GL1 << 4);
 
 	/* Configure DMA Channel data length (16 bit SPI words) */
 	g_spi1.hdmarx->Instance->CNDTR = g_regs[BUF_LEN_REG] >> 1;
@@ -94,7 +96,7 @@ void StartImuBurst(uint8_t* bufEntry)
 	g_spi1.hdmatx->Instance->CCR &= ~DMA_CCR_EN;
 
 	/* Clear all flags */
-	g_spi1.hdmatx->DmaBaseAddress->IFCR  = (DMA_FLAG_GL1 << g_spi1.hdmatx->ChannelIndex);
+	g_spi1.hdmatx->DmaBaseAddress->IFCR  = (DMA_FLAG_GL1 << 8);
 
 	/* Configure DMA Channel data length */
 	g_spi1.hdmatx->Instance->CNDTR = g_regs[BUF_LEN_REG] >> 1;
@@ -114,9 +116,6 @@ void StartImuBurst(uint8_t* bufEntry)
 
 	/* Set TX DMA request enable in SPI */
 	SET_BIT(SPI1->CR2, SPI_CR2_TXDMAEN);
-
-	/* Enable SPI */
-	SET_BIT(SPI1->CR1, SPI_CR1_SPE);
 }
 
 /**

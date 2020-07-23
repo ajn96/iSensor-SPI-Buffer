@@ -15,5 +15,6 @@
 
 /* Public function prototypes */
 void BurstReadSetup();
+void BurstReadDisable();
 
 #endif /* INC_BURST_H_ */
