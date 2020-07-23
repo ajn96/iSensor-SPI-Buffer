@@ -529,6 +529,14 @@ static void FinishSlaveSpiBurst()
 		/* Disable burst */
 		BurstReadDisable();
 
+		/* Get SPI back to a good state */
+		for(uint32_t i = 0; i < 4; i++)
+		{
+			SPIMISO = SPI2->DR;
+		}
+		/* Read status register */
+		SPIMISO = SPI2->SR;
+
 		/* Process data received in bytes 0 - 1 */
 		if(g_BurstRxData[0] & 0x80)
 		{
