@@ -10,6 +10,9 @@
 
 #include "burst.h"
 
+/** Buffer to receive burst DMA data (from master) into. Global scope */
+uint8_t g_BurstRxData[74] = {0};
+
 /** User SPI handle (from main.c) */
 extern SPI_HandleTypeDef g_spi2;
 
@@ -19,10 +22,8 @@ volatile extern uint16_t* g_CurrentBufEntry;
 /** Global register array (from registers.c) */
 volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
 
+/* Data read from SPI2->DR */
 static volatile uint32_t SpiData;
-
-/** Buffer to receive burst DMA data (from master) into */
-uint8_t g_BurstRxData[74] = {0};
 
 /**
   * @brief Configures SPI for a burst buffer read
@@ -101,14 +102,31 @@ void BurstReadSetup()
 
 	/* Set TX DMA request enable in SPI */
 	SET_BIT(SPI2->CR2, SPI_CR2_TXDMAEN);
-
-	//g_spi2.State = HAL_SPI_STATE_READY;
-	//HAL_SPI_TransmitReceive_DMA(&g_spi2, (uint8_t*) g_CurrentBufEntry, g_BurstRxData, g_regs[BUF_LEN_REG] + 10);
 }
 
+/**
+  * @brief Restore SPI functionality after a burst read
+  *
+  * @return void
+  *
+  * This function disables SPI2 DMA requests and re-enables the SPI2
+  * interrupt service routine (disabled during burst).
+  */
 void BurstReadDisable()
 {
+	/* Clear DMA enable bits in SPI control register */
 	CLEAR_BIT(SPI2->CR2, SPI_CR2_TXDMAEN | SPI_CR2_RXDMAEN);
+
+	/* Flush any data in SPI */
+	/* Get SPI back to a good state */
+	for(uint32_t i = 0; i < 4; i++)
+	{
+		SpiData = SPI2->DR;
+	}
+	/* Read status register */
+	SpiData = SPI2->SR;
+
+	/* Clear pending interrupts and re-enable */
 	HAL_NVIC_ClearPendingIRQ(SPI2_IRQn);
 	HAL_NVIC_EnableIRQ(SPI2_IRQn);
 }

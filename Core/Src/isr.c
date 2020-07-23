@@ -35,9 +35,10 @@ extern DMA_HandleTypeDef g_dma_spi1_rx;
 /** IMU SPI Rx DMA (from main.c) */
 extern DMA_HandleTypeDef g_dma_spi1_tx;
 
+/** IMU SPI handle (from main.c) */
 extern SPI_HandleTypeDef g_spi1;
 
-/** Buffer to receive burst DMA data (from master) into */
+/** Buffer to receive burst DMA data (from master) into (from burst.c)  */
 extern uint8_t g_BurstRxData[74];
 
 /** Current capture size (in 16 bit words). Global scope */
@@ -55,23 +56,16 @@ static uint16_t* BufferSigHandle;
 /** Track number of words captured within current buffer entry */
 static volatile uint32_t WordsCaptured;
 
-/** Microsecond sample time stamp */
-static uint32_t SampleTimestampUs;
-
-/** Second sample time stamp */
-static uint32_t SampleTimestampS;
-
 /** Buffer signature */
 static uint32_t BufferSignature;
 
 /** SPI MISO data */
 static uint32_t SPIMISO;
 
-/** EXTI pending request register */
-static uint32_t EXTI_PR;
+/** Flag to track if IMU burst DMA is done */
+static volatile uint32_t ImuDMADone = 0;
 
-static volatile uint32_t ImuDMADone;
-
+/** Flag to track if user burst DMA is done */
 static volatile uint32_t SlaveSpiDMADone = 0;
 
 /**
@@ -87,6 +81,15 @@ static volatile uint32_t SlaveSpiDMADone = 0;
   */
 void EXTI9_5_IRQHandler()
 {
+	/* EXTI pending request register */
+	static uint32_t EXTI_PR;
+
+	/* Microsecond sample time stamp */
+	static uint32_t SampleTimestampUs;
+
+	/* Second sample time stamp */
+	static uint32_t SampleTimestampS;
+
 	/* Clear exti PR register (lines 5-9) */
 	EXTI_PR = EXTI->PR;
 	EXTI->PR |= 0x1F << 5;
@@ -528,14 +531,6 @@ static void FinishSlaveSpiBurst()
 	{
 		/* Disable burst */
 		BurstReadDisable();
-
-		/* Get SPI back to a good state */
-		for(uint32_t i = 0; i < 4; i++)
-		{
-			SPIMISO = SPI2->DR;
-		}
-		/* Read status register */
-		SPIMISO = SPI2->SR;
 
 		/* Process data received in bytes 0 - 1 */
 		if(g_BurstRxData[0] & 0x80)
