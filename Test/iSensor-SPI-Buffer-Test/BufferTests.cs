@@ -14,6 +14,16 @@ namespace iSensor_SPI_Buffer_Test
     class BufferTests : TestBase
     {
         [Test]
+        public void BurstTest()
+        {
+            InitializeTestCase();
+
+            /* Enable user spi burst */
+            WriteUnsigned("USER_SPI_CONFIG", 0x8007, true);
+
+        }
+
+        [Test]
         public void BufferRetrieveTimeTest()
         {
             InitializeTestCase();
