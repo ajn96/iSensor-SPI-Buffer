@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Src/data_capture.c File Reference</title>
+<title>iSensor-SPI-Buffer: data_capture.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -99,10 +99,9 @@ Variables</h2></td></tr>
 <tr class="separator:a07af1c87664cfacf9460801271ab0dec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8612b680a1efebe782532fc810863fca"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="data__capture_8c.html#a8612b680a1efebe782532fc810863fca">g_PPSInterruptMask</a></td></tr>
 <tr class="separator:a8612b680a1efebe782532fc810863fca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cd1b75a16b5fa80d7511efc16bd69e0"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="data__capture_8c.html#a2cd1b75a16b5fa80d7511efc16bd69e0">g_DrInterruptMask</a></td></tr>
-<tr class="separator:a2cd1b75a16b5fa80d7511efc16bd69e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50b5211d8c4765f7e600ea2f5439677b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="data__capture_8c.html#a50b5211d8c4765f7e600ea2f5439677b">g_ActiveDrInterruptMask</a></td></tr>
-<tr class="separator:a50b5211d8c4765f7e600ea2f5439677b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0151886bd5a84aa2151560d992b14bb"><td class="memItemLeft" align="right" valign="top"><a id="ae0151886bd5a84aa2151560d992b14bb"></a>
+static volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>capture_running</b> = 0</td></tr>
+<tr class="separator:ae0151886bd5a84aa2151560d992b14bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>iSensor-SPI-Buffer autonomous IMU data acquisition functions. </p>
@@ -153,21 +152,6 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a50b5211d8c4765f7e600ea2f5439677b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50b5211d8c4765f7e600ea2f5439677b">&#9670;&nbsp;</a></span>g_ActiveDrInterruptMask</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t g_ActiveDrInterruptMask</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Track EXTI interrupt mask for active data ready signal. Global scope </p>
-
-</div>
-</div>
 <a id="a07af1c87664cfacf9460801271ab0dec"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a07af1c87664cfacf9460801271ab0dec">&#9670;&nbsp;</a></span>g_captureInProgress</h2>
 
@@ -180,22 +164,6 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Track if there is currently a capture in progress </p>
-
-</div>
-</div>
-<a id="a2cd1b75a16b5fa80d7511efc16bd69e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2cd1b75a16b5fa80d7511efc16bd69e0">&#9670;&nbsp;</a></span>g_DrInterruptMask</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t g_DrInterruptMask</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Data ready input interrupt mask (from <a class="el" href="dio_8c.html" title="Implementation file for iSensor-SPI-Buffer DIO interfacing module.">dio.c</a>)</p>
-<p>Interrupt mask for the data ready EXTI interrupt. Global scope </p>
 
 </div>
 </div>

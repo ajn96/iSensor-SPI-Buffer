@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/cli.h Source File</title>
+<title>iSensor-SPI-Buffer: cli.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -84,14 +84,22 @@ $(function() {
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cli_8h.html#a06341c7477d45abdc32876b3ea418065">USBSerialHandler</a>();</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> <a class="code" href="cli_8h.html#aceb394d4a71272370a5b2196789a4abe">USBReadBuf</a>();</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#define BUF_BASE_ADDR           8</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="cli_8h.html#ac66c5df61455bee21a0ae0a2be510b4c">   24</a></span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#define BUF_DATA_BASE_ADDR      16</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="cli_8h.html#ab474ab6e248f8a7a04472c98100eade4">   27</a></span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_CLI_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#define USB_STREAM_BITM             (1 &lt;&lt; 0)</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#define USB_ECHO_BITM               (1 &lt;&lt; 1)</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define USB_DELIM_BITM              (0xFF00)</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#define USB_STREAM_BITP             0</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define USB_ECHO_BITP               1</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define USB_DELIM_BITP              8</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#define BUF_BASE_ADDR           8</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="cli_8h.html#ac66c5df61455bee21a0ae0a2be510b4c">   32</a></span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#define BUF_DATA_BASE_ADDR      16</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="cli_8h.html#ab474ab6e248f8a7a04472c98100eade4">   35</a></span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_CLI_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="acli_8h_html_a06341c7477d45abdc32876b3ea418065"><div class="ttname"><a href="cli_8h.html#a06341c7477d45abdc32876b3ea418065">USBSerialHandler</a></div><div class="ttdeci">void USBSerialHandler()</div><div class="ttdoc">Handler for received USB data.</div><div class="ttdef"><b>Definition:</b> cli.c:101</div></div>
-<div class="ttc" id="acli_8h_html_aceb394d4a71272370a5b2196789a4abe"><div class="ttname"><a href="cli_8h.html#aceb394d4a71272370a5b2196789a4abe">USBReadBuf</a></div><div class="ttdeci">void USBReadBuf()</div><div class="ttdoc">Print all contents of the buffer to the USB CLI.</div><div class="ttdef"><b>Definition:</b> cli.c:164</div></div>
+<div class="ttc" id="acli_8h_html_aceb394d4a71272370a5b2196789a4abe"><div class="ttname"><a href="cli_8h.html#aceb394d4a71272370a5b2196789a4abe">USBReadBuf</a></div><div class="ttdeci">void USBReadBuf()</div><div class="ttdoc">Print all contents of the buffer to the USB CLI.</div><div class="ttdef"><b>Definition:</b> cli.c:176</div></div>
 <div class="ttc" id="amain_8h_html"><div class="ttname"><a href="main_8h.html">main.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer main.</div></div>
 <div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
 <!-- start footer part -->

@@ -1,7 +1,11 @@
 var searchData=
 [
-  ['getbuilddate_248',['GetBuildDate',['../registers_8h.html#a042bb33891e7dcafa8dcf3a696eaa451',1,'GetBuildDate():&#160;registers.c'],['../registers_8c.html#a042bb33891e7dcafa8dcf3a696eaa451',1,'GetBuildDate():&#160;registers.c']]],
-  ['gethardwareid_249',['GetHardwareID',['../dio_8h.html#a23bbc6369c345ac12e5de302c02db52b',1,'GetHardwareID():&#160;dio.c'],['../dio_8c.html#a23bbc6369c345ac12e5de302c02db52b',1,'GetHardwareID():&#160;dio.c']]],
-  ['getmicrosecondtimestamp_250',['GetMicrosecondTimestamp',['../timer_8h.html#a42165c313ad966bc655a7b7db5bd0264',1,'GetMicrosecondTimestamp():&#160;timer.c'],['../timer_8c.html#a42165c313ad966bc655a7b7db5bd0264',1,'GetMicrosecondTimestamp():&#160;timer.c']]],
-  ['getsn_251',['GetSN',['../registers_8h.html#a7b32151b1c6c1f3adcf8c1b2d245d191',1,'GetSN():&#160;registers.c'],['../registers_8c.html#a7b32151b1c6c1f3adcf8c1b2d245d191',1,'GetSN():&#160;registers.c']]]
+  ['factoryreset_332',['FactoryReset',['../registers_8h.html#a1e4cc4aaf47e349fdaedc1df90274cab',1,'FactoryReset():&#160;registers.c'],['../registers_8c.html#a1e4cc4aaf47e349fdaedc1df90274cab',1,'FactoryReset():&#160;registers.c']]],
+  ['feedwatchdog_333',['FeedWatchDog',['../watchdog_8h.html#a8ea40194cba4ee3987e74a1ec77091fc',1,'FeedWatchDog():&#160;watchdog.c'],['../watchdog_8c.html#a8ea40194cba4ee3987e74a1ec77091fc',1,'FeedWatchDog():&#160;watchdog.c']]],
+  ['finishimuburst_334',['FinishImuBurst',['../isr_8c.html#af1b2415315c15bd1688844b89f63ea7f',1,'isr.c']]],
+  ['finishslavespiburst_335',['FinishSlaveSpiBurst',['../isr_8c.html#a5ab16366f7fe7d2a61d72d675701c20a',1,'isr.c']]],
+  ['flashcheckloggederror_336',['FlashCheckLoggedError',['../flash_8h.html#a0573959b49fb264dd25636a6032ef01c',1,'FlashCheckLoggedError():&#160;flash.c'],['../flash_8c.html#a0573959b49fb264dd25636a6032ef01c',1,'FlashCheckLoggedError():&#160;flash.c']]],
+  ['flashiniterrorlog_337',['FlashInitErrorLog',['../flash_8h.html#a46338bc563a7426b0d9983d549049e87',1,'FlashInitErrorLog():&#160;flash.c'],['../flash_8c.html#a46338bc563a7426b0d9983d549049e87',1,'FlashInitErrorLog():&#160;flash.c']]],
+  ['flashlogerror_338',['FlashLogError',['../flash_8h.html#aa2248ba2758bb6fde5d3311e13e25773',1,'FlashLogError(uint32_t faultCode):&#160;flash.c'],['../flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773',1,'FlashLogError(uint32_t faultCode):&#160;flash.c']]],
+  ['flashupdate_339',['FlashUpdate',['../flash_8h.html#a48f0984b98ef386bfcc84f996210c37a',1,'FlashUpdate():&#160;flash.c'],['../flash_8c.html#a48f0984b98ef386bfcc84f996210c37a',1,'FlashUpdate():&#160;flash.c']]]
 ];

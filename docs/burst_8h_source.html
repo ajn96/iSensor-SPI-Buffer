@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/burst.h Source File</title>
+<title>iSensor-SPI-Buffer: burst.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -80,10 +80,12 @@ $(function() {
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordtype">void</span> <a class="code" href="burst_8h.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00">BurstReadSetup</a>();</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_BURST_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> <a class="code" href="burst_8h.html#a3ba4975cc957879494953133d89031a5">BurstReadDisable</a>();</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_BURST_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aburst_8h_html_a4f1e131bf66f71bfe6d9c3b30f3d9d00"><div class="ttname"><a href="burst_8h.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00">BurstReadSetup</a></div><div class="ttdeci">void BurstReadSetup()</div><div class="ttdoc">Configures SPI for a burst buffer read.</div><div class="ttdef"><b>Definition:</b> burst.c:30</div></div>
+<div class="ttc" id="aburst_8h_html_a3ba4975cc957879494953133d89031a5"><div class="ttname"><a href="burst_8h.html#a3ba4975cc957879494953133d89031a5">BurstReadDisable</a></div><div class="ttdeci">void BurstReadDisable()</div><div class="ttdoc">Restore SPI functionality after a burst read.</div><div class="ttdef"><b>Definition:</b> burst.c:115</div></div>
+<div class="ttc" id="aburst_8h_html_a4f1e131bf66f71bfe6d9c3b30f3d9d00"><div class="ttname"><a href="burst_8h.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00">BurstReadSetup</a></div><div class="ttdeci">void BurstReadSetup()</div><div class="ttdoc">Configures SPI for a burst buffer read.</div><div class="ttdef"><b>Definition:</b> burst.c:36</div></div>
 <div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

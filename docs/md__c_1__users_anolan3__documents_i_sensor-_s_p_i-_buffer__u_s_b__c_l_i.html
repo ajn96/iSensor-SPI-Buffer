@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -82,7 +82,7 @@ $(function() {
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">help </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">List available CLI options  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">reset </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Trigger a system reset. This will reset the page to 253 (default page). May have to reset terminal emulator after a reset  </td></tr>
+<td class="markdownTableBodyNone">freset </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Trigger a factory reset and flash update. This command restores all registers to their default values and then issues a flash update command to save registers to non-volatile memory  </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">read </td><td class="markdownTableBodyNone">Register address </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Read a single register, at the address provided  </td></tr>
 <tr class="markdownTableRowEven">
@@ -99,10 +99,13 @@ $(function() {
 <td class="markdownTableBodyNone">delim </td><td class="markdownTableBodyNone">Delimiter character </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Set the delimiter character which is placed between register values for read operations (comma, space, etc) This value is stored in USB_CONFIG  </td></tr>
 </table>
 <p>Help Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_help.JPG" alt="Help" class="inline"/></p>
-<p>Register Read Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_read.JPG" alt="Help" class="inline"/></p>
-<p>Register Write Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_write.JPG" alt="Help" class="inline"/></p>
-<p>Delim Set Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_delim.JPG" alt="Help" class="inline"/></p>
-<p>Read Buffer Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_readbuf.JPG" alt="Help" class="inline"/> </p>
+<p>Factory Reset Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_reset.JPG" alt="Factory Reset" class="inline"/></p>
+<p>Register Read Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_read.JPG" alt="Read" class="inline"/></p>
+<p>Register Write Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_write.JPG" alt="Write" class="inline"/></p>
+<p>Delim Set Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_delim.JPG" alt="Delim" class="inline"/></p>
+<p>Read Buffer Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_readbuf.JPG" alt="ReadBuf" class="inline"/></p>
+<p>Stream Command (WATERMARK_INT_CONFIG set to 60)</p>
+<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_stream.JPG" alt="Stream" class="inline"/> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

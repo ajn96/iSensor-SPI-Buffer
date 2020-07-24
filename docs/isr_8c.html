@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Src/isr.c File Reference</title>
+<title>iSensor-SPI-Buffer: isr.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -82,6 +82,12 @@ $(function() {
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:af1b2415315c15bd1688844b89f63ea7f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#af1b2415315c15bd1688844b89f63ea7f">FinishImuBurst</a> ()</td></tr>
+<tr class="memdesc:af1b2415315c15bd1688844b89f63ea7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleans up an IMU burst data read.  <a href="isr_8c.html#af1b2415315c15bd1688844b89f63ea7f">More...</a><br /></td></tr>
+<tr class="separator:af1b2415315c15bd1688844b89f63ea7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ab16366f7fe7d2a61d72d675701c20a"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a5ab16366f7fe7d2a61d72d675701c20a">FinishSlaveSpiBurst</a> ()</td></tr>
+<tr class="memdesc:a5ab16366f7fe7d2a61d72d675701c20a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleans up a burst data read from a master device.  <a href="isr_8c.html#a5ab16366f7fe7d2a61d72d675701c20a">More...</a><br /></td></tr>
+<tr class="separator:a5ab16366f7fe7d2a61d72d675701c20a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f0a091727452df71a1760d1133bf9b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a9f0a091727452df71a1760d1133bf9b4">EXTI9_5_IRQHandler</a> ()</td></tr>
 <tr class="memdesc:a9f0a091727452df71a1760d1133bf9b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">IMU data ready ISR. Kicks off data capture process.  <a href="isr_8c.html#a9f0a091727452df71a1760d1133bf9b4">More...</a><br /></td></tr>
 <tr class="separator:a9f0a091727452df71a1760d1133bf9b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -94,11 +100,17 @@ Functions</h2></td></tr>
 <tr class="memitem:a68d8880cd80cb17a2501487c3d649ea1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a68d8880cd80cb17a2501487c3d649ea1">SPI2_IRQHandler</a> (void)</td></tr>
 <tr class="memdesc:a68d8880cd80cb17a2501487c3d649ea1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slave SPI ISR.  <a href="isr_8c.html#a68d8880cd80cb17a2501487c3d649ea1">More...</a><br /></td></tr>
 <tr class="separator:a68d8880cd80cb17a2501487c3d649ea1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c3390d4dc5cfceccbeda71aa672d99d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a0c3390d4dc5cfceccbeda71aa672d99d">DMA1_Channel2_IRQHandler</a> (void)</td></tr>
+<tr class="memdesc:a0c3390d4dc5cfceccbeda71aa672d99d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function handles DMA1 channel2 global interrupt (spi1 (IMU) Rx).  <a href="isr_8c.html#a0c3390d4dc5cfceccbeda71aa672d99d">More...</a><br /></td></tr>
+<tr class="separator:a0c3390d4dc5cfceccbeda71aa672d99d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadb8937353693c94b0d8e32fc6f18fc2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#aadb8937353693c94b0d8e32fc6f18fc2">DMA1_Channel3_IRQHandler</a> (void)</td></tr>
+<tr class="memdesc:aadb8937353693c94b0d8e32fc6f18fc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function handles DMA1 channel3 global interrupt (spi1 (IMU) Tx).  <a href="isr_8c.html#aadb8937353693c94b0d8e32fc6f18fc2">More...</a><br /></td></tr>
+<tr class="separator:aadb8937353693c94b0d8e32fc6f18fc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b75ef44037d7ed50a1078c024ae853a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a9b75ef44037d7ed50a1078c024ae853a">DMA1_Channel4_IRQHandler</a> (void)</td></tr>
-<tr class="memdesc:a9b75ef44037d7ed50a1078c024ae853a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function handles DMA1 channel4 global interrupt (spi2 RX done).  <a href="isr_8c.html#a9b75ef44037d7ed50a1078c024ae853a">More...</a><br /></td></tr>
+<tr class="memdesc:a9b75ef44037d7ed50a1078c024ae853a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function handles DMA1 channel4 global interrupt (spi2 (user) Rx).  <a href="isr_8c.html#a9b75ef44037d7ed50a1078c024ae853a">More...</a><br /></td></tr>
 <tr class="separator:a9b75ef44037d7ed50a1078c024ae853a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd16b3391557c4a3a8020d675e2c452f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#abd16b3391557c4a3a8020d675e2c452f">DMA1_Channel5_IRQHandler</a> (void)</td></tr>
-<tr class="memdesc:abd16b3391557c4a3a8020d675e2c452f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function handles DMA1 channel5 global interrupt (spi2 TX done).  <a href="isr_8c.html#abd16b3391557c4a3a8020d675e2c452f">More...</a><br /></td></tr>
+<tr class="memdesc:abd16b3391557c4a3a8020d675e2c452f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function handles DMA1 channel5 global interrupt (spi2 (user) Tx).  <a href="isr_8c.html#abd16b3391557c4a3a8020d675e2c452f">More...</a><br /></td></tr>
 <tr class="separator:abd16b3391557c4a3a8020d675e2c452f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2bffc10d5bd4106753b7c30e86903bea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a2bffc10d5bd4106753b7c30e86903bea">HardFault_Handler</a> (void)</td></tr>
 <tr class="memdesc:a2bffc10d5bd4106753b7c30e86903bea"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function handles Hard fault interrupt.  <a href="isr_8c.html#a2bffc10d5bd4106753b7c30e86903bea">More...</a><br /></td></tr>
@@ -119,20 +131,38 @@ Variables</h2></td></tr>
 <tr class="separator:ad9abdec236745828926dbed3d25cfad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2e7f7d2196f13ccbd1dd3b4177ef135"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#aa2e7f7d2196f13ccbd1dd3b4177ef135">g_bufCount</a></td></tr>
 <tr class="separator:aa2e7f7d2196f13ccbd1dd3b4177ef135"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9261cf9a55e8094595049f94eb83ea8"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#ab9261cf9a55e8094595049f94eb83ea8">g_imuStallTimeUs</a></td></tr>
-<tr class="separator:ab9261cf9a55e8094595049f94eb83ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7e4dc4b3c39faa7fee4573f1664aee2"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#ad7e4dc4b3c39faa7fee4573f1664aee2">g_update_flags</a></td></tr>
+<tr class="separator:ad7e4dc4b3c39faa7fee4573f1664aee2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6b55ce4c4660fcf9212ec4c7199757b"><td class="memItemLeft" align="right" valign="top">DMA_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#af6b55ce4c4660fcf9212ec4c7199757b">g_dma_spi2_rx</a></td></tr>
 <tr class="separator:af6b55ce4c4660fcf9212ec4c7199757b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4eae4d74cf9b50c1088c5c05ee83ee2d"><td class="memItemLeft" align="right" valign="top">DMA_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a4eae4d74cf9b50c1088c5c05ee83ee2d">g_dma_spi2_tx</a></td></tr>
 <tr class="separator:a4eae4d74cf9b50c1088c5c05ee83ee2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8612b680a1efebe782532fc810863fca"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a8612b680a1efebe782532fc810863fca">g_PPSInterruptMask</a></td></tr>
-<tr class="separator:a8612b680a1efebe782532fc810863fca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50b5211d8c4765f7e600ea2f5439677b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a50b5211d8c4765f7e600ea2f5439677b">g_ActiveDrInterruptMask</a></td></tr>
-<tr class="separator:a50b5211d8c4765f7e600ea2f5439677b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac1f4630d4e8c615569ebe2ac0631580"><td class="memItemLeft" align="right" valign="top">DMA_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#aac1f4630d4e8c615569ebe2ac0631580">g_dma_spi1_rx</a></td></tr>
+<tr class="separator:aac1f4630d4e8c615569ebe2ac0631580"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dbb1a46106345497ffe77a0cf9c5ee8"><td class="memItemLeft" align="right" valign="top">DMA_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a9dbb1a46106345497ffe77a0cf9c5ee8">g_dma_spi1_tx</a></td></tr>
+<tr class="separator:a9dbb1a46106345497ffe77a0cf9c5ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7374f4f68aaef9867e081e6cb59e3d9"><td class="memItemLeft" align="right" valign="top">SPI_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#ac7374f4f68aaef9867e081e6cb59e3d9">g_spi1</a></td></tr>
+<tr class="separator:ac7374f4f68aaef9867e081e6cb59e3d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a933eb4075c98d198a062c2398ae66a42"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a933eb4075c98d198a062c2398ae66a42">g_BurstRxData</a> [74]</td></tr>
+<tr class="separator:a933eb4075c98d198a062c2398ae66a42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65a6f223155b319c75cb6c1a54e7cdf5"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a65a6f223155b319c75cb6c1a54e7cdf5">g_wordsPerCapture</a></td></tr>
 <tr class="separator:a65a6f223155b319c75cb6c1a54e7cdf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07af1c87664cfacf9460801271ab0dec"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a07af1c87664cfacf9460801271ab0dec">g_captureInProgress</a></td></tr>
 <tr class="separator:a07af1c87664cfacf9460801271ab0dec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a065ba8ba0838a8bd4db45dcb1efdfefe"><td class="memItemLeft" align="right" valign="top">static uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a065ba8ba0838a8bd4db45dcb1efdfefe">BufferElementHandle</a></td></tr>
+<tr class="separator:a065ba8ba0838a8bd4db45dcb1efdfefe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad80c22fd2dacf1151285d1b54577bea7"><td class="memItemLeft" align="right" valign="top">static uint16_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#ad80c22fd2dacf1151285d1b54577bea7">BufferSigHandle</a></td></tr>
+<tr class="separator:ad80c22fd2dacf1151285d1b54577bea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a411f48ca6e6d3feb9fd3d3426c1c92c7"><td class="memItemLeft" align="right" valign="top">static volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a411f48ca6e6d3feb9fd3d3426c1c92c7">WordsCaptured</a></td></tr>
+<tr class="separator:a411f48ca6e6d3feb9fd3d3426c1c92c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f88b41acdf3dd70792cb61593c7398d"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a8f88b41acdf3dd70792cb61593c7398d">BufferSignature</a></td></tr>
+<tr class="separator:a8f88b41acdf3dd70792cb61593c7398d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e0f4207c8b537b8f9d41c706afd63e3"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a6e0f4207c8b537b8f9d41c706afd63e3">SPIMISO</a></td></tr>
+<tr class="separator:a6e0f4207c8b537b8f9d41c706afd63e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cfa6cd5e9ab13fbc4cd620d7ec5489a"><td class="memItemLeft" align="right" valign="top">static volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a8cfa6cd5e9ab13fbc4cd620d7ec5489a">ImuDMADone</a> = 0</td></tr>
+<tr class="separator:a8cfa6cd5e9ab13fbc4cd620d7ec5489a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a59773c7bebad2799bd369bb7bbeca0"><td class="memItemLeft" align="right" valign="top">static volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a7a59773c7bebad2799bd369bb7bbeca0">SlaveSpiDMADone</a> = 0</td></tr>
+<tr class="separator:a7a59773c7bebad2799bd369bb7bbeca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>iSensor-SPI-Buffer interrupt service routines (user provided) </p>
@@ -161,6 +191,48 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a0c3390d4dc5cfceccbeda71aa672d99d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c3390d4dc5cfceccbeda71aa672d99d">&#9670;&nbsp;</a></span>DMA1_Channel2_IRQHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DMA1_Channel2_IRQHandler </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function handles DMA1 channel2 global interrupt (spi1 (IMU) Rx). </p>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a id="aadb8937353693c94b0d8e32fc6f18fc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadb8937353693c94b0d8e32fc6f18fc2">&#9670;&nbsp;</a></span>DMA1_Channel3_IRQHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DMA1_Channel3_IRQHandler </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function handles DMA1 channel3 global interrupt (spi1 (IMU) Tx). </p>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
 <a id="a9b75ef44037d7ed50a1078c024ae853a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9b75ef44037d7ed50a1078c024ae853a">&#9670;&nbsp;</a></span>DMA1_Channel4_IRQHandler()</h2>
 
@@ -177,7 +249,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>This function handles DMA1 channel4 global interrupt (spi2 RX done). </p>
+<p>This function handles DMA1 channel4 global interrupt (spi2 (user) Rx). </p>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
@@ -198,7 +270,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>This function handles DMA1 channel5 global interrupt (spi2 TX done). </p>
+<p>This function handles DMA1 channel5 global interrupt (spi2 (user) Tx). </p>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
@@ -242,6 +314,66 @@ Variables</h2></td></tr>
 <p>IMU data ready ISR. Kicks off data capture process. </p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
 <p>All four DIOx_Master pins map to this interrupt handler. Only one should be enabled as an interrupt source at a time. This interrupt also handles PPS input signals for DIO2-4. The EXTI pending interrupt register (PR) can be used to identify if the interrupt is coming from a PPS strobe or an IMU data ready signal. </p>
+
+</div>
+</div>
+<a id="af1b2415315c15bd1688844b89f63ea7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1b2415315c15bd1688844b89f63ea7f">&#9670;&nbsp;</a></span>FinishImuBurst()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void FinishImuBurst </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Cleans up an IMU burst data read. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function is called once the SPI1 Tx and Rx DMA interrupts have both fired, or a single error interrupt has been generated. SPI1 uses DMA1, channel 2/3. These channels have lower priority than the user SPI DMA channels, which also use DMA peripheral 1.</p>
+<p>This function brings CS high, calculates the buffer signature, and updates the buffer count / capture state variables. Before this function is called, DMA interrupts should be disabled (by their respective ISR's) </p>
+
+</div>
+</div>
+<a id="a5ab16366f7fe7d2a61d72d675701c20a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ab16366f7fe7d2a61d72d675701c20a">&#9670;&nbsp;</a></span>FinishSlaveSpiBurst()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void FinishSlaveSpiBurst </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Cleans up a burst data read from a master device. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function is called once the SPI2 Tx and Rx DMA interrupts have both fired, or a single error interrupt has been generated. SPI2 uses DMA1, channel 4/5. These channels have higher priority than the user SPI DMA channels, which also use DMA peripheral 1.</p>
+<p>This function reacts based on the data received from the master device during the burst. If the master clocked out the address of BUF_RETRIEVE register in the first byte, this function triggers another buffer dequeue operation (which will set up another burst). If the first byte received does not address the BUF_RETRIEVE register, then the SPI is returned to register mode, and the standard SPI read/write routine is called with the values received in the first two bytes. </p>
 
 </div>
 </div>
@@ -352,18 +484,72 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a50b5211d8c4765f7e600ea2f5439677b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50b5211d8c4765f7e600ea2f5439677b">&#9670;&nbsp;</a></span>g_ActiveDrInterruptMask</h2>
+<a id="a065ba8ba0838a8bd4db45dcb1efdfefe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a065ba8ba0838a8bd4db45dcb1efdfefe">&#9670;&nbsp;</a></span>BufferElementHandle</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t g_ActiveDrInterruptMask</td>
+          <td class="memname">uint8_t* BufferElementHandle</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<p>Active data ready input interrupt mask (from <a class="el" href="data__capture_8c.html" title="iSensor-SPI-Buffer autonomous IMU data acquisition functions.">data_capture.c</a>) </p>
+<p>Pointer to buffer element which is being populated </p>
+
+</div>
+</div>
+<a id="ad80c22fd2dacf1151285d1b54577bea7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad80c22fd2dacf1151285d1b54577bea7">&#9670;&nbsp;</a></span>BufferSigHandle</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t* BufferSigHandle</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Pointer to buffer data signature within buffer element which is being populated </p>
+
+</div>
+</div>
+<a id="a8f88b41acdf3dd70792cb61593c7398d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f88b41acdf3dd70792cb61593c7398d">&#9670;&nbsp;</a></span>BufferSignature</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t BufferSignature</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Buffer signature </p>
 
 </div>
 </div>
@@ -383,6 +569,23 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a933eb4075c98d198a062c2398ae66a42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a933eb4075c98d198a062c2398ae66a42">&#9670;&nbsp;</a></span>g_BurstRxData</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t g_BurstRxData[74]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Buffer to receive burst DMA data (from master) into (from <a class="el" href="burst_8c.html" title="iSensor-SPI-Buffer burst data read (slave SPI) module">burst.c</a>) <br  />
+</p>
+<p>Buffer to receive burst DMA data (from master) into. Global scope </p>
+
+</div>
+</div>
 <a id="a07af1c87664cfacf9460801271ab0dec"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a07af1c87664cfacf9460801271ab0dec">&#9670;&nbsp;</a></span>g_captureInProgress</h2>
 
@@ -398,6 +601,38 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="aac1f4630d4e8c615569ebe2ac0631580"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac1f4630d4e8c615569ebe2ac0631580">&#9670;&nbsp;</a></span>g_dma_spi1_rx</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DMA_HandleTypeDef g_dma_spi1_rx</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>IMU SPI Rx DMA (from <a class="el" href="main_8c.html" title="iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.">main.c</a>)</p>
+<p>IMU SPI Rx DMA handle. Global scope </p>
+
+</div>
+</div>
+<a id="a9dbb1a46106345497ffe77a0cf9c5ee8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dbb1a46106345497ffe77a0cf9c5ee8">&#9670;&nbsp;</a></span>g_dma_spi1_tx</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DMA_HandleTypeDef g_dma_spi1_tx</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>IMU SPI Rx DMA (from <a class="el" href="main_8c.html" title="iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.">main.c</a>)</p>
+<p>IMU SPI Tx DMA handle. Global scope </p>
+
+</div>
+</div>
 <a id="af6b55ce4c4660fcf9212ec4c7199757b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af6b55ce4c4660fcf9212ec4c7199757b">&#9670;&nbsp;</a></span>g_dma_spi2_rx</h2>
 
@@ -409,7 +644,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>SPI Rx DMA (from <a class="el" href="main_8c.html" title="iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.">main.c</a>)</p>
+<p>User SPI Rx DMA (from <a class="el" href="main_8c.html" title="iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.">main.c</a>)</p>
 <p>User SPI Rx DMA handle. Global scope </p>
 
 </div>
@@ -425,40 +660,8 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>SPI Rx DMA (from <a class="el" href="main_8c.html" title="iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.">main.c</a>)</p>
+<p>User SPI Rx DMA (from <a class="el" href="main_8c.html" title="iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.">main.c</a>)</p>
 <p>User SPI Tx DMA handle. Global scope </p>
-
-</div>
-</div>
-<a id="ab9261cf9a55e8094595049f94eb83ea8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9261cf9a55e8094595049f94eb83ea8">&#9670;&nbsp;</a></span>g_imuStallTimeUs</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t g_imuStallTimeUs</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>IMU stall time (from <a class="el" href="imu__spi_8c.html" title="Implementation for iSensor-SPI-Buffer IMU interfacing module.">imu_spi.c</a>)</p>
-<p>track stall time (microseconds) </p>
-
-</div>
-</div>
-<a id="a8612b680a1efebe782532fc810863fca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8612b680a1efebe782532fc810863fca">&#9670;&nbsp;</a></span>g_PPSInterruptMask</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t g_PPSInterruptMask</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>PPS input interrupt mask (from <a class="el" href="timer_8c.html" title="Implementation for for iSensor-SPI-Buffer timer module. Covers microsecond timer and PPS timer.">timer.c</a>)</p>
-<p>PPS interrupt source. Global scope </p>
 
 </div>
 </div>
@@ -477,6 +680,37 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="ac7374f4f68aaef9867e081e6cb59e3d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7374f4f68aaef9867e081e6cb59e3d9">&#9670;&nbsp;</a></span>g_spi1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SPI_HandleTypeDef g_spi1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>IMU SPI handle (from <a class="el" href="main_8c.html" title="iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.">main.c</a>)</p>
+<p>SPI handle for IMU master port. Global scope </p>
+
+</div>
+</div>
+<a id="ad7e4dc4b3c39faa7fee4573f1664aee2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7e4dc4b3c39faa7fee4573f1664aee2">&#9670;&nbsp;</a></span>g_update_flags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint32_t g_update_flags</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Register update flags for main loop processing. Global scope </p>
+
+</div>
+</div>
 <a id="a65a6f223155b319c75cb6c1a54e7cdf5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a65a6f223155b319c75cb6c1a54e7cdf5">&#9670;&nbsp;</a></span>g_wordsPerCapture</h2>
 
@@ -489,6 +723,98 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Current capture size (in 16 bit words). Global scope </p>
+
+</div>
+</div>
+<a id="a8cfa6cd5e9ab13fbc4cd620d7ec5489a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cfa6cd5e9ab13fbc4cd620d7ec5489a">&#9670;&nbsp;</a></span>ImuDMADone</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint32_t ImuDMADone = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Flag to track if IMU burst DMA is done </p>
+
+</div>
+</div>
+<a id="a7a59773c7bebad2799bd369bb7bbeca0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a59773c7bebad2799bd369bb7bbeca0">&#9670;&nbsp;</a></span>SlaveSpiDMADone</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint32_t SlaveSpiDMADone = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Flag to track if user burst DMA is done </p>
+
+</div>
+</div>
+<a id="a6e0f4207c8b537b8f9d41c706afd63e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e0f4207c8b537b8f9d41c706afd63e3">&#9670;&nbsp;</a></span>SPIMISO</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t SPIMISO</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>SPI MISO data </p>
+
+</div>
+</div>
+<a id="a411f48ca6e6d3feb9fd3d3426c1c92c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a411f48ca6e6d3feb9fd3d3426c1c92c7">&#9670;&nbsp;</a></span>WordsCaptured</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint32_t WordsCaptured</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Track number of words captured within current buffer entry </p>
 
 </div>
 </div>

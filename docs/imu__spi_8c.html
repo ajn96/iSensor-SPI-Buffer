@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Src/imu_spi.c File Reference</title>
+<title>iSensor-SPI-Buffer: imu_spi.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -82,6 +82,18 @@ $(function() {
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a640286632dd94b1015f32a9892f83322"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#a640286632dd94b1015f32a9892f83322">ApplySclkDivider</a> (uint32_t preScalerSetting)</td></tr>
+<tr class="memdesc:a640286632dd94b1015f32a9892f83322"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies baud rate divider setting to master SPI port (to IMU)  <a href="imu__spi_8c.html#a640286632dd94b1015f32a9892f83322">More...</a><br /></td></tr>
+<tr class="separator:a640286632dd94b1015f32a9892f83322"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade1ebafc91f74e54ede09c7277db0aa4"><td class="memItemLeft" align="right" valign="top"><a id="ade1ebafc91f74e54ede09c7277db0aa4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>EnableImuSpiDMA</b> ()</td></tr>
+<tr class="separator:ade1ebafc91f74e54ede09c7277db0aa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50a9e9e1e661156087f12a81c2b6bc30"><td class="memItemLeft" align="right" valign="top"><a id="a50a9e9e1e661156087f12a81c2b6bc30"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DisableImuSpiDMA</b> ()</td></tr>
+<tr class="separator:a50a9e9e1e661156087f12a81c2b6bc30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6a71708bd067b831a355da7d5e7a1b7"><td class="memItemLeft" align="right" valign="top"><a id="ae6a71708bd067b831a355da7d5e7a1b7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>StartImuBurst</b> (uint8_t *bufEntry)</td></tr>
+<tr class="separator:ae6a71708bd067b831a355da7d5e7a1b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a282b6361f14c10a21b150aa10c26e03f"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#a282b6361f14c10a21b150aa10c26e03f">ImuSpiTransfer</a> (uint32_t MOSI)</td></tr>
 <tr class="memdesc:a282b6361f14c10a21b150aa10c26e03f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Basic IMU SPI data transfer function (protocol agnostic).  <a href="imu__spi_8c.html#a282b6361f14c10a21b150aa10c26e03f">More...</a><br /></td></tr>
 <tr class="separator:a282b6361f14c10a21b150aa10c26e03f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -115,6 +127,13 @@ Variables</h2></td></tr>
 <tr class="separator:ad9abdec236745828926dbed3d25cfad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9261cf9a55e8094595049f94eb83ea8"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#ab9261cf9a55e8094595049f94eb83ea8">g_imuStallTimeUs</a> = 25</td></tr>
 <tr class="separator:ab9261cf9a55e8094595049f94eb83ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac3d2c59ee0e3bbae1b99529a154eb62"><td class="memItemLeft" align="right" valign="top">static TIM_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#aac3d2c59ee0e3bbae1b99529a154eb62">htim3</a></td></tr>
+<tr class="separator:aac3d2c59ee0e3bbae1b99529a154eb62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85788cec5a97ee377e4ee2e74f026484"><td class="memItemLeft" align="right" valign="top">static TIM_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#a85788cec5a97ee377e4ee2e74f026484">htim4</a></td></tr>
+<tr class="separator:a85788cec5a97ee377e4ee2e74f026484"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9590b1ec6e5e504529a5d09632e8791"><td class="memItemLeft" align="right" valign="top"><a id="af9590b1ec6e5e504529a5d09632e8791"></a>
+static volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>SpiData</b></td></tr>
+<tr class="separator:af9590b1ec6e5e504529a5d09632e8791"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation for iSensor-SPI-Buffer IMU interfacing module. </p>
@@ -122,6 +141,41 @@ Variables</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>3/18/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a640286632dd94b1015f32a9892f83322"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a640286632dd94b1015f32a9892f83322">&#9670;&nbsp;</a></span>ApplySclkDivider()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void ApplySclkDivider </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>preScalerSetting</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Applies baud rate divider setting to master SPI port (to IMU) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">preScalerSetting</td><td>The SCLK pre-scaler setting to apply.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
 <a id="af83f777aa978e03f1c4a74c719b45de2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af83f777aa978e03f1c4a74c719b45de2">&#9670;&nbsp;</a></span>ConfigureImuCsTimer()</h2>
 
@@ -378,6 +432,52 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>SPI handle for IMU master port. Global scope </p>
+
+</div>
+</div>
+<a id="aac3d2c59ee0e3bbae1b99529a154eb62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac3d2c59ee0e3bbae1b99529a154eb62">&#9670;&nbsp;</a></span>htim3</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TIM_HandleTypeDef htim3</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>TIM3 HAL handle </p>
+
+</div>
+</div>
+<a id="a85788cec5a97ee377e4ee2e74f026484"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85788cec5a97ee377e4ee2e74f026484">&#9670;&nbsp;</a></span>htim4</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TIM_HandleTypeDef htim4</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>TIM4 HAL handle </p>
 
 </div>
 </div>

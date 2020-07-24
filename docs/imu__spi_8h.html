@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/imu_spi.h File Reference</title>
+<title>iSensor-SPI-Buffer: imu_spi.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -98,6 +98,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a2e5c87a639e8ca9a6f61d05052df5fb8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8h.html#a2e5c87a639e8ca9a6f61d05052df5fb8">UpdateImuSpiConfig</a> ()</td></tr>
 <tr class="memdesc:a2e5c87a639e8ca9a6f61d05052df5fb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes any changes to IMU_SPI_CONFIG reg and applies.  <a href="imu__spi_8h.html#a2e5c87a639e8ca9a6f61d05052df5fb8">More...</a><br /></td></tr>
 <tr class="separator:a2e5c87a639e8ca9a6f61d05052df5fb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade1ebafc91f74e54ede09c7277db0aa4"><td class="memItemLeft" align="right" valign="top"><a id="ade1ebafc91f74e54ede09c7277db0aa4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>EnableImuSpiDMA</b> ()</td></tr>
+<tr class="separator:ade1ebafc91f74e54ede09c7277db0aa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50a9e9e1e661156087f12a81c2b6bc30"><td class="memItemLeft" align="right" valign="top"><a id="a50a9e9e1e661156087f12a81c2b6bc30"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DisableImuSpiDMA</b> ()</td></tr>
+<tr class="separator:a50a9e9e1e661156087f12a81c2b6bc30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6a71708bd067b831a355da7d5e7a1b7"><td class="memItemLeft" align="right" valign="top"><a id="ae6a71708bd067b831a355da7d5e7a1b7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>StartImuBurst</b> (uint8_t *bufEntry)</td></tr>
+<tr class="separator:ae6a71708bd067b831a355da7d5e7a1b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a814e8222e8a4eda9663f65501d41580a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8h.html#a814e8222e8a4eda9663f65501d41580a">InitImuCsTimer</a> ()</td></tr>
 <tr class="memdesc:a814e8222e8a4eda9663f65501d41580a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inits TIM3 for use in PWM mode to drive CS.  <a href="imu__spi_8h.html#a814e8222e8a4eda9663f65501d41580a">More...</a><br /></td></tr>
 <tr class="separator:a814e8222e8a4eda9663f65501d41580a"><td class="memSeparator" colspan="2">&#160;</td></tr>

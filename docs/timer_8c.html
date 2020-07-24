@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Src/timer.c File Reference</title>
+<title>iSensor-SPI-Buffer: timer.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -82,6 +82,12 @@ $(function() {
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a2728000ef526683ed785c3fbf3387409"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a2728000ef526683ed785c3fbf3387409">InitTIM2</a> (uint32_t timerfreq)</td></tr>
+<tr class="memdesc:a2728000ef526683ed785c3fbf3387409"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables IMU sample timestamp timer.  <a href="timer_8c.html#a2728000ef526683ed785c3fbf3387409">More...</a><br /></td></tr>
+<tr class="separator:a2728000ef526683ed785c3fbf3387409"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a82b83a176c98133d53885e74c58d5d"><td class="memItemLeft" align="right" valign="top"><a id="a0a82b83a176c98133d53885e74c58d5d"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ConfigurePPSPins</b> (uint32_t enable)</td></tr>
+<tr class="separator:a0a82b83a176c98133d53885e74c58d5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a927c9c42c21c7bf05c51c6e9253e82b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a927c9c42c21c7bf05c51c6e9253e82b3">CheckPPSUnlock</a> ()</td></tr>
 <tr class="memdesc:a927c9c42c21c7bf05c51c6e9253e82b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the PPS signal is unlocked (greater than 1100ms since last PPS strobe)  <a href="timer_8c.html#a927c9c42c21c7bf05c51c6e9253e82b3">More...</a><br /></td></tr>
 <tr class="separator:a927c9c42c21c7bf05c51c6e9253e82b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,6 +124,8 @@ Variables</h2></td></tr>
 <tr class="separator:a6f243dba51236f2b5163a285092bae63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8612b680a1efebe782532fc810863fca"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a8612b680a1efebe782532fc810863fca">g_PPSInterruptMask</a> = 0</td></tr>
 <tr class="separator:a8612b680a1efebe782532fc810863fca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c80fd5510e2990a59a5c90d745c716c"><td class="memItemLeft" align="right" valign="top">static TIM_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a2c80fd5510e2990a59a5c90d745c716c">htim2</a></td></tr>
+<tr class="separator:a2c80fd5510e2990a59a5c90d745c716c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation for for iSensor-SPI-Buffer timer module. Covers microsecond timer and PPS timer. </p>
@@ -270,6 +278,42 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a2728000ef526683ed785c3fbf3387409"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2728000ef526683ed785c3fbf3387409">&#9670;&nbsp;</a></span>InitTIM2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void InitTIM2 </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>timerfreq</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enables IMU sample timestamp timer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timerfreq</td><td>The desired timer freq (in Hz)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function should be called as part of the buffered data acquisition startup process. The enabled timer is TIM2 (32 bit) </p>
+
+</div>
+</div>
 <a id="ad679c296af1e7b89bd58be986d71d985"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad679c296af1e7b89bd58be986d71d985">&#9670;&nbsp;</a></span>SleepMicroseconds()</h2>
 
@@ -342,6 +386,29 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Global register array (from <a class="el" href="registers_8c.html" title="iSensor-SPI-Buffer register interfacing">registers.c</a>) </p>
+
+</div>
+</div>
+<a id="a2c80fd5510e2990a59a5c90d745c716c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c80fd5510e2990a59a5c90d745c716c">&#9670;&nbsp;</a></span>htim2</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TIM_HandleTypeDef htim2</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>TIM2 handle </p>
 
 </div>
 </div>

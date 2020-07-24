@@ -1,9 +1,13 @@
 var searchData=
 [
-  ['calcregsig_225',['CalcRegSig',['../flash_8h.html#a3e2a702707895bee69f8a070f89c7bf1',1,'CalcRegSig(uint16_t *regs, uint32_t count):&#160;flash.c'],['../flash_8c.html#a3e2a702707895bee69f8a070f89c7bf1',1,'CalcRegSig(uint16_t *regs, uint32_t count):&#160;flash.c']]],
-  ['checkppsunlock_226',['CheckPPSUnlock',['../timer_8h.html#a927c9c42c21c7bf05c51c6e9253e82b3',1,'CheckPPSUnlock():&#160;timer.c'],['../timer_8c.html#a927c9c42c21c7bf05c51c6e9253e82b3',1,'CheckPPSUnlock():&#160;timer.c']]],
-  ['checkwatchdogstatus_227',['CheckWatchDogStatus',['../watchdog_8h.html#ae1d7795593b89a0508b7d5adb1924f69',1,'CheckWatchDogStatus():&#160;watchdog.c'],['../watchdog_8c.html#ae1d7795593b89a0508b7d5adb1924f69',1,'CheckWatchDogStatus():&#160;watchdog.c']]],
-  ['clearmicrosecondtimer_228',['ClearMicrosecondTimer',['../timer_8h.html#aee4842c061c047f9938eccfbbecf9d34',1,'ClearMicrosecondTimer():&#160;timer.c'],['../timer_8c.html#aee4842c061c047f9938eccfbbecf9d34',1,'ClearMicrosecondTimer():&#160;timer.c']]],
-  ['configureimucstimer_229',['ConfigureImuCsTimer',['../imu__spi_8h.html#af83f777aa978e03f1c4a74c719b45de2',1,'ConfigureImuCsTimer(uint32_t period):&#160;imu_spi.c'],['../imu__spi_8c.html#af83f777aa978e03f1c4a74c719b45de2',1,'ConfigureImuCsTimer(uint32_t period):&#160;imu_spi.c']]],
-  ['configureimuspitimer_230',['ConfigureImuSpiTimer',['../imu__spi_8h.html#adfad8c7379c01cb09a7e3754c33e169b',1,'ConfigureImuSpiTimer(uint32_t period):&#160;imu_spi.c'],['../imu__spi_8c.html#adfad8c7379c01cb09a7e3754c33e169b',1,'ConfigureImuSpiTimer(uint32_t period):&#160;imu_spi.c']]]
+  ['blockingusbtransmit_302',['BlockingUSBTransmit',['../cli_8c.html#a34f869363ebc818c68ecdd6e53664074',1,'cli.c']]],
+  ['bufaddelement_303',['BufAddElement',['../buffer_8h.html#a87a48cf043865363f9b934ba3e0db68a',1,'BufAddElement():&#160;buffer.c'],['../buffer_8c.html#a87a48cf043865363f9b934ba3e0db68a',1,'BufAddElement():&#160;buffer.c']]],
+  ['bufcanaddelement_304',['BufCanAddElement',['../buffer_8h.html#a4ac2b05756e76dc8a8de8d82a66721d2',1,'BufCanAddElement():&#160;buffer.c'],['../buffer_8c.html#a4ac2b05756e76dc8a8de8d82a66721d2',1,'BufCanAddElement():&#160;buffer.c']]],
+  ['bufdequeuetooutputregs_305',['BufDequeueToOutputRegs',['../registers_8h.html#a5686c12b7d57a9c338252e749e2b2ef5',1,'BufDequeueToOutputRegs():&#160;registers.c'],['../registers_8c.html#a5686c12b7d57a9c338252e749e2b2ef5',1,'BufDequeueToOutputRegs():&#160;registers.c']]],
+  ['bufreset_306',['BufReset',['../buffer_8h.html#a608864e62e34b7c269cd79d2c7294a48',1,'BufReset():&#160;buffer.c'],['../buffer_8c.html#a608864e62e34b7c269cd79d2c7294a48',1,'BufReset():&#160;buffer.c']]],
+  ['buftakeelement_307',['BufTakeElement',['../buffer_8h.html#afdd89b201e54e51e1fe4f9954fb2e1b0',1,'BufTakeElement():&#160;buffer.c'],['../buffer_8c.html#afdd89b201e54e51e1fe4f9954fb2e1b0',1,'BufTakeElement():&#160;buffer.c']]],
+  ['builddiooutputconfigreg_308',['BuildDIOOutputConfigReg',['../dio_8c.html#a28a551718a1faaa39a66752c1dbdf3b6',1,'dio.c']]],
+  ['burstreaddisable_309',['BurstReadDisable',['../burst_8h.html#a3ba4975cc957879494953133d89031a5',1,'BurstReadDisable():&#160;burst.c'],['../burst_8c.html#a3ba4975cc957879494953133d89031a5',1,'BurstReadDisable():&#160;burst.c']]],
+  ['burstreadsetup_310',['BurstReadSetup',['../burst_8h.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00',1,'BurstReadSetup():&#160;burst.c'],['../burst_8c.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00',1,'BurstReadSetup():&#160;burst.c']]],
+  ['busfault_5fhandler_311',['BusFault_Handler',['../isr_8h.html#a850cefb17a977292ae5eb4cafa9976c3',1,'BusFault_Handler(void):&#160;isr.c'],['../isr_8c.html#a850cefb17a977292ae5eb4cafa9976c3',1,'BusFault_Handler(void):&#160;isr.c']]]
 ];

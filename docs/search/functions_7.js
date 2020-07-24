@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['hardfault_5fhandler_252',['HardFault_Handler',['../isr_8h.html#a2bffc10d5bd4106753b7c30e86903bea',1,'HardFault_Handler(void):&#160;isr.c'],['../isr_8c.html#a2bffc10d5bd4106753b7c30e86903bea',1,'HardFault_Handler(void):&#160;isr.c']]]
+  ['getbuilddate_340',['GetBuildDate',['../registers_8h.html#a042bb33891e7dcafa8dcf3a696eaa451',1,'GetBuildDate():&#160;registers.c'],['../registers_8c.html#a042bb33891e7dcafa8dcf3a696eaa451',1,'GetBuildDate():&#160;registers.c']]],
+  ['gethardwareid_341',['GetHardwareID',['../dio_8h.html#a23bbc6369c345ac12e5de302c02db52b',1,'GetHardwareID():&#160;dio.c'],['../dio_8c.html#a23bbc6369c345ac12e5de302c02db52b',1,'GetHardwareID():&#160;dio.c']]],
+  ['getmicrosecondtimestamp_342',['GetMicrosecondTimestamp',['../timer_8h.html#a42165c313ad966bc655a7b7db5bd0264',1,'GetMicrosecondTimestamp():&#160;timer.c'],['../timer_8c.html#a42165c313ad966bc655a7b7db5bd0264',1,'GetMicrosecondTimestamp():&#160;timer.c']]],
+  ['getsn_343',['GetSN',['../registers_8h.html#a7b32151b1c6c1f3adcf8c1b2d245d191',1,'GetSN():&#160;registers.c'],['../registers_8c.html#a7b32151b1c6c1f3adcf8c1b2d245d191',1,'GetSN():&#160;registers.c']]]
 ];

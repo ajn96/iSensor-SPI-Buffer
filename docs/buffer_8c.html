@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Src/buffer.c File Reference</title>
+<title>iSensor-SPI-Buffer: buffer.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -82,6 +82,8 @@ $(function() {
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a5c39068d8675a7a4aa760e74221903d5"><td class="memItemLeft" align="right" valign="top">static uint8_t buf[<a class="el" href="buffer_8h.html#a6821bafc3c88dfb2e433a095df9940c6">BUF_SIZE</a>]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buffer_8c.html#a5c39068d8675a7a4aa760e74221903d5">__attribute__</a> ((aligned(32)))</td></tr>
+<tr class="separator:a5c39068d8675a7a4aa760e74221903d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ac2b05756e76dc8a8de8d82a66721d2"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buffer_8c.html#a4ac2b05756e76dc8a8de8d82a66721d2">BufCanAddElement</a> ()</td></tr>
 <tr class="memdesc:a4ac2b05756e76dc8a8de8d82a66721d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if an element can be added to the buffer.  <a href="buffer_8c.html#a4ac2b05756e76dc8a8de8d82a66721d2">More...</a><br /></td></tr>
 <tr class="separator:a4ac2b05756e76dc8a8de8d82a66721d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -105,6 +107,18 @@ Variables</h2></td></tr>
 <tr class="separator:a730e66cb06d98e2a818a0d3eadfbd586"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addb2746a5058ce1e5238ded2921a2b50"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buffer_8c.html#addb2746a5058ce1e5238ded2921a2b50">g_bufNumWords32</a></td></tr>
 <tr class="separator:addb2746a5058ce1e5238ded2921a2b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a2fc0aa0e792d53044d5a4117d2489e"><td class="memItemLeft" align="right" valign="top">static volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buffer_8c.html#a4a2fc0aa0e792d53044d5a4117d2489e">buf_head</a> = 0</td></tr>
+<tr class="separator:a4a2fc0aa0e792d53044d5a4117d2489e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abad56259f1dcff3a24d5eb6881664509"><td class="memItemLeft" align="right" valign="top">static volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buffer_8c.html#abad56259f1dcff3a24d5eb6881664509">buf_tail</a> = 0</td></tr>
+<tr class="separator:abad56259f1dcff3a24d5eb6881664509"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91e5f4db9bd4db58e608a94634ec7848"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buffer_8c.html#a91e5f4db9bd4db58e608a94634ec7848">buf_increment</a> = 64</td></tr>
+<tr class="separator:a91e5f4db9bd4db58e608a94634ec7848"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaded6323143e89bd1769e46bdde00edd"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buffer_8c.html#aaded6323143e89bd1769e46bdde00edd">buf_replaceOldest</a> = 0</td></tr>
+<tr class="separator:aaded6323143e89bd1769e46bdde00edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b12f7a2003d4898fd4ccd02846f5da3"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buffer_8c.html#a7b12f7a2003d4898fd4ccd02846f5da3">buf_maxCount</a></td></tr>
+<tr class="separator:a7b12f7a2003d4898fd4ccd02846f5da3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9c7614642dde5b19319f9cb1a47ae05"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buffer_8c.html#ab9c7614642dde5b19319f9cb1a47ae05">buf_lastEntryIndex</a></td></tr>
+<tr class="separator:ab9c7614642dde5b19319f9cb1a47ae05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>iSensor-SPI-Buffer buffer implementation </p>
@@ -112,6 +126,33 @@ Variables</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>3/19/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a5c39068d8675a7a4aa760e74221903d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c39068d8675a7a4aa760e74221903d5">&#9670;&nbsp;</a></span>__attribute__()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static uint8_t buf [<a class="el" href="buffer_8h.html#a6821bafc3c88dfb2e433a095df9940c6">BUF_SIZE</a>] __attribute__ </td>
+          <td>(</td>
+          <td class="paramtype">(aligned(32))&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The buffer storage (aligned to allow word-wise retrieval of buffer data) </p>
+
+</div>
+</div>
 <a id="a87a48cf043865363f9b934ba3e0db68a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a87a48cf043865363f9b934ba3e0db68a">&#9670;&nbsp;</a></span>BufAddElement()</h2>
 
@@ -197,6 +238,144 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a4a2fc0aa0e792d53044d5a4117d2489e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a2fc0aa0e792d53044d5a4117d2489e">&#9670;&nbsp;</a></span>buf_head</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint32_t buf_head = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Index within buffer array for buffer head </p>
+
+</div>
+</div>
+<a id="a91e5f4db9bd4db58e608a94634ec7848"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91e5f4db9bd4db58e608a94634ec7848">&#9670;&nbsp;</a></span>buf_increment</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t buf_increment = 64</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Increment per buffer entry. This is buffer len + 4, padded to multiple of 4 </p>
+
+</div>
+</div>
+<a id="ab9c7614642dde5b19319f9cb1a47ae05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9c7614642dde5b19319f9cb1a47ae05">&#9670;&nbsp;</a></span>buf_lastEntryIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t buf_lastEntryIndex</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Position at which buffer needs to wrap around </p>
+
+</div>
+</div>
+<a id="a7b12f7a2003d4898fd4ccd02846f5da3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b12f7a2003d4898fd4ccd02846f5da3">&#9670;&nbsp;</a></span>buf_maxCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t buf_maxCount</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Buffer max count (determined once when buffer is initialized) </p>
+
+</div>
+</div>
+<a id="aaded6323143e89bd1769e46bdde00edd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaded6323143e89bd1769e46bdde00edd">&#9670;&nbsp;</a></span>buf_replaceOldest</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t buf_replaceOldest = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Buffer full setting (0 -&gt; stop adding, 1 -&gt; replace oldest) </p>
+
+</div>
+</div>
+<a id="abad56259f1dcff3a24d5eb6881664509"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abad56259f1dcff3a24d5eb6881664509">&#9670;&nbsp;</a></span>buf_tail</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint32_t buf_tail = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Index within buffer array for buffer tail </p>
+
+</div>
+</div>
 <a id="a730e66cb06d98e2a818a0d3eadfbd586"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a730e66cb06d98e2a818a0d3eadfbd586">&#9670;&nbsp;</a></span>g_bufCount</h2>
 

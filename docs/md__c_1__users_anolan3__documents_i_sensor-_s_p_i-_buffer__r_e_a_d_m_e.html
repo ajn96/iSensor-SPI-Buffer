@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -76,9 +76,10 @@ $(function() {
 <p><a class="el" href="md__c_1__users_anolan3__documents_i_sensor-_s_p_i-_buffer__u_s_b__c_l_i.html">USB CLI Definition</a></p>
 <p><a class="el" href="md__c_1__users_anolan3__documents_i_sensor-_s_p_i-_buffer__p_i_n__m_a_p.html">STM32 Processor Pin Map</a></p>
 <p><a href="https://ajn96.github.io/iSensor-SPI-Buffer/files.html">Firmware Documentation (Doxygen)</a></p>
+<p>A video walkthrough and tutorial of the SPI Buffer Board's features is hosted on YouTube. Click on the image below to check it out!</p>
+<p><a href="http://www.youtube.com/watch?v=azpeXvWH4VI" title="iSensor SPI Buffer Board Walkthrough 07/09/2020"><img src="http://img.youtube.com/vi/azpeXvWH4VI/0.jpg" alt="" class="inline"/></a></p>
 <h1>Hardware Platform</h1>
 <p>This firmware is designed to operate in the STMicro processor family - specifically the STM32F303 processor. The STM32F303RET6 variant of the processor family was chosen for this application because of its large SRAM and low cost.</p>
-<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/top_image.jpg" alt="iSensor SPI Buffer Top Image" class="inline"/></p>
 <p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/back_iso_image.jpg" alt="iSensor SPI Buffer Isometric Image" class="inline"/></p>
 <p>Revision B of the PCB design includes the following features:</p>
 <ul>
@@ -95,10 +96,26 @@ $(function() {
 <li>ADIS1650x footprint - used to enable the evaluation and use of compact iSensor IMUs</li>
 </ul>
 <p>The iSensor SPI Buffer was designed to sit between an iSensor IMU and the SPI host without changing any existing PCB designs.</p>
-<p><b>Note:</b> A <a href="https://www.tag-connect.com/product/tc2030-idc-6-pin-tag-connect-plug-of-nails-spring-pin-cable-with-legs">TC2030-IDC cable</a> must be used to interface with the SWD pads on the Rev B PCB.</p>
 <p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/mounted_image.jpg" alt="iSensor SPI Buffer Mounted Image" class="inline"/></p>
-<h1>Development Environment</h1>
-<p>The code contained in this repository was developed using the freely available <a href="https://my.st.com/content/my_st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-ides/stm32cubeide">STM32 Cube IDE</a>.</p>
+<h1>Development Environment and Hardware</h1>
+<h2>Software / IDE</h2>
+<p>The code contained in this repository was developed using the freely available <a href="https://my.st.com/content/my_st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-ides/stm32cubeide">STM32 Cube IDE</a>. A compatible project file is also included in this repository to make getting stared as easy as possible.</p>
+<h2>Hardware</h2>
+<p>A <a href="https://www.tag-connect.com/product/tc2030-idc-6-pin-tag-connect-plug-of-nails-spring-pin-cable-with-legs">TC2030-IDC cable</a> must be used to interface with the SWD pads on the Rev B PCB. Development was originally done on an <a href="https://www.st.com/en/evaluation-tools/nucleo-f303re.html">NUCLEO-F303RE</a> development board. When programming a buffer board, we've continued to use the NUCLEO as the SWD programmer.</p>
+<h1>Recovering From a Bad SPI Configuration</h1>
+<p>This buffer firmware includes a feature that allows the host SPI peripheral on the buffer board to be reconfigured to suit the host's needs. Because of this, it's possible to lock yourself out of the buffer board. A bad SPI configuration will usually look like the buffer board is returning the same value repeatedly for all registers. Note that the buffer board returning 0xFFFF or 0x0000 could be caused by other issues (no power to the buffer board, bad connection to the IMU, etc.) A bad SPI configuration will look similar to the image below.</p>
+<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/spi_misconfigured.JPG" alt="SPI Misconfigured" class="inline"/></p>
+<p>Recovering from a bad configuration requires using the USB CLI to communicate with the buffer board's firmware. While not mandatory, we recommend changing the jumper on the buffer board to USB power mode. The jumper just needs to be repositioned as shown below.</p>
+<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/jumper_usb.jpg" alt="USB Jumper Setting" class="inline"/></p>
+<p>Using a terminal program such as <a href="https://ttssh2.osdn.jp/index.html.en">TeraTerm</a> or <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</a> in Windows, connect to the board using the enumerated COM port. The virtual USB port will automatically detect the host serial settings, so additional configuration is usually unnecessary.</p>
+<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/putty_connection.JPG" alt="PuTTY Connection" class="inline"/></p>
+<p>Once connected to the CLI, you can verify that the board is communicating correctly by typing <code>help</code> into the console. You should see a message like the one shown below.</p>
+<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_help_unbrick.JPG" alt="CLI Help Print" class="inline"/></p>
+<p>After you've verified that the CLI is working correctly, type the following command, followed by a carriage return.</p>
+<p><code>freset</code></p>
+<p>This will execute a factory reset command followed by a flash update command. The board should now be reset to SPI Mode 3 with CS active low. The default register settings will have also been committed to flash, so they should persist throughout reboots.</p>
+<h1>Linux Driver Support</h1>
+<p>Support for the SPI Buffer Board in Linux was developed by <a href="https://github.com/spalani7">spalani7</a>. His repository is located <a href="https://github.com/spalani7/adi_imu_driver">here</a>.</p>
 <h1>Design Requirements and Features</h1>
 <h2>IMU Register Interface</h2>
 <ul>

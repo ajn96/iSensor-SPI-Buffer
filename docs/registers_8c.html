@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Src/registers.c File Reference</title>
+<title>iSensor-SPI-Buffer: registers.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -82,6 +82,9 @@ $(function() {
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a2ea4f0af5f4a2eb7d525810686c24c06"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8c.html#a2ea4f0af5f4a2eb7d525810686c24c06">ProcessRegWrite</a> (uint8_t regAddr, uint8_t regValue)</td></tr>
+<tr class="memdesc:a2ea4f0af5f4a2eb7d525810686c24c06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process a write to the iSensor-SPI-Buffer registers.  <a href="registers_8c.html#a2ea4f0af5f4a2eb7d525810686c24c06">More...</a><br /></td></tr>
+<tr class="separator:a2ea4f0af5f4a2eb7d525810686c24c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab657ab42f5acc7060a8150181ac2ad2c"><td class="memItemLeft" align="right" valign="top">uint16_t <a class="el" href="watchdog_8c.html#ad9abdec236745828926dbed3d25cfad5">g_regs</a>[3 *REG_PER_PAGE]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8c.html#ab657ab42f5acc7060a8150181ac2ad2c">__attribute__</a> ((aligned(32)))</td></tr>
 <tr class="separator:ab657ab42f5acc7060a8150181ac2ad2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5686c12b7d57a9c338252e749e2b2ef5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8c.html#a5686c12b7d57a9c338252e749e2b2ef5">BufDequeueToOutputRegs</a> ()</td></tr>
@@ -119,6 +122,10 @@ Variables</h2></td></tr>
 <tr class="separator:addb2746a5058ce1e5238ded2921a2b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7e4dc4b3c39faa7fee4573f1664aee2"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8c.html#ad7e4dc4b3c39faa7fee4573f1664aee2">g_update_flags</a> = 0</td></tr>
 <tr class="separator:ad7e4dc4b3c39faa7fee4573f1664aee2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac514950ea85e080587ac1d5fa432f219"><td class="memItemLeft" align="right" valign="top">volatile uint16_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8c.html#ac514950ea85e080587ac1d5fa432f219">g_CurrentBufEntry</a></td></tr>
+<tr class="separator:ac514950ea85e080587ac1d5fa432f219"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a954f038896c833cf36970b00a32329ac"><td class="memItemLeft" align="right" valign="top">static volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8c.html#a954f038896c833cf36970b00a32329ac">selected_page</a> = <a class="el" href="registers_8h.html#af9e2cac6aba29082e8e722c945b8c935">BUF_CONFIG_PAGE</a></td></tr>
+<tr class="separator:a954f038896c833cf36970b00a32329ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>iSensor-SPI-Buffer register interfacing </p>
@@ -250,6 +257,46 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a2ea4f0af5f4a2eb7d525810686c24c06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ea4f0af5f4a2eb7d525810686c24c06">&#9670;&nbsp;</a></span>ProcessRegWrite()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static uint16_t ProcessRegWrite </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>regAddr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>regValue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Process a write to the iSensor-SPI-Buffer registers. </p>
+<dl class="section return"><dt>Returns</dt><dd>The index to the register within the global register array</dd></dl>
+<p>This function handles filtering for read-only registers. It also handles setting the deferred processing flags as needed for any config/command register writes. This are processed on the next pass of the main loop. </p>
+
+</div>
+</div>
 <a id="aeee7c6312a09dcb27a9d0b68fe37afcf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeee7c6312a09dcb27a9d0b68fe37afcf">&#9670;&nbsp;</a></span>ReadReg()</h2>
 
@@ -370,6 +417,21 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="ac514950ea85e080587ac1d5fa432f219"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac514950ea85e080587ac1d5fa432f219">&#9670;&nbsp;</a></span>g_CurrentBufEntry</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t* g_CurrentBufEntry</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pointer to buffer entry. Will be 0 if no buffer entry "loaded" to output registers </p>
+
+</div>
+</div>
 <a id="a35c3e3dee022adebf0fc138c81b515b9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a35c3e3dee022adebf0fc138c81b515b9">&#9670;&nbsp;</a></span>g_spi2</h2>
 
@@ -397,6 +459,29 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Register update flags for main loop processing. Global scope </p>
+
+</div>
+</div>
+<a id="a954f038896c833cf36970b00a32329ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a954f038896c833cf36970b00a32329ac">&#9670;&nbsp;</a></span>selected_page</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint32_t selected_page = <a class="el" href="registers_8h.html#af9e2cac6aba29082e8e722c945b8c935">BUF_CONFIG_PAGE</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Selected page. Starts on 253 (config page) </p>
 
 </div>
 </div>

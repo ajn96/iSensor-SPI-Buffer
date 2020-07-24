@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/stm32f3xx_hal_conf.h File Reference</title>
+<title>iSensor-SPI-Buffer: stm32f3xx_hal_conf.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -83,6 +83,7 @@ $(function() {
 <code>#include &quot;stm32f3xx_hal_exti.h&quot;</code><br />
 <code>#include &quot;stm32f3xx_hal_dma.h&quot;</code><br />
 <code>#include &quot;stm32f3xx_hal_cortex.h&quot;</code><br />
+<code>#include &quot;stm32f3xx_hal_adc.h&quot;</code><br />
 <code>#include &quot;stm32f3xx_hal_flash.h&quot;</code><br />
 <code>#include &quot;stm32f3xx_hal_i2c.h&quot;</code><br />
 <code>#include &quot;stm32f3xx_hal_pcd.h&quot;</code><br />
@@ -98,6 +99,9 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stm32f3xx__hal__conf_8h.html#a877ae99e8c47a609ea97c888912bf75f">HAL_MODULE_ENABLED</a></td></tr>
 <tr class="memdesc:a877ae99e8c47a609ea97c888912bf75f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the list of modules to be used in the HAL driver. <br /></td></tr>
 <tr class="separator:a877ae99e8c47a609ea97c888912bf75f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a476f1655c969ae57e89a74d98c75f43f"><td class="memItemLeft" align="right" valign="top"><a id="a476f1655c969ae57e89a74d98c75f43f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>HAL_ADC_MODULE_ENABLED</b></td></tr>
+<tr class="separator:a476f1655c969ae57e89a74d98c75f43f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ad4712bf4add56892d057778e826e0c"><td class="memItemLeft" align="right" valign="top"><a id="a8ad4712bf4add56892d057778e826e0c"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>HAL_SPI_MODULE_ENABLED</b></td></tr>
 <tr class="separator:a8ad4712bf4add56892d057778e826e0c"><td class="memSeparator" colspan="2">&#160;</td></tr>

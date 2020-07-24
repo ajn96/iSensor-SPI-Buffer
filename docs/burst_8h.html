@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/burst.h File Reference</title>
+<title>iSensor-SPI-Buffer: burst.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -86,6 +86,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a4f1e131bf66f71bfe6d9c3b30f3d9d00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="burst_8h.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00">BurstReadSetup</a> ()</td></tr>
 <tr class="memdesc:a4f1e131bf66f71bfe6d9c3b30f3d9d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures SPI for a burst buffer read.  <a href="burst_8h.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00">More...</a><br /></td></tr>
 <tr class="separator:a4f1e131bf66f71bfe6d9c3b30f3d9d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ba4975cc957879494953133d89031a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="burst_8h.html#a3ba4975cc957879494953133d89031a5">BurstReadDisable</a> ()</td></tr>
+<tr class="memdesc:a3ba4975cc957879494953133d89031a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore SPI functionality after a burst read.  <a href="burst_8h.html#a3ba4975cc957879494953133d89031a5">More...</a><br /></td></tr>
+<tr class="separator:a3ba4975cc957879494953133d89031a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header file for iSensor-SPI-Buffer burst data read (slave SPI) module. </p>
@@ -93,6 +96,27 @@ Functions</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>4/28/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a3ba4975cc957879494953133d89031a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ba4975cc957879494953133d89031a5">&#9670;&nbsp;</a></span>BurstReadDisable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BurstReadDisable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Restore SPI functionality after a burst read. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function disables SPI2 DMA requests and re-enables the SPI2 interrupt service routine (disabled during burst). </p>
+
+</div>
+</div>
 <a id="a4f1e131bf66f71bfe6d9c3b30f3d9d00"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4f1e131bf66f71bfe6d9c3b30f3d9d00">&#9670;&nbsp;</a></span>BurstReadSetup()</h2>
 

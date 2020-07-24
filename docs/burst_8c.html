@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Src/burst.c File Reference</title>
+<title>iSensor-SPI-Buffer: burst.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -85,13 +85,23 @@ Functions</h2></td></tr>
 <tr class="memitem:a4f1e131bf66f71bfe6d9c3b30f3d9d00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="burst_8c.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00">BurstReadSetup</a> ()</td></tr>
 <tr class="memdesc:a4f1e131bf66f71bfe6d9c3b30f3d9d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures SPI for a burst buffer read.  <a href="burst_8c.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00">More...</a><br /></td></tr>
 <tr class="separator:a4f1e131bf66f71bfe6d9c3b30f3d9d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ba4975cc957879494953133d89031a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="burst_8c.html#a3ba4975cc957879494953133d89031a5">BurstReadDisable</a> ()</td></tr>
+<tr class="memdesc:a3ba4975cc957879494953133d89031a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore SPI functionality after a burst read.  <a href="burst_8c.html#a3ba4975cc957879494953133d89031a5">More...</a><br /></td></tr>
+<tr class="separator:a3ba4975cc957879494953133d89031a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:a933eb4075c98d198a062c2398ae66a42"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="burst_8c.html#a933eb4075c98d198a062c2398ae66a42">g_BurstRxData</a> [74] = {0}</td></tr>
+<tr class="separator:a933eb4075c98d198a062c2398ae66a42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35c3e3dee022adebf0fc138c81b515b9"><td class="memItemLeft" align="right" valign="top">SPI_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="burst_8c.html#a35c3e3dee022adebf0fc138c81b515b9">g_spi2</a></td></tr>
 <tr class="separator:a35c3e3dee022adebf0fc138c81b515b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a498acc08ff841f6655df28c1681f954f"><td class="memItemLeft" align="right" valign="top">volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="burst_8c.html#a498acc08ff841f6655df28c1681f954f">g_regs</a> []</td></tr>
-<tr class="separator:a498acc08ff841f6655df28c1681f954f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac514950ea85e080587ac1d5fa432f219"><td class="memItemLeft" align="right" valign="top">volatile uint16_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="burst_8c.html#ac514950ea85e080587ac1d5fa432f219">g_CurrentBufEntry</a></td></tr>
+<tr class="separator:ac514950ea85e080587ac1d5fa432f219"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9abdec236745828926dbed3d25cfad5"><td class="memItemLeft" align="right" valign="top">volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="burst_8c.html#ad9abdec236745828926dbed3d25cfad5">g_regs</a> [3 *REG_PER_PAGE]</td></tr>
+<tr class="separator:ad9abdec236745828926dbed3d25cfad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9590b1ec6e5e504529a5d09632e8791"><td class="memItemLeft" align="right" valign="top"><a id="af9590b1ec6e5e504529a5d09632e8791"></a>
+static volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>SpiData</b></td></tr>
+<tr class="separator:af9590b1ec6e5e504529a5d09632e8791"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>iSensor-SPI-Buffer burst data read (slave SPI) module </p>
@@ -99,6 +109,27 @@ Variables</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>4/28/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a3ba4975cc957879494953133d89031a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ba4975cc957879494953133d89031a5">&#9670;&nbsp;</a></span>BurstReadDisable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BurstReadDisable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Restore SPI functionality after a burst read. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function disables SPI2 DMA requests and re-enables the SPI2 interrupt service routine (disabled during burst). </p>
+
+</div>
+</div>
 <a id="a4f1e131bf66f71bfe6d9c3b30f3d9d00"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4f1e131bf66f71bfe6d9c3b30f3d9d00">&#9670;&nbsp;</a></span>BurstReadSetup()</h2>
 
@@ -121,14 +152,45 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a498acc08ff841f6655df28c1681f954f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a498acc08ff841f6655df28c1681f954f">&#9670;&nbsp;</a></span>g_regs</h2>
+<a id="a933eb4075c98d198a062c2398ae66a42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a933eb4075c98d198a062c2398ae66a42">&#9670;&nbsp;</a></span>g_BurstRxData</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">volatile uint16_t g_regs[]</td>
+          <td class="memname">uint8_t g_BurstRxData[74] = {0}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Buffer to receive burst DMA data (from master) into. Global scope </p>
+
+</div>
+</div>
+<a id="ac514950ea85e080587ac1d5fa432f219"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac514950ea85e080587ac1d5fa432f219">&#9670;&nbsp;</a></span>g_CurrentBufEntry</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t* g_CurrentBufEntry</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pointer to buffer entry. Will be 0 if no buffer entry "loaded" to output registers (from <a class="el" href="registers_8c.html" title="iSensor-SPI-Buffer register interfacing">registers.c</a>)</p>
+<p>Pointer to buffer entry. Will be 0 if no buffer entry "loaded" to output registers </p>
+
+</div>
+</div>
+<a id="ad9abdec236745828926dbed3d25cfad5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9abdec236745828926dbed3d25cfad5">&#9670;&nbsp;</a></span>g_regs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t g_regs[3 *REG_PER_PAGE]</td>
         </tr>
       </table>
 </div><div class="memdoc">

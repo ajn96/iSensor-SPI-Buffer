@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/registers.h File Reference</title>
+<title>iSensor-SPI-Buffer: registers.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -162,6 +162,9 @@ Macros</h2></td></tr>
 <tr class="memitem:a3874c4626ec222339ab2f145eb61f4ca"><td class="memItemLeft" align="right" valign="top"><a id="a3874c4626ec222339ab2f145eb61f4ca"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>TIMESTAMP_UPR_REG</b>&#160;&#160;&#160;0x26</td></tr>
 <tr class="separator:a3874c4626ec222339ab2f145eb61f4ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e084e101c10a284b0044a6b4986a368"><td class="memItemLeft" align="right" valign="top"><a id="a3e084e101c10a284b0044a6b4986a368"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TEMP_REG</b>&#160;&#160;&#160;0x27</td></tr>
+<tr class="separator:a3e084e101c10a284b0044a6b4986a368"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87c7b3483c83d436cc618f18e0e6792c"><td class="memItemLeft" align="right" valign="top"><a id="a87c7b3483c83d436cc618f18e0e6792c"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FW_DAY_MONTH_REG</b>&#160;&#160;&#160;0x38</td></tr>
 <tr class="separator:a87c7b3483c83d436cc618f18e0e6792c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -206,7 +209,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_DATA_0_REG</b>&#160;&#160;&#160;0x89</td></tr>
 <tr class="separator:aaef4c67582b679f6f8f187cf51d0bd41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d90879dde0a4ef3e14bcfbe31ec442b"><td class="memItemLeft" align="right" valign="top"><a id="a1d90879dde0a4ef3e14bcfbe31ec442b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FW_REV_DEFAULT</b>&#160;&#160;&#160;0x0100</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FW_REV_DEFAULT</b>&#160;&#160;&#160;0x0102</td></tr>
 <tr class="separator:a1d90879dde0a4ef3e14bcfbe31ec442b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1099031991c0f1d500a6f162e899265e"><td class="memItemLeft" align="right" valign="top"><a id="a1099031991c0f1d500a6f162e899265e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_CONFIG_DEFAULT</b>&#160;&#160;&#160;0x0000</td></tr>
@@ -316,6 +319,9 @@ Macros</h2></td></tr>
 <tr class="memitem:a386e0c277196737fee82165110c01502"><td class="memItemLeft" align="right" valign="top"><a id="a386e0c277196737fee82165110c01502"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>STATUS_PPS_UNLOCK</b>&#160;&#160;&#160;(1 &lt;&lt; 6)</td></tr>
 <tr class="separator:a386e0c277196737fee82165110c01502"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2440e20f279e22caeffa54a6cefd243f"><td class="memItemLeft" align="right" valign="top"><a id="a2440e20f279e22caeffa54a6cefd243f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>STATUS_TEMP_WARNING</b>&#160;&#160;&#160;(1 &lt;&lt; 7)</td></tr>
+<tr class="separator:a2440e20f279e22caeffa54a6cefd243f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad22d962a022a4fa24a228b736de833bc"><td class="memItemLeft" align="right" valign="top"><a id="ad22d962a022a4fa24a228b736de833bc"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>STATUS_FLASH_ERROR</b>&#160;&#160;&#160;(1 &lt;&lt; 12)</td></tr>
 <tr class="separator:ad22d962a022a4fa24a228b736de833bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
