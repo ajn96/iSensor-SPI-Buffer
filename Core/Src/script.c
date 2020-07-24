@@ -10,6 +10,7 @@
 
 #include "script.h"
 
+/* Private function prototypes */
 static uint32_t ParseCommandArgs(uint8_t* commandBuf, uint32_t* args);
 static void UShortToHex(uint8_t* outBuf, uint16_t val);
 static uint32_t HexToUInt(uint8_t* commandBuf);
@@ -19,6 +20,7 @@ static uint32_t ReadBufHandler(script* scr, uint8_t* outBuf);
 static uint32_t SleepHandler(script* scr, uint8_t* outBuf);
 static uint32_t LoopHandler(script* scr, uint8_t* outBuf);
 static uint32_t EndLoopHandler(script* scr, uint8_t* outBuf);
+static uint32_t StringEquals(uint8_t* string0, const uint8_t* compStr, uint32_t count);
 
 /** Global register array. (from registers.c) */
 extern volatile uint16_t g_regs[];
@@ -62,9 +64,6 @@ static const uint8_t EndloopCmd[] = "endloop";
 /** Print string for invalid command */
 static uint8_t InvalidCmdStr[] = "Error: Invalid command!\r\n";
 
-/** Print string for newline */
-static uint8_t NewLineStr[] = "\r\n";
-
 /** Print string for invalid argument */
 static uint8_t InvalidArgStr[] = "Error: Invalid argument!\r\n";
 
@@ -84,176 +83,116 @@ script ParseScriptElement(uint8_t* commandBuf)
 	scr.numArgs = 0;
 	scr.invalidArgs = 0;
 
-	/* Read command */
-	for(int i = 0; i < sizeof(ReadCmd) - 1; i++)
+	if(StringEquals(commandBuf, ReadCmd, sizeof(ReadCmd) - 1))
 	{
-		if(commandBuf[i] != ReadCmd[i])
+		scr.scrCommand = read;
+		/* Parse read arguments (1 - 3 arguments possible) */
+		scr.numArgs = ParseCommandArgs(commandBuf, scr.args);
+		if(scr.numArgs == 0)
 		{
-			goto write_label;
-		}
-	}
-	scr.scrCommand = read;
-	/* Parse read arguments (1 - 3 arguments possible) */
-	scr.numArgs = ParseCommandArgs(commandBuf, scr.args);
-	if(scr.numArgs == 0)
-	{
-		/* Zero arguments is invalid */
-		scr.invalidArgs = 1;
-	}
-	else if(scr.numArgs == 2)
-	{
-		/* Arg0 (start read addr) must be less than arg1 (end read addr) */
-		if(scr.args[0] > scr.args[1])
+			/* Zero arguments is invalid */
 			scr.invalidArgs = 1;
+		}
+		else if(scr.numArgs == 2)
+		{
+			/* Arg0 (start read addr) must be less than arg1 (end read addr) */
+			if(scr.args[0] > scr.args[1])
+				scr.invalidArgs = 1;
+		}
+		else if(scr.numArgs == 3)
+		{
+			if(scr.args[0] > scr.args[1])
+				scr.invalidArgs = 1;
+
+			/* number of reads can't be 0 */
+			if(scr.args[2] == 0)
+				scr.invalidArgs = 1;
+		}
+		return scr;
 	}
-	else if(scr.numArgs == 3)
+
+	if(StringEquals(commandBuf, WriteCmd, sizeof(WriteCmd) - 1))
 	{
-		if(scr.args[0] > scr.args[1])
+		scr.scrCommand = write;
+		/* 2 args (write addr, write value) */
+		scr.numArgs = ParseCommandArgs(commandBuf, scr.args);
+		/* Check that we got two arguments */
+		if(scr.numArgs != 2)
 			scr.invalidArgs = 1;
+		return scr;
+	}
 
-		/* number of reads can't be 0 */
-		if(scr.args[2] == 0)
+	if(StringEquals(commandBuf, StreamCmd, sizeof(StreamCmd) - 1))
+	{
+		scr.scrCommand = stream;
+		/* 1 arg (stream enable/disable) */
+		scr.numArgs = ParseCommandArgs(commandBuf, scr.args);
+		/* Check that we got at least 1 argument */
+		if(scr.numArgs == 0)
 			scr.invalidArgs = 1;
+		return scr;
 	}
-	return scr;
 
-	/* write command */
-	write_label:
-	for(int i = 0; i < sizeof(WriteCmd) - 1; i++)
+	if(StringEquals(commandBuf, DelimCmd, sizeof(DelimCmd) - 1))
 	{
-		if(commandBuf[i] != WriteCmd[i])
-		{
-			goto stream_label;
-		}
+		scr.scrCommand = delim;
+		/* 1 arg (delim char) */
+		scr.numArgs = 1;
+		scr.args[0] = commandBuf[6];
+		return scr;
 	}
-	scr.scrCommand = write;
-	/* 2 args (write addr, write value) */
-	scr.numArgs = ParseCommandArgs(commandBuf, scr.args);
-	/* Check that we got two arguments */
-	if(scr.numArgs != 2)
-		scr.invalidArgs = 1;
-	return scr;
 
-	/* stream start/stop command */
-	stream_label:
-	for(int i = 0; i < sizeof(StreamCmd) - 1; i++)
+	if(StringEquals(commandBuf, SleepCmd, sizeof(SleepCmd) - 1))
 	{
-		if(commandBuf[i] != StreamCmd[i])
-		{
-			goto delim_label;
-		}
+		scr.scrCommand = sleep;
+		/* 1 arg (sleep time, in ms) */
+		scr.numArgs = ParseCommandArgs(commandBuf, scr.args);
+		/* Check that we got at least 1 argument */
+		if(scr.numArgs == 0)
+			scr.invalidArgs = 1;
+		return scr;
 	}
-	scr.scrCommand = stream;
-	/* 1 arg (stream enable/disable) */
-	scr.numArgs = ParseCommandArgs(commandBuf, scr.args);
-	/* Check that we got at least 1 argument */
-	if(scr.numArgs == 0)
-		scr.invalidArgs = 1;
-	return scr;
 
-	/* Set delim command */
-	delim_label:
-	for(int i = 0; i < sizeof(DelimCmd) - 1; i++)
+	if(StringEquals(commandBuf, LoopCmd, sizeof(LoopCmd) - 1))
 	{
-		if(commandBuf[i] != DelimCmd[i])
-		{
-			goto sleep_label;;
-		}
+		scr.scrCommand = loop;
+		/* 1 arg (number of loops) */
+		scr.numArgs = ParseCommandArgs(commandBuf, scr.args);
+		/* Check that we got at least 1 argument */
+		if(scr.numArgs == 0)
+			scr.invalidArgs = 1;
+		return scr;
 	}
-	scr.scrCommand = delim;
-	/* 1 arg (delim char) */
-	scr.numArgs = 1;
-	scr.args[0] = commandBuf[6];
-	return scr;
 
-	/* Sleep command */
-	sleep_label:
-	for(int i = 0; i < sizeof(SleepCmd) - 1; i++)
+	if(StringEquals(commandBuf, EndloopCmd, sizeof(EndloopCmd) - 1))
 	{
-		if(commandBuf[i] != SleepCmd[i])
-		{
-			goto loop_label;
-		}
+		scr.scrCommand = endloop;
+		/* No args */
+		return scr;
 	}
-	scr.scrCommand = sleep;
-	/* 1 arg (sleep time, in ms) */
-	scr.numArgs = ParseCommandArgs(commandBuf, scr.args);
-	/* Check that we got at least 1 argument */
-	if(scr.numArgs == 0)
-		scr.invalidArgs = 1;
-	return scr;
 
-	/* Loop command */
-	loop_label:
-	for(int i = 0; i < sizeof(LoopCmd) - 1; i++)
+	if(StringEquals(commandBuf, FactoryResetCmd, sizeof(FactoryResetCmd) - 1))
 	{
-		if(commandBuf[i] != LoopCmd[i])
-		{
-			goto endloop_label;
-		}
+		scr.scrCommand = freset;
+		/* No args */
+		return scr;
 	}
-	scr.scrCommand = loop;
-	/* 1 arg (number of loops) */
-	scr.numArgs = ParseCommandArgs(commandBuf, scr.args);
-	/* Check that we got at least 1 argument */
-	if(scr.numArgs == 0)
-		scr.invalidArgs = 1;
-	return scr;
 
-	/* Endloop command */
-	endloop_label:
-	for(int i = 0; i < sizeof(EndloopCmd) - 1; i++)
+	if(StringEquals(commandBuf, HelpCmd, sizeof(HelpCmd) - 1))
 	{
-		if(commandBuf[i] != EndloopCmd[i])
-		{
-			goto freset_label;
-		}
+		scr.scrCommand = help;
+		/* No args */
+		return scr;
 	}
-	scr.scrCommand = endloop;
-	/* No args */
-	return scr;
 
-	/* Factory reset command */
-	freset_label:
-	for(int i = 0; i < sizeof(FactoryResetCmd) - 1; i++)
+	if(StringEquals(commandBuf, ReadBufCmd, sizeof(ReadBufCmd) - 1))
 	{
-		if(commandBuf[i] != FactoryResetCmd[i])
-		{
-			goto help_label;
-		}
+		scr.scrCommand = readbuf;
+		/* No args */
+		return scr;
 	}
-	scr.scrCommand = freset;
-	/* No args */
-	return scr;
-
-	/* Help command */
-	help_label:
-	for(int i = 0; i < sizeof(HelpCmd) - 1; i++)
-	{
-		if(commandBuf[i] != HelpCmd[i])
-		{
-			goto readbuf_label;
-		}
-	}
-	scr.scrCommand = help;
-	/* No args */
-	return scr;
-
-	/* readbuf command */
-	readbuf_label:
-	for(int i = 0; i < sizeof(ReadBufCmd) - 1; i++)
-	{
-		if(commandBuf[i] != ReadBufCmd[i])
-		{
-			goto error_label;
-		}
-	}
-	scr.scrCommand = readbuf;
-	/* No args */
-	return scr;
 
 	/* No matching command */
-	error_label:
 	scr.numArgs = 0;
 	scr.scrCommand = invalid;
 	return scr;
@@ -528,5 +467,17 @@ static void UShortToHex(uint8_t * outBuf, uint16_t val)
 		outBuf[3] += '0';
 	else
 		outBuf[3] += ('A' - 10);
+}
+
+static uint32_t StringEquals(uint8_t* string0, const uint8_t* compStr, uint32_t count)
+{
+	for(int i = 0; i < count; i++)
+	{
+		if(string0[i] != compStr[i])
+		{
+			return 0;
+		}
+	}
+	return 1;
 }
 
