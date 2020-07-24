@@ -84,7 +84,7 @@ void BufDequeueToOutputRegs();
 #define BUF_DATA_0_REG				0x89
 
 /* Register (non-zero) default values */
-#define FW_REV_DEFAULT				0x0103
+#define FW_REV_DEFAULT				0x0102
 #define BUF_CONFIG_DEFAULT			0x0000
 #define BUF_LEN_DEFAULT				0x0014
 #define DIO_INPUT_CONFIG_DEFAULT	0x0011
@@ -118,8 +118,7 @@ void BufDequeueToOutputRegs();
 #define SPI_CONF_CPHA				(1 << 0)
 #define SPI_CONF_CPOL				(1 << 1)
 #define SPI_CONF_MSB_FIRST			(1 << 2)
-#define SPI_CONF_BURST_RD			(1 << 15)
-#define SPI_CONF_MASK				(SPI_CONF_CPHA|SPI_CONF_CPOL|SPI_CONF_MSB_FIRST|SPI_CONF_BURST_RD)
+#define SPI_CONF_MASK				(SPI_CONF_CPHA|SPI_CONF_CPOL|SPI_CONF_MSB_FIRST)
 
 /* Status register bits */
 #define STATUS_BUF_WATERMARK		(1 << 0)
@@ -137,5 +136,12 @@ void BufDequeueToOutputRegs();
 
 /* Status clear mask (defines status bits which are sticky) */
 #define STATUS_CLEAR_MASK			(STATUS_FLASH_ERROR|STATUS_FAULT|STATUS_FLASH_UPDATE|STATUS_WATCHDOG)
+
+/* BUF_CONFIG bit definitions */
+#define BUF_CFG_REPLACE_OLDEST		(1 << 0)
+#define BUF_CFG_IMU_BURST			(1 << 1)
+#define BUF_CFG_BUF_BURST			(1 << 2)
+#define BUF_CFG_MASK				(BUF_CFG_REPLACE_OLDEST|BUF_CFG_IMU_BURST|BUF_CFG_BUF_BURST)
+
 
 #endif /* INC_REGISTERS_H_ */

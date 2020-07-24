@@ -34,7 +34,7 @@ static volatile uint32_t buf_tail = 0;
 /** Increment per buffer entry. This is buffer len + 4, padded to multiple of 4 */
 static uint32_t buf_increment = 64;
 
-/** Buffer full setting (0 -> stop adding, 1 -> replace oldest) */
+/** Buffer full setting (0 -> stop adding, Not 0 -> replace oldest) */
 static uint32_t buf_replaceOldest = 0;
 
 /** Buffer max count (determined once when buffer is initialized) */
@@ -202,10 +202,10 @@ void BufReset()
 	g_bufNumWords32 = buf_increment >> 2;
 
 	/* Mask out unused bits in BUF_CONFIG */
-	g_regs[BUF_CONFIG_REG] &= 0x3;
+	g_regs[BUF_CONFIG_REG] &= BUF_CFG_MASK;
 
 	/* Get replacement setting */
-	buf_replaceOldest = (g_regs[BUF_CONFIG_REG] & 0x1);
+	buf_replaceOldest = (g_regs[BUF_CONFIG_REG] & BUF_CFG_REPLACE_OLDEST);
 
 	/* Find max buffer count and index */
 	buf_maxCount = BUF_SIZE / buf_increment;

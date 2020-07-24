@@ -94,7 +94,7 @@ void BufDequeueToOutputRegs()
 	g_CurrentBufEntry = (uint16_t *) BufTakeElement();
 
 	/* Check if burst read mode is enabled */
-	if(g_regs[USER_SPI_CONFIG_REG] & SPI_CONF_BURST_RD)
+	if(g_regs[BUF_CONFIG_REG] & BUF_CFG_BUF_BURST)
 	{
 		BurstReadSetup();
 	}

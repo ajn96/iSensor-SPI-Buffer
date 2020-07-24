@@ -147,7 +147,7 @@ void EXTI9_5_IRQHandler()
 	/* Set flag indicating capture is running */
 	g_captureInProgress = 1;
 
-	if(g_regs[BUF_CONFIG_REG] & 0x2)
+	if(g_regs[BUF_CONFIG_REG] & BUF_CFG_IMU_BURST)
 	{
 		ImuDMADone = 0;
 		StartImuBurst(BufferElementHandle);

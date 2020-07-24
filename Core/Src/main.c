@@ -11,6 +11,7 @@
 #include "main.h"
 #include "usbd_cdc_if.h"
 #include "cli.h"
+#include "fatfs.h"
 
 /* Local function prototypes */
 static void SystemClock_Config(void);
@@ -125,6 +126,9 @@ int main(void)
 
   /* Init temp sensor (ADC1) */
   TempInit();
+
+  /* Init FAT file system */
+  MX_FATFS_Init();
 
   /* Set state to 0 */
   state = 0;
