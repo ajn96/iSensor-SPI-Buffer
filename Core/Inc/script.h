@@ -12,6 +12,8 @@
 #define INC_SCRIPT_H_
 
 #include "main.h"
+#include "registers.h"
+#include "cli.h"
 
 /** Available script commands */
 typedef enum
@@ -23,7 +25,10 @@ typedef enum
 	stream,
 	sleep,
 	loop,
-	endloop
+	endloop,
+	freset,
+	help,
+	invalid
 }command;
 
 typedef struct
@@ -36,9 +41,12 @@ typedef struct
 
 	/** Number of command line arguments */
 	uint32_t numArgs;
+
+	/** Track if script entry has valid arguments  */
+	uint32_t invalidArgs;
 }script;
 
 script ParseScriptElement(uint8_t* buf);
-void RunScriptElement(script* scriptElement);
+uint32_t RunScriptElement(script* scr, uint8_t * outBuf);
 
 #endif /* INC_SCRIPT_H_ */
