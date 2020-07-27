@@ -423,7 +423,9 @@ Burst output functionality for buffered data is provided to allow faster dequeui
 | 6                              | 0x0000 (Don't care)          | BUF_DATA_0                   |
 | n                              | 0x0000 (Don't care)          | BUF_DATA_N                   |
 
+The image below shows the buffer burst output format with BUF_LEN set to 8 bytes, and the IMU MOSI wired to IMU MISO (BUF_WRITE[n] -> BUF_DATA[n]). The UTC timestamp was set to 0x56781234.
 
+![User Burst](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/user_buf_burst.JPG)
 
 
 
