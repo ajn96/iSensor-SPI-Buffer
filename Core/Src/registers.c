@@ -433,6 +433,9 @@ void GetBuildDate()
 
 	g_regs[FW_DAY_MONTH_REG] = (day << 8) | month;
 	g_regs[FW_YEAR_REG] = year;
+
+	/* Also load FW rev here just in case */
+	g_regs[FW_REV_REG] = FW_REV_DEFAULT;
 }
 
 /**
