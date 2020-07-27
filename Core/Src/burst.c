@@ -10,9 +10,6 @@
 
 #include "burst.h"
 
-/** Buffer to receive burst DMA data (from master) into. Global scope */
-uint8_t g_BurstRxData[74] = {0};
-
 /** User SPI handle (from main.c) */
 extern SPI_HandleTypeDef g_spi2;
 
@@ -35,46 +32,33 @@ static volatile uint32_t SpiData;
   */
 void BurstReadSetup()
 {
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+
 	/* Disable SPI ISR */
 	HAL_NVIC_DisableIRQ(SPI2_IRQn);
 
-	/* Flush SPI FIFO */
+	/* Reconfigure CS (PB12) as EXTI interrupt source (posedge trigger) */
+	HAL_GPIO_DeInit(GPIOB, GPIO_PIN_12);
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+	GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+	GPIO_InitStruct.Pin = GPIO_PIN_12;
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+	/* Clear pending EXTI interrupts */
+	EXTI->PR |= (0x3F << 10);
+
+	/* Enable CS interrupt */
+	NVIC_EnableIRQ(EXTI15_10_IRQn);
+
+	/* Flush any data currently in SPI Rx FIFO */
 	for(int i = 0; i < 4; i++)
 	{
 		SpiData = SPI2->DR;
 	}
 
-	/* Burst SPI data capture */
-
-	/* Reset the DMA threshold bit */
-	CLEAR_BIT(SPI2->CR2, SPI_CR2_LDMATX | SPI_CR2_LDMARX);
-
-	/************ Enable the Rx DMA Stream/Channel  *********************/
-
-	/* Enable Rx DMA Request in SPI */
-	SET_BIT(SPI2->CR2, SPI_CR2_RXDMAEN);
-
-	/* Disable DMA peripheral */
-	g_spi2.hdmarx->Instance->CCR &= ~DMA_CCR_EN;
-
-	/* Clear all flags */
-	g_spi2.hdmarx->DmaBaseAddress->IFCR  = (DMA_FLAG_GL1 << g_spi2.hdmarx->ChannelIndex);
-
-	/* Configure DMA Channel data length (16 bit SPI words) */
-	g_spi2.hdmarx->Instance->CNDTR = (g_regs[BUF_LEN_REG] + 10) >> 1;
-
-    /* Configure DMA Channel peripheral address (SPI data register) */
-	g_spi2.hdmarx->Instance->CPAR = (uint32_t)&SPI2->DR;
-
-    /* Configure DMA Channel memory address (burst receive buffer) */
-	g_spi2.hdmarx->Instance->CMAR = (uint32_t) g_BurstRxData;
-
-	/* Configure interrupts */
-	g_spi2.hdmarx->Instance->CCR |= (DMA_IT_TC | DMA_IT_TE);
-	g_spi2.hdmarx->Instance->CCR &= ~DMA_IT_HT;
-
-	/* Enable the Peripheral */
-	g_spi2.hdmarx->Instance->CCR |= DMA_CCR_EN;
+	/* Reset the Tx DMA threshold bit */
+	CLEAR_BIT(SPI2->CR2, SPI_CR2_LDMATX);
 
 	/************ Enable the Tx DMA Stream/Channel  *********************/
 
@@ -114,17 +98,25 @@ void BurstReadSetup()
   */
 void BurstReadDisable()
 {
-	/* Clear DMA enable bits in SPI control register */
-	CLEAR_BIT(SPI2->CR2, SPI_CR2_TXDMAEN | SPI_CR2_RXDMAEN);
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-	/* Flush any data in SPI */
-	/* Get SPI back to a good state */
-	for(uint32_t i = 0; i < 4; i++)
-	{
-		SpiData = SPI2->DR;
-	}
-	/* Read status register */
-	SpiData = SPI2->SR;
+	/* Clear Tx DMA enable bits in SPI control register */
+	CLEAR_BIT(SPI2->CR2, SPI_CR2_TXDMAEN);
+
+	/* Re-enable CS (PB12) alternate function */
+	HAL_GPIO_DeInit(GPIOB, GPIO_PIN_12);
+    GPIO_InitStruct.Pin = GPIO_PIN_12;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    /* Disable CS interrupt */
+	NVIC_DisableIRQ(EXTI15_10_IRQn);
+
+	/* Start user SPI interrupt processing (Rx and error) */
+	__HAL_SPI_ENABLE_IT(&g_spi2, (SPI_IT_RXNE | SPI_IT_ERR));
 
 	/* Clear pending interrupts and re-enable */
 	HAL_NVIC_ClearPendingIRQ(SPI2_IRQn);

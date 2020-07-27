@@ -280,9 +280,6 @@ static void MX_DMA_Init(void)
   /* DMA1_Channel3_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel3_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel3_IRQn);
-  /* DMA1_Channel4_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel4_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel4_IRQn);
   /* DMA1_Channel5_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
@@ -322,23 +319,6 @@ static void DMA_Link()
 	}
 
 	__HAL_LINKDMA(&g_spi1,hdmatx,g_dma_spi1_tx);
-
-	/* SPI2 DMA Init */
-	/* SPI2_RX Init */
-	g_dma_spi2_rx.Instance = DMA1_Channel4;
-	g_dma_spi2_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
-	g_dma_spi2_rx.Init.PeriphInc = DMA_PINC_DISABLE;
-	g_dma_spi2_rx.Init.MemInc = DMA_MINC_ENABLE;
-	g_dma_spi2_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
-	g_dma_spi2_rx.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
-	g_dma_spi2_rx.Init.Mode = DMA_NORMAL;
-	g_dma_spi2_rx.Init.Priority = DMA_PRIORITY_VERY_HIGH;
-	if (HAL_DMA_Init(&g_dma_spi2_rx) != HAL_OK)
-	{
-	  Error_Handler();
-	}
-
-	__HAL_LINKDMA(&g_spi2,hdmarx,g_dma_spi2_rx);
 
 	/* SPI2_TX Init */
 	g_dma_spi2_tx.Instance = DMA1_Channel5;

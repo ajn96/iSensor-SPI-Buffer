@@ -38,8 +38,8 @@ extern DMA_HandleTypeDef g_dma_spi1_tx;
 /** IMU SPI handle (from main.c) */
 extern SPI_HandleTypeDef g_spi1;
 
-/** Buffer to receive burst DMA data (from master) into (from burst.c)  */
-extern uint8_t g_BurstRxData[74];
+/** User SPI handle (from main.c) */
+extern SPI_HandleTypeDef g_spi2;
 
 /** Current capture size (in 16 bit words). Global scope */
 volatile uint32_t g_wordsPerCapture;
@@ -64,9 +64,6 @@ static uint32_t SPIMISO;
 
 /** Flag to track if IMU burst DMA is done */
 static volatile uint32_t ImuDMADone = 0;
-
-/** Flag to track if user burst DMA is done */
-static volatile uint32_t SlaveSpiDMADone = 0;
 
 /**
   * @brief IMU data ready ISR. Kicks off data capture process.
@@ -438,36 +435,6 @@ static void FinishImuBurst()
 }
 
 /**
-  * @brief This function handles DMA1 channel4 global interrupt (spi2 (user) Rx).
-  *
-  * @return void
-  */
-void DMA1_Channel4_IRQHandler(void)
-{
-	uint32_t flags = g_dma_spi2_rx.DmaBaseAddress->ISR;
-
-	/* Clear interrupt enable */
-	g_dma_spi2_rx.Instance->CCR &= ~(DMA_IT_TC | DMA_IT_TE);
-
-	/* Clear interrupt flags */
-	g_dma_spi2_rx.DmaBaseAddress->IFCR = (DMA_FLAG_TC1|DMA_FLAG_TE1) << g_dma_spi2_rx.ChannelIndex;
-
-	/* Check for error interrupt */
-	if(flags & (DMA_FLAG_TE1 << g_dma_spi2_rx.ChannelIndex))
-	{
-		g_regs[STATUS_0_REG] |= STATUS_DMA_ERROR;
-		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
-		FinishSlaveSpiBurst();
-	}
-
-	/* Check if total transfer is done */
-	if(SlaveSpiDMADone == 0)
-		SlaveSpiDMADone = 1;
-	else
-		FinishSlaveSpiBurst();
-}
-
-/**
   * @brief This function handles DMA1 channel5 global interrupt (spi2 (user) Tx).
   *
   * @return void
@@ -485,16 +452,27 @@ void DMA1_Channel5_IRQHandler(void)
 	/* Check for error interrupt */
 	if(flags & (DMA_FLAG_TE1 << g_dma_spi2_tx.ChannelIndex))
 	{
+		/* Flag error */
 		g_regs[STATUS_0_REG] |= STATUS_DMA_ERROR;
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+		/* Kill running burst */
 		FinishSlaveSpiBurst();
 	}
+}
 
-	/* Check if total transfer is done */
-	if(SlaveSpiDMADone == 0)
-		SlaveSpiDMADone = 1;
-	else
+void EXTI15_10_IRQHandler(void)
+{
+	/* EXTI pending request register */
+	static uint32_t EXTI_PR;
+
+	/* Clear exti PR register (lines 10-15) */
+	EXTI_PR = EXTI->PR;
+	EXTI->PR |= 0x3F << 10;
+
+	if(EXTI_PR & (1 << 12))
+	{
 		FinishSlaveSpiBurst();
+	}
 }
 
 /**
@@ -517,15 +495,24 @@ void DMA1_Channel5_IRQHandler(void)
   */
 static void FinishSlaveSpiBurst()
 {
-	/* Reset slave SPI DMA done flag */
-	SlaveSpiDMADone = 0;
+	/* Read first SPI data word received */
+	uint32_t spiData = SPI2->DR;
+	uint32_t transmitData = 0;
+
+	/* Disable DMA */
+	g_dma_spi2_tx.Instance->CCR &= ~DMA_CCR_EN;
+
+	/* Disable and re-enable SPI. Kind of hacky, not a clean way to do this.
+	 * This is required because there is no way to clear Tx FIFO in the SPI
+	 * peripheral otherwise */
+	RCC->APB1RSTR |= RCC_APB1RSTR_SPI2RST;
+	RCC->APB1RSTR &= ~RCC_APB1RSTR_SPI2RST;
+	HAL_SPI_Init(&g_spi2);
+	__HAL_SPI_ENABLE(&g_spi2);
 
 	/* If Rx data has address for buf_retrieve then set up another burst */
-	if((g_BurstRxData[1] == 6) && (g_regs[BUF_CNT_0_REG] > 0))
+	if(((spiData >> 8) == 6) && (g_regs[BUF_CNT_0_REG] > 0))
 	{
-		/* Load 0 into user SPI output */
-		SPI2->DR = 0;
-
 		/* Set update flag for main loop */
 		g_update_flags |= DEQUEUE_BUF_FLAG;
 	}
@@ -535,21 +522,21 @@ static void FinishSlaveSpiBurst()
 		/* Disable burst */
 		BurstReadDisable();
 
-		/* Process data received in bytes 0 - 1 */
-		if(g_BurstRxData[0] & 0x80)
+		/* Handle transaction */
+		if(spiData & 0x8000)
 		{
 			/* Write */
-			SPIMISO = WriteReg(g_BurstRxData[0] & 0x7F, g_BurstRxData[1]);
+			transmitData = WriteReg((spiData & 0x7F00) >> 8, spiData & 0xFF);
 		}
 		else
 		{
 			/* Read */
-			SPIMISO = ReadReg(g_BurstRxData[0]);
+			transmitData = ReadReg(spiData >> 8);
 		}
-
-		/* Transmit data back */
-		SPI2->DR = SPIMISO;
 	}
+
+	/* Load next 16-bit word to SPI output */
+	SPI2->DR = transmitData;
 }
 
 /**
