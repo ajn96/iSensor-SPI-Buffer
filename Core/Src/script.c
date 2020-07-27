@@ -46,6 +46,9 @@ static const uint8_t FactoryResetCmd[] = "freset";
 /** String literal for read buffer command */
 static const uint8_t ReadBufCmd[] = "readbuf";
 
+/** String literal for endloop command. */
+static const uint8_t EndloopCmd[] = "endloop";
+
 /** String literal for stream command. Must be followed by a space */
 static const uint8_t StreamCmd[] = "stream ";
 
@@ -57,9 +60,6 @@ static const uint8_t SleepCmd[] = "sleep ";
 
 /** String literal for loop command. Must be followed by a space */
 static const uint8_t LoopCmd[] = "loop ";
-
-/** String literal for endloop command. */
-static const uint8_t EndloopCmd[] = "endloop";
 
 /** Print string for invalid command */
 static uint8_t InvalidCmdStr[] = "Error: Invalid command!\r\n";
