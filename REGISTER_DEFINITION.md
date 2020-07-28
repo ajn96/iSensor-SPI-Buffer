@@ -82,8 +82,8 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 | --- | --- | --- |
 | 0 | OVERFLOW | Buffer overflow behavior. 0 stop sampling, 1 replace oldest data |
 | 1 | IMU_BURST | Enables IMU burst data capture for buffer entries (IMU <-> iSensor-SPI-Buffer SPI port) |
-| 14:2 | RESERVED | Currently unused |
-| 15 | BUF_BURST | Enables burst reading of buffer output data registers, over the user SPI port |
+| 2 | BUF_BURST | Enables burst reading of buffer output data registers, over the user SPI port |
+| 15:3 | RESERVED | Currently unused |
 
 **IMU_BURST**
 When the IMU_BURST bit is set, each buffered data capture from the IMU is performed as a single SPI burst transaction (drop CS, clock out all data, raise CS). The length of the burst transaction is determined by BUF_LEN. When the IMU_BURST bit is cleared, IMU data is captured using a sequence of 16 bit SPI words. When the selected page is changed to an IMU page (page != (253, 254, 255)), the IMU SPI port will be restored to register mode, regardless of the BUF_CONFIG setting. The IMU burst data capture will be enabled again when page 255 (buffed data capture page) is re-selected, and the IMU_BURST bit is set.
@@ -195,7 +195,8 @@ The following default values will be used for DIO_OUTPUT_CONFIG:
 | --- | --- | --- |
 | 0 | STREAM | USB data stream running |
 | 1 | ECHO_DISABLE | Disable command echo to CLI. By default, all characters sent to the CLI input are echoed to the output. Disabling this functionality allows for easier CLI scripting |
-| 7:2 | RESERVED | Currently unused |
+| 2 | SCRIPT_AUTORUN | Start executing an SD card script automatically after the iSensor-SPI-Buffer firmware has finished initialization. This is equivalent to sending a SCRIPT START command immediately after the initialization process has finished |
+| 7:3 | RESERVED | Currently unused |
 | 15:8 | DELIM | Register read value delimiter character (ASCII), for USB CLI. Defaults to space character |
 
 For more details on the iSensor-SPI-Buffer USB interface, see the [USB_CLI](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/USB_CLI.md) document
@@ -209,9 +210,12 @@ For more details on the iSensor-SPI-Buffer USB interface, see the [USB_CLI](http
 | 2 | FACTORY_RESET | Restores firmware to a factory default state |
 | 3 | FLASH_UPDATE | Save all non-volatile registers to flash memory |
 | 4 | PPS_ENABLE | Enable PPS timestamp synchronization. Must have PPS_SELECT defined before enabling PPS. The UTC timestamp will start counting up on the next PPS signal |
-| 5 | PPS_DISABLE | Disable PPS timestamp synchronization. The microsecond timestamp register will continue free running. |
-| 14:6 | RESERVED | Currently unused |
-| 15 | RESET | Software reset |
+| 5 | PPS_DISABLE | Disable PPS timestamp synchronization. The microsecond timestamp register will continue free running |
+| 6 | SCRIPT_START | Start executing a script from a connected SD card. The script will be loaded from the script.txt file in an attached FAT32 formatted SD card. If no SD card or script file is present, nothing will be executed, and a script error will be flagged in the STATUS register |
+| 7 | SCRIPT_CANCEL | Cancel a running script, and close any open SD card files |
+| 13:6 | RESERVED | Currently unused |
+| 14 | IMU_RESET | Drive the IMU reset pin low for 1ms, then back high. This feature is only implemented on hardware revision C or newer |
+| 15 | RESET | Software reset the iSensor-SPI-Buffer firmware |
 
 While commands are being executed, the iSensor-SPI-Buffer slave SPI port is disabled, and all interrupt signals are brought low.
 
@@ -231,9 +235,11 @@ While commands are being executed, the iSensor-SPI-Buffer slave SPI port is disa
 | 3 | SPI_OVERFLOW | User SPI data overflow (min stall time violated). This bit is set when a user SPI interrupt is received, and the previous user SPI interrupt is still being processed |
 | 4 | OVERRUN | Data capture overrun. Set when processor receives an IMU data ready interrupt and has not finished the previous data capture |
 | 5 | DMA_ERROR | Set when processor DMA peripheral reports an error (user SPI DMA for burst read or IMU SPI DMA) |
-| 6 | PPS_UNLOCK | Set when the PPS synchronization clock is enabled, but no PPS signal has been received for over 1100ms |
-| 7 | TEMP_WARNING | Set when the SPI buffer internal temperature sensor measures a value outside [-40C - 85C] |
-| 11:8 | RESERVED | Currently unused |
+| 6 | PPS_UNLOCK | Set when the PPS synchronization clock is enabled, but no PPS signal has been received for over 1100ms. This flag will also set if the measured period of the provided PPS input has an error of greater than 1% |
+| 7 | TEMP_WARNING | Set when the SPI buffer internal temperature sensor (value output to TEMP register) measures a value outside the safe operating range [-40C - 85C] |
+| 9:8 | RESERVED | Currently unused |
+| 10 | SCRIPT_ERROR | Set when there is an error launching a script from an attached SD card. This bit can be set in one of three ways: If there is no attached SD card, if the attached SD card is not formatted correctly or does not contain script.txt, or if script.txt contains invalid script entries. |
+| 11 | SCRIPT_ACTIVE | Set by firmware while an SD card script is being executed.  A running script must either terminate by itself, or be cancelled via a SCRIPT_CANCEL command.  Resetting the iSensor-SPI-Buffer while a script is executing may cause data corruption on the SD card. This bit is sticky (does not clear on read) and <u>clears automatically</u> when the script execution process ends. This allows for monitoring of the script execution process via the error interrupt output and error LED |
 | 12 | FLASH_ERROR | Set when the register signature stored in flash (stored during flash update) does not match signature calculated from SRAM register contents at initialization. Sticky |
 | 13 | FLASH_UPDATE_ERROR | Set when the flash update routine fails. Sticky |
 | 14 | FAULT | Set when the processor core generates a fault exception (bus fault, memory fault, hard fault, initialization error). Fault exceptions will force a system reset. Sticky |
