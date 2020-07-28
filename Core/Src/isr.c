@@ -440,7 +440,7 @@ void EXTI15_10_IRQHandler(void)
 		goto handle_transaction;
 	}
 
-	/* If data is not available then exit */
+	/* If data is not available then re-init and exit */
 	if(!(spiSr & SPI_SR_RXNE))
 	{
 		g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
@@ -455,8 +455,8 @@ void EXTI15_10_IRQHandler(void)
 		return;
 	}
 
-	/* Check for SPI overflow */
-	if(spiSr & 0x1000)
+	/* Check for SPI overflow (FIFO transmit is half full or greater) */
+	if(spiSr & SPI_FTLVL_HALF_FULL)
 	{
 		/* Clear SPI FIFO */
 		for(int i = 0; i < 4; i++)
@@ -467,6 +467,9 @@ void EXTI15_10_IRQHandler(void)
 		/* Set status reg SPI overflow flag */
 		g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+
+		/* Don't want to load any new data to the output, just return here */
+		return;
 	}
 
 	/* Error interrupt source */
