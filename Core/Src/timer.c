@@ -15,10 +15,10 @@ static void InitTIM2(uint32_t timerfreq);
 static void ConfigurePPSPins(uint32_t enable);
 
 /** Global register array (from registers.c) */
-volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
+extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
 
 /** Struct storing current DIO output config. (from dio.c) */
-volatile extern DIOConfig g_pinConfig;
+extern volatile DIOConfig g_pinConfig;
 
 /** PPS interrupt source. Global scope */
 uint32_t g_PPSInterruptMask = 0;
@@ -147,11 +147,21 @@ void DisablePPSTimer()
   */
 void IncrementPPSTime()
 {
+	/* Get the internal timestamp for period measurement */
+	uint32_t internalTime = GetMicrosecondTimestamp();
+
 	/* Get starting PPS timestamp and increment */
 	uint32_t startTime = GetPPSTimestamp();
 	startTime++;
 	g_regs[UTC_TIMESTAMP_LWR_REG] = startTime & 0xFFFF;
 	g_regs[UTC_TIMESTAMP_UPR_REG] = (startTime >> 16);
+
+	/* If the PPS period is outside of 1 second +- 10ms (1%) then flag PPS unlock error */
+	if((internalTime > 1010000)||(internalTime < 990000))
+	{
+		g_regs[STATUS_0_REG] |= STATUS_PPS_UNLOCK;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+	}
 
 	/* Clear microsecond tick counter */
 	ClearMicrosecondTimer();
