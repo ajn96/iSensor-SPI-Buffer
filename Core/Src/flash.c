@@ -14,7 +14,7 @@
 static void PrepareRegsForFlash();
 
 /** Global register array (from registers.c) */
-volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
+extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
 
 /**
   * @brief Flash update command handler
@@ -241,7 +241,7 @@ uint16_t CalcRegSig(uint16_t * regs, uint32_t count)
 {
 	/* Sig is just a sum (should more or less work for verifying flash contents) */
 	uint16_t sig = 0;
-	for(int i = 0; i<count; i++)
+	for(uint32_t i = 0; i<count; i++)
 	{
 		sig += regs[i];
 	}

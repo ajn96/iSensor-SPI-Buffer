@@ -2,27 +2,25 @@
   * Copyright (c) Analog Devices Inc, 2020
   * All Rights Reserved.
   *
-  * @file		burst.c
+  * @file		user_spi.c
   * @date		4/28/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		iSensor-SPI-Buffer burst data read (slave SPI) module
+  * @brief		iSensor-SPI-Buffer user (slave) SPI module
  **/
 
-#include <user_spi.h>
+#include "user_spi.h"
 
+/** Track if a burst read is enabled. Global scope */
 volatile uint32_t g_userburstRunning;
 
 /** User SPI handle (from main.c) */
 extern SPI_HandleTypeDef g_spi2;
 
 /** Pointer to buffer entry. Will be 0 if no buffer entry "loaded" to output registers (from registers.c) */
-volatile extern uint16_t* g_CurrentBufEntry;
+extern volatile uint16_t* g_CurrentBufEntry;
 
 /** Global register array (from registers.c) */
-volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
-
-/* Data read from SPI2->DR */
-static volatile uint32_t SpiData;
+extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
 
 /**
   * @brief Configures SPI for a burst buffer read
@@ -40,7 +38,7 @@ void BurstReadSetup()
 	/* Flush any data currently in SPI Rx FIFO */
 	for(int i = 0; i < 4; i++)
 	{
-		SpiData = SPI2->DR;
+		 (void) SPI2->DR;
 	}
 
 	/* Reset the Tx DMA threshold bit */

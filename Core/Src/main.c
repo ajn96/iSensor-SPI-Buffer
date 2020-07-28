@@ -13,26 +13,22 @@
 #include "cli.h"
 #include "fatfs.h"
 
-/* Local function prototypes */
+/* Private function prototypes */
 static void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_SPI3_Init(void);
+static void DMA_Init();
 static void DWT_Init();
-static void MX_DMA_Init(void);
-static void DMA_Link();
 
 /* Update processing required (from registers.c) */
-volatile extern uint32_t g_update_flags;
+extern volatile uint32_t g_update_flags;
 
 /** IMU SPI Rx DMA handle. Global scope */
 DMA_HandleTypeDef g_dma_spi1_rx;
 
 /** IMU SPI Tx DMA handle. Global scope */
 DMA_HandleTypeDef g_dma_spi1_tx;
-
-/** User SPI Rx DMA handle. Global scope */
-DMA_HandleTypeDef g_dma_spi2_rx;
 
 /** User SPI Tx DMA handle. Global scope */
 DMA_HandleTypeDef g_dma_spi2_tx;
@@ -118,11 +114,8 @@ int main(void)
   /* Configure and enable user SPI port (based on loaded register values) */
   UpdateUserSpiConfig();
 
-  /* Enable DMA channels */
-  MX_DMA_Init();
-
-  /* Link DMA channels */
-  DMA_Link();
+  /* Init and Enable DMA channels */
+  DMA_Init();
 
   /* Init temp sensor (ADC1) */
   TempInit();
@@ -260,34 +253,22 @@ void Error_Handler(void)
 }
 
 /**
-  * @brief Enable DMA channels in use
+  * @brief Init and DMA channels in use and configure DMA interrupts
   *
   * @return void
+  *
+  * Currently use three DMA channels, on DMA peripheral 1:
+  * DMA2/3 - IMU SPI port, used for burst reads from IMU
+  * DMA5 - User SPI port, Used for buffer burst outputs. Rx not used
   */
-/**
-  * Enable DMA controller clock
-  */
-static void MX_DMA_Init(void)
+static void DMA_Init(void)
 {
 
-  /* DMA controller clock enable */
-  __HAL_RCC_DMA1_CLK_ENABLE();
+	/* DMA controller clock enable */
+	__HAL_RCC_DMA1_CLK_ENABLE();
 
-  /* DMA interrupt init */
-  /* DMA1_Channel2_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel2_IRQn);
-  /* DMA1_Channel3_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel3_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel3_IRQn);
-  /* DMA1_Channel5_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
-}
-
-static void DMA_Link()
-{
 	/* SPI1 DMA Init */
+
 	/* SPI1_RX Init */
 	g_dma_spi1_rx.Instance = DMA1_Channel2;
 	g_dma_spi1_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
@@ -301,7 +282,6 @@ static void DMA_Link()
 	{
 	  Error_Handler();
 	}
-
 	__HAL_LINKDMA(&g_spi1,hdmarx,g_dma_spi1_rx);
 
 	/* SPI1_TX Init */
@@ -317,7 +297,6 @@ static void DMA_Link()
 	{
 	  Error_Handler();
 	}
-
 	__HAL_LINKDMA(&g_spi1,hdmatx,g_dma_spi1_tx);
 
 	/* SPI2_TX Init */
@@ -333,8 +312,21 @@ static void DMA_Link()
 	{
 	  Error_Handler();
 	}
-
 	__HAL_LINKDMA(&g_spi2,hdmatx,g_dma_spi2_tx);
+
+	/* DMA interrupt init */
+
+	/* DMA1_Channel2_IRQn interrupt configuration */
+	HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(DMA1_Channel2_IRQn);
+
+	/* DMA1_Channel3_IRQn interrupt configuration */
+	HAL_NVIC_SetPriority(DMA1_Channel3_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(DMA1_Channel3_IRQn);
+
+	/* DMA1_Channel5_IRQn interrupt configuration */
+	HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
 }
 
 /**
@@ -386,7 +378,7 @@ static void SystemClock_Config(void)
 }
 
 /**
-  * @brief SPI1 Initialization Function (master SPI port)
+  * @brief SPI1 Initialization Function (master SPI port to IMU)
   *
   * @param None
   *
@@ -523,6 +515,9 @@ static void MX_GPIO_Init(void)
   * @brief  Init DWT peripheral.
   *
   * @return void
+  *
+  * This peripheral is used to count microseconds for
+  * the timer module.
   */
 static void DWT_Init()
 {

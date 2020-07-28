@@ -31,7 +31,7 @@ static volatile uint32_t buf_head = 0;
 /** Index within buffer array for buffer tail */
 static volatile uint32_t buf_tail = 0;
 
-/** Increment per buffer entry. This is buffer len + 4, padded to multiple of 4 */
+/** Increment per buffer entry. This is buffer length + 4, padded to multiple of 4 */
 static uint32_t buf_increment = 64;
 
 /** Buffer full setting (0 -> stop adding, Not 0 -> replace oldest) */

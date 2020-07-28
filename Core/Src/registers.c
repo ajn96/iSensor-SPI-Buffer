@@ -5,16 +5,13 @@
   * @file		registers.c
   * @date		3/18/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		iSensor-SPI-Buffer register interfacing
+  * @brief		iSensor-SPI-Buffer register interfacing module. Called by user SPI and USB CLI
  **/
 
 #include "registers.h"
 
 /* Local function prototypes */
 static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue);
-
-/* User SPI handle (from main.c) */
-extern SPI_HandleTypeDef g_spi2;
 
 /* Index after last buffer output register (from buffer.c) */
 extern uint32_t g_bufLastRegIndex;

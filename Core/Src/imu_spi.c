@@ -17,7 +17,7 @@ static void ApplySclkDivider(uint32_t preScalerSetting);
 extern SPI_HandleTypeDef g_spi1;
 
 /** Global register array (from registers.c) */
-volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
+extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
 
 /** track stall time (microseconds) */
 uint32_t g_imuStallTimeUs = 25;
