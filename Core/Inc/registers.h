@@ -111,6 +111,9 @@ void BufDequeueToOutputRegs();
 #define CMD_FLASH_UPDATE			(1 << 3)
 #define CMD_PPS_ENABLE				(1 << 4)
 #define CMD_PPS_DISABLE				(1 << 5)
+#define CMD_START_SCRIPT			(1 << 6)
+#define CMD_STOP_SCRIPT				(1 << 7)
+#define CMD_IMU_RESET				(1 << 14)
 #define CMD_SOFTWARE_RESET			(1 << 15)
 
 /* User SPI config register bits */
@@ -128,13 +131,15 @@ void BufDequeueToOutputRegs();
 #define STATUS_DMA_ERROR			(1 << 5)
 #define STATUS_PPS_UNLOCK			(1 << 6)
 #define STATUS_TEMP_WARNING			(1 << 7)
+#define STATUS_SCR_ERROR			(1 << 10)
+#define STATUS_SCR_RUNNING			(1 << 11)
 #define STATUS_FLASH_ERROR			(1 << 12)
 #define STATUS_FLASH_UPDATE			(1 << 13)
 #define STATUS_FAULT				(1 << 14)
 #define STATUS_WATCHDOG				(1 << 15)
 
 /* Status clear mask (defines status bits which are sticky) */
-#define STATUS_CLEAR_MASK			(STATUS_FLASH_ERROR|STATUS_FAULT|STATUS_FLASH_UPDATE|STATUS_WATCHDOG)
+#define STATUS_CLEAR_MASK			(STATUS_FLASH_ERROR|STATUS_FAULT|STATUS_FLASH_UPDATE|STATUS_WATCHDOG|STATUS_SCR_RUNNING)
 
 /* BUF_CONFIG bit definitions */
 #define BUF_CFG_REPLACE_OLDEST		(1 << 0)
