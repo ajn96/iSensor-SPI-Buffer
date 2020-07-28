@@ -5,7 +5,7 @@
   * @file		isr.h
   * @date		4/27/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		Header file for ISR includes
+  * @brief		Header file for the interrupt service routine module
  **/
 
 #ifndef INC_ISR_H_
@@ -19,7 +19,6 @@
 #include "timer.h"
 
 /* User SPI port related interrupts */
-void SPI2_IRQHandler(void);
 void EXTI15_10_IRQHandler(void);
 void DMA1_Channel5_IRQHandler(void);
 

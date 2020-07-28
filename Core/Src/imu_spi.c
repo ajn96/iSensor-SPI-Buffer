@@ -20,7 +20,7 @@ extern SPI_HandleTypeDef g_spi1;
 extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
 
 /** track stall time (microseconds) */
-uint32_t g_imuStallTimeUs = 25;
+static uint32_t imuStallTimeUs = 25;
 
 /** TIM3 HAL handle */
 static TIM_HandleTypeDef htim3;
@@ -28,13 +28,11 @@ static TIM_HandleTypeDef htim3;
 /** TIM4 HAL handle */
 static TIM_HandleTypeDef htim4;
 
-static volatile uint32_t SpiData;
-
-void EnableImuSpiDMA()
-{
-
-}
-
+/**
+  * @brief Disable IMU burst data stream
+  *
+  * @return void
+  */
 void DisableImuSpiDMA()
 {
 	/* Disable the DMA peripherals */
@@ -46,12 +44,24 @@ void DisableImuSpiDMA()
 	CLEAR_BIT(SPI1->CR2, SPI_CR2_RXDMAEN);
 }
 
+
+/**
+  * @brief Start an IMU burst data capture (using DMA)
+  *
+  * @param bufEntry Pointer to the buffer entry to recieve data into
+  *
+  * @return void
+  *
+  * This function configures the IMU SPI port for a bi-directional DMA
+  * transfer. CS is manually controlled by leaving TIM3 (CS timer) disabled,
+  * and manually setting the count register to 0.
+ **/
 void StartImuBurst(uint8_t* bufEntry)
 {
 	/* Flush SPI FIFO */
 	for(int i = 0; i < 4; i++)
 	{
-		SpiData = SPI1->DR;
+		(void) SPI1->DR;
 	}
 
 	/* Drop CS */
@@ -173,7 +183,7 @@ uint16_t ImuReadReg(uint8_t RegAddr)
 	ImuSpiTransfer(readRequest);
 
 	/* Delay for stall time */
-	SleepMicroseconds(g_imuStallTimeUs);
+	SleepMicroseconds(imuStallTimeUs);
 
 	/* Return result data on second word */
 	return ImuSpiTransfer(0);
@@ -360,7 +370,7 @@ void UpdateImuSpiConfig()
 		configReg |= 2;
 	}
 	/* set the stall time used to the stall time setting */
-	g_imuStallTimeUs = (configReg & 0xFF);
+	imuStallTimeUs = (configReg & 0xFF);
 
 	/* Sclk divider setting is upper 8 bits */
 	if(configReg & (1 << 8))
@@ -432,7 +442,7 @@ void UpdateImuSpiConfig()
 	csPeriod += 28;
 
 	/* Spi period is cs period + stall time */
-	spiPeriod = csPeriod + (g_imuStallTimeUs * 72);
+	spiPeriod = csPeriod + (imuStallTimeUs * 72);
 
 	/* Apply spi period to timer */
 	ConfigureImuSpiTimer(spiPeriod);
