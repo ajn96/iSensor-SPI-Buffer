@@ -26,9 +26,7 @@ var searchData=
   ['bufreset_30',['BufReset',['../buffer_8h.html#a608864e62e34b7c269cd79d2c7294a48',1,'BufReset():&#160;buffer.c'],['../buffer_8c.html#a608864e62e34b7c269cd79d2c7294a48',1,'BufReset():&#160;buffer.c']]],
   ['buftakeelement_31',['BufTakeElement',['../buffer_8h.html#afdd89b201e54e51e1fe4f9954fb2e1b0',1,'BufTakeElement():&#160;buffer.c'],['../buffer_8c.html#afdd89b201e54e51e1fe4f9954fb2e1b0',1,'BufTakeElement():&#160;buffer.c']]],
   ['builddiooutputconfigreg_32',['BuildDIOOutputConfigReg',['../dio_8c.html#a28a551718a1faaa39a66752c1dbdf3b6',1,'dio.c']]],
-  ['burst_2ec_33',['burst.c',['../burst_8c.html',1,'']]],
-  ['burst_2eh_34',['burst.h',['../burst_8h.html',1,'']]],
-  ['burstreaddisable_35',['BurstReadDisable',['../burst_8h.html#a3ba4975cc957879494953133d89031a5',1,'BurstReadDisable():&#160;burst.c'],['../burst_8c.html#a3ba4975cc957879494953133d89031a5',1,'BurstReadDisable():&#160;burst.c']]],
-  ['burstreadsetup_36',['BurstReadSetup',['../burst_8h.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00',1,'BurstReadSetup():&#160;burst.c'],['../burst_8c.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00',1,'BurstReadSetup():&#160;burst.c']]],
-  ['busfault_5fhandler_37',['BusFault_Handler',['../isr_8h.html#a850cefb17a977292ae5eb4cafa9976c3',1,'BusFault_Handler(void):&#160;isr.c'],['../isr_8c.html#a850cefb17a977292ae5eb4cafa9976c3',1,'BusFault_Handler(void):&#160;isr.c']]]
+  ['burstreaddisable_33',['BurstReadDisable',['../user__spi_8h.html#a3ba4975cc957879494953133d89031a5',1,'BurstReadDisable():&#160;user_spi.c'],['../user__spi_8c.html#a3ba4975cc957879494953133d89031a5',1,'BurstReadDisable():&#160;user_spi.c']]],
+  ['burstreadsetup_34',['BurstReadSetup',['../user__spi_8h.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00',1,'BurstReadSetup():&#160;user_spi.c'],['../user__spi_8c.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00',1,'BurstReadSetup():&#160;user_spi.c']]],
+  ['busfault_5fhandler_35',['BusFault_Handler',['../isr_8h.html#a850cefb17a977292ae5eb4cafa9976c3',1,'BusFault_Handler(void):&#160;isr.c'],['../isr_8c.html#a850cefb17a977292ae5eb4cafa9976c3',1,'BusFault_Handler(void):&#160;isr.c']]]
 ];

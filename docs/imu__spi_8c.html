@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.2</span>
+   &#160;<span id="projectnumber">1.3</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -85,14 +85,11 @@ Functions</h2></td></tr>
 <tr class="memitem:a640286632dd94b1015f32a9892f83322"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#a640286632dd94b1015f32a9892f83322">ApplySclkDivider</a> (uint32_t preScalerSetting)</td></tr>
 <tr class="memdesc:a640286632dd94b1015f32a9892f83322"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies baud rate divider setting to master SPI port (to IMU)  <a href="imu__spi_8c.html#a640286632dd94b1015f32a9892f83322">More...</a><br /></td></tr>
 <tr class="separator:a640286632dd94b1015f32a9892f83322"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade1ebafc91f74e54ede09c7277db0aa4"><td class="memItemLeft" align="right" valign="top"><a id="ade1ebafc91f74e54ede09c7277db0aa4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>EnableImuSpiDMA</b> ()</td></tr>
-<tr class="separator:ade1ebafc91f74e54ede09c7277db0aa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50a9e9e1e661156087f12a81c2b6bc30"><td class="memItemLeft" align="right" valign="top"><a id="a50a9e9e1e661156087f12a81c2b6bc30"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DisableImuSpiDMA</b> ()</td></tr>
+<tr class="memitem:a50a9e9e1e661156087f12a81c2b6bc30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#a50a9e9e1e661156087f12a81c2b6bc30">DisableImuSpiDMA</a> ()</td></tr>
+<tr class="memdesc:a50a9e9e1e661156087f12a81c2b6bc30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable IMU burst data stream.  <a href="imu__spi_8c.html#a50a9e9e1e661156087f12a81c2b6bc30">More...</a><br /></td></tr>
 <tr class="separator:a50a9e9e1e661156087f12a81c2b6bc30"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6a71708bd067b831a355da7d5e7a1b7"><td class="memItemLeft" align="right" valign="top"><a id="ae6a71708bd067b831a355da7d5e7a1b7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>StartImuBurst</b> (uint8_t *bufEntry)</td></tr>
+<tr class="memitem:ae6a71708bd067b831a355da7d5e7a1b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#ae6a71708bd067b831a355da7d5e7a1b7">StartImuBurst</a> (uint8_t *bufEntry)</td></tr>
+<tr class="memdesc:ae6a71708bd067b831a355da7d5e7a1b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start an IMU burst data capture (using DMA)  <a href="imu__spi_8c.html#ae6a71708bd067b831a355da7d5e7a1b7">More...</a><br /></td></tr>
 <tr class="separator:ae6a71708bd067b831a355da7d5e7a1b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a282b6361f14c10a21b150aa10c26e03f"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#a282b6361f14c10a21b150aa10c26e03f">ImuSpiTransfer</a> (uint32_t MOSI)</td></tr>
 <tr class="memdesc:a282b6361f14c10a21b150aa10c26e03f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Basic IMU SPI data transfer function (protocol agnostic).  <a href="imu__spi_8c.html#a282b6361f14c10a21b150aa10c26e03f">More...</a><br /></td></tr>
@@ -125,15 +122,12 @@ Variables</h2></td></tr>
 <tr class="separator:ac7374f4f68aaef9867e081e6cb59e3d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9abdec236745828926dbed3d25cfad5"><td class="memItemLeft" align="right" valign="top">volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#ad9abdec236745828926dbed3d25cfad5">g_regs</a> [3 *REG_PER_PAGE]</td></tr>
 <tr class="separator:ad9abdec236745828926dbed3d25cfad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9261cf9a55e8094595049f94eb83ea8"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#ab9261cf9a55e8094595049f94eb83ea8">g_imuStallTimeUs</a> = 25</td></tr>
-<tr class="separator:ab9261cf9a55e8094595049f94eb83ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad21708e3ebd6fd184d5da8eb49568d4c"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#ad21708e3ebd6fd184d5da8eb49568d4c">imuStallTimeUs</a> = 25</td></tr>
+<tr class="separator:ad21708e3ebd6fd184d5da8eb49568d4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac3d2c59ee0e3bbae1b99529a154eb62"><td class="memItemLeft" align="right" valign="top">static TIM_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#aac3d2c59ee0e3bbae1b99529a154eb62">htim3</a></td></tr>
 <tr class="separator:aac3d2c59ee0e3bbae1b99529a154eb62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85788cec5a97ee377e4ee2e74f026484"><td class="memItemLeft" align="right" valign="top">static TIM_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html#a85788cec5a97ee377e4ee2e74f026484">htim4</a></td></tr>
 <tr class="separator:a85788cec5a97ee377e4ee2e74f026484"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9590b1ec6e5e504529a5d09632e8791"><td class="memItemLeft" align="right" valign="top"><a id="af9590b1ec6e5e504529a5d09632e8791"></a>
-static volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>SpiData</b></td></tr>
-<tr class="separator:af9590b1ec6e5e504529a5d09632e8791"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation for iSensor-SPI-Buffer IMU interfacing module. </p>
@@ -227,6 +221,26 @@ static volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>S
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a id="a50a9e9e1e661156087f12a81c2b6bc30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50a9e9e1e661156087f12a81c2b6bc30">&#9670;&nbsp;</a></span>DisableImuSpiDMA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DisableImuSpiDMA </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Disable IMU burst data stream. </p>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
@@ -368,6 +382,34 @@ static volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>S
 
 </div>
 </div>
+<a id="ae6a71708bd067b831a355da7d5e7a1b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6a71708bd067b831a355da7d5e7a1b7">&#9670;&nbsp;</a></span>StartImuBurst()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void StartImuBurst </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>bufEntry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Start an IMU burst data capture (using DMA) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bufEntry</td><td>Pointer to the buffer entry to recieve data into</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function configures the IMU SPI port for a bi-directional DMA transfer. CS is manually controlled by leaving TIM3 (CS timer) disabled, and manually setting the count register to 0. </p>
+
+</div>
+</div>
 <a id="a2e5c87a639e8ca9a6f61d05052df5fb8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2e5c87a639e8ca9a6f61d05052df5fb8">&#9670;&nbsp;</a></span>UpdateImuSpiConfig()</h2>
 
@@ -390,21 +432,6 @@ static volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>S
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="ab9261cf9a55e8094595049f94eb83ea8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9261cf9a55e8094595049f94eb83ea8">&#9670;&nbsp;</a></span>g_imuStallTimeUs</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t g_imuStallTimeUs = 25</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>track stall time (microseconds) </p>
-
-</div>
-</div>
 <a id="ad9abdec236745828926dbed3d25cfad5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad9abdec236745828926dbed3d25cfad5">&#9670;&nbsp;</a></span>g_regs</h2>
 
@@ -416,7 +443,7 @@ static volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>S
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Global register array (from <a class="el" href="registers_8c.html" title="iSensor-SPI-Buffer register interfacing">registers.c</a>) </p>
+<p>Global register array (from <a class="el" href="registers_8c.html" title="iSensor-SPI-Buffer register interfacing module. Called by user SPI and USB CLI">registers.c</a>) </p>
 
 </div>
 </div>
@@ -478,6 +505,29 @@ static volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>S
 </table>
 </div><div class="memdoc">
 <p>TIM4 HAL handle </p>
+
+</div>
+</div>
+<a id="ad21708e3ebd6fd184d5da8eb49568d4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad21708e3ebd6fd184d5da8eb49568d4c">&#9670;&nbsp;</a></span>imuStallTimeUs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t imuStallTimeUs = 25</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>track stall time (microseconds) </p>
 
 </div>
 </div>

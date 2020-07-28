@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.2</span>
+   &#160;<span id="projectnumber">1.3</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -78,12 +78,12 @@ $(function() {
 
 <p>Header file for iSensor-SPI-Buffer register interfacing module.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="imu__spi_8h_source.html">imu_spi.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="user__spi_8h_source.html">user_spi.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="imu__spi_8h_source.html">imu_spi.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="main_8h_source.html">main.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="buffer_8h_source.html">buffer.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="flash_8h_source.html">flash.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="data__capture_8h_source.html">data_capture.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="burst_8h_source.html">burst.h</a>&quot;</code><br />
 </div>
 <p><a href="registers_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -209,7 +209,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_DATA_0_REG</b>&#160;&#160;&#160;0x89</td></tr>
 <tr class="separator:aaef4c67582b679f6f8f187cf51d0bd41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d90879dde0a4ef3e14bcfbe31ec442b"><td class="memItemLeft" align="right" valign="top"><a id="a1d90879dde0a4ef3e14bcfbe31ec442b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FW_REV_DEFAULT</b>&#160;&#160;&#160;0x0102</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FW_REV_DEFAULT</b>&#160;&#160;&#160;0x0103</td></tr>
 <tr class="separator:a1d90879dde0a4ef3e14bcfbe31ec442b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1099031991c0f1d500a6f162e899265e"><td class="memItemLeft" align="right" valign="top"><a id="a1099031991c0f1d500a6f162e899265e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_CONFIG_DEFAULT</b>&#160;&#160;&#160;0x0000</td></tr>
@@ -292,11 +292,8 @@ Macros</h2></td></tr>
 <tr class="memitem:a9ab9a694adc372e558cae00c592f856f"><td class="memItemLeft" align="right" valign="top"><a id="a9ab9a694adc372e558cae00c592f856f"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SPI_CONF_MSB_FIRST</b>&#160;&#160;&#160;(1 &lt;&lt; 2)</td></tr>
 <tr class="separator:a9ab9a694adc372e558cae00c592f856f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7cefbf14b6e44487ef1951e5c88b5d6e"><td class="memItemLeft" align="right" valign="top"><a id="a7cefbf14b6e44487ef1951e5c88b5d6e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SPI_CONF_BURST_RD</b>&#160;&#160;&#160;(1 &lt;&lt; 15)</td></tr>
-<tr class="separator:a7cefbf14b6e44487ef1951e5c88b5d6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f0211437d064bf35cd212a19460576d"><td class="memItemLeft" align="right" valign="top"><a id="a2f0211437d064bf35cd212a19460576d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SPI_CONF_MASK</b>&#160;&#160;&#160;(SPI_CONF_CPHA|SPI_CONF_CPOL|SPI_CONF_MSB_FIRST|SPI_CONF_BURST_RD)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SPI_CONF_MASK</b>&#160;&#160;&#160;(SPI_CONF_CPHA|SPI_CONF_CPOL|SPI_CONF_MSB_FIRST)</td></tr>
 <tr class="separator:a2f0211437d064bf35cd212a19460576d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72be1b0e99c61fbaf34218781057fa2d"><td class="memItemLeft" align="right" valign="top"><a id="a72be1b0e99c61fbaf34218781057fa2d"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>STATUS_BUF_WATERMARK</b>&#160;&#160;&#160;(1 &lt;&lt; 0)</td></tr>
@@ -337,6 +334,18 @@ Macros</h2></td></tr>
 <tr class="memitem:a056844ff5898338e2de002f9dfe872ed"><td class="memItemLeft" align="right" valign="top"><a id="a056844ff5898338e2de002f9dfe872ed"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>STATUS_CLEAR_MASK</b>&#160;&#160;&#160;(STATUS_FLASH_ERROR|STATUS_FAULT|STATUS_FLASH_UPDATE|STATUS_WATCHDOG)</td></tr>
 <tr class="separator:a056844ff5898338e2de002f9dfe872ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5546c26df927e3cf8bbe3eb78b62d02"><td class="memItemLeft" align="right" valign="top"><a id="ad5546c26df927e3cf8bbe3eb78b62d02"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_CFG_REPLACE_OLDEST</b>&#160;&#160;&#160;(1 &lt;&lt; 0)</td></tr>
+<tr class="separator:ad5546c26df927e3cf8bbe3eb78b62d02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcfbd15d25b81a72a490aebfcf306de8"><td class="memItemLeft" align="right" valign="top"><a id="abcfbd15d25b81a72a490aebfcf306de8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_CFG_IMU_BURST</b>&#160;&#160;&#160;(1 &lt;&lt; 1)</td></tr>
+<tr class="separator:abcfbd15d25b81a72a490aebfcf306de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea5c65b505ae160099ba2296e187812a"><td class="memItemLeft" align="right" valign="top"><a id="aea5c65b505ae160099ba2296e187812a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_CFG_BUF_BURST</b>&#160;&#160;&#160;(1 &lt;&lt; 2)</td></tr>
+<tr class="separator:aea5c65b505ae160099ba2296e187812a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d8a8429378f701266f5f23c47587ce2"><td class="memItemLeft" align="right" valign="top"><a id="a0d8a8429378f701266f5f23c47587ce2"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_CFG_MASK</b>&#160;&#160;&#160;(BUF_CFG_REPLACE_OLDEST|BUF_CFG_IMU_BURST|BUF_CFG_BUF_BURST)</td></tr>
+<tr class="separator:a0d8a8429378f701266f5f23c47587ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -358,9 +367,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a1e4cc4aaf47e349fdaedc1df90274cab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8h.html#a1e4cc4aaf47e349fdaedc1df90274cab">FactoryReset</a> ()</td></tr>
 <tr class="memdesc:a1e4cc4aaf47e349fdaedc1df90274cab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load factory default values for all registers, and applies any settings changes.  <a href="registers_8h.html#a1e4cc4aaf47e349fdaedc1df90274cab">More...</a><br /></td></tr>
 <tr class="separator:a1e4cc4aaf47e349fdaedc1df90274cab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af97575ad183f8358642b8158353e5727"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8h.html#af97575ad183f8358642b8158353e5727">UpdateUserSpiConfig</a> ()</td></tr>
-<tr class="memdesc:af97575ad183f8358642b8158353e5727"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register.  <a href="registers_8h.html#af97575ad183f8358642b8158353e5727">More...</a><br /></td></tr>
-<tr class="separator:af97575ad183f8358642b8158353e5727"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5686c12b7d57a9c338252e749e2b2ef5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8h.html#a5686c12b7d57a9c338252e749e2b2ef5">BufDequeueToOutputRegs</a> ()</td></tr>
 <tr class="memdesc:a5686c12b7d57a9c338252e749e2b2ef5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dequeues an entry from the buffer and loads it to the primary output registers.  <a href="registers_8h.html#a5686c12b7d57a9c338252e749e2b2ef5">More...</a><br /></td></tr>
 <tr class="separator:a5686c12b7d57a9c338252e749e2b2ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -562,27 +568,6 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Value of register requested</dd></dl>
 <p>For selected pages not addressed by iSensor-SPI-Buffer, the read is passed through to the connected IMU, using the spi_passthrough module. If the selected page is [253 - 255] this read request is processed directly. </p>
-
-</div>
-</div>
-<a id="af97575ad183f8358642b8158353e5727"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af97575ad183f8358642b8158353e5727">&#9670;&nbsp;</a></span>UpdateUserSpiConfig()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void UpdateUserSpiConfig </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function performs all needed initialization for the slave SPI port, and should be called as start of the firmware start up process. </p>
 
 </div>
 </div>

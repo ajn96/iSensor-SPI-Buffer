@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.2</span>
+   &#160;<span id="projectnumber">1.3</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -80,6 +80,8 @@ $(function() {
 <p>Header file for iSensor-SPI-Buffer script module (loaded from SD card)  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="main_8h_source.html">main.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="registers_8h_source.html">registers.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cli_8h_source.html">cli.h</a>&quot;</code><br />
 </div>
 <p><a href="script_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -99,7 +101,11 @@ Enumerations</h2></td></tr>
 &#160;&#160;<b>stream</b>, 
 <b>sleep</b>, 
 <b>loop</b>, 
-<b>endloop</b>
+<b>endloop</b>, 
+<br />
+&#160;&#160;<b>freset</b>, 
+<b>help</b>, 
+<b>invalid</b>
 <br />
  }</td></tr>
 <tr class="separator:a9e0992eae3950adccaf4847fbff4231d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -109,9 +115,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a2cf64186f1b5eb9fb2e1c74c062d8d95"><td class="memItemLeft" align="right" valign="top"><a id="a2cf64186f1b5eb9fb2e1c74c062d8d95"></a>
 <a class="el" href="structscript.html">script</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ParseScriptElement</b> (uint8_t *buf)</td></tr>
 <tr class="separator:a2cf64186f1b5eb9fb2e1c74c062d8d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af992e23f7fb3297e2a0230d2b7d0a28d"><td class="memItemLeft" align="right" valign="top"><a id="af992e23f7fb3297e2a0230d2b7d0a28d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>RunScriptElement</b> (<a class="el" href="structscript.html">script</a> *scriptElement)</td></tr>
-<tr class="separator:af992e23f7fb3297e2a0230d2b7d0a28d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bfb4bdf5378c45d949e9ac7d14fff64"><td class="memItemLeft" align="right" valign="top"><a id="a5bfb4bdf5378c45d949e9ac7d14fff64"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>RunScriptElement</b> (<a class="el" href="structscript.html">script</a> *scr, uint8_t *outBuf)</td></tr>
+<tr class="separator:a5bfb4bdf5378c45d949e9ac7d14fff64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header file for iSensor-SPI-Buffer script module (loaded from SD card) </p>

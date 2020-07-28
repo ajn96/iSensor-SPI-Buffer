@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['passpins_446',['passPins',['../struct_d_i_o_config.html#abbad0864d58ef2eaad7c0294147e5c48',1,'DIOConfig']]],
-  ['ppspin_447',['ppsPin',['../struct_d_i_o_config.html#ab868a146e3d9f5d2c10c6304c4059ee9',1,'DIOConfig']]]
+  ['newlinestr_448',['NewLineStr',['../cli_8c.html#a0d68c88152e39308920a3287cf37799f',1,'cli.c']]],
+  ['numargs_449',['numArgs',['../structscript.html#ac68b2fec5298b6e70d381b23ac570a93',1,'script::numArgs()'],['../cli_8c.html#ac68b2fec5298b6e70d381b23ac570a93',1,'numArgs():&#160;cli.c']]]
 ];

@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.2</span>
+   &#160;<span id="projectnumber">1.3</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -69,7 +69,8 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">script.c File Reference</div>  </div>
 </div><!--header-->
@@ -81,19 +82,554 @@ $(function() {
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2cf64186f1b5eb9fb2e1c74c062d8d95"><td class="memItemLeft" align="right" valign="top"><a id="a2cf64186f1b5eb9fb2e1c74c062d8d95"></a>
-<a class="el" href="structscript.html">script</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ParseScriptElement</b> (uint8_t *buf)</td></tr>
-<tr class="separator:a2cf64186f1b5eb9fb2e1c74c062d8d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af992e23f7fb3297e2a0230d2b7d0a28d"><td class="memItemLeft" align="right" valign="top"><a id="af992e23f7fb3297e2a0230d2b7d0a28d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>RunScriptElement</b> (<a class="el" href="structscript.html">script</a> *scriptElement)</td></tr>
-<tr class="separator:af992e23f7fb3297e2a0230d2b7d0a28d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ca1acc3c2f70de254b6033abd7842ef"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a8ca1acc3c2f70de254b6033abd7842ef">ParseCommandArgs</a> (uint8_t *commandBuf, uint32_t *<a class="el" href="cli_8c.html#a988c3a7b6b5970b44a0ff380cfb78c76">args</a>)</td></tr>
+<tr class="memdesc:a8ca1acc3c2f70de254b6033abd7842ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse space delimited arguments out from a command.  <a href="script_8c.html#a8ca1acc3c2f70de254b6033abd7842ef">More...</a><br /></td></tr>
+<tr class="separator:a8ca1acc3c2f70de254b6033abd7842ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea16d045e8282ac0a27d9ac0f520c286"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#aea16d045e8282ac0a27d9ac0f520c286">UShortToHex</a> (uint8_t *outBuf, uint16_t val)</td></tr>
+<tr class="memdesc:aea16d045e8282ac0a27d9ac0f520c286"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a 16 bit value to the corresponding hex string.  <a href="script_8c.html#aea16d045e8282ac0a27d9ac0f520c286">More...</a><br /></td></tr>
+<tr class="separator:aea16d045e8282ac0a27d9ac0f520c286"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a837eb7d2d5f536c49cf57b012ef4fe4b"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a837eb7d2d5f536c49cf57b012ef4fe4b">HexToUInt</a> (uint8_t *commandBuf)</td></tr>
+<tr class="memdesc:a837eb7d2d5f536c49cf57b012ef4fe4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a hex string to a 32 bit uint.  <a href="script_8c.html#a837eb7d2d5f536c49cf57b012ef4fe4b">More...</a><br /></td></tr>
+<tr class="separator:a837eb7d2d5f536c49cf57b012ef4fe4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82377ec30e2c3a6113cabd4e43e6119d"><td class="memItemLeft" align="right" valign="top"><a id="a82377ec30e2c3a6113cabd4e43e6119d"></a>
+static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>ReadHandler</b> (<a class="el" href="structscript.html">script</a> *scr, uint8_t *outBuf)</td></tr>
+<tr class="separator:a82377ec30e2c3a6113cabd4e43e6119d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84be1b50cabc1d7855f02d66a171a92e"><td class="memItemLeft" align="right" valign="top"><a id="a84be1b50cabc1d7855f02d66a171a92e"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>WriteHandler</b> (<a class="el" href="structscript.html">script</a> *scr)</td></tr>
+<tr class="separator:a84be1b50cabc1d7855f02d66a171a92e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0285ac9ad3659b905d5923e625b81e5"><td class="memItemLeft" align="right" valign="top"><a id="ac0285ac9ad3659b905d5923e625b81e5"></a>
+static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>ReadBufHandler</b> (<a class="el" href="structscript.html">script</a> *scr, uint8_t *outBuf)</td></tr>
+<tr class="separator:ac0285ac9ad3659b905d5923e625b81e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cc22555d94082c8a04b989996f99e5f"><td class="memItemLeft" align="right" valign="top"><a id="a8cc22555d94082c8a04b989996f99e5f"></a>
+static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>SleepHandler</b> (<a class="el" href="structscript.html">script</a> *scr, uint8_t *outBuf)</td></tr>
+<tr class="separator:a8cc22555d94082c8a04b989996f99e5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1755ee632f2e7153cd15dc8e86df1467"><td class="memItemLeft" align="right" valign="top"><a id="a1755ee632f2e7153cd15dc8e86df1467"></a>
+static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>LoopHandler</b> (<a class="el" href="structscript.html">script</a> *scr, uint8_t *outBuf)</td></tr>
+<tr class="separator:a1755ee632f2e7153cd15dc8e86df1467"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa14742bbfe5e826dca6dad11bab2eb3"><td class="memItemLeft" align="right" valign="top"><a id="afa14742bbfe5e826dca6dad11bab2eb3"></a>
+static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>EndLoopHandler</b> (<a class="el" href="structscript.html">script</a> *scr, uint8_t *outBuf)</td></tr>
+<tr class="separator:afa14742bbfe5e826dca6dad11bab2eb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45f01dee407c9b4b4fb5ff673567c200"><td class="memItemLeft" align="right" valign="top"><a id="a45f01dee407c9b4b4fb5ff673567c200"></a>
+static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>StringEquals</b> (uint8_t *string0, const uint8_t *compStr, uint32_t count)</td></tr>
+<tr class="separator:a45f01dee407c9b4b4fb5ff673567c200"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6d7e5140b6fb546fa1dfff4c8cf7ed5"><td class="memItemLeft" align="right" valign="top"><a id="ae6d7e5140b6fb546fa1dfff4c8cf7ed5"></a>
+<a class="el" href="structscript.html">script</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ParseScriptElement</b> (uint8_t *commandBuf)</td></tr>
+<tr class="separator:ae6d7e5140b6fb546fa1dfff4c8cf7ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bfb4bdf5378c45d949e9ac7d14fff64"><td class="memItemLeft" align="right" valign="top"><a id="a5bfb4bdf5378c45d949e9ac7d14fff64"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>RunScriptElement</b> (<a class="el" href="structscript.html">script</a> *scr, uint8_t *outBuf)</td></tr>
+<tr class="separator:a5bfb4bdf5378c45d949e9ac7d14fff64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a498acc08ff841f6655df28c1681f954f"><td class="memItemLeft" align="right" valign="top">volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a498acc08ff841f6655df28c1681f954f">g_regs</a> []</td></tr>
+<tr class="separator:a498acc08ff841f6655df28c1681f954f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa910262b7076819c86978d461ecbcd7e"><td class="memItemLeft" align="right" valign="top"><a id="aa910262b7076819c86978d461ecbcd7e"></a>
+static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>cmdIndex</b></td></tr>
+<tr class="separator:aa910262b7076819c86978d461ecbcd7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabdeef34fcad1c19feb28c6861a4c49d"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#aabdeef34fcad1c19feb28c6861a4c49d">goodArg</a></td></tr>
+<tr class="separator:aabdeef34fcad1c19feb28c6861a4c49d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b1fd093fac9e4e1f5420b27ba1bf0d8"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a5b1fd093fac9e4e1f5420b27ba1bf0d8">ReadCmd</a> [] = &quot;read &quot;</td></tr>
+<tr class="separator:a5b1fd093fac9e4e1f5420b27ba1bf0d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8ddcf9309a7d7b4b420ee4a898c1815"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#af8ddcf9309a7d7b4b420ee4a898c1815">WriteCmd</a> [] = &quot;write &quot;</td></tr>
+<tr class="separator:af8ddcf9309a7d7b4b420ee4a898c1815"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf60efc250637cfd3a01a0d767660282"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#acf60efc250637cfd3a01a0d767660282">HelpCmd</a> [] = &quot;help&quot;</td></tr>
+<tr class="separator:acf60efc250637cfd3a01a0d767660282"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53f2cd4354e450d661d4d5893f300189"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a53f2cd4354e450d661d4d5893f300189">FactoryResetCmd</a> [] = &quot;freset&quot;</td></tr>
+<tr class="separator:a53f2cd4354e450d661d4d5893f300189"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b5ef6a5a103f5269e3d711981cc6f00"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a6b5ef6a5a103f5269e3d711981cc6f00">ReadBufCmd</a> [] = &quot;readbuf&quot;</td></tr>
+<tr class="separator:a6b5ef6a5a103f5269e3d711981cc6f00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10077c1a7acafedcf51fc0883d33723b"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a10077c1a7acafedcf51fc0883d33723b">EndloopCmd</a> [] = &quot;endloop&quot;</td></tr>
+<tr class="separator:a10077c1a7acafedcf51fc0883d33723b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a838678d9aa6daf012f6e60df0c962a6d"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a838678d9aa6daf012f6e60df0c962a6d">StreamCmd</a> [] = &quot;stream &quot;</td></tr>
+<tr class="separator:a838678d9aa6daf012f6e60df0c962a6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60f481e0a6db5359b3076169e47e3afe"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a60f481e0a6db5359b3076169e47e3afe">DelimCmd</a> [] = &quot;delim &quot;</td></tr>
+<tr class="separator:a60f481e0a6db5359b3076169e47e3afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f69b79ce36d4c2cec8d4475cf0fbfa9"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a6f69b79ce36d4c2cec8d4475cf0fbfa9">SleepCmd</a> [] = &quot;sleep &quot;</td></tr>
+<tr class="separator:a6f69b79ce36d4c2cec8d4475cf0fbfa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b9ad508a3887d54053a4a75c9fea203"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a5b9ad508a3887d54053a4a75c9fea203">LoopCmd</a> [] = &quot;loop &quot;</td></tr>
+<tr class="separator:a5b9ad508a3887d54053a4a75c9fea203"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2fe46f55c0107012ba3196abdb2bd5b"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#ac2fe46f55c0107012ba3196abdb2bd5b">InvalidCmdStr</a> [] = &quot;Error: Invalid command!\r\n&quot;</td></tr>
+<tr class="separator:ac2fe46f55c0107012ba3196abdb2bd5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a623e40ee2cec400ce1fe4a4f8faf503b"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a623e40ee2cec400ce1fe4a4f8faf503b">InvalidArgStr</a> [] = &quot;Error: Invalid argument!\r\n&quot;</td></tr>
+<tr class="separator:a623e40ee2cec400ce1fe4a4f8faf503b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a186b63d8cc631206b83952352e9821c8"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a186b63d8cc631206b83952352e9821c8">HelpStr</a> []</td></tr>
+<tr class="separator:a186b63d8cc631206b83952352e9821c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>iSensor-SPI-Buffer script module (loaded from SD card) </p>
 <p>Copyright (c) Analog Devices Inc, 2020 All Rights Reserved.</p>
 <dl class="section date"><dt>Date</dt><dd>7/23/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="a837eb7d2d5f536c49cf57b012ef4fe4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a837eb7d2d5f536c49cf57b012ef4fe4b">&#9670;&nbsp;</a></span>HexToUInt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static uint32_t HexToUInt </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>commandBuf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert a hex string to a 32 bit uint. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>The input string must be stored in CurrentCommand, with cmdIndex set to point at the first value in the string. </p>
+
+</div>
+</div>
+<a id="a8ca1acc3c2f70de254b6033abd7842ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ca1acc3c2f70de254b6033abd7842ef">&#9670;&nbsp;</a></span>ParseCommandArgs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static uint32_t ParseCommandArgs </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>commandBuf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t *&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parse space delimited arguments out from a command. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">commandBuf</td><td>Pointer to command string</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>Arguments must be separated by a space. Each argument (up to 3) are placed into the args array. The total number of arguments in the current command is placed in numArgs. All arguments must be hex strings. </p>
+
+</div>
+</div>
+<a id="aea16d045e8282ac0a27d9ac0f520c286"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea16d045e8282ac0a27d9ac0f520c286">&#9670;&nbsp;</a></span>UShortToHex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void UShortToHex </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>outBuf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert a 16 bit value to the corresponding hex string. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">outBuf</td><td>Buffer to place the string result in</td></tr>
+    <tr><td class="paramname">val</td><td>The 16 bit value to convert to a string</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a60f481e0a6db5359b3076169e47e3afe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60f481e0a6db5359b3076169e47e3afe">&#9670;&nbsp;</a></span>DelimCmd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t DelimCmd[] = &quot;delim &quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>String literal for delim set command. Must be followed by a space </p>
+
+</div>
+</div>
+<a id="a10077c1a7acafedcf51fc0883d33723b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10077c1a7acafedcf51fc0883d33723b">&#9670;&nbsp;</a></span>EndloopCmd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t EndloopCmd[] = &quot;endloop&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>String literal for endloop command. </p>
+
+</div>
+</div>
+<a id="a53f2cd4354e450d661d4d5893f300189"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53f2cd4354e450d661d4d5893f300189">&#9670;&nbsp;</a></span>FactoryResetCmd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t FactoryResetCmd[] = &quot;freset&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>String literal for factory reset command </p>
+
+</div>
+</div>
+<a id="a498acc08ff841f6655df28c1681f954f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a498acc08ff841f6655df28c1681f954f">&#9670;&nbsp;</a></span>g_regs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t g_regs[]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Global register array. (from <a class="el" href="registers_8c.html" title="iSensor-SPI-Buffer register interfacing module. Called by user SPI and USB CLI">registers.c</a>) </p>
+
+</div>
+</div>
+<a id="aabdeef34fcad1c19feb28c6861a4c49d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabdeef34fcad1c19feb28c6861a4c49d">&#9670;&nbsp;</a></span>goodArg</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t goodArg</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Flag to track if current command arguments are valid </p>
+
+</div>
+</div>
+<a id="acf60efc250637cfd3a01a0d767660282"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf60efc250637cfd3a01a0d767660282">&#9670;&nbsp;</a></span>HelpCmd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t HelpCmd[] = &quot;help&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>String literal for help command </p>
+
+</div>
+</div>
+<a id="a186b63d8cc631206b83952352e9821c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a186b63d8cc631206b83952352e9821c8">&#9670;&nbsp;</a></span>HelpStr</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t HelpStr[]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="stringliteral">&quot;All numeric values are in hex. [] arguments are optional\r\n&quot;</span></div>
+<div class="line">        <span class="stringliteral">&quot;help: Print available commands\r\n&quot;</span></div>
+<div class="line">        <span class="stringliteral">&quot;reset: Performs a software reset\r\n&quot;</span></div>
+<div class="line">        <span class="stringliteral">&quot;read startAddr [endAddr = addr] [numReads = 1]: Read registers starting at startAddr and ending at endAddr numReads times\r\n&quot;</span></div>
+<div class="line">        <span class="stringliteral">&quot;write addr value: Write the 8-bit value in value to register at address addr\r\n&quot;</span></div>
+<div class="line">        <span class="stringliteral">&quot;readbuf: Read all buffer entries. Values for each entry are placed on a newline\r\n&quot;</span></div>
+<div class="line">        <span class="stringliteral">&quot;stream startStop: Start (startStop != 0) or stop (startStop = 0) a read stream\r\n&quot;</span></div>
+<div class="line">        <span class="stringliteral">&quot;delim char: Set the read output delimiter character to char\r\n&quot;</span></div>
+</div><!-- fragment --><p>Print string for help command </p>
+
+</div>
+</div>
+<a id="a623e40ee2cec400ce1fe4a4f8faf503b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a623e40ee2cec400ce1fe4a4f8faf503b">&#9670;&nbsp;</a></span>InvalidArgStr</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t InvalidArgStr[] = &quot;Error: Invalid argument!\r\n&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Print string for invalid argument </p>
+
+</div>
+</div>
+<a id="ac2fe46f55c0107012ba3196abdb2bd5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2fe46f55c0107012ba3196abdb2bd5b">&#9670;&nbsp;</a></span>InvalidCmdStr</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t InvalidCmdStr[] = &quot;Error: Invalid command!\r\n&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Print string for invalid command </p>
+
+</div>
+</div>
+<a id="a5b9ad508a3887d54053a4a75c9fea203"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b9ad508a3887d54053a4a75c9fea203">&#9670;&nbsp;</a></span>LoopCmd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t LoopCmd[] = &quot;loop &quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>String literal for loop command. Must be followed by a space </p>
+
+</div>
+</div>
+<a id="a6b5ef6a5a103f5269e3d711981cc6f00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b5ef6a5a103f5269e3d711981cc6f00">&#9670;&nbsp;</a></span>ReadBufCmd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t ReadBufCmd[] = &quot;readbuf&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>String literal for read buffer command </p>
+
+</div>
+</div>
+<a id="a5b1fd093fac9e4e1f5420b27ba1bf0d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b1fd093fac9e4e1f5420b27ba1bf0d8">&#9670;&nbsp;</a></span>ReadCmd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t ReadCmd[] = &quot;read &quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>String literal for read command. Must be followed by a space </p>
+
+</div>
+</div>
+<a id="a6f69b79ce36d4c2cec8d4475cf0fbfa9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f69b79ce36d4c2cec8d4475cf0fbfa9">&#9670;&nbsp;</a></span>SleepCmd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t SleepCmd[] = &quot;sleep &quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>String literal for sleep command. Must be followed by a space </p>
+
+</div>
+</div>
+<a id="a838678d9aa6daf012f6e60df0c962a6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a838678d9aa6daf012f6e60df0c962a6d">&#9670;&nbsp;</a></span>StreamCmd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t StreamCmd[] = &quot;stream &quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>String literal for stream command. Must be followed by a space </p>
+
+</div>
+</div>
+<a id="af8ddcf9309a7d7b4b420ee4a898c1815"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8ddcf9309a7d7b4b420ee4a898c1815">&#9670;&nbsp;</a></span>WriteCmd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t WriteCmd[] = &quot;write &quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>String literal for write command. Must be followed by a space </p>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

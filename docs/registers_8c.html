@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.2</span>
+   &#160;<span id="projectnumber">1.3</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -76,7 +76,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>iSensor-SPI-Buffer register interfacing  
+<p>iSensor-SPI-Buffer register interfacing module. Called by user SPI and USB CLI  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="registers_8h_source.html">registers.h</a>&quot;</code><br />
 </div><table class="memberdecls">
@@ -108,14 +108,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a042bb33891e7dcafa8dcf3a696eaa451"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8c.html#a042bb33891e7dcafa8dcf3a696eaa451">GetBuildDate</a> ()</td></tr>
 <tr class="memdesc:a042bb33891e7dcafa8dcf3a696eaa451"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates the firmware date registers automatically.  <a href="registers_8c.html#a042bb33891e7dcafa8dcf3a696eaa451">More...</a><br /></td></tr>
 <tr class="separator:a042bb33891e7dcafa8dcf3a696eaa451"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af97575ad183f8358642b8158353e5727"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8c.html#af97575ad183f8358642b8158353e5727">UpdateUserSpiConfig</a> ()</td></tr>
-<tr class="memdesc:af97575ad183f8358642b8158353e5727"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register.  <a href="registers_8c.html#af97575ad183f8358642b8158353e5727">More...</a><br /></td></tr>
-<tr class="separator:af97575ad183f8358642b8158353e5727"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a35c3e3dee022adebf0fc138c81b515b9"><td class="memItemLeft" align="right" valign="top">SPI_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8c.html#a35c3e3dee022adebf0fc138c81b515b9">g_spi2</a></td></tr>
-<tr class="separator:a35c3e3dee022adebf0fc138c81b515b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a425769607ace224689db90d2b10ce0f3"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8c.html#a425769607ace224689db90d2b10ce0f3">g_bufLastRegIndex</a></td></tr>
 <tr class="separator:a425769607ace224689db90d2b10ce0f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addb2746a5058ce1e5238ded2921a2b50"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8c.html#addb2746a5058ce1e5238ded2921a2b50">g_bufNumWords32</a></td></tr>
@@ -128,7 +123,7 @@ Variables</h2></td></tr>
 <tr class="separator:a954f038896c833cf36970b00a32329ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>iSensor-SPI-Buffer register interfacing </p>
+<div class="textblock"><p>iSensor-SPI-Buffer register interfacing module. Called by user SPI and USB CLI </p>
 <p>Copyright (c) Analog Devices Inc, 2020 All Rights Reserved.</p>
 <dl class="section date"><dt>Date</dt><dd>3/18/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
@@ -325,27 +320,6 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="af97575ad183f8358642b8158353e5727"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af97575ad183f8358642b8158353e5727">&#9670;&nbsp;</a></span>UpdateUserSpiConfig()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void UpdateUserSpiConfig </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function performs all needed initialization for the slave SPI port, and should be called as start of the firmware start up process. </p>
-
-</div>
-</div>
 <a id="a14e4e9f1315bb4941574076d9a824d4a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a14e4e9f1315bb4941574076d9a824d4a">&#9670;&nbsp;</a></span>WriteReg()</h2>
 
@@ -429,21 +403,6 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Pointer to buffer entry. Will be 0 if no buffer entry "loaded" to output registers </p>
-
-</div>
-</div>
-<a id="a35c3e3dee022adebf0fc138c81b515b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35c3e3dee022adebf0fc138c81b515b9">&#9670;&nbsp;</a></span>g_spi2</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">SPI_HandleTypeDef g_spi2</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>SPI handle for slave port (from master controller). Global scope </p>
 
 </div>
 </div>

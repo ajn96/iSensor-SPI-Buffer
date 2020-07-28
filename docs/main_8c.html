@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.2</span>
+   &#160;<span id="projectnumber">1.3</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -81,6 +81,7 @@ $(function() {
 <div class="textblock"><code>#include &quot;<a class="el" href="main_8h_source.html">main.h</a>&quot;</code><br />
 <code>#include &quot;usbd_cdc_if.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="cli_8h_source.html">cli.h</a>&quot;</code><br />
+<code>#include &quot;fatfs.h&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -91,20 +92,17 @@ Functions</h2></td></tr>
 <tr class="memdesc:ae89fdd15729ad41a66911190fcbab23a"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPIO Initialization Function.  <a href="main_8c.html#ae89fdd15729ad41a66911190fcbab23a">More...</a><br /></td></tr>
 <tr class="separator:ae89fdd15729ad41a66911190fcbab23a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28dbf2494083ac5f39daa87bf09e4eb3"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a28dbf2494083ac5f39daa87bf09e4eb3">MX_SPI1_Init</a> (void)</td></tr>
-<tr class="memdesc:a28dbf2494083ac5f39daa87bf09e4eb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI1 Initialization Function (master SPI port)  <a href="main_8c.html#a28dbf2494083ac5f39daa87bf09e4eb3">More...</a><br /></td></tr>
+<tr class="memdesc:a28dbf2494083ac5f39daa87bf09e4eb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI1 Initialization Function (master SPI port to IMU)  <a href="main_8c.html#a28dbf2494083ac5f39daa87bf09e4eb3">More...</a><br /></td></tr>
 <tr class="separator:a28dbf2494083ac5f39daa87bf09e4eb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad13211e797777a447435fa0b54dcac7c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ad13211e797777a447435fa0b54dcac7c">MX_SPI3_Init</a> (void)</td></tr>
 <tr class="memdesc:ad13211e797777a447435fa0b54dcac7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI3 Initialization Function (SD card master SPI port)  <a href="main_8c.html#ad13211e797777a447435fa0b54dcac7c">More...</a><br /></td></tr>
 <tr class="separator:ad13211e797777a447435fa0b54dcac7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3440e31cd634a206628f11eafcd67423"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a3440e31cd634a206628f11eafcd67423">DMA_Init</a> (void)</td></tr>
+<tr class="memdesc:a3440e31cd634a206628f11eafcd67423"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init and DMA channels in use and configure DMA interrupts.  <a href="main_8c.html#a3440e31cd634a206628f11eafcd67423">More...</a><br /></td></tr>
+<tr class="separator:a3440e31cd634a206628f11eafcd67423"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41f752b7e6021861e56ecdf56993e9a8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a41f752b7e6021861e56ecdf56993e9a8">DWT_Init</a> ()</td></tr>
 <tr class="memdesc:a41f752b7e6021861e56ecdf56993e9a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init DWT peripheral.  <a href="main_8c.html#a41f752b7e6021861e56ecdf56993e9a8">More...</a><br /></td></tr>
 <tr class="separator:a41f752b7e6021861e56ecdf56993e9a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a608dc9e9bcaf978f1611f3ec57670f64"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a608dc9e9bcaf978f1611f3ec57670f64">MX_DMA_Init</a> (void)</td></tr>
-<tr class="memdesc:a608dc9e9bcaf978f1611f3ec57670f64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable DMA channels in use.  <a href="main_8c.html#a608dc9e9bcaf978f1611f3ec57670f64">More...</a><br /></td></tr>
-<tr class="separator:a608dc9e9bcaf978f1611f3ec57670f64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8785bf7e37e3cdcad488b6308e0c93c"><td class="memItemLeft" align="right" valign="top"><a id="ac8785bf7e37e3cdcad488b6308e0c93c"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>DMA_Link</b> ()</td></tr>
-<tr class="separator:ac8785bf7e37e3cdcad488b6308e0c93c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a840291bc02cba5474a4cb46a9b9566fe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main</a> (void)</td></tr>
 <tr class="memdesc:a840291bc02cba5474a4cb46a9b9566fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">The application entry point.  <a href="main_8c.html#a840291bc02cba5474a4cb46a9b9566fe">More...</a><br /></td></tr>
 <tr class="separator:a840291bc02cba5474a4cb46a9b9566fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,8 +118,6 @@ Variables</h2></td></tr>
 <tr class="separator:aac1f4630d4e8c615569ebe2ac0631580"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9dbb1a46106345497ffe77a0cf9c5ee8"><td class="memItemLeft" align="right" valign="top">DMA_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a9dbb1a46106345497ffe77a0cf9c5ee8">g_dma_spi1_tx</a></td></tr>
 <tr class="separator:a9dbb1a46106345497ffe77a0cf9c5ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6b55ce4c4660fcf9212ec4c7199757b"><td class="memItemLeft" align="right" valign="top">DMA_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#af6b55ce4c4660fcf9212ec4c7199757b">g_dma_spi2_rx</a></td></tr>
-<tr class="separator:af6b55ce4c4660fcf9212ec4c7199757b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4eae4d74cf9b50c1088c5c05ee83ee2d"><td class="memItemLeft" align="right" valign="top">DMA_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a4eae4d74cf9b50c1088c5c05ee83ee2d">g_dma_spi2_tx</a></td></tr>
 <tr class="separator:a4eae4d74cf9b50c1088c5c05ee83ee2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7374f4f68aaef9867e081e6cb59e3d9"><td class="memItemLeft" align="right" valign="top">SPI_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ac7374f4f68aaef9867e081e6cb59e3d9">g_spi1</a></td></tr>
@@ -139,6 +135,36 @@ Variables</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>3/14/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a3440e31cd634a206628f11eafcd67423"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3440e31cd634a206628f11eafcd67423">&#9670;&nbsp;</a></span>DMA_Init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void DMA_Init </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Init and DMA channels in use and configure DMA interrupts. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>Currently use three DMA channels, on DMA peripheral 1: DMA2/3 - IMU SPI port, used for burst reads from IMU DMA5 - User SPI port, Used for buffer burst outputs. Rx not used </p>
+
+</div>
+</div>
 <a id="a41f752b7e6021861e56ecdf56993e9a8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a41f752b7e6021861e56ecdf56993e9a8">&#9670;&nbsp;</a></span>DWT_Init()</h2>
 
@@ -163,7 +189,8 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Init DWT peripheral. </p>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This peripheral is used to count microseconds for the timer module. </p>
 
 </div>
 </div>
@@ -207,35 +234,6 @@ Variables</h2></td></tr>
 
 <p>The application entry point. </p>
 <dl class="section return"><dt>Returns</dt><dd>main status code. Should not return. </dd></dl>
-
-</div>
-</div>
-<a id="a608dc9e9bcaf978f1611f3ec57670f64"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a608dc9e9bcaf978f1611f3ec57670f64">&#9670;&nbsp;</a></span>MX_DMA_Init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void MX_DMA_Init </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Enable DMA channels in use. </p>
-<dl class="section return"><dt>Returns</dt><dd>void Enable DMA controller clock </dd></dl>
 
 </div>
 </div>
@@ -299,7 +297,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>SPI1 Initialization Function (master SPI port) </p>
+<p>SPI1 Initialization Function (master SPI port to IMU) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">None</td><td></td></tr>
@@ -404,21 +402,6 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>IMU SPI Tx DMA handle. Global scope </p>
-
-</div>
-</div>
-<a id="af6b55ce4c4660fcf9212ec4c7199757b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6b55ce4c4660fcf9212ec4c7199757b">&#9670;&nbsp;</a></span>g_dma_spi2_rx</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">DMA_HandleTypeDef g_dma_spi2_rx</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>User SPI Rx DMA handle. Global scope </p>
 
 </div>
 </div>

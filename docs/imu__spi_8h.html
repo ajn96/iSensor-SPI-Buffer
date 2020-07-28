@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.2</span>
+   &#160;<span id="projectnumber">1.3</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -101,11 +101,11 @@ Functions</h2></td></tr>
 <tr class="memitem:ade1ebafc91f74e54ede09c7277db0aa4"><td class="memItemLeft" align="right" valign="top"><a id="ade1ebafc91f74e54ede09c7277db0aa4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>EnableImuSpiDMA</b> ()</td></tr>
 <tr class="separator:ade1ebafc91f74e54ede09c7277db0aa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50a9e9e1e661156087f12a81c2b6bc30"><td class="memItemLeft" align="right" valign="top"><a id="a50a9e9e1e661156087f12a81c2b6bc30"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DisableImuSpiDMA</b> ()</td></tr>
+<tr class="memitem:a50a9e9e1e661156087f12a81c2b6bc30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8h.html#a50a9e9e1e661156087f12a81c2b6bc30">DisableImuSpiDMA</a> ()</td></tr>
+<tr class="memdesc:a50a9e9e1e661156087f12a81c2b6bc30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable IMU burst data stream.  <a href="imu__spi_8h.html#a50a9e9e1e661156087f12a81c2b6bc30">More...</a><br /></td></tr>
 <tr class="separator:a50a9e9e1e661156087f12a81c2b6bc30"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6a71708bd067b831a355da7d5e7a1b7"><td class="memItemLeft" align="right" valign="top"><a id="ae6a71708bd067b831a355da7d5e7a1b7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>StartImuBurst</b> (uint8_t *bufEntry)</td></tr>
+<tr class="memitem:ae6a71708bd067b831a355da7d5e7a1b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8h.html#ae6a71708bd067b831a355da7d5e7a1b7">StartImuBurst</a> (uint8_t *bufEntry)</td></tr>
+<tr class="memdesc:ae6a71708bd067b831a355da7d5e7a1b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start an IMU burst data capture (using DMA)  <a href="imu__spi_8h.html#ae6a71708bd067b831a355da7d5e7a1b7">More...</a><br /></td></tr>
 <tr class="separator:ae6a71708bd067b831a355da7d5e7a1b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a814e8222e8a4eda9663f65501d41580a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8h.html#a814e8222e8a4eda9663f65501d41580a">InitImuCsTimer</a> ()</td></tr>
 <tr class="memdesc:a814e8222e8a4eda9663f65501d41580a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inits TIM3 for use in PWM mode to drive CS.  <a href="imu__spi_8h.html#a814e8222e8a4eda9663f65501d41580a">More...</a><br /></td></tr>
@@ -177,6 +177,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>StartImuBurst</b> (ui
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a id="a50a9e9e1e661156087f12a81c2b6bc30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50a9e9e1e661156087f12a81c2b6bc30">&#9670;&nbsp;</a></span>DisableImuSpiDMA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DisableImuSpiDMA </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Disable IMU burst data stream. </p>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
@@ -315,6 +335,34 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>StartImuBurst</b> (ui
 <p>Inits TIM4 for use as a IMU spi period timer. </p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
 <p>TIM4 is used to drive SPI buffered data acquisition from the IMU. One timer interrupt is generated per SPI word clocked out from the DUT. TIM4 runs at a full 72MHz. With a 16-bit resolution and a time base of 72MHz, TIM4 will roll over every 910us The worst case spi period allowed is 255us stall + (17 bits / 140KHz) -&gt; 376us </p>
+
+</div>
+</div>
+<a id="ae6a71708bd067b831a355da7d5e7a1b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6a71708bd067b831a355da7d5e7a1b7">&#9670;&nbsp;</a></span>StartImuBurst()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void StartImuBurst </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>bufEntry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Start an IMU burst data capture (using DMA) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bufEntry</td><td>Pointer to the buffer entry to recieve data into</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function configures the IMU SPI port for a bi-directional DMA transfer. CS is manually controlled by leaving TIM3 (CS timer) disabled, and manually setting the count register to 0. </p>
 
 </div>
 </div>
