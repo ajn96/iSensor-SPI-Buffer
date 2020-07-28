@@ -211,7 +211,7 @@ void TIM4_IRQHandler()
 		return;
 	}
 
-	/* Wait for SPI rx done */
+	/* Wait for SPI rx done (running in master mode, shouldn't be an issue) */
 	while(!(SPI1->SR & SPI_SR_RXNE));
 
 	/* Grab SPI data from last transaction */
@@ -474,7 +474,7 @@ void EXTI15_10_IRQHandler(void)
 		/* Clear SPI FIFO */
 		for(int i = 0; i < 4; i++)
 		{
-			txData = SPI2->DR;
+			(void) SPI2->DR;
 		}
 
 		/* Set status reg SPI overflow flag */
@@ -495,12 +495,12 @@ void EXTI15_10_IRQHandler(void)
 		/* Overrun error, can be cleared by repeatedly reading DR */
 		for(uint32_t i = 0; i < 4; i++)
 		{
-			txData = SPI2->DR;
+			(void) SPI2->DR;
 		}
 		/* Load zero to output */
 		SPI2->DR = 0;
 		/* Read status register */
-		txData = SPI2->SR;
+		(void) SPI2->SR;
 	}
 
 	/* Handle transaction */
