@@ -12,7 +12,6 @@
 
 /* Private function prototypes */
 static void FinishImuBurst();
-static void FinishSlaveSpiBurst();
 
 /** Global register array (from registers.c) */
 volatile extern uint16_t g_regs[3 * REG_PER_PAGE];
@@ -40,6 +39,9 @@ extern SPI_HandleTypeDef g_spi1;
 
 /** User SPI handle (from main.c) */
 extern SPI_HandleTypeDef g_spi2;
+
+/***/
+volatile extern uint32_t g_userburstRunning;
 
 /** Current capture size (in 16 bit words). Global scope */
 volatile uint32_t g_wordsPerCapture;
@@ -258,76 +260,6 @@ void TIM4_IRQHandler()
 }
 
 /**
-  * @brief Slave SPI ISR
-  *
-  * @return void
-  *
-  * This function handles SPI traffic from the master device
-  */
-void SPI2_IRQHandler(void)
-{
-	uint32_t itflag = SPI2->SR;
-	uint32_t transmitData;
-	uint32_t rxData;
-
-	/* Error interrupt source */
-	if(itflag & (SPI_FLAG_OVR | SPI_FLAG_MODF))
-	{
-		/* Set status reg SPI error flag */
-		g_regs[STATUS_0_REG] |= STATUS_SPI_ERROR;
-		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
-
-		/* Overrun error, can be cleared by repeatedly reading DR */
-		for(uint32_t i = 0; i < 4; i++)
-		{
-			transmitData = SPI2->DR;
-		}
-		/* Load zero to output */
-		SPI2->DR = 0;
-		/* Read status register */
-		itflag = SPI2->SR;
-		/* Exit ISR */
-		return;
-	}
-
-	/* Spi overflow (received transaction while transmit pending) */
-	if(itflag & 0x1000)
-	{
-		/* Get data from FIFO */
-		rxData = SPI2->DR;
-
-		/* Set status reg SPI overflow flag */
-		g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
-		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
-
-		/* Exit ISR */
-		return;
-	}
-
-	/* Rx done interrupt source */
-	if(itflag & SPI_FLAG_RXNE)
-	{
-		/* Get data from FIFO */
-		rxData = SPI2->DR;
-
-		/* Handle transaction */
-		if(rxData & 0x8000)
-		{
-			/* Write */
-			transmitData = WriteReg((rxData & 0x7F00) >> 8, rxData & 0xFF);
-		}
-		else
-		{
-			/* Read */
-			transmitData = ReadReg(rxData >> 8);
-		}
-
-		/* Transmit data back */
-		SPI2->DR = transmitData;
-	}
-}
-
-/**
   * @brief This function handles DMA1 channel2 global interrupt (spi1 (IMU) Rx).
   *
   * @return void
@@ -438,105 +370,138 @@ static void FinishImuBurst()
   * @brief This function handles DMA1 channel5 global interrupt (spi2 (user) Tx).
   *
   * @return void
+  *
+  * This interrupt is only used to flag errors. Ending a buffer burst output is
+  * triggered by an EXTI interrupt attached to chip select.
   */
 void DMA1_Channel5_IRQHandler(void)
 {
 	uint32_t flags = g_dma_spi2_tx.DmaBaseAddress->ISR;
 
 	/* Clear interrupt enable */
-	g_dma_spi2_tx.Instance->CCR &= ~(DMA_IT_TC | DMA_IT_TE);
+	g_dma_spi2_tx.Instance->CCR &= ~DMA_IT_TE;
 
 	/* Clear interrupt flags */
-	g_dma_spi2_tx.DmaBaseAddress->IFCR = (DMA_FLAG_TC1|DMA_FLAG_TE1) << g_dma_spi2_tx.ChannelIndex;
+	g_dma_spi2_tx.DmaBaseAddress->IFCR = (DMA_FLAG_TE1|DMA_FLAG_TC1|DMA_FLAG_HT1) << g_dma_spi2_tx.ChannelIndex;
 
 	/* Check for error interrupt */
 	if(flags & (DMA_FLAG_TE1 << g_dma_spi2_tx.ChannelIndex))
 	{
-		/* Flag error */
+		/* Flag DMA error */
 		g_regs[STATUS_0_REG] |= STATUS_DMA_ERROR;
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
-		/* Kill running burst */
-		FinishSlaveSpiBurst();
 	}
 }
 
 void EXTI15_10_IRQHandler(void)
 {
-	/* EXTI pending request register */
-	static uint32_t EXTI_PR;
+	/* SPI status register */
+	static uint32_t spiSr;
+
+	/* Rx SPI data */
+	static uint32_t rxData;
+
+	/* Tx SPI data */
+	static uint32_t txData;
 
 	/* Clear exti PR register (lines 10-15) */
-	EXTI_PR = EXTI->PR;
 	EXTI->PR |= 0x3F << 10;
 
-	if(EXTI_PR & (1 << 12))
-	{
-		FinishSlaveSpiBurst();
-	}
-}
+	/* Read SPI2 SR */
+	spiSr = SPI2->SR;
 
-/**
-  * @brief Cleans up a burst data read from a master device
-  *
-  * @return void
-  *
-  * This function is called once the SPI2 Tx and Rx DMA interrupts
-  * have both fired, or a single error interrupt has been generated.
-  * SPI2 uses DMA1, channel 4/5. These channels have higher priority
-  * than the user SPI DMA channels, which also use DMA peripheral 1.
-  *
-  * This function reacts based on the data received from the master
-  * device during the burst. If the master clocked out the address of
-  * BUF_RETRIEVE register in the first byte, this function triggers another
-  * buffer dequeue operation (which will set up another burst). If the first
-  * byte received does not address the BUF_RETRIEVE register, then the SPI is returned
-  * to register mode, and the standard SPI read/write routine is called with the
-  * values received in the first two bytes.
-  */
-static void FinishSlaveSpiBurst()
-{
 	/* Read first SPI data word received */
-	uint32_t spiData = SPI2->DR;
-	uint32_t transmitData = 0;
+	rxData = SPI2->DR;
 
-	/* Disable DMA */
-	g_dma_spi2_tx.Instance->CCR &= ~DMA_CCR_EN;
-
-	/* Disable and re-enable SPI. Kind of hacky, not a clean way to do this.
-	 * This is required because there is no way to clear Tx FIFO in the SPI
-	 * peripheral otherwise */
-	RCC->APB1RSTR |= RCC_APB1RSTR_SPI2RST;
-	RCC->APB1RSTR &= ~RCC_APB1RSTR_SPI2RST;
-	HAL_SPI_Init(&g_spi2);
-	__HAL_SPI_ENABLE(&g_spi2);
-
-	/* If Rx data has address for buf_retrieve then set up another burst */
-	if(((spiData >> 8) == 6) && (g_regs[BUF_CNT_0_REG] > 0))
+	/* If a burst is running disable DMA and re-init SPI */
+	if(g_userburstRunning)
 	{
-		/* Set update flag for main loop */
-		g_update_flags |= DEQUEUE_BUF_FLAG;
+		/* Disable DMA */
+		g_dma_spi2_tx.Instance->CCR &= ~DMA_CCR_EN;
+
+		/* Disable and re-enable SPI. Kind of hacky, not a clean way to do this.
+		 * This is required because there is no way to clear Tx FIFO in the SPI
+		 * peripheral otherwise */
+		RCC->APB1RSTR |= RCC_APB1RSTR_SPI2RST;
+		RCC->APB1RSTR &= ~RCC_APB1RSTR_SPI2RST;
+		HAL_SPI_Init(&g_spi2);
+		__HAL_SPI_ENABLE(&g_spi2);
+
+		/* Clear burst running flag */
+		g_userburstRunning = 0;
+
+		/* Check if another burst was not requested */
+		if((rxData >> 8) != 6)
+		{
+			BurstReadDisable();
+		}
+
+		/* Jump to handler, don't want to check errors/overflow while burst is running */
+		goto handle_transaction;
 	}
-	/* Else restore register SPI mode */
+
+	/* If data is not available then exit */
+	if(!(spiSr & SPI_SR_RXNE))
+	{
+		g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+
+		/* Re-init SPI to make sure we end up in a good state */
+		RCC->APB1RSTR |= RCC_APB1RSTR_SPI2RST;
+		RCC->APB1RSTR &= ~RCC_APB1RSTR_SPI2RST;
+		HAL_SPI_Init(&g_spi2);
+		__HAL_SPI_ENABLE(&g_spi2);
+
+		return;
+	}
+
+	/* Check for SPI overflow */
+	if(spiSr & 0x1000)
+	{
+		/* Clear SPI FIFO */
+		for(int i = 0; i < 4; i++)
+		{
+			txData = SPI2->DR;
+		}
+
+		/* Set status reg SPI overflow flag */
+		g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+	}
+
+	/* Error interrupt source */
+	if(spiSr & (SPI_FLAG_OVR | SPI_FLAG_MODF))
+	{
+		/* Set status reg SPI error flag */
+		g_regs[STATUS_0_REG] |= STATUS_SPI_ERROR;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+
+		/* Overrun error, can be cleared by repeatedly reading DR */
+		for(uint32_t i = 0; i < 4; i++)
+		{
+			txData = SPI2->DR;
+		}
+		/* Load zero to output */
+		SPI2->DR = 0;
+		/* Read status register */
+		txData = SPI2->SR;
+	}
+
+	/* Handle transaction */
+	handle_transaction:
+	if(rxData & 0x8000)
+	{
+		/* Write */
+		txData = WriteReg((rxData & 0x7F00) >> 8, rxData & 0xFF);
+	}
 	else
 	{
-		/* Disable burst */
-		BurstReadDisable();
-
-		/* Handle transaction */
-		if(spiData & 0x8000)
-		{
-			/* Write */
-			transmitData = WriteReg((spiData & 0x7F00) >> 8, spiData & 0xFF);
-		}
-		else
-		{
-			/* Read */
-			transmitData = ReadReg(spiData >> 8);
-		}
+		/* Read */
+		txData = ReadReg(rxData >> 8);
 	}
 
-	/* Load next 16-bit word to SPI output */
-	SPI2->DR = transmitData;
+	/* Transmit data back */
+	SPI2->DR = txData;
 }
 
 /**

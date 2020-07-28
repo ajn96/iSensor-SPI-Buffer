@@ -12,12 +12,12 @@
 #define INC_REGISTERS_H_
 
 /* Includes */
+#include "user_spi.h"
 #include "imu_spi.h"
 #include "main.h"
 #include "buffer.h"
 #include "flash.h"
 #include "data_capture.h"
-#include "burst.h"
 
 /* Public function prototypes */
 uint16_t ReadReg(uint8_t regAddr);
@@ -26,7 +26,6 @@ void GetSN();
 void GetBuildDate();
 void ProcessCommand();
 void FactoryReset();
-void UpdateUserSpiConfig();
 void BufDequeueToOutputRegs();
 
 /* Number of registers per page */
