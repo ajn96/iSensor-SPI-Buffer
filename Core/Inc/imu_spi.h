@@ -25,8 +25,9 @@ void UpdateImuSpiConfig();
 
 void EnableImuSpiDMA();
 void DisableImuSpiDMA();
-
 void StartImuBurst(uint8_t * bufEntry);
+
+void ResetImu();
 
 /* Timer config */
 void InitImuCsTimer();

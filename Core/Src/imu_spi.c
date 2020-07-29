@@ -29,6 +29,20 @@ static TIM_HandleTypeDef htim3;
 static TIM_HandleTypeDef htim4;
 
 /**
+  * @brief Hardware reset connected IMU
+  *
+  * @return void
+  *
+  * Reset pin is pulled low for 1ms, then brought high
+  */
+void ResetImu()
+{
+	GPIOA->ODR &= ~GPIO_PIN_3;
+	SleepMicroseconds(1000);
+	GPIOA->ODR |= GPIO_PIN_3;
+}
+
+/**
   * @brief Disable IMU burst data stream
   *
   * @return void
