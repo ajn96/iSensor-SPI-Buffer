@@ -24,7 +24,7 @@ If the iSensor-SPI-Buffer is connected to a host processor, a script can be star
 
 If the iSensor-SPI-Buffer is intended to run headless (powered by a USB battery pack), a user can set the SCRIPT_AUTORUN bit of the USB_CONFIG register, and issue a flash update to store the register value to non-volatile memory. If the script autorun bit is set when the iSensor-SPI-Buffer firmware finishes initialization, a script start command will be executed autonomously.
 
-If there is an error starting a script (no SD card, invalid format, invalid script file, etc) the SCRIPT_ERROR bit of the STATUS register will be set. If the script starts successfully, the SCRIPT_RUNNING bit of the STATUS register will be set. This bit will stay set until the script execution process finishes, or is terminated.
+If there is an error starting a script (no SD card, invalid format, invalid script file, etc) the SCRIPT_ERROR bit of the STATUS register will be set. If the script starts successfully, the SCRIPT_RUNNING bit of the STATUS register will be set. This bit will stay set until the script execution process finishes, or is terminated. Once the script has finished, the SCRIPT_RUNNING bit will clear automatically, without the STATUS register being read. This allows a user to monitor the script execution process without register access by looking at the error LED (set ERROR_INT_CONFIG mask out other error sources) and ERROR interrupt outputs.
 
 To cancel a running script, the user can set the SCRIPT_CANCEL bit of the COMMAND register. This will stop the script execution process, close any open files, and unmount the SD card volume.
 
