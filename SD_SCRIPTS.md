@@ -52,13 +52,13 @@ These are some potential scripts a user could utilize for the [ADIS16497](https:
 
 `write 0 0 //select IMU page 0`
 
-`loop 64 //loop 0x64 (100 times)`
+`loop 64 //loop 0x64 (100) times`
 
 `read 4 28 //read IMU output data registers`
 
 `sleep 64 //sleep for 100ms`
 
-`endloop` //end of loop
+`endloop //end of loop`
 
 ### Full Bandwidth Buffered Data Capture
 
