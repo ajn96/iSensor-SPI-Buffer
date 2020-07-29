@@ -492,13 +492,11 @@ void EXTI15_10_IRQHandler(void)
 		g_regs[STATUS_0_REG] |= STATUS_SPI_ERROR;
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 
-		/* Overrun error, can be cleared by repeatedly reading DR */
+		/* Overrun error, clear out Rx FIFO by repeatedly reading DR */
 		for(uint32_t i = 0; i < 4; i++)
 		{
 			(void) SPI2->DR;
 		}
-		/* Load zero to output */
-		SPI2->DR = 0;
 		/* Read status register */
 		(void) SPI2->SR;
 	}
