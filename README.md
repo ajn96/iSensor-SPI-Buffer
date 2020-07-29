@@ -11,6 +11,8 @@ Additional hardware and software resources are linked below.
 
 [USB CLI Definition](USB_CLI.md)
 
+[SD Card Scripts](SD_SCRIPTS.md)
+
 [STM32 Processor Pin Map](PIN_MAP.md)
 
 [Firmware Documentation (Doxygen)](https://ajn96.github.io/iSensor-SPI-Buffer/files.html)
