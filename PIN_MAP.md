@@ -18,6 +18,8 @@
 | MISO_Master | PA6 | Master in slave out (MISO) signal. This pin is an input for the iSensor-SPI-Buffer |
 | MOSI_Master | PA7 | Master out slave in (MOSI) signal. This pin is an output from the iSensor-SPI-Buffer |
 
+The IMU reset pin is mapped to PA3 (hardware rev C or newer)
+
 **SPI 3 (master to communicate with SD card/etc)**
 
 | Pin Name | STM32 Pin | Description |
@@ -26,6 +28,8 @@
 | SCLK_SD | PC10 | SPI clock signal |
 | MISO_SD | PC11 | Master in slave out (MISO) signal |
 | MOSI_SD | PC12 | Master out slave in (MOSI) signal |
+
+SW_SD (SD card detect line) is mapped to PD2
 
 **DIO / ADG1611 Control**
 
