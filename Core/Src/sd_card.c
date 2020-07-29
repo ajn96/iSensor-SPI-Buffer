@@ -139,8 +139,8 @@ void StopScript()
 	scriptRunning = 0;
 
 	/* Close all files and unmount SD card */
-	f_close("script.txt");
-	f_close("result.txt");
+	f_close(&cmdFile);
+	f_close(&outFile);
 
 	/* Unmount */
 	f_mount(0, "", 0);
@@ -255,7 +255,7 @@ static bool OpenScriptFiles()
 	if(f_open(&cmdFile, "script.txt", FA_READ) != FR_OK)
 	{
 		/* Attempt file close */
-		f_close("script.txt");
+		f_close(&cmdFile);
 
 		/* Unmount */
 		f_mount(0, "", 0);
@@ -265,11 +265,11 @@ static bool OpenScriptFiles()
 	}
 
 	/* Open result.txt in append write mode */
-	if(f_open(&cmdFile, "result.txt", FA_OPEN_ALWAYS) != FR_OK)
+	if(f_open(&outFile, "result.txt", FA_OPEN_ALWAYS) != FR_OK)
 	{
 		/* Attempt file close on script and result */
-		f_close("script.txt");
-		f_close("result.txt");
+		f_close(&outFile);
+		f_close(&cmdFile);
 
 		/* Unmount */
 		f_mount(0, "", 0);
