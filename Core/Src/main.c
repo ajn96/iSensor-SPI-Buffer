@@ -11,7 +11,6 @@
 #include "main.h"
 #include "usbd_cdc_if.h"
 #include "cli.h"
-#include "fatfs.h"
 
 /* Private function prototypes */
 static void SystemClock_Config(void);
@@ -67,11 +66,19 @@ int main(void)
   /* Enable watch dog timer (2 seconds period) */
   EnableWatchDog(2000);
 
-  /* Initialize all configured peripherals */
+  /* Initialize GPIO */
   MX_GPIO_Init();
+
+  /* Initialize IMU SPI port */
   MX_SPI1_Init();
+
+  /* Initialize SD card SPI port */
   MX_SPI3_Init();
+
+  /* Initialize USB hardware */
   MX_USB_DEVICE_Init();
+
+  /* Initialize DWT timer peripheral */
   DWT_Init();
 
   /* Load registers from flash */
@@ -120,16 +127,13 @@ int main(void)
   /* Init temp sensor (ADC1) */
   TempInit();
 
-  /* Init FAT file system */
-  MX_FATFS_Init();
-
   /* Set state to 0 */
   state = 0;
 
   /* Clear all update flags before entering loop (shouldn't be set anyways, but it doesn't hurt) */
   g_update_flags = 0;
 
-  /* Infinite loop */
+  /* Infinite cyclic executive loop */
   while(1)
   {
 	  /* Process buf dequeue every loop iteration (high priority) */
@@ -463,6 +467,10 @@ static void MX_GPIO_Init(void)
 	__HAL_RCC_GPIOA_CLK_ENABLE();
 	__HAL_RCC_GPIOB_CLK_ENABLE();
 	__HAL_RCC_GPIOC_CLK_ENABLE();
+	__HAL_RCC_GPIOD_CLK_ENABLE();
+
+	/*Configure GPIO port A pin Output Level (high) */
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
 
 	/*Configure GPIO port B pin Output Level */
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6|GPIO_PIN_7, GPIO_PIN_RESET);
@@ -475,6 +483,13 @@ static void MX_GPIO_Init(void)
 	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+	/*Configure GPIO port A output pins : PA3 (IMU Reset) */
+	GPIO_InitStruct.Pin = GPIO_PIN_3;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 	/*Configure GPIO port B input pins : PB4 PB5 PB8 PB9 */
 	GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_8|GPIO_PIN_9;
@@ -509,6 +524,12 @@ static void MX_GPIO_Init(void)
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	GPIO_InitStruct.Alternate = GPIO_AF2_TIM3;
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+	/*Configure GPIO port D input pins : PD2 (SD card detect) */
+	GPIO_InitStruct.Pin = GPIO_PIN_2;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 }
 
 /**

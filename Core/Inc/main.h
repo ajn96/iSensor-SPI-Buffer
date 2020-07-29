@@ -28,4 +28,11 @@
 /* Public function prototypes */
 void Error_Handler(void);
 
+/** Bool data type */
+typedef enum
+{
+	false = 0,
+	true = 1
+}bool;
+
 #endif /* __MAIN_H */
