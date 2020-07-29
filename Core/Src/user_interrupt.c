@@ -68,9 +68,17 @@ void UpdateUserInterrupt()
 	UpdateOutputPins(interrupt, overflow, error);
 
 	/* If USB data streaming is enabled and watermark interrupt triggered then dump buffer to USB */
-	if((g_regs[USB_CONFIG_REG] & USB_STREAM_BITM) && interrupt)
+	if(interrupt && (g_regs[USB_CONFIG_REG] & USB_STREAM_BITM))
 	{
-		USBReadBuf();
+		/* If script is active pipe stream output to SD card, else to USB */
+		if(g_regs[STATUS_0_REG] & STATUS_SCR_RUNNING)
+		{
+
+		}
+		else
+		{
+			USBReadBuf();
+		}
 	}
 }
 

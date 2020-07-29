@@ -40,6 +40,9 @@ static FIL cmdFile;
 /** Handle for output file (result.txt in top level directory) */
 static FIL outFile;
 
+/** File system object */
+static FATFS fs;
+
 /**
   * @brief Init SD card hardware interface and FATFs driver
   *
@@ -136,6 +139,11 @@ void StopScript()
 	scriptRunning = 0;
 
 	/* Close all files and unmount SD card */
+	f_close("script.txt");
+	f_close("result.txt");
+
+	/* Unmount */
+	f_mount(0, "", 0);
 }
 
 /**
@@ -149,13 +157,65 @@ void StopScript()
   */
 void ScriptStep()
 {
+	uint32_t numBytes;
+
 	/* Exit if script not running */
 	if(!scriptRunning)
 	{
 		return;
 	}
 
+	/* Check if we've finished the script */
+	if(cmdIndex >= numCmds)
+	{
+		StopScript();
+		return;
+	}
+
 	/* Execute current command and write to file */
+
+	if(cmdList[cmdIndex].scrCommand == endloop)
+	{
+		/* jump index stored in arg1, numloops stored in arg0 */
+		if(cmdList[cmdIndex].args[0] > 0)
+		{
+			cmdList[cmdIndex].args[0]--;
+			cmdIndex = cmdList[cmdIndex].args[1];
+		}
+		else
+		{
+			/* No more loops left, move to next instruction */
+			cmdIndex++;
+		}
+	}
+	else if(cmdList[cmdIndex].scrCommand == sleep)
+	{
+		/* arg0 is sleep duration. Set arg1 to 1 on first pass to indicate sleep running, arg2 to the end sleep time */
+		if(cmdList[cmdIndex].args[1] == 0)
+		{
+			/* First run */
+			cmdList[cmdIndex].args[1] = 1;
+
+			/* End time is current HAL time + arg0 */
+			cmdList[cmdIndex].args[2] = cmdList[cmdIndex].args[0] + HAL_GetTick();
+		}
+		else
+		{
+			/* Sleep is running */
+			if(HAL_GetTick() > cmdList[cmdIndex].args[2])
+			{
+				/* Reset running flag */
+				cmdList[cmdIndex].args[1] = 0;
+				/* Move to next command */
+				cmdIndex++;
+			}
+		}
+	}
+	else
+	{
+		/* Generic script entry (no program execution control) */
+		cmdIndex++;
+	}
 }
 
 /**
@@ -165,27 +225,84 @@ void ScriptStep()
   *
   * This function makes use of the SD card detect pin to
   * determine if an SD card is inserted without communicating
-  * to the SD card directly.
+  * to the SD card directly (floating if no SD card, pulled to
+  * ground if there is an SD card).
   */
 static bool SDCardAttached()
 {
+	/* Enable pull up on SD detect line */
 
+	/* Measure input. If high then return false */
+
+	/* Pulled low means there is an SD card */
+	return true;
 }
 
 static bool OpenScriptFiles()
 {
+	/* mount SD card */
+	if(f_mount(&fs, "", 1) != FR_OK)
+	{
+		/* Unmount */
+		f_mount(0, "", 0);
 
+		/* Return error */
+		return false;
+	}
+
+
+	/* Open script.txt in read only mode */
+	if(f_open(&cmdFile, "script.txt", FA_READ) != FR_OK)
+	{
+		/* Attempt file close */
+		f_close("script.txt");
+
+		/* Unmount */
+		f_mount(0, "", 0);
+
+		/* Return error */
+		return false;
+	}
+
+	/* Open result.txt in append write mode */
+	if(f_open(&cmdFile, "result.txt", FA_OPEN_ALWAYS) != FR_OK)
+	{
+		/* Attempt file close on script and result */
+		f_close("script.txt");
+		f_close("result.txt");
+
+		/* Unmount */
+		f_mount(0, "", 0);
+
+		/* Return error */
+		return false;
+	}
+
+	/* Seek to end of result.txt */
+
+	return true;
 }
 
+/**
+  * @brief Parse script.txt into script element array
+  *
+  * @return true if good script, false otherwise
+  *
+  * This function loops through script.txt line by line. For
+  * each line, ParseScriptElement is called to find the command
+  * type and arguments. Any error flags set by ParseScriptElement
+  * will cause this function to return false. These flags can be
+  * set for invalid commands or arguments
+  */
 static bool ParseScriptFile()
 {
+	numCmds = 0;
 
+	return true;
 }
 
 /**
   * @brief SPI3 Initialization Function (SD card master SPI port)
-  *
-  * @param None
   *
   * @return void
   */
