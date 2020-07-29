@@ -12,11 +12,14 @@
 #define INC_SD_CARD_H_
 
 #include "script.h"
+#include "fatfs.h"
+#include "registers.h"
 
 /* Public functions */
-uint32_t IsSDCardAttached();
 void SDCardInit();
 void ScriptStep();
+void StartScript();
+void StopScript();
 
 #define SCRIPT_MAX_ENTRIES	64
 

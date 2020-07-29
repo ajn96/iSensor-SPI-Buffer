@@ -16,7 +16,6 @@
 static void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
-static void MX_SPI3_Init(void);
 static void DMA_Init();
 static void DWT_Init();
 
@@ -37,9 +36,6 @@ SPI_HandleTypeDef g_spi1;
 
 /** SPI handle for slave port (from master controller). Global scope */
 SPI_HandleTypeDef g_spi2;
-
-/** SPI handle for SD card master port. Global scope */
-SPI_HandleTypeDef g_spi3;
 
 /** Track the cyclic executive state */
 static uint32_t state;
@@ -69,23 +65,25 @@ int main(void)
   /* Initialize GPIO */
   MX_GPIO_Init();
 
+  /* Initialize DWT timer peripheral */
+  DWT_Init();
+
   /* Initialize IMU SPI port */
   MX_SPI1_Init();
 
-  /* Initialize SD card SPI port */
-  MX_SPI3_Init();
+  /* Initialize SD card interface */
+  SDCardInit();
 
   /* Initialize USB hardware */
   MX_USB_DEVICE_Init();
 
-  /* Initialize DWT timer peripheral */
-  DWT_Init();
-
   /* Load registers from flash */
   LoadRegsFlash();
 
-  /* Generate all identifier registers */
+  /* Load build date from .data to register array */
   GetBuildDate();
+
+  /* Load STM32 unique SN to register array */
   GetSN();
 
   /* Check for logged error codes and update FAULT_CODE */
@@ -420,36 +418,6 @@ static void MX_SPI1_Init(void)
 		__HAL_SPI_ENABLE(&g_spi1);
 	}
 
-}
-
-/**
-  * @brief SPI3 Initialization Function (SD card master SPI port)
-  *
-  * @param None
-  *
-  * @return void
-  */
-static void MX_SPI3_Init(void)
-{
-  /* SPI3 parameter configuration*/
-  g_spi3.Instance = SPI3;
-  g_spi3.Init.Mode = SPI_MODE_MASTER;
-  g_spi3.Init.Direction = SPI_DIRECTION_2LINES;
-  g_spi3.Init.DataSize = SPI_DATASIZE_4BIT;
-  g_spi3.Init.CLKPolarity = SPI_POLARITY_LOW;
-  g_spi3.Init.CLKPhase = SPI_PHASE_1EDGE;
-  g_spi3.Init.NSS = SPI_NSS_HARD_OUTPUT;
-  g_spi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-  g_spi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  g_spi3.Init.TIMode = SPI_TIMODE_DISABLE;
-  g_spi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-  g_spi3.Init.CRCPolynomial = 7;
-  g_spi3.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-  g_spi3.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
-  if (HAL_SPI_Init(&g_spi3) != HAL_OK)
-  {
-    Error_Handler();
-  }
 }
 
 /**
