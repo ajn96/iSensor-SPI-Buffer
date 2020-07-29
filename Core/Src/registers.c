@@ -9,6 +9,7 @@
  **/
 
 #include "registers.h"
+#include "sd_card.h"
 
 /* Local function prototypes */
 static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue);
@@ -262,6 +263,18 @@ void ProcessCommand()
 	else if(command & CMD_PPS_DISABLE)
 	{
 		DisablePPSTimer();
+	}
+	else if(command & CMD_START_SCRIPT)
+	{
+		StartScript();
+	}
+	else if(command & CMD_STOP_SCRIPT)
+	{
+		StopScript();
+	}
+	else if(command & CMD_IMU_RESET)
+	{
+		ResetImu();
 	}
 
 	/* Re-enable SPI */
