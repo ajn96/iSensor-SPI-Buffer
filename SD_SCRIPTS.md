@@ -1,10 +1,10 @@
 # SD Card Data Logging
 
-The iSensor-SPI-Buffer comes equipped with an microSD card slot to allow for autonomous device configuration and data logging via a simple scripting language. The available SD card script actions are functionally the same as the USB command line interface commands, with a superset of additional program flow commands added.
+The iSensor-SPI-Buffer comes equipped with an microSD card slot to allow for autonomous device configuration and data logging via a simple scripting language. The available SD card script commands are functionally the same as the [USB command line interface](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/USB_CLI.md) commands, with a superset of additional program flow commands added.
 
 ## Script Format
 
-iSensor-SPI-Buffer SD card scripts use the same command format as the [USB CLI](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/USB_CLI.md), with any data which would be sent to the USB virtual COM port being written to the SD card output file. In addition to the USB CLI commands, there are three additional commands supported for SD card scripts which are not supported for the USB CLI:
+iSensor-SPI-Buffer SD card scripts use the same command format as the USB CLI, with any data which would normally be sent to the USB virtual COM port being written to the SD card result file. In addition to the USB CLI commands, there are three additional commands supported for SD card scripts which are not supported for the USB CLI:
 
 * loop [loopcount]: Stop of a fixed count loop
 * endloop: End of a fixed count loop
