@@ -109,7 +109,7 @@ Support for the SPI Buffer Board in Linux was developed by [spalani7](https://gi
 
 ### Buffer Design
 
-* Reading a buffer retrieve register will dequeue data from the buffer data strcture to the buffer output registers for retrieval by a user
+* Reading a buffer retrieve register will dequeue data from the buffer data structure to the buffer output registers for retrieval by a user
 * The user will can clear the buffer using a control register
 * A buffer counter will be added to each buffer for the user to keep track of the state of the buffer. This counter must also be accessible without dequeuing data from buffer
 * Using a maximum buffer entry size of 64 bytes, the buffer will provide a minimum of 512 frames of buffering using 32KB SRAM
