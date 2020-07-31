@@ -6,8 +6,8 @@ The iSensor-SPI-Buffer comes equipped with an microSD card slot to allow for aut
 
 iSensor-SPI-Buffer SD card scripts use the same command format as the USB CLI, with any data which would normally be sent to the USB virtual COM port being written to the SD card result file. In addition to the USB CLI commands, there are three additional commands supported for SD card scripts which are not supported for the USB CLI:
 
-* loop [loopcount]: Stop of a fixed count loop
-* endloop: End of a fixed count loop
+* loop [loopcount]: Start of a fixed count loop
+* endloop: End of a fixed count loop. No loop nesting is allowed
 * sleep [sleep time, in ms]: Sleep script execution process
 
 This set of commands gives the user significant flexibility, without making the implementation or script writing process overly complicated. Keeping all loops fixed count, and not including conditional operations ensures that all scripts should finish in a deterministic amount of time. Consistent timing behavior is important, since improperly terminating a script (by power loss, reset, etc) can result in data loss on the SD card.
