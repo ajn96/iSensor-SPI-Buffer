@@ -57,9 +57,6 @@ int main(void)
   /* Check if system had previously encountered an unexpected fault */
   FlashInitErrorLog();
 
-  /* Check if system previously reset due to watch dog */
-  CheckWatchDogStatus();
-
   /* Enable watch dog timer (2 seconds period) */
   EnableWatchDog(2000);
 
@@ -89,6 +86,9 @@ int main(void)
 
   /* Check for logged error codes and update FAULT_CODE */
   FlashCheckLoggedError();
+
+  /* Check if system previously reset due to watch dog */
+  CheckWatchDogStatus();
 
   /* Init buffer */
   BufReset();
@@ -125,6 +125,9 @@ int main(void)
 
   /* Init temp sensor (ADC1) */
   TempInit();
+
+  /* Check for script auto-run set immediately before entering cyclic executive */
+  ScriptAutorun();
 
   /* Set state to 0 */
   state = 0;
