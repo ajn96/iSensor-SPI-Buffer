@@ -24,11 +24,11 @@ void FlashLogError(uint32_t faultCode);
 void FlashInitErrorLog();
 uint16_t CalcRegSig(uint16_t * regs, uint32_t count);
 
-/** Address for flash register storage (2KB pages, put on page 31) */
-#define FLASH_REG_ADDR			0x0800F800
+/** Address for flash register storage (starts 256KB down in flash, program starts at 0) */
+#define FLASH_REG_ADDR			0x08040000
 
-/** Address for flash error logging (put on page 32) */
-#define FLASH_ERROR_ADDR		0x08010000
+/** Address for flash error logging (page prior to FLASH_REG_ADDR) */
+#define FLASH_ERROR_ADDR		0x0803F800
 
 /* Error codes stored in flash */
 

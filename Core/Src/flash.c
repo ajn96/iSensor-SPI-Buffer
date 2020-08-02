@@ -117,9 +117,11 @@ void LoadRegsFlash()
 	/* Read flash sig value which was stored at last flash update */
 	storedSig = g_regs[FLASH_SIG_REG];
 
-	/* Perform factory reset and alert user of flash error in case of sig mis-match */
+	/* Perform factory reset + flash update and alert user of flash error in case of sig mis-match */
 	if(storedSig != expectedSig)
 	{
+		FactoryReset();
+		FlashUpdate();
 		g_regs[STATUS_0_REG] |= STATUS_FLASH_ERROR;
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 	}
