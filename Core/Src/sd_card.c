@@ -19,8 +19,8 @@ static void SPI3_Init(void);
 /** Global register array (from registers.c) */
 extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
 
-/** SPI handle for SD card master port */
-static SPI_HandleTypeDef spi3;
+/** SPI handle for SD card master port (global scope) */
+SPI_HandleTypeDef g_spi3;
 
 /* Command list. Loaded from cmd.txt on the SD card */
 static script cmdList[SCRIPT_MAX_ENTRIES];
@@ -51,7 +51,7 @@ static FATFS fs;
   * This function configures the SPI3 port for use with an
   * SD card and inits all GPIO as needed. This function is called
   * directly by the application on startup. It does not attempt to
-  * connect to the SD card in any way.
+  * connect to the SD card in any way.lked right into tha
   */
 void SDCardInit()
 {
@@ -308,23 +308,23 @@ static bool ParseScriptFile()
   */
 static void SPI3_Init(void)
 {
-  /* SPI3 parameter configuration*/
-  spi3.Instance = SPI3;
-  spi3.Init.Mode = SPI_MODE_MASTER;
-  spi3.Init.Direction = SPI_DIRECTION_2LINES;
-  spi3.Init.DataSize = SPI_DATASIZE_4BIT;
-  spi3.Init.CLKPolarity = SPI_POLARITY_LOW;
-  spi3.Init.CLKPhase = SPI_PHASE_1EDGE;
-  spi3.Init.NSS = SPI_NSS_HARD_OUTPUT;
-  spi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-  spi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  spi3.Init.TIMode = SPI_TIMODE_DISABLE;
-  spi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-  spi3.Init.CRCPolynomial = 7;
-  spi3.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-  spi3.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
-  if (HAL_SPI_Init(&spi3) != HAL_OK)
-  {
-    Error_Handler();
-  }
+	/* SPI3 parameter configuration*/
+	g_spi3.Instance = SPI3;
+	g_spi3.Init.Mode = SPI_MODE_MASTER;
+	g_spi3.Init.Direction = SPI_DIRECTION_2LINES;
+	g_spi3.Init.DataSize = SPI_DATASIZE_4BIT;
+	g_spi3.Init.CLKPolarity = SPI_POLARITY_LOW;
+	g_spi3.Init.CLKPhase = SPI_PHASE_1EDGE;
+	g_spi3.Init.NSS = SPI_NSS_HARD_OUTPUT;
+	g_spi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+	g_spi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
+	g_spi3.Init.TIMode = SPI_TIMODE_DISABLE;
+	g_spi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+	g_spi3.Init.CRCPolynomial = 7;
+	g_spi3.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+	g_spi3.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
+	if (HAL_SPI_Init(&g_spi3) != HAL_OK)
+	{
+	Error_Handler();
+	}
 }
