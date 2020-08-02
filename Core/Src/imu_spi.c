@@ -239,11 +239,11 @@ void ConfigureImuCsTimer(uint32_t period)
 	/* Disable */
     TIM3->CR1 &= 0x1;
 
-    /* Set compare channel 2 value */
-	TIM3->CCR2 = period;
-
 	/* Set count to 0xFFFF */
 	TIM3->CNT = 0xFFFF;
+
+    /* Set compare channel 2 value */
+	TIM3->CCR2 = period;
 }
 
 /**
@@ -273,7 +273,6 @@ void InitImuCsTimer()
 
 	sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
 	HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig);
-
 	HAL_TIM_PWM_Init(&htim3);
 
 	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
@@ -285,6 +284,9 @@ void InitImuCsTimer()
 	sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
 	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
 	HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2);
+
+	/* Clear OC2PE bit to make compare values apply immediately */
+	TIM3->CCMR1 &= ~(TIM_CCMR1_OC2PE);
 
     /* Enable PWM */
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
