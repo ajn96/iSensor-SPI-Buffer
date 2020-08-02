@@ -54,11 +54,11 @@ int main(void)
   /* Configure the system clock */
   SystemClock_Config();
 
-  /* Check if system had previously encountered an unexpected fault */
-  FlashInitErrorLog();
-
   /* Enable watch dog timer (2 seconds period) */
   EnableWatchDog(2000);
+
+  /* Check if system had previously encountered an unexpected fault */
+  FlashInitErrorLog();
 
   /* Initialize GPIO */
   MX_GPIO_Init();
@@ -117,14 +117,14 @@ int main(void)
   /* Set DR int priority (lower than user SPI - no preemption) */
   HAL_NVIC_SetPriority(EXTI9_5_IRQn, 1, 0);
 
+  /* Init temp sensor (ADC1) */
+  TempInit();
+
   /* Configure and enable user SPI port (based on loaded register values) */
   UpdateUserSpiConfig();
 
   /* Init and Enable DMA channels */
   DMA_Init();
-
-  /* Init temp sensor (ADC1) */
-  TempInit();
 
   /* Check for script auto-run set immediately before entering cyclic executive */
   ScriptAutorun();
