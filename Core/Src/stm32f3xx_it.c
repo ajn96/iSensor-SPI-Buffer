@@ -25,6 +25,9 @@
 
 extern PCD_HandleTypeDef hpcd_USB_FS;
 
+/* 1ms Timer Counter for FATFs */
+extern uint16_t Timer1, Timer2;
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -126,10 +129,15 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
-
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
+
+  if(Timer1 > 0)
+	  Timer1--;
+
+  if(Timer2 > 0)
+	  Timer2--;
 
   /* USER CODE END SysTick_IRQn 1 */
 }

@@ -240,6 +240,9 @@ static bool SDCardAttached()
 {
 	GPIO_PinState state;
 
+	/* De-init */
+	HAL_GPIO_DeInit(GPIOD, GPIO_PIN_2);
+
 	/* Enable pull up on SD detect line */
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
 	GPIO_InitStruct.Pin = GPIO_PIN_2;
@@ -247,8 +250,8 @@ static bool SDCardAttached()
 	GPIO_InitStruct.Pull = GPIO_PULLUP;
 	HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
-	/* Wait 10us for any changes to stabilize and measure input. If high then return false */
-	SleepMicroseconds(10);
+	/* Wait 1ms for any changes to stabilize and measure input. If high then return false */
+	SleepMicroseconds(1000);
 	state = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_2);
 
 	/* Disable pull up */
