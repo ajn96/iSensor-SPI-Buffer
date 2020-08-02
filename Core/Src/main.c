@@ -421,7 +421,6 @@ static void MX_SPI1_Init(void)
 		/* Enable SPI peripheral */
 		__HAL_SPI_ENABLE(&g_spi1);
 	}
-
 }
 
 /**

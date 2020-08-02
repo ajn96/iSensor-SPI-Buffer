@@ -294,7 +294,7 @@ void ProcessCommand()
 void FactoryReset()
 {
 	/* Store endurance count during factory reset */
-	uint16_t endurance, flash_sig;
+	uint16_t endurance, flash_sig, flash_sig_drv;
 
 	/* Disable data capture from IMU (shouldn't be running, but better safe than sorry) */
 	DisableDataCapture();
@@ -305,6 +305,7 @@ void FactoryReset()
 	/* Save endurance and flash sig */
 	endurance = g_regs[ENDURANCE_REG];
 	flash_sig = g_regs[FLASH_SIG_REG];
+	flash_sig_drv = g_regs[FLASH_SIG_DRV_REG];
 
 	/* Reset all registers to 0 */
 	for(int i = 0; i < (3 * REG_PER_PAGE); i++)
@@ -332,9 +333,7 @@ void FactoryReset()
 	/* Apply endurance and flash sig back */
 	g_regs[ENDURANCE_REG] = endurance;
 	g_regs[FLASH_SIG_REG] = flash_sig;
-
-	/* Calculate new flash sig */
-	g_regs[FLASH_SIG_DRV_REG] = CalcRegSig((uint16_t*)g_regs, FLASH_SIG_DRV_REG - 1);;
+	g_regs[FLASH_SIG_DRV_REG] = flash_sig_drv;
 
 	/* Populate SN and build date */
 	GetSN();
