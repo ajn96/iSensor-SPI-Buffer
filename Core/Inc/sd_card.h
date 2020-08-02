@@ -14,9 +14,11 @@
 #include "script.h"
 #include "fatfs.h"
 #include "registers.h"
+#include "timer.h"
 
 /* Public functions */
 void SDCardInit();
+void ScriptAutorun();
 void ScriptStep();
 void StartScript();
 void StopScript();

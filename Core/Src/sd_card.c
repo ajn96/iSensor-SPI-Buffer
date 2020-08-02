@@ -62,6 +62,14 @@ void SDCardInit()
 	MX_FATFS_Init();
 }
 
+void ScriptAutorun()
+{
+	if(g_regs[USB_CONFIG_REG] & SD_AUTORUN_BITM)
+	{
+		StartScript();
+	}
+}
+
 /**
   * @brief Start script run
   *
@@ -230,12 +238,28 @@ void ScriptStep()
   */
 static bool SDCardAttached()
 {
+	GPIO_PinState state;
+
 	/* Enable pull up on SD detect line */
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+	GPIO_InitStruct.Pin = GPIO_PIN_2;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_PULLUP;
+	HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
-	/* Measure input. If high then return false */
+	/* Wait 10us for any changes to stabilize and measure input. If high then return false */
+	SleepMicroseconds(10);
+	state = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_2);
 
-	/* Pulled low means there is an SD card */
-	return true;
+	/* Disable pull up */
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+	/* Pulled low means there is an SD card. High means pin is floating */
+	if(state)
+		return false;
+	else
+		return true;
 }
 
 static bool OpenScriptFiles()
