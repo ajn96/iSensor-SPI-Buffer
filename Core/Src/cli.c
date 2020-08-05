@@ -50,7 +50,7 @@ static uint8_t InvalidArgStr[] = "Error: Invalid argument!\r\n";
 /** Print string for help command */
 static uint8_t HelpStr[] = "All numeric values are in hex. [] arguments are optional\r\n"
 		"help: Print available commands\r\n"
-		"reset: Performs a software reset\r\n"
+		"freset: Performs a factory reset and flash update\r\n"
 		"read startAddr [endAddr = addr] [numReads = 1]: Read registers starting at startAddr and ending at endAddr numReads times\r\n"
 		"write addr value: Write the 8-bit value in value to register at address addr\r\n"
 		"readbuf: Read all buffer entries. Values for each entry are placed on a newline\r\n"
