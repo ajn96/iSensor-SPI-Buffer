@@ -101,7 +101,14 @@ void EXTI9_5_IRQHandler()
 	if(g_captureInProgress)
 	{
 		/* If SPI DMA and timer 4 are not running then capture is not actually in progress */
-		g_captureInProgress = (TIM4->CR1 | g_dma_spi1_tx.Instance->CCR) & 0x1;
+		if((g_dma_spi1_tx.Instance->CNDTR > 0)||(g_dma_spi1_rx.Instance->CNDTR > 0)||(TIM4->CR1 & 0x1))
+		{
+			g_captureInProgress = 1;
+		}
+		else
+		{
+			g_captureInProgress = 0;
+		}
 		g_regs[STATUS_0_REG] |= STATUS_OVERRUN;
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 		return;
