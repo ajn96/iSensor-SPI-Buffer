@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.3</span>
+   &#160;<span id="projectnumber">1.4</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -86,24 +86,30 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ac5e11e2ee4ffd64101e75f49a482026b"><td class="memItemLeft" align="right" valign="top"><a id="ac5e11e2ee4ffd64101e75f49a482026b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_STREAM_BITM</b>&#160;&#160;&#160;(1 &lt;&lt; 0)</td></tr>
-<tr class="separator:ac5e11e2ee4ffd64101e75f49a482026b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea6a1952f88c8629b8576c35cbda4691"><td class="memItemLeft" align="right" valign="top"><a id="aea6a1952f88c8629b8576c35cbda4691"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_ECHO_BITM</b>&#160;&#160;&#160;(1 &lt;&lt; 1)</td></tr>
-<tr class="separator:aea6a1952f88c8629b8576c35cbda4691"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2483064ec4918af67f31d0987eed9ab"><td class="memItemLeft" align="right" valign="top"><a id="aa2483064ec4918af67f31d0987eed9ab"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_DELIM_BITM</b>&#160;&#160;&#160;(0xFF00)</td></tr>
-<tr class="separator:aa2483064ec4918af67f31d0987eed9ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26d9df8422b58d3c2400192268cf8d95"><td class="memItemLeft" align="right" valign="top"><a id="a26d9df8422b58d3c2400192268cf8d95"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_STREAM_BITP</b>&#160;&#160;&#160;0</td></tr>
 <tr class="separator:a26d9df8422b58d3c2400192268cf8d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ebe51b2dc297e992a81d5741ad2129b"><td class="memItemLeft" align="right" valign="top"><a id="a8ebe51b2dc297e992a81d5741ad2129b"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_ECHO_BITP</b>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:a8ebe51b2dc297e992a81d5741ad2129b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1411fe0343aad1093974753ae5ae74e"><td class="memItemLeft" align="right" valign="top"><a id="ad1411fe0343aad1093974753ae5ae74e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SD_AUTORUN_BITP</b>&#160;&#160;&#160;2</td></tr>
+<tr class="separator:ad1411fe0343aad1093974753ae5ae74e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1ae7f7606f5fab7e779144dbfe468a1"><td class="memItemLeft" align="right" valign="top"><a id="ad1ae7f7606f5fab7e779144dbfe468a1"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_DELIM_BITP</b>&#160;&#160;&#160;8</td></tr>
 <tr class="separator:ad1ae7f7606f5fab7e779144dbfe468a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5e11e2ee4ffd64101e75f49a482026b"><td class="memItemLeft" align="right" valign="top"><a id="ac5e11e2ee4ffd64101e75f49a482026b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_STREAM_BITM</b>&#160;&#160;&#160;(1 &lt;&lt; USB_STREAM_BITP)</td></tr>
+<tr class="separator:ac5e11e2ee4ffd64101e75f49a482026b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea6a1952f88c8629b8576c35cbda4691"><td class="memItemLeft" align="right" valign="top"><a id="aea6a1952f88c8629b8576c35cbda4691"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_ECHO_BITM</b>&#160;&#160;&#160;(1 &lt;&lt; USB_ECHO_BITP)</td></tr>
+<tr class="separator:aea6a1952f88c8629b8576c35cbda4691"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae69ecc6944fd0abcfe719477c30b2e54"><td class="memItemLeft" align="right" valign="top"><a id="ae69ecc6944fd0abcfe719477c30b2e54"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SD_AUTORUN_BITM</b>&#160;&#160;&#160;(1 &lt;&lt; SD_AUTORUN_BITP)</td></tr>
+<tr class="separator:ae69ecc6944fd0abcfe719477c30b2e54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2483064ec4918af67f31d0987eed9ab"><td class="memItemLeft" align="right" valign="top"><a id="aa2483064ec4918af67f31d0987eed9ab"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_DELIM_BITM</b>&#160;&#160;&#160;(0xFF &lt;&lt; USB_DELIM_BITP)</td></tr>
+<tr class="separator:aa2483064ec4918af67f31d0987eed9ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac66c5df61455bee21a0ae0a2be510b4c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cli_8h.html#ac66c5df61455bee21a0ae0a2be510b4c">BUF_BASE_ADDR</a>&#160;&#160;&#160;8</td></tr>
 <tr class="separator:ac66c5df61455bee21a0ae0a2be510b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab474ab6e248f8a7a04472c98100eade4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cli_8h.html#ab474ab6e248f8a7a04472c98100eade4">BUF_DATA_BASE_ADDR</a>&#160;&#160;&#160;16</td></tr>

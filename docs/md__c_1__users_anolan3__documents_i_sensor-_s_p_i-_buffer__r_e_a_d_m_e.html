@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.3</span>
+   &#160;<span id="projectnumber">1.4</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -74,6 +74,7 @@ $(function() {
 <p>Additional hardware and software resources are linked below.</p>
 <p>Detailed Register Map</p>
 <p><a class="el" href="md__c_1__users_anolan3__documents_i_sensor-_s_p_i-_buffer__u_s_b__c_l_i.html">USB CLI Definition</a></p>
+<p>SD Card Scripts</p>
 <p><a class="el" href="md__c_1__users_anolan3__documents_i_sensor-_s_p_i-_buffer__p_i_n__m_a_p.html">STM32 Processor Pin Map</a></p>
 <p><a href="https://ajn96.github.io/iSensor-SPI-Buffer/files.html">Firmware Documentation (Doxygen)</a></p>
 <p>A video walkthrough and tutorial of the SPI Buffer Board's features is hosted on YouTube. Click on the image below to check it out!</p>
@@ -146,7 +147,7 @@ $(function() {
 </ul>
 <h2>Buffer Design</h2>
 <ul>
-<li>Reading a buffer retrieve register will dequeue data from the buffer data strcture to the buffer output registers for retrieval by a user</li>
+<li>Reading a buffer retrieve register will dequeue data from the buffer data structure to the buffer output registers for retrieval by a user</li>
 <li>The user will can clear the buffer using a control register</li>
 <li>A buffer counter will be added to each buffer for the user to keep track of the state of the buffer. This counter must also be accessible without dequeuing data from buffer</li>
 <li>Using a maximum buffer entry size of 64 bytes, the buffer will provide a minimum of 512 frames of buffering using 32KB SRAM<ul>
@@ -167,7 +168,8 @@ $(function() {
 <p><b>User SPI Interrupt</b></p>
 <p>There will be an ISR to handle user-initiated SPI transactions (slave interface). If the active register page is not one of the SPI buffer pages (253 - 255) all SPI transactions will be forwarded to the IMU downstream.</p>
 <p>SPI transactions will be classified as "read" or "write" by the SPI buffer board the same as the iSensor IMU SPI protocol. A write operation is signaled by setting the MSB of each 16-bit word. The upper 8 bits of the 16-bit transaction contain the register address to be written to as well as the read/write bit. The lower 8 bits of the 16-bit transaction contain the data to be written.</p>
-<p>A single read request transmitted to the SPI buffer on the slave interface will result in <em>two</em> SPI transactions sent to the IMU on the master interface. The first transaction sends the register read request to the IMU and the second reads the requested register contents data back from the IMU. The requested IMU register is then loaded into the SPI buffer user SPI transmit buffer so that it is available to the user on the next user SPI transaction. For write transactions, a single write command will be sent to the IMU. The data resulting from the write transaction is then loaded into the SPI buffer user SPI transmit buffer. Unlike the read operation, a write operation will not automatically generate an additional SPI transaction.</p>
+<p>A single read request transmitted to the SPI buffer on the slave interface will result in <em>two</em> SPI transactions sent to the IMU on the master interface. The first transaction sends the register read request to the IMU and the second reads the requested register contents data back from the IMU. The requested IMU register is then loaded into the SPI buffer user SPI transmit buffer so that it is available to the user on the next user SPI transaction. For write transactions, a single write command will be sent to the IMU. The data resulting from the write transaction is then loaded into the SPI buffer user SPI transmit buffer. Unlike the read operation, a write operation will not automatically generate an additional SPI transaction. The diagram below shows the IMU SPI passthrough process for a register read operation.</p>
+<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/spi_passthrough.JPG" alt="SPI Passthrough" class="inline"/></p>
 <p><b>Autonomous Data Capture</b></p>
 <p>When the currently selected page is 255 (buffer output register page), the iSensor SPI Buffer firmware will begin to monitor a user-specified GPIO interrupt for data ready signals pulses. Once a data ready pulse is detected, the firmware will transmit the data contained in page 254 (buffer transmit data) in the order specified by the user. Data received from the IMU during each 16-bit transaction will be stored in a new buffer entry in the iSensor-SPI-Buffer SRAM. The firmware will use DMA and timer peripherals to perform the SPI transactions with minimal CPU intervention while giving control over the SPI SCLK and stall time.</p>
 <p>The data capture ISR will be triggered by a user-specified GPIO, corresponding to the IMU data ready signal. The data capture ISR will configure a timer peripheral (which drives SPI word transmission timing) to trigger a DMA between memory and SPI. A DMA done ISR will handle cleaning up the DMA transactions and incrementing buffer pointers following a complete data set acquisition from the IMU. If the selected page is changed off page 255, the IMU data ready interrupt data capture functionality will be disabled (can be re-enabled by writing 255 to the page ID register on any page).</p>

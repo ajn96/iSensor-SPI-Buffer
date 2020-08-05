@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.3</span>
+   &#160;<span id="projectnumber">1.4</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -89,9 +89,9 @@ $(function() {
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">void</span> <a class="code" href="flash_8h.html#a46338bc563a7426b0d9983d549049e87">FlashInitErrorLog</a>();</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;uint16_t <a class="code" href="flash_8h.html#a3e2a702707895bee69f8a070f89c7bf1">CalcRegSig</a>(uint16_t * regs, uint32_t count);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define FLASH_REG_ADDR          0x0800F800</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define FLASH_REG_ADDR          0x08040000</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="flash_8h.html#a2a45475fd43c3e90d91cff9fff2958ea">   29</a></span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#define FLASH_ERROR_ADDR        0x08010000</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#define FLASH_ERROR_ADDR        0x0803F800</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="flash_8h.html#a66666f2b5fcc8b63cfe003ecb632705c">   32</a></span>&#160; </div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">/* Error codes stored in flash */</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
@@ -109,12 +109,12 @@ $(function() {
 <div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="flash_8h.html#af593441b71c2cac378a0f9d4d19c3cc2">   52</a></span>&#160; </div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_FLASH_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aflash_8h_html_aa2248ba2758bb6fde5d3311e13e25773"><div class="ttname"><a href="flash_8h.html#aa2248ba2758bb6fde5d3311e13e25773">FlashLogError</a></div><div class="ttdeci">void FlashLogError(uint32_t faultCode)</div><div class="ttdoc">Stores an error code to flash memory.</div><div class="ttdef"><b>Definition:</b> flash.c:175</div></div>
+<div class="ttc" id="aflash_8h_html_aa2248ba2758bb6fde5d3311e13e25773"><div class="ttname"><a href="flash_8h.html#aa2248ba2758bb6fde5d3311e13e25773">FlashLogError</a></div><div class="ttdeci">void FlashLogError(uint32_t faultCode)</div><div class="ttdoc">Stores an error code to flash memory.</div><div class="ttdef"><b>Definition:</b> flash.c:177</div></div>
 <div class="ttc" id="aflash_8h_html_abdfa63ba6e284d347e454e4ac0af459e"><div class="ttname"><a href="flash_8h.html#abdfa63ba6e284d347e454e4ac0af459e">LoadRegsFlash</a></div><div class="ttdeci">void LoadRegsFlash()</div><div class="ttdoc">Load register values from flash memory to SRAM.</div><div class="ttdef"><b>Definition:</b> flash.c:98</div></div>
-<div class="ttc" id="aflash_8h_html_a0573959b49fb264dd25636a6032ef01c"><div class="ttname"><a href="flash_8h.html#a0573959b49fb264dd25636a6032ef01c">FlashCheckLoggedError</a></div><div class="ttdeci">void FlashCheckLoggedError()</div><div class="ttdoc">Checks for error codes which may have been logged to flash, and sets the status register bit.</div><div class="ttdef"><b>Definition:</b> flash.c:144</div></div>
+<div class="ttc" id="aflash_8h_html_a0573959b49fb264dd25636a6032ef01c"><div class="ttname"><a href="flash_8h.html#a0573959b49fb264dd25636a6032ef01c">FlashCheckLoggedError</a></div><div class="ttdeci">void FlashCheckLoggedError()</div><div class="ttdoc">Checks for error codes which may have been logged to flash, and sets the status register bit.</div><div class="ttdef"><b>Definition:</b> flash.c:146</div></div>
 <div class="ttc" id="aflash_8h_html_a48f0984b98ef386bfcc84f996210c37a"><div class="ttname"><a href="flash_8h.html#a48f0984b98ef386bfcc84f996210c37a">FlashUpdate</a></div><div class="ttdeci">void FlashUpdate()</div><div class="ttdoc">Flash update command handler.</div><div class="ttdef"><b>Definition:</b> flash.c:29</div></div>
-<div class="ttc" id="aflash_8h_html_a3e2a702707895bee69f8a070f89c7bf1"><div class="ttname"><a href="flash_8h.html#a3e2a702707895bee69f8a070f89c7bf1">CalcRegSig</a></div><div class="ttdeci">uint16_t CalcRegSig(uint16_t *regs, uint32_t count)</div><div class="ttdoc">Calculate a signature of a block of RAM. Used for verifying flash memory contents.</div><div class="ttdef"><b>Definition:</b> flash.c:240</div></div>
-<div class="ttc" id="aflash_8h_html_a46338bc563a7426b0d9983d549049e87"><div class="ttname"><a href="flash_8h.html#a46338bc563a7426b0d9983d549049e87">FlashInitErrorLog</a></div><div class="ttdeci">void FlashInitErrorLog()</div><div class="ttdoc">Initialize flash error logging.</div><div class="ttdef"><b>Definition:</b> flash.c:223</div></div>
+<div class="ttc" id="aflash_8h_html_a3e2a702707895bee69f8a070f89c7bf1"><div class="ttname"><a href="flash_8h.html#a3e2a702707895bee69f8a070f89c7bf1">CalcRegSig</a></div><div class="ttdeci">uint16_t CalcRegSig(uint16_t *regs, uint32_t count)</div><div class="ttdoc">Calculate a signature of a block of RAM. Used for verifying flash memory contents.</div><div class="ttdef"><b>Definition:</b> flash.c:242</div></div>
+<div class="ttc" id="aflash_8h_html_a46338bc563a7426b0d9983d549049e87"><div class="ttname"><a href="flash_8h.html#a46338bc563a7426b0d9983d549049e87">FlashInitErrorLog</a></div><div class="ttdeci">void FlashInitErrorLog()</div><div class="ttdoc">Initialize flash error logging.</div><div class="ttdef"><b>Definition:</b> flash.c:225</div></div>
 <div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

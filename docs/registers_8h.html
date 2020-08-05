@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.3</span>
+   &#160;<span id="projectnumber">1.4</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -209,7 +209,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_DATA_0_REG</b>&#160;&#160;&#160;0x89</td></tr>
 <tr class="separator:aaef4c67582b679f6f8f187cf51d0bd41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d90879dde0a4ef3e14bcfbe31ec442b"><td class="memItemLeft" align="right" valign="top"><a id="a1d90879dde0a4ef3e14bcfbe31ec442b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FW_REV_DEFAULT</b>&#160;&#160;&#160;0x0103</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FW_REV_DEFAULT</b>&#160;&#160;&#160;0x0105</td></tr>
 <tr class="separator:a1d90879dde0a4ef3e14bcfbe31ec442b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1099031991c0f1d500a6f162e899265e"><td class="memItemLeft" align="right" valign="top"><a id="a1099031991c0f1d500a6f162e899265e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_CONFIG_DEFAULT</b>&#160;&#160;&#160;0x0000</td></tr>
@@ -280,6 +280,15 @@ Macros</h2></td></tr>
 <tr class="memitem:a0e348d2f7fd796af8f8473471939d5f3"><td class="memItemLeft" align="right" valign="top"><a id="a0e348d2f7fd796af8f8473471939d5f3"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>CMD_PPS_DISABLE</b>&#160;&#160;&#160;(1 &lt;&lt; 5)</td></tr>
 <tr class="separator:a0e348d2f7fd796af8f8473471939d5f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a082a9e4167ef86d959de4e474aec2fa9"><td class="memItemLeft" align="right" valign="top"><a id="a082a9e4167ef86d959de4e474aec2fa9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMD_START_SCRIPT</b>&#160;&#160;&#160;(1 &lt;&lt; 6)</td></tr>
+<tr class="separator:a082a9e4167ef86d959de4e474aec2fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70ff706f91959c7e064e43d1958b6d38"><td class="memItemLeft" align="right" valign="top"><a id="a70ff706f91959c7e064e43d1958b6d38"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMD_STOP_SCRIPT</b>&#160;&#160;&#160;(1 &lt;&lt; 7)</td></tr>
+<tr class="separator:a70ff706f91959c7e064e43d1958b6d38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90c81efd31e85dbaa3b3576ae44c48cc"><td class="memItemLeft" align="right" valign="top"><a id="a90c81efd31e85dbaa3b3576ae44c48cc"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CMD_IMU_RESET</b>&#160;&#160;&#160;(1 &lt;&lt; 14)</td></tr>
+<tr class="separator:a90c81efd31e85dbaa3b3576ae44c48cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ea3a68d4edb8c0403f22da828d9129f"><td class="memItemLeft" align="right" valign="top"><a id="a3ea3a68d4edb8c0403f22da828d9129f"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>CMD_SOFTWARE_RESET</b>&#160;&#160;&#160;(1 &lt;&lt; 15)</td></tr>
 <tr class="separator:a3ea3a68d4edb8c0403f22da828d9129f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -319,6 +328,12 @@ Macros</h2></td></tr>
 <tr class="memitem:a2440e20f279e22caeffa54a6cefd243f"><td class="memItemLeft" align="right" valign="top"><a id="a2440e20f279e22caeffa54a6cefd243f"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>STATUS_TEMP_WARNING</b>&#160;&#160;&#160;(1 &lt;&lt; 7)</td></tr>
 <tr class="separator:a2440e20f279e22caeffa54a6cefd243f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a385c0eca7ea188669033a0c352eaedea"><td class="memItemLeft" align="right" valign="top"><a id="a385c0eca7ea188669033a0c352eaedea"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>STATUS_SCR_ERROR</b>&#160;&#160;&#160;(1 &lt;&lt; 10)</td></tr>
+<tr class="separator:a385c0eca7ea188669033a0c352eaedea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a518da0bf21ae94ba8299b21c26684e29"><td class="memItemLeft" align="right" valign="top"><a id="a518da0bf21ae94ba8299b21c26684e29"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>STATUS_SCR_RUNNING</b>&#160;&#160;&#160;(1 &lt;&lt; 11)</td></tr>
+<tr class="separator:a518da0bf21ae94ba8299b21c26684e29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad22d962a022a4fa24a228b736de833bc"><td class="memItemLeft" align="right" valign="top"><a id="ad22d962a022a4fa24a228b736de833bc"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>STATUS_FLASH_ERROR</b>&#160;&#160;&#160;(1 &lt;&lt; 12)</td></tr>
 <tr class="separator:ad22d962a022a4fa24a228b736de833bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -332,7 +347,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>STATUS_WATCHDOG</b>&#160;&#160;&#160;(1 &lt;&lt; 15)</td></tr>
 <tr class="separator:a5c9415d3951a5c50ab406722b1d467bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a056844ff5898338e2de002f9dfe872ed"><td class="memItemLeft" align="right" valign="top"><a id="a056844ff5898338e2de002f9dfe872ed"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>STATUS_CLEAR_MASK</b>&#160;&#160;&#160;(STATUS_FLASH_ERROR|STATUS_FAULT|STATUS_FLASH_UPDATE|STATUS_WATCHDOG)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>STATUS_CLEAR_MASK</b>&#160;&#160;&#160;(STATUS_FLASH_ERROR|STATUS_FAULT|STATUS_FLASH_UPDATE|STATUS_WATCHDOG|STATUS_SCR_RUNNING)</td></tr>
 <tr class="separator:a056844ff5898338e2de002f9dfe872ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5546c26df927e3cf8bbe3eb78b62d02"><td class="memItemLeft" align="right" valign="top"><a id="ad5546c26df927e3cf8bbe3eb78b62d02"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_CFG_REPLACE_OLDEST</b>&#160;&#160;&#160;(1 &lt;&lt; 0)</td></tr>

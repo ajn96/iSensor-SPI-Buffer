@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.3</span>
+   &#160;<span id="projectnumber">1.4</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -105,8 +105,12 @@ $(function() {
 
 
 <h3><a id="index_c"></a>- c -</h3><ul>
+<li>cmdFile
+: <a class="el" href="sd__card_8c.html#ac705de537563d408cefd29fdcd813d80">sd_card.c</a>
+</li>
 <li>cmdIndex
 : <a class="el" href="cli_8c.html#aa910262b7076819c86978d461ecbcd7e">cli.c</a>
+, <a class="el" href="sd__card_8c.html#aa910262b7076819c86978d461ecbcd7e">sd_card.c</a>
 </li>
 <li>CurrentCommand
 : <a class="el" href="cli_8c.html#a7eb50a0004951396ce14c5ca1c974d10">cli.c</a>
@@ -136,6 +140,9 @@ $(function() {
 <li>FactoryResetCmd
 : <a class="el" href="script_8c.html#a53f2cd4354e450d661d4d5893f300189">script.c</a>
 </li>
+<li>fs
+: <a class="el" href="sd__card_8c.html#ae5bcde72e0e0b29ec86d00ba3e5cd51f">sd_card.c</a>
+</li>
 </ul>
 
 
@@ -145,16 +152,16 @@ $(function() {
 , <a class="el" href="isr_8c.html#aa2e7f7d2196f13ccbd1dd3b4177ef135">isr.c</a>
 </li>
 <li>g_bufLastRegIndex
-: <a class="el" href="registers_8c.html#a425769607ace224689db90d2b10ce0f3">registers.c</a>
-, <a class="el" href="buffer_8c.html#a425769607ace224689db90d2b10ce0f3">buffer.c</a>
+: <a class="el" href="buffer_8c.html#a425769607ace224689db90d2b10ce0f3">buffer.c</a>
+, <a class="el" href="registers_8c.html#a425769607ace224689db90d2b10ce0f3">registers.c</a>
 </li>
 <li>g_bufNumWords32
 : <a class="el" href="buffer_8c.html#addb2746a5058ce1e5238ded2921a2b50">buffer.c</a>
 , <a class="el" href="registers_8c.html#addb2746a5058ce1e5238ded2921a2b50">registers.c</a>
 </li>
 <li>g_captureInProgress
-: <a class="el" href="isr_8c.html#a07af1c87664cfacf9460801271ab0dec">isr.c</a>
-, <a class="el" href="data__capture_8c.html#a07af1c87664cfacf9460801271ab0dec">data_capture.c</a>
+: <a class="el" href="data__capture_8c.html#a07af1c87664cfacf9460801271ab0dec">data_capture.c</a>
+, <a class="el" href="isr_8c.html#a07af1c87664cfacf9460801271ab0dec">isr.c</a>
 </li>
 <li>g_CurrentBufEntry
 : <a class="el" href="registers_8c.html#ac514950ea85e080587ac1d5fa432f219">registers.c</a>
@@ -169,8 +176,8 @@ $(function() {
 , <a class="el" href="main_8c.html#a9dbb1a46106345497ffe77a0cf9c5ee8">main.c</a>
 </li>
 <li>g_dma_spi2_tx
-: <a class="el" href="main_8c.html#a4eae4d74cf9b50c1088c5c05ee83ee2d">main.c</a>
-, <a class="el" href="isr_8c.html#a4eae4d74cf9b50c1088c5c05ee83ee2d">isr.c</a>
+: <a class="el" href="isr_8c.html#a4eae4d74cf9b50c1088c5c05ee83ee2d">isr.c</a>
+, <a class="el" href="main_8c.html#a4eae4d74cf9b50c1088c5c05ee83ee2d">main.c</a>
 </li>
 <li>g_pinConfig
 : <a class="el" href="dio_8c.html#a6f243dba51236f2b5163a285092bae63">dio.c</a>
@@ -182,20 +189,21 @@ $(function() {
 , <a class="el" href="timer_8c.html#a8612b680a1efebe782532fc810863fca">timer.c</a>
 </li>
 <li>g_regs
-: <a class="el" href="data__capture_8c.html#ad9abdec236745828926dbed3d25cfad5">data_capture.c</a>
-, <a class="el" href="cli_8c.html#a498acc08ff841f6655df28c1681f954f">cli.c</a>
-, <a class="el" href="imu__spi_8c.html#ad9abdec236745828926dbed3d25cfad5">imu_spi.c</a>
-, <a class="el" href="isr_8c.html#ad9abdec236745828926dbed3d25cfad5">isr.c</a>
-, <a class="el" href="flash_8c.html#ad9abdec236745828926dbed3d25cfad5">flash.c</a>
-, <a class="el" href="buffer_8c.html#a498acc08ff841f6655df28c1681f954f">buffer.c</a>
-, <a class="el" href="script_8c.html#a498acc08ff841f6655df28c1681f954f">script.c</a>
-, <a class="el" href="led_8c.html#ad9abdec236745828926dbed3d25cfad5">led.c</a>
-, <a class="el" href="dio_8c.html#ad9abdec236745828926dbed3d25cfad5">dio.c</a>
-, <a class="el" href="user__interrupt_8c.html#ad9abdec236745828926dbed3d25cfad5">user_interrupt.c</a>
-, <a class="el" href="timer_8c.html#ad9abdec236745828926dbed3d25cfad5">timer.c</a>
-, <a class="el" href="watchdog_8c.html#ad9abdec236745828926dbed3d25cfad5">watchdog.c</a>
+: <a class="el" href="sd__card_8c.html#ad9abdec236745828926dbed3d25cfad5">sd_card.c</a>
 , <a class="el" href="user__spi_8c.html#ad9abdec236745828926dbed3d25cfad5">user_spi.c</a>
 , <a class="el" href="temp_8c.html#a498acc08ff841f6655df28c1681f954f">temp.c</a>
+, <a class="el" href="timer_8c.html#ad9abdec236745828926dbed3d25cfad5">timer.c</a>
+, <a class="el" href="imu__spi_8c.html#ad9abdec236745828926dbed3d25cfad5">imu_spi.c</a>
+, <a class="el" href="user__interrupt_8c.html#ad9abdec236745828926dbed3d25cfad5">user_interrupt.c</a>
+, <a class="el" href="watchdog_8c.html#ad9abdec236745828926dbed3d25cfad5">watchdog.c</a>
+, <a class="el" href="buffer_8c.html#a498acc08ff841f6655df28c1681f954f">buffer.c</a>
+, <a class="el" href="cli_8c.html#a498acc08ff841f6655df28c1681f954f">cli.c</a>
+, <a class="el" href="data__capture_8c.html#ad9abdec236745828926dbed3d25cfad5">data_capture.c</a>
+, <a class="el" href="dio_8c.html#ad9abdec236745828926dbed3d25cfad5">dio.c</a>
+, <a class="el" href="flash_8c.html#ad9abdec236745828926dbed3d25cfad5">flash.c</a>
+, <a class="el" href="isr_8c.html#ad9abdec236745828926dbed3d25cfad5">isr.c</a>
+, <a class="el" href="led_8c.html#ad9abdec236745828926dbed3d25cfad5">led.c</a>
+, <a class="el" href="script_8c.html#a498acc08ff841f6655df28c1681f954f">script.c</a>
 </li>
 <li>g_spi1
 : <a class="el" href="imu__spi_8c.html#ac7374f4f68aaef9867e081e6cb59e3d9">imu_spi.c</a>
@@ -203,16 +211,16 @@ $(function() {
 , <a class="el" href="main_8c.html#ac7374f4f68aaef9867e081e6cb59e3d9">main.c</a>
 </li>
 <li>g_spi2
-: <a class="el" href="user__spi_8c.html#a35c3e3dee022adebf0fc138c81b515b9">user_spi.c</a>
+: <a class="el" href="isr_8c.html#a35c3e3dee022adebf0fc138c81b515b9">isr.c</a>
 , <a class="el" href="main_8c.html#a35c3e3dee022adebf0fc138c81b515b9">main.c</a>
-, <a class="el" href="isr_8c.html#a35c3e3dee022adebf0fc138c81b515b9">isr.c</a>
+, <a class="el" href="user__spi_8c.html#a35c3e3dee022adebf0fc138c81b515b9">user_spi.c</a>
 </li>
 <li>g_spi3
-: <a class="el" href="main_8c.html#a939ff86f7bddb14b321f51d69a0c683d">main.c</a>
+: <a class="el" href="sd__card_8c.html#a939ff86f7bddb14b321f51d69a0c683d">sd_card.c</a>
 </li>
 <li>g_update_flags
-: <a class="el" href="registers_8c.html#ad7e4dc4b3c39faa7fee4573f1664aee2">registers.c</a>
-, <a class="el" href="main_8c.html#ad7e4dc4b3c39faa7fee4573f1664aee2">main.c</a>
+: <a class="el" href="main_8c.html#ad7e4dc4b3c39faa7fee4573f1664aee2">main.c</a>
+, <a class="el" href="registers_8c.html#ad7e4dc4b3c39faa7fee4573f1664aee2">registers.c</a>
 </li>
 <li>g_userburstRunning
 : <a class="el" href="isr_8c.html#a090b8a30a19d0dbdd3dbcfed8dc2df69">isr.c</a>
@@ -223,8 +231,8 @@ $(function() {
 , <a class="el" href="isr_8c.html#a65a6f223155b319c75cb6c1a54e7cdf5">isr.c</a>
 </li>
 <li>goodArg
-: <a class="el" href="script_8c.html#aabdeef34fcad1c19feb28c6861a4c49d">script.c</a>
-, <a class="el" href="cli_8c.html#aabdeef34fcad1c19feb28c6861a4c49d">cli.c</a>
+: <a class="el" href="cli_8c.html#aabdeef34fcad1c19feb28c6861a4c49d">cli.c</a>
+, <a class="el" href="script_8c.html#aabdeef34fcad1c19feb28c6861a4c49d">script.c</a>
 </li>
 </ul>
 
@@ -261,12 +269,12 @@ $(function() {
 : <a class="el" href="imu__spi_8c.html#ad21708e3ebd6fd184d5da8eb49568d4c">imu_spi.c</a>
 </li>
 <li>InvalidArgStr
-: <a class="el" href="script_8c.html#a623e40ee2cec400ce1fe4a4f8faf503b">script.c</a>
-, <a class="el" href="cli_8c.html#a623e40ee2cec400ce1fe4a4f8faf503b">cli.c</a>
+: <a class="el" href="cli_8c.html#a623e40ee2cec400ce1fe4a4f8faf503b">cli.c</a>
+, <a class="el" href="script_8c.html#a623e40ee2cec400ce1fe4a4f8faf503b">script.c</a>
 </li>
 <li>InvalidCmdStr
-: <a class="el" href="script_8c.html#ac2fe46f55c0107012ba3196abdb2bd5b">script.c</a>
-, <a class="el" href="cli_8c.html#ac2fe46f55c0107012ba3196abdb2bd5b">cli.c</a>
+: <a class="el" href="cli_8c.html#ac2fe46f55c0107012ba3196abdb2bd5b">cli.c</a>
+, <a class="el" href="script_8c.html#ac2fe46f55c0107012ba3196abdb2bd5b">script.c</a>
 </li>
 </ul>
 
@@ -288,14 +296,21 @@ $(function() {
 </ul>
 
 
+<h3><a id="index_o"></a>- o -</h3><ul>
+<li>outFile
+: <a class="el" href="sd__card_8c.html#a9f3ea9e7a9d4ae77e9288e3a97f5409a">sd_card.c</a>
+</li>
+</ul>
+
+
 <h3><a id="index_r"></a>- r -</h3><ul>
 <li>ReadBufCmd
 : <a class="el" href="cli_8c.html#a6b5ef6a5a103f5269e3d711981cc6f00">cli.c</a>
 , <a class="el" href="script_8c.html#a6b5ef6a5a103f5269e3d711981cc6f00">script.c</a>
 </li>
 <li>ReadCmd
-: <a class="el" href="script_8c.html#a5b1fd093fac9e4e1f5420b27ba1bf0d8">script.c</a>
-, <a class="el" href="cli_8c.html#a5b1fd093fac9e4e1f5420b27ba1bf0d8">cli.c</a>
+: <a class="el" href="cli_8c.html#a5b1fd093fac9e4e1f5420b27ba1bf0d8">cli.c</a>
+, <a class="el" href="script_8c.html#a5b1fd093fac9e4e1f5420b27ba1bf0d8">script.c</a>
 </li>
 <li>ResetCmd
 : <a class="el" href="cli_8c.html#ab4b07ad428b00f539dce8f98f10ae26f">cli.c</a>
@@ -304,6 +319,9 @@ $(function() {
 
 
 <h3><a id="index_s"></a>- s -</h3><ul>
+<li>scriptRunning
+: <a class="el" href="sd__card_8c.html#af2bd5f17cf66c0253d4be43b778a5d1b">sd_card.c</a>
+</li>
 <li>selected_page
 : <a class="el" href="registers_8c.html#a954f038896c833cf36970b00a32329ac">registers.c</a>
 </li>
@@ -338,8 +356,8 @@ $(function() {
 : <a class="el" href="isr_8c.html#a411f48ca6e6d3feb9fd3d3426c1c92c7">isr.c</a>
 </li>
 <li>WriteCmd
-: <a class="el" href="script_8c.html#af8ddcf9309a7d7b4b420ee4a898c1815">script.c</a>
-, <a class="el" href="cli_8c.html#af8ddcf9309a7d7b4b420ee4a898c1815">cli.c</a>
+: <a class="el" href="cli_8c.html#af8ddcf9309a7d7b4b420ee4a898c1815">cli.c</a>
+, <a class="el" href="script_8c.html#af8ddcf9309a7d7b4b420ee4a898c1815">script.c</a>
 </li>
 </ul>
 </div><!-- contents -->

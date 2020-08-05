@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.3</span>
+   &#160;<span id="projectnumber">1.4</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -202,9 +202,9 @@ $(function() {
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">IMU_BURST </td><td class="markdownTableBodyNone">Enables IMU burst data capture for buffer entries (IMU &lt;-&gt; iSensor-SPI-Buffer SPI port)  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">14:2 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<td class="markdownTableBodyNone">2 </td><td class="markdownTableBodyNone">BUF_BURST </td><td class="markdownTableBodyNone">Enables burst reading of buffer output data registers, over the user SPI port  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">15 </td><td class="markdownTableBodyNone">BUF_BURST </td><td class="markdownTableBodyNone">Enables burst reading of buffer output data registers, over the user SPI port  </td></tr>
+<td class="markdownTableBodyNone">15:3 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
 </table>
 <p><b>IMU_BURST</b> When the IMU_BURST bit is set, each buffered data capture from the IMU is performed as a single SPI burst transaction (drop CS, clock out all data, raise CS). The length of the burst transaction is determined by BUF_LEN. When the IMU_BURST bit is cleared, IMU data is captured using a sequence of 16 bit SPI words. When the selected page is changed to an IMU page (page != (253, 254, 255)), the IMU SPI port will be restored to register mode, regardless of the BUF_CONFIG setting. The IMU burst data capture will be enabled again when page 255 (buffed data capture page) is re-selected, and the IMU_BURST bit is set.</p>
 <p>IMU burst data capture (BUF_CONFIG[1] == 1), with IMU SPI MISO wired to MOSI:</p>
@@ -339,8 +339,10 @@ $(function() {
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">ECHO_DISABLE </td><td class="markdownTableBodyNone">Disable command echo to CLI. By default, all characters sent to the CLI input are echoed to the output. Disabling this functionality allows for easier CLI scripting  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">7:2 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<td class="markdownTableBodyNone">2 </td><td class="markdownTableBodyNone">SCRIPT_AUTORUN </td><td class="markdownTableBodyNone">Start executing an SD card script automatically after the iSensor-SPI-Buffer firmware has finished initialization. This is equivalent to sending a SCRIPT START command immediately after the initialization process has finished  </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">7:3 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">15:8 </td><td class="markdownTableBodyNone">DELIM </td><td class="markdownTableBodyNone">Register read value delimiter character (ASCII), for USB CLI. Defaults to space character  </td></tr>
 </table>
 <p>For more details on the iSensor-SPI-Buffer USB interface, see the <a href="https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/USB_CLI.md">USB_CLI</a> document</p>
@@ -359,11 +361,17 @@ $(function() {
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">4 </td><td class="markdownTableBodyNone">PPS_ENABLE </td><td class="markdownTableBodyNone">Enable PPS timestamp synchronization. Must have PPS_SELECT defined before enabling PPS. The UTC timestamp will start counting up on the next PPS signal  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">5 </td><td class="markdownTableBodyNone">PPS_DISABLE </td><td class="markdownTableBodyNone">Disable PPS timestamp synchronization. The microsecond timestamp register will continue free running.  </td></tr>
+<td class="markdownTableBodyNone">5 </td><td class="markdownTableBodyNone">PPS_DISABLE </td><td class="markdownTableBodyNone">Disable PPS timestamp synchronization. The microsecond timestamp register will continue free running  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">14:6 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<td class="markdownTableBodyNone">6 </td><td class="markdownTableBodyNone">SCRIPT_START </td><td class="markdownTableBodyNone">Start executing a script from a connected SD card. The script will be loaded from the script.txt file in an attached FAT32 formatted SD card. If no SD card or script file is present, nothing will be executed, and a script error will be flagged in the STATUS register  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">15 </td><td class="markdownTableBodyNone">RESET </td><td class="markdownTableBodyNone">Software reset  </td></tr>
+<td class="markdownTableBodyNone">7 </td><td class="markdownTableBodyNone">SCRIPT_CANCEL </td><td class="markdownTableBodyNone">Cancel a running script, and close any open SD card files  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">13:6 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">14 </td><td class="markdownTableBodyNone">IMU_RESET </td><td class="markdownTableBodyNone">Drive the IMU reset pin low for 1ms, then back high. This feature is only implemented on hardware revision C or newer  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15 </td><td class="markdownTableBodyNone">RESET </td><td class="markdownTableBodyNone">Software reset the iSensor-SPI-Buffer firmware  </td></tr>
 </table>
 <p>While commands are being executed, the iSensor-SPI-Buffer slave SPI port is disabled, and all interrupt signals are brought low.</p>
 <h2>USER_SCR_N</h2>
@@ -390,11 +398,15 @@ $(function() {
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">5 </td><td class="markdownTableBodyNone">DMA_ERROR </td><td class="markdownTableBodyNone">Set when processor DMA peripheral reports an error (user SPI DMA for burst read or IMU SPI DMA)  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">6 </td><td class="markdownTableBodyNone">PPS_UNLOCK </td><td class="markdownTableBodyNone">Set when the PPS synchronization clock is enabled, but no PPS signal has been received for over 1100ms  </td></tr>
+<td class="markdownTableBodyNone">6 </td><td class="markdownTableBodyNone">PPS_UNLOCK </td><td class="markdownTableBodyNone">Set when the PPS synchronization clock is enabled, but no PPS signal has been received for over 1100ms. This flag will also set if the measured period of the provided PPS input has an error of greater than 1%  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">7 </td><td class="markdownTableBodyNone">TEMP_WARNING </td><td class="markdownTableBodyNone">Set when the SPI buffer internal temperature sensor measures a value outside [-40C - 85C]  </td></tr>
+<td class="markdownTableBodyNone">7 </td><td class="markdownTableBodyNone">TEMP_WARNING </td><td class="markdownTableBodyNone">Set when the SPI buffer internal temperature sensor (value output to TEMP register) measures a value outside the safe operating range [-40C - 85C]  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">11:8 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<td class="markdownTableBodyNone">9:8 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">10 </td><td class="markdownTableBodyNone">SCRIPT_ERROR </td><td class="markdownTableBodyNone">Set when there is an error launching a script from an attached SD card. This bit can be set in one of three ways: If there is no attached SD card, if the attached SD card is not formatted correctly or does not contain script.txt, or if script.txt contains invalid script entries.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">11 </td><td class="markdownTableBodyNone">SCRIPT_ACTIVE </td><td class="markdownTableBodyNone">Set by firmware while an SD card script is being executed. A running script must either terminate by itself, or be cancelled via a SCRIPT_CANCEL command. Resetting the iSensor-SPI-Buffer while a script is executing may cause data corruption on the SD card. This bit is sticky (does not clear on read) and <u>clears automatically</u> when the script execution process ends. This allows for monitoring of the script execution process via the error interrupt output and error LED  </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">12 </td><td class="markdownTableBodyNone">FLASH_ERROR </td><td class="markdownTableBodyNone">Set when the register signature stored in flash (stored during flash update) does not match signature calculated from SRAM register contents at initialization. Sticky  </td></tr>
 <tr class="markdownTableRowOdd">

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['usbrxcount_461',['USBRxCount',['../cli_8c.html#ad09aea1179c1b299f0e0545bf2b2872c',1,'cli.c']]],
-  ['userrxbufferfs_462',['UserRxBufferFS',['../cli_8c.html#a1e37e6616e6affe5acf9c0befd063f6a',1,'cli.c']]],
-  ['usertxbufferfs_463',['UserTxBufferFS',['../cli_8c.html#ad48fea85cdb7aed49bf62140a52f23e0',1,'cli.c']]]
+  ['usbrxcount_488',['USBRxCount',['../cli_8c.html#ad09aea1179c1b299f0e0545bf2b2872c',1,'cli.c']]],
+  ['userrxbufferfs_489',['UserRxBufferFS',['../cli_8c.html#a1e37e6616e6affe5acf9c0befd063f6a',1,'cli.c']]],
+  ['usertxbufferfs_490',['UserTxBufferFS',['../cli_8c.html#ad48fea85cdb7aed49bf62140a52f23e0',1,'cli.c']]]
 ];
