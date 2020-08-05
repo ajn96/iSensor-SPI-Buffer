@@ -196,8 +196,8 @@ uint16_t ImuReadReg(uint8_t RegAddr)
 	/* Perform first transfer */
 	ImuSpiTransfer(readRequest);
 
-	/* Delay for stall time */
-	SleepMicroseconds(imuStallTimeUs);
+	/* Delay for stall time (1us offset) */
+	SleepMicroseconds(imuStallTimeUs - 1);
 
 	/* Return result data on second word */
 	return ImuSpiTransfer(0);
