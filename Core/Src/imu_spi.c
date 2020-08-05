@@ -483,7 +483,9 @@ void UpdateImuSpiConfig()
 static void ApplySclkDivider(uint32_t preScalerSetting)
 {
 	g_spi1.Init.BaudRatePrescaler = preScalerSetting;
-	HAL_SPI_DeInit(&g_spi1);
+
+	RCC->APB2RSTR |= RCC_APB2RSTR_SPI1RST;
+	RCC->APB2RSTR &= ~RCC_APB2RSTR_SPI1RST;
 	HAL_SPI_Init(&g_spi1);
 	SPI1->CR2 &= ~(SPI_CR2_FRXTH);
     /* Enable SPI peripheral */
