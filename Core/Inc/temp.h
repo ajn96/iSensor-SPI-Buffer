@@ -17,10 +17,13 @@
 void TempInit();
 void UpdateTemp();
 
-/* 30C */
+/** Temp sensor value at 30C (for two point calibration) */
 #define TS_CAL1 		((uint16_t*) ((uint32_t) 0x1FFFF7B8))
 
-/* 110 C */
+/** Temp sensor value at 110 C (for two point calibration) */
 #define TS_CAL2 		((uint16_t*) ((uint32_t) 0x1FFFF7C2))
+
+/** VREFINT calibration value */
+#define VREFINT_CAL		((uint16_t*) ((uint32_t) 0x1FFFF7BA))
 
 #endif /* INC_TEMP_H_ */
