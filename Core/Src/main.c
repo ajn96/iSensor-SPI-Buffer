@@ -254,8 +254,6 @@ void Error_Handler(void)
 {
 	/* Log error for future retrieval */
 	FlashLogError(ERROR_INIT);
-	/* Reset system */
-	NVIC_SystemReset();
 }
 
 /**
