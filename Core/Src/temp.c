@@ -124,6 +124,12 @@ static void ADC1Init()
 	sConfig.Offset = 0;
 	if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
 	{
+
+	}
+
+	/* Run ADC self-cal */
+	if(HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED) != HAL_OK)
+	{
 		Error_Handler();
 	}
 }
