@@ -82,7 +82,7 @@ void EXTI9_5_IRQHandler()
 
 	/* Clear exti PR register (lines 5-9) */
 	EXTI_PR = EXTI->PR;
-	EXTI->PR |= 0x1F << 5;
+	EXTI->PR = (0x1F << 5);
 
 	/* Check if is PPS interrupt */
 	if(EXTI_PR & (PPS_INT_MASK))
@@ -182,7 +182,7 @@ void EXTI9_5_IRQHandler()
 void EXTI4_IRQHandler()
 {
 	/* Clear pending interrupts */
-	EXTI->PR |= (1 << 4);
+	EXTI->PR = (1 << 4);
 
 	/* Increment PPS timestamp */
 	IncrementPPSTime();
@@ -425,7 +425,7 @@ void EXTI15_10_IRQHandler(void)
 	static uint32_t txData;
 
 	/* Clear exti PR register (lines 10-15) */
-	EXTI->PR |= 0x3F << 10;
+	EXTI->PR = (0x3F << 10);
 
 	/* Read SPI2 SR */
 	spiSr = SPI2->SR;
@@ -439,20 +439,13 @@ void EXTI15_10_IRQHandler(void)
 		/* Disable DMA */
 		g_dma_spi2_tx.Instance->CCR &= ~DMA_CCR_EN;
 
-		/* Disable and re-enable SPI. Kind of hacky, not a clean way to do this.
-		 * This is required because there is no way to clear Tx FIFO in the SPI
-		 * peripheral otherwise */
-		RCC->APB1RSTR |= RCC_APB1RSTR_SPI2RST;
-		RCC->APB1RSTR &= ~RCC_APB1RSTR_SPI2RST;
-		HAL_SPI_Init(&g_spi2);
-		__HAL_SPI_ENABLE(&g_spi2);
-
 		/* Clear burst running flag */
 		g_userburstRunning = 0;
 
 		/* Check if another burst was not requested */
-		if((rxData >> 8) != 6)
+		if((rxData & 0xFF00) != 0x0600)
 		{
+			/* Exit burst mode */
 			BurstReadDisable();
 		}
 

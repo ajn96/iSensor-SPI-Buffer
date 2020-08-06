@@ -22,6 +22,17 @@ extern volatile uint16_t* g_CurrentBufEntry;
 /** Global register array (from registers.c) */
 extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
 
+void UserSpiReset()
+{
+	/* Disable and re-enable SPI using RCC. Kind of hacky, not a clean way to do this.
+	 * This is required because there is no way to clear Tx FIFO in the SPI
+	 * peripheral otherwise */
+	RCC->APB1RSTR |= RCC_APB1RSTR_SPI2RST;
+	RCC->APB1RSTR &= ~RCC_APB1RSTR_SPI2RST;
+	HAL_SPI_Init(&g_spi2);
+	__HAL_SPI_ENABLE(&g_spi2);
+}
+
 /**
   * @brief Configures SPI for a burst buffer read
   *
@@ -32,17 +43,10 @@ extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
   */
 void BurstReadSetup()
 {
-	/* Clear pending EXTI interrupts */
-	EXTI->PR |= (0x3F << 10);
+	UserSpiReset();
 
-	/* Flush any data currently in SPI Rx FIFO */
-	for(int i = 0; i < 4; i++)
-	{
-		 (void) SPI2->DR;
-	}
-
-	/* Reset the Tx DMA threshold bit */
-	CLEAR_BIT(SPI2->CR2, SPI_CR2_LDMATX);
+	/* Load initial zero to output */
+	SPI2->DR = 0;
 
 	/************ Enable the Tx DMA Stream/Channel  *********************/
 
@@ -80,12 +84,13 @@ void BurstReadSetup()
   *
   * @return void
   *
-  * This function disables SPI2 DMA requests
+  * This function disables SPI2 DMA requests via hard reset, and disables
+  * SPI2 DMA channel
   */
 void BurstReadDisable()
 {
-	/* Clear Tx DMA enable bits in SPI control register */
-	CLEAR_BIT(SPI2->CR2, SPI_CR2_TXDMAEN);
+	g_spi2.hdmatx->Instance->CCR &= ~DMA_CCR_EN;
+	UserSpiReset();
 }
 
 /**

@@ -88,13 +88,29 @@ static volatile uint32_t selected_page = BUF_CONFIG_PAGE;
   */
 void BufDequeueToOutputRegs()
 {
-	/* Get element from the buffer */
-	g_CurrentBufEntry = (uint16_t *) BufTakeElement();
-
-	/* Check if burst read mode is enabled */
-	if(g_regs[BUF_CONFIG_REG] & BUF_CFG_BUF_BURST)
+	/* Check if buf count > 0) */
+	if(g_regs[BUF_CNT_0_REG] > 0)
 	{
-		BurstReadSetup();
+		/* Get element from the buffer */
+		g_CurrentBufEntry = (uint16_t *) BufTakeElement();
+
+		/* Check if burst read mode is enabled */
+		if(g_regs[BUF_CONFIG_REG] & BUF_CFG_BUF_BURST)
+		{
+			BurstReadSetup();
+		}
+	}
+	else
+	{
+		/* Set current buf entry to 0 */
+		g_CurrentBufEntry = 0;
+
+		/* Check if burst read mode is enabled and reset SPI */
+		if(g_regs[BUF_CONFIG_REG] & BUF_CFG_BUF_BURST)
+		{
+			UserSpiReset();
+			SPI2->DR = 0;
+		}
 	}
 }
 
@@ -129,17 +145,10 @@ uint16_t ReadReg(uint8_t regAddr)
 		/* Handler buffer retrieve case by setting deferred processing flag */
 		if(regIndex == BUF_RETRIEVE_REG)
 		{
-			/* Check if buf count > 0) */
-			if(g_regs[BUF_CNT_0_REG] > 0)
-			{
-				/* Set update flag for main loop */
-				g_update_flags |= DEQUEUE_BUF_FLAG;
-			}
-			else
-			{
-				/* Set current buf entry to 0 */
-				g_CurrentBufEntry = 0;
-			}
+			/* Set update flag for main loop */
+			g_update_flags |= DEQUEUE_BUF_FLAG;
+			/* Return 0 */
+			return 0;
 		}
 
 		if(regIndex > BUF_RETRIEVE_REG)

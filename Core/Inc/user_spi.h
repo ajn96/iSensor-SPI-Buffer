@@ -17,5 +17,6 @@
 void BurstReadSetup();
 void BurstReadDisable();
 void UpdateUserSpiConfig();
+void UserSpiReset();
 
 #endif /* INC_USER_SPI_H_ */

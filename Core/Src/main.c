@@ -267,7 +267,6 @@ void Error_Handler(void)
   */
 static void DMA_Init(void)
 {
-
 	/* DMA controller clock enable */
 	__HAL_RCC_DMA1_CLK_ENABLE();
 
