@@ -13,7 +13,7 @@ Additional hardware and software resources are linked below.
 
 [SD Card Scripts](SD_SCRIPTS.md)
 
-[Timing Characterization](TIMING.md)
+[Timing Characterization](TIMING.MD)
 
 [STM32 Processor Pin Map](PIN_MAP.md)
 
