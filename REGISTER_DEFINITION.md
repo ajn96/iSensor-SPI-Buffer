@@ -425,7 +425,7 @@ Burst output functionality for buffered data is provided to allow faster dequeui
 
 | SPI Word Number (16 bit words) | Master -> iSensor-SPI-Buffer | iSensor-SPI-Buffer -> Master |
 | ------------------------------ | ---------------------------- | ---------------------------- |
-| 0                              | 0x0600                       | 0x0000                       |
+| 0                              | 0x0600                       | BUF_CNT (after dequeue)      |
 | 1                              | 0x0000 (Don't care)          | BUF_UTC_TIME_LWR             |
 | 2                              | 0x0000 (Don't care)          | BUF_UTC_TIME_UPR             |
 | 3                              | 0x0000 (Don't care)          | BUF_TIMESTAMP_LWR            |

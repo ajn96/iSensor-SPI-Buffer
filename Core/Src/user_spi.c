@@ -45,8 +45,8 @@ void BurstReadSetup()
 {
 	UserSpiReset();
 
-	/* Load initial zero to output */
-	SPI2->DR = 0;
+	/* Load buffer count to output initially */
+	SPI2->DR = g_regs[BUF_CNT_0_REG];
 
 	/************ Enable the Tx DMA Stream/Channel  *********************/
 
