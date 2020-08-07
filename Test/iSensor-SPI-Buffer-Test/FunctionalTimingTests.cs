@@ -66,6 +66,7 @@ namespace iSensor_SPI_Buffer_Test
             writer.WriteLine("|Clock Frequency|||" + MaxSclkFreq().ToString() + "|Hz|");
             writer.WriteLine("|Read Stall|" + FindReadStallTime().ToString("f2") + "|||us|");
             writer.WriteLine("|Write Stall|" + FindWriteStallTime().ToString("f2") + "|||us|");
+            writer.WriteLine("|BUF_RETRIEVE Stall|" + BufRetrieveTime().ToString("f2") + "|||us|");
 
             FX3.RestoreHardwareSpi();
             FX3.SclkFrequency = 10000000;
@@ -84,6 +85,70 @@ namespace iSensor_SPI_Buffer_Test
             writer.WriteLine("|IMU Reset||" + IMUResetTime().ToString("f2") + "||us|");
             writer.WriteLine();
             writer.Close();
+        }
+
+        private double BufRetrieveTime()
+        {
+            /* Set up regs */
+            FX3.RestoreHardwareSpi();
+            ResetDUT();
+            FX3.SetPin(FX3.DIO1, 0);
+            WriteUnsigned("DIO_INPUT_CONFIG", 0x11);
+            WriteUnsigned("DIO_OUTPUT_CONFIG", 0x1);
+            WriteUnsigned("UTC_TIME_LWR", 0xAA55);
+            WriteUnsigned("USER_COMMAND", 1 << COMMAND_CLEAR_BUFFER, false);
+
+            /* Set to page 255 */
+            Console.WriteLine("BUF_CNT: " + ReadUnsigned("BUF_CNT_1").ToString());
+
+            double stall = 10;
+            bool goodStall = true;
+
+            List<byte> MOSI = new List<byte>();
+            MOSI.Add((byte)RegMap["BUF_RETRIEVE"].Address);
+            MOSI.Add(0);
+            MOSI.Add((byte)RegMap["BUF_UTC_TIME_LWR"].Address);
+            MOSI.Add(0);
+            MOSI.Add(0);
+            MOSI.Add(0);
+
+            byte[] MISO;
+
+            FX3.BitBangSpiConfig = new BitBangSpiConfig(true);
+            FX3.SetBitBangSpiFreq(900000);
+            FX3.BitBangSpiConfig.CSLagTicks = 0;
+            FX3.BitBangSpiConfig.CSLeadTicks = 0;
+
+            while (goodStall)
+            {
+                Console.WriteLine("Testing stall time: " + stall.ToString() + "us");
+                FX3.SetBitBangStallTime(stall);
+                /* Enqueue sample */
+                FX3.SetPin(FX3.DIO1, 1);
+                FX3.SetPin(FX3.DIO1, 0);
+                System.Threading.Thread.Sleep(10);
+                MISO = FX3.BitBangSpi(16, 3, MOSI.ToArray(), 1000);
+                if (MISO[4] != 0xAA)
+                    goodStall = false;
+                if (MISO[5] != 0x55)
+                    goodStall = false;
+
+                /* Read again and make sure zero is on outputs */
+                MISO = FX3.BitBangSpi(16, 3, MOSI.ToArray(), 1000);
+                if (MISO[4] != 0)
+                    goodStall = false;
+                if (MISO[5] != 0)
+                    goodStall = false;
+
+                if (stall < 0.5)
+                    goodStall = false;
+                if (goodStall)
+                    stall -= 0.2;
+            }
+            FX3.RestoreHardwareSpi();
+            FX3.ReadPin(FX3.DIO1);
+            ResetDUT();
+            return stall;
         }
 
         private double PowerCycleTime()

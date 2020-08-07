@@ -201,7 +201,7 @@ namespace iSensor_SPI_Buffer_Test
             return Dut.ReadUnsigned(strippedReg);
         }
 
-        public void WriteUnsigned(string RegName, uint WriteVal, bool ReadBack)
+        public void WriteUnsigned(string RegName, uint WriteVal, bool ReadBack = true)
         {
             RegClass strippedReg = new RegClass();
             RegClass baseReg = RegMap[RegName];
