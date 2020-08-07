@@ -147,5 +147,8 @@ void BufDequeueToOutputRegs();
 #define BUF_CFG_BUF_BURST			(1 << 2)
 #define BUF_CFG_MASK				(BUF_CFG_REPLACE_OLDEST|BUF_CFG_IMU_BURST|BUF_CFG_BUF_BURST)
 
+/* Watermark int config pulse mode mask */
+#define WATERMARK_PULSE_MASK 		(1 << 15)
+
 
 #endif /* INC_REGISTERS_H_ */

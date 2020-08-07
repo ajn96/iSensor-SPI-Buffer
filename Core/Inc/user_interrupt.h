@@ -18,4 +18,7 @@
 void UpdateUserInterrupt();
 void UpdateOutputPins(uint32_t interrupt, uint32_t overflow, uint32_t error);
 
+#define WATERMARK_FREQ					10000
+#define WATERMARK_HALF_PERIOD_TICKS		(uint32_t) (72000000 / (WATERMARK_FREQ * 2))
+
 #endif /* INC_USER_INTERRUPT_H_ */

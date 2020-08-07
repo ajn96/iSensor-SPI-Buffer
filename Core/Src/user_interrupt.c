@@ -29,13 +29,16 @@ extern DIOConfig g_pinConfig;
 void UpdateUserInterrupt()
 {
 	/* Interrupt flags */
-	uint32_t overflow, interrupt, error;
+	uint32_t overflow, interrupt, error, currentTime;
+
+	/* Static flags for driving watermark strobe */
+	static uint32_t watermarkState, startTime;
 
 	/* Get overflow status */
 	overflow = (g_regs[BUF_CNT_0_REG] >= g_regs[BUF_MAX_CNT_REG]);
 
 	/* Get watermark interrupt status */
-	interrupt = (g_regs[BUF_CNT_0_REG] >= g_regs[WATERMARK_INT_CONFIG_REG]);
+	interrupt = (g_regs[BUF_CNT_0_REG] >= (g_regs[WATERMARK_INT_CONFIG_REG] & ~WATERMARK_PULSE_MASK));
 
 	/* Get error interrupt status, masking out bits which are not error indicators */
 	error = g_regs[STATUS_0_REG] & g_regs[ERROR_INT_CONFIG_REG];
@@ -52,6 +55,30 @@ void UpdateUserInterrupt()
 	{
 		g_regs[STATUS_0_REG] |= STATUS_BUF_WATERMARK;
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+
+		/* Check for strobe status */
+		if(g_regs[WATERMARK_INT_CONFIG_REG] & WATERMARK_PULSE_MASK)
+		{
+			currentTime = DWT->CYCCNT;
+			if((currentTime - startTime) > WATERMARK_HALF_PERIOD_TICKS)
+			{
+				startTime = currentTime;
+				if(watermarkState)
+					watermarkState = 0;
+				else
+					watermarkState = 1;
+			}
+		}
+		else
+		{
+			/* Watermark directly follows interrupt */
+			watermarkState = interrupt;
+		}
+	}
+	else
+	{
+		/* Reset watermark state when interrupt not triggered */
+		watermarkState = 0;
 	}
 
 	/* Apply error to LEDs */
@@ -65,7 +92,7 @@ void UpdateUserInterrupt()
 	}
 
 	/* Update interrupt output pins */
-	UpdateOutputPins(interrupt, overflow, error);
+	UpdateOutputPins(watermarkState, overflow, error);
 
 	/* If USB data streaming is enabled and watermark interrupt triggered then dump buffer to USB */
 	if(interrupt && (g_regs[USB_CONFIG_REG] & USB_STREAM_BITM))
