@@ -158,13 +158,18 @@ The following default values will be used for DIO_OUTPUT_CONFIG:
 
 | Name | Bits | Description |
 | --- | --- | --- |
-| 15:0 | WATERMARK | Number of elements stored in buffer before asserting the iSensor-SPI-Buffer data ready interrupt. Range 0 - BUF_MAX_CNT |
+| 14:0 | LEVEL | Number of elements stored in buffer before asserting the iSensor-SPI-Buffer data ready interrupt. Range 0 - BUF_MAX_CNT |
+| 15 | TOGGLE | When set, the watermark interrupt output will act as a ~10KHz, 50% duty cycle clock output when the watermark interrupt is triggered. If this bit is cleared, the watermark interrupt output is simply pulled high when triggered. |
+
+The following capture shows the interrupt behavior with WATERMARK_INT_CONFIG set to 0x8001 (TOGGLE enabled, 1 sample threshold). The attached EVAL-ADIS-FX3 board is configured to trigger on the rising edge of DIO2. The iSensor-SPI-Buffer board keep giving the master clocks until the buffer is empty, then goes low. Once a new sample has been enqueued from the IMU, another pulse is generated.
+
+ ![Watermark strobe](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/watermark_strobe_mode.JPG)
 
 ## ERROR_INT_CONFIG
 
 | Name | Bits | Description |
 | --- | --- | --- |
-| 15:0 | STATUS_MASK | Bitmask to set which bits in the iSensor-SPI-Buffer status register error bits will generate an interrupt when set. Set to 0xFFFF to enable all error interrupts, 0x0000 to disable all |
+| 15:0 | STATUS_MASK | Bitmask to set which bits in the iSensor-SPI-Buffer status register error bits will generate an interrupt when set. Set to 0xFFFF to enable all error interrupts, 0x0000 to disable all. This mask also applies to the error LED on the iSensor-SPI-Buffer, allowing for error detection without reading STATUS. |
 
 ## IMU_SPI_CONFIG
 
