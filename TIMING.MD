@@ -2,13 +2,13 @@
 
 This document is automatically generated using timing measurements performed by an EVAL-ADIS-FX3, using the NUnit test framework
 
-Test Date: 8/7/2020 12:39:03 PM
+Test Date: 2020-08-07T12:47:13
 
 Trials per timing measurement: 5
 
 Firmware Revision: 0107
 
-Date: 0708, 2020
+Firmware Date (YYYY/MM/DD): 2020/08/07
 
 Test source code is available [here](Test/iSensor-SPI-Buffer-Test/FunctionalTimingTests.cs)
 ## Reset Times
@@ -16,23 +16,23 @@ Test source code is available [here](Test/iSensor-SPI-Buffer-Test/FunctionalTimi
 |Parameter|Min|Avg|Max|Units|
 | --- | --- | --- | --- | --- |
 |Power Cycle Reset||6.52||ms|
-|Software Reset Time||15.94||ms|
+|Software Reset Time||15.96||ms|
 ## SPI Timings
 
 |Parameter|Min|Avg|Max|Units|
 | --- | --- | --- | --- | --- |
 |Clock Frequency|||27810000|Hz|
 |Read Stall|0.40|||us|
-|Write Stall|1.40|||us|
+|Write Stall|2.20|||us|
 ## Functional Command Timings
 
 |Parameter|Min|Avg|Max|Units|
 | --- | --- | --- | --- | --- |
-|Clear Buffer||5.36||us|
+|Clear Buffer||5.34||us|
 |Clear Fault||22.10||ms|
-|Factory Reset||6.00||ms|
+|Factory Reset||6.20||ms|
 |Flash Update||29.26||ms|
-|PPS Enable||24.30||us|
+|PPS Enable||24.28||us|
 |PPS Disable||22.02||us|
-|IMU Reset||1004.96||us|
+|IMU Reset||1005.00||us|
 
