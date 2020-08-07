@@ -43,10 +43,14 @@ namespace iSensor_SPI_Buffer_Test
             writer.WriteLine("This document is automatically generated using timing measurements performed by an EVAL-ADIS-FX3, using the NUnit test framework");
             writer.WriteLine("");
             writer.WriteLine("Test Date: " + DateTime.Now.ToString());
+            writer.WriteLine("");
             writer.WriteLine("Trials per timing measurement: " + numTrials.ToString());
+            writer.WriteLine("");
             writer.WriteLine("Firmware Revision: " + ReadUnsigned("FW_REV").ToString("X4"));
+            writer.WriteLine("");
             writer.WriteLine("Date: " + ReadUnsigned("FW_DAY_MONTH").ToString("X4") + ", " + ReadUnsigned("FW_YEAR").ToString("X4"));
             writer.WriteLine("");
+            writer.WriteLine("Test source code is available [here](Test/iSensor-SPI-Buffer-Test/FunctionalTimingTests.cs)");
 
             writer.WriteLine("## Reset Times");
             writer.WriteLine();
