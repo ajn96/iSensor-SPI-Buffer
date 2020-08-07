@@ -161,7 +161,7 @@ The following default values will be used for DIO_OUTPUT_CONFIG:
 | 14:0 | LEVEL | Number of elements stored in buffer before asserting the iSensor-SPI-Buffer data ready interrupt. Range 0 - BUF_MAX_CNT |
 | 15 | TOGGLE | When set, the watermark interrupt output will act as a ~10KHz, 50% duty cycle clock output when the watermark interrupt is triggered. If this bit is cleared, the watermark interrupt output is simply pulled high when triggered. |
 
-The following capture shows the interrupt behavior with WATERMARK_INT_CONFIG set to 0x8001 (TOGGLE enabled, 1 sample threshold). The attached EVAL-ADIS-FX3 board is configured to trigger on the rising edge of DIO2. The iSensor-SPI-Buffer board keep giving the master clocks until the buffer is empty, then goes low. Once a new sample has been enqueued from the IMU, another pulse is generated.
+The following capture shows the interrupt behavior with WATERMARK_INT_CONFIG set to 0x8001 (TOGGLE enabled, 1 sample threshold). The attached EVAL-ADIS-FX3 master board is configured to trigger a buffer burst read on the rising edge of DIO2. The iSensor-SPI-Buffer board keeps giving the FX3 master clocks until the buffer is empty, then goes low. Once a new sample has been enqueued from the IMU, another pulse is generated, and clears when the master retrieves the sample.
 
  ![Watermark strobe](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/watermark_strobe_mode.JPG)
 
