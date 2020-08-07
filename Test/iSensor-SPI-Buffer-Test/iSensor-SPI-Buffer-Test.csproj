@@ -67,6 +67,7 @@
     <Compile Include="BufferEntry.cs" />
     <Compile Include="BufferTests.cs" />
     <Compile Include="CommandTests.cs" />
+    <Compile Include="FunctionalTimingTests.cs" />
     <Compile Include="PinTests.cs" />
     <Compile Include="RegisterInterfaceTests.cs" />
     <Compile Include="RobustnessTests.cs" />
