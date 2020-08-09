@@ -25,4 +25,6 @@ void StopScript();
 
 #define SCRIPT_MAX_ENTRIES	64
 
+#define INVALID_LOOP_INDEX 	0xFFFFFFFF
+
 #endif /* INC_SD_CARD_H_ */

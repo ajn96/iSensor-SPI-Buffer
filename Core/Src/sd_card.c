@@ -14,6 +14,7 @@
 static bool OpenScriptFiles();
 static bool SDCardAttached();
 static bool ParseScriptFile();
+static bool CommandPostLoadProcess();
 static void SPI3_Init(void);
 
 /** Global register array (from registers.c) */
@@ -21,6 +22,9 @@ extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
 
 /** SPI handle for SD card master port (global scope) */
 SPI_HandleTypeDef g_spi3;
+
+/** Buffer for SD card read/writes */
+static char sd_buf[1024];
 
 /* Command list. Loaded from cmd.txt on the SD card */
 static script cmdList[SCRIPT_MAX_ENTRIES];
@@ -335,7 +339,101 @@ static bool OpenScriptFiles()
 static bool ParseScriptFile()
 {
 	numCmds = 0;
+	bool endofFile = false;
+	char result;
 
+	while(!endofFile)
+	{
+		/* If we got too many lines return false */
+		if(numCmds >= SCRIPT_MAX_ENTRIES)
+			return false;
+
+		/* Read line from file */
+		result = f_gets(sd_buf, sizeof(sd_buf), &cmdFile);
+		if(result)
+		{
+			/* We got a good line from the file, parse into command array */
+			cmdList[numCmds] = ParseScriptElement(&sd_buf);
+			numCmds++;
+		}
+		else
+		{
+			/* hit end of file */
+			endofFile = true;
+		}
+
+		/* Clear buf */
+		for(int i = 0; i < sizeof(sd_buf); i++)
+		{
+			sd_buf[i] = 0;
+		}
+	}
+
+	/* Close command file */
+	f_close(&cmdFile);
+	/* Perform post-load processing and return result */
+	return CommandPostLoadProcess();
+}
+
+/**
+  * @brief Process loaded command array
+  *
+  * @return true if script is good, false otherwise
+  *
+  * This function checks all commands for validity (argument and command).
+  * It also sets up all loop state variables, and links the end loop commands
+  * to the corresponding start loops.
+  */
+static bool CommandPostLoadProcess()
+{
+	uint32_t startLoopIndex;
+
+	/* If zero commands parsed return false */
+	if(numCmds == 0)
+		return false;
+
+	/* Set start loop index to an invalid value */
+	startLoopIndex = INVALID_LOOP_INDEX;
+	for(int i = 0; i < numCmds; i++)
+	{
+		if(cmdList[i].invalidArgs != 0)
+		{
+			/* Invalid arg, return false */
+			return false;
+		}
+		if(cmdList[i].scrCommand >= invalid)
+		{
+			/* Invalid command, return false */
+			return false;
+		}
+		if(cmdList[i].scrCommand = loop)
+		{
+			/* Check that we aren't inside a previous loop */
+			if(startLoopIndex != INVALID_LOOP_INDEX)
+			{
+				return false;
+			}
+			else
+			{
+				startLoopIndex = i;
+			}
+		}
+		if(cmdList[i].scrCommand = endloop)
+		{
+			/* Check that we already hit a start loop command */
+			if(startLoopIndex == INVALID_LOOP_INDEX)
+			{
+				return false;
+			}
+			else
+			{
+				/* Set jump target to arg 1, count to arg 0 */
+				cmdList[i].args[0] = cmdList[startLoopIndex].args[0];
+				cmdList[i].args[1] = startLoopIndex;
+				startLoopIndex = INVALID_LOOP_INDEX;
+			}
+		}
+	}
 	return true;
 }
 
