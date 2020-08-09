@@ -14,6 +14,7 @@
 #include "main.h"
 #include "registers.h"
 #include "cli.h"
+#include "sd_card.h"
 
 /** Available script commands */
 typedef enum
@@ -46,6 +47,7 @@ typedef struct
 	uint32_t invalidArgs;
 }script;
 
+void CheckStream();
 void ParseScriptElement(const uint8_t* commandBuf, script * scr);
 void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB);
 

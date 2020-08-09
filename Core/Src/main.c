@@ -227,8 +227,14 @@ int main(void)
 		  state = 8;
 		  break;
 	  case 8:
-		  /* Handle any USB command line activity */
+		  /* Handle any USB command line Rx activity */
 		  USBRxHandler();
+		  /* Advance to next state */
+		  state = 9;
+	  case 9:
+		  /* Check stream status for CLI */
+		  CheckStream();
+		  break;
 		  /* Go back to first state */
 		  state = 0;
 		  break;

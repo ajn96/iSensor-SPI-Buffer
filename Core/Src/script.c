@@ -13,7 +13,7 @@
 /* Private function prototypes */
 static uint32_t ParseCommandArgs(const uint8_t* commandBuf, uint32_t* args);
 static uint32_t ReadHandler(script* scr, uint8_t* outBuf, bool isUSB);
-static uint32_t ReadBufHandler(script* scr, uint8_t* outBuf, bool isUSB);
+static uint32_t ReadBufHandler(uint8_t* outBuf, bool isUSB);
 static void WriteHandler(script* scr);
 static void UShortToHex(uint8_t* outBuf, uint16_t val);
 static uint32_t HexToUInt(const uint8_t* commandBuf);
@@ -21,6 +21,9 @@ static uint32_t StringEquals(const uint8_t* string0, const uint8_t* compStr, uin
 
 /** Global register array. (from registers.c) */
 extern volatile uint16_t g_regs[];
+
+/* Buffer for stream data (USB or SD card) */
+static uint8_t StreamBuf[1024];
 
 /* Current index within command buffer */
 static uint32_t cmdIndex;
@@ -59,16 +62,16 @@ static const uint8_t SleepCmd[] = "sleep ";
 static const uint8_t LoopCmd[] = "loop ";
 
 /** Print string for invalid command */
-static uint8_t InvalidCmdStr[] = "Error: Invalid command!\r\n";
+static const uint8_t InvalidCmdStr[] = "Error: Invalid command!\r\n";
 
 /** Print string for invalid argument */
-static uint8_t InvalidArgStr[] = "Error: Invalid argument!\r\n";
+static const uint8_t InvalidArgStr[] = "Error: Invalid argument!\r\n";
 
 /** Print string for unexpected processing */
-static uint8_t UnknownErrorStr[] = "Unknown error has occurred!\r\n";
+static const uint8_t UnknownErrorStr[] = "Unknown error has occurred!\r\n";
 
 /** Print string for help command */
-static uint8_t HelpStr[] = "All numeric values are in hex. [] arguments are optional\r\n"
+static const uint8_t HelpStr[] = "All numeric values are in hex. [] arguments are optional\r\n"
 		"help: Print available commands\r\n"
 		"freset: Performs a factory reset, followed by flash update\r\n"
 		"read startAddr [endAddr = addr] [numReads = 1]: Read registers starting at startAddr and ending at endAddr numReads times\r\n"
@@ -76,6 +79,28 @@ static uint8_t HelpStr[] = "All numeric values are in hex. [] arguments are opti
 		"readbuf: Read all buffer entries. Values for each entry are placed on a newline\r\n"
 		"stream startStop: Start (startStop != 0) or stop (startStop = 0) a read stream\r\n"
 		"delim char: Set the read output delimiter character to char\r\n";
+
+void CheckStream()
+{
+	/* Check water mark interrupt status */
+	if(g_regs[BUF_CNT_0_REG] >= (g_regs[WATERMARK_INT_CONFIG_REG] & ~WATERMARK_PULSE_MASK))
+	{
+		/* If SD stream then handle */
+		if(g_regs[CLI_CONFIG_REG] & SD_STREAM_BITM)
+		{
+			/* Ensure USB stream is cleared */
+			g_regs[CLI_CONFIG_REG] &= ~(USB_STREAM_BITM);
+			/* Call handler */
+			ReadBufHandler(StreamBuf, false);
+		}
+		/* If USB stream then handle */
+		if(g_regs[CLI_CONFIG_REG] & USB_STREAM_BITM)
+		{
+			/* Call handler */
+			ReadBufHandler(StreamBuf, true);
+		}
+	}
+}
 
 void ParseScriptElement(const uint8_t* commandBuf, script * scr)
 {
@@ -238,7 +263,7 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 			g_regs[CLI_CONFIG_REG] |= ((scr->args[0] & 0xFF) << USB_DELIM_BITP);
 			break;
 		case readbuf:
-			ReadBufHandler(scr, outBuf, isUSB);
+			ReadBufHandler(outBuf, isUSB);
 			break;
 		case stream:
 			/* Set/clear stream interrupt enable flag */
@@ -292,7 +317,7 @@ static void WriteHandler(script* scr)
 	WriteReg(scr->args[0], scr->args[1]);
 }
 
-static uint32_t ReadBufHandler(script* scr, uint8_t* outBuf, bool isUSB)
+static uint32_t ReadBufHandler(uint8_t* outBuf, bool isUSB)
 {
 	uint32_t count = 0;
 	return count;

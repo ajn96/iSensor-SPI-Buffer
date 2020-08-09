@@ -22,7 +22,7 @@ void ScriptAutorun();
 void ScriptStep();
 void StartScript();
 void StopScript();
-void SDTxHandler(uint8_t* buf, uint32_t count);
+void SDTxHandler(const uint8_t* buf, uint32_t count);
 
 #define SCRIPT_MAX_ENTRIES	64
 

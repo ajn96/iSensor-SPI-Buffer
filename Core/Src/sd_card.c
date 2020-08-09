@@ -24,7 +24,7 @@ extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
 SPI_HandleTypeDef g_spi3;
 
 /** Buffer for SD card read/writes */
-static char sd_buf[1024];
+static uint8_t sd_buf[1024];
 
 /* Command list. Loaded from cmd.txt on the SD card */
 static script cmdList[SCRIPT_MAX_ENTRIES];
@@ -47,7 +47,7 @@ static FIL outFile;
 /** File system object */
 static FATFS fs;
 
-void SDTxHandler(uint8_t* buf, uint32_t count)
+void SDTxHandler(const uint8_t* buf, uint32_t count)
 {
 
 }
@@ -162,6 +162,9 @@ void StopScript()
 	/* Clear script running status bit */
 	g_regs[STATUS_0_REG] &= ~(STATUS_SCR_RUNNING);
 	g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+
+	/* Clear script stream bit */
+	g_regs[CLI_CONFIG_REG] &= ~(SD_STREAM_BITM);
 
 	/* Clear script running flag */
 	scriptRunning = 0;
@@ -356,7 +359,7 @@ static bool ParseScriptFile()
 		if(result)
 		{
 			/* We got a good line from the file, parse into command array */
-			ParseScriptElement(&sd_buf, &cmdList[numCmds]);
+			ParseScriptElement(sd_buf, &cmdList[numCmds]);
 			numCmds++;
 		}
 		else
