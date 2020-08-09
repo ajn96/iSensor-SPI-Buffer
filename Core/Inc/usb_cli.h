@@ -2,14 +2,14 @@
   * Copyright (c) Analog Devices Inc, 2020
   * All Rights Reserved.
   *
-  * @file		cli.h
+  * @file		usb_cli.h
   * @date		6/26/2020
   * @author		A. Nolan (alex.nolan@analog.com)
   * @brief		Header file for iSensor-SPI-Buffer USB command line register interface
  **/
 
-#ifndef INC_CLI_H_
-#define INC_CLI_H_
+#ifndef INC_USB_CLI_H_
+#define INC_USB_CLI_H_
 
 #include "main.h"
 #include "usbd_cdc_if.h"
@@ -26,4 +26,4 @@ void USBTxHandler(uint8_t* buf, uint32_t count);
 /** Buffer output data base address (on page 255) */
 #define BUF_DATA_BASE_ADDR		16
 
-#endif /* INC_CLI_H_ */
+#endif /* INC_USB_CLI_H_ */

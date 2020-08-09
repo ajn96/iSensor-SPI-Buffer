@@ -9,7 +9,6 @@
  **/
 
 #include "user_interrupt.h"
-#include "cli.h"
 
 /** Global register array (from registers.c) */
 extern volatile uint16_t g_regs[3 * REG_PER_PAGE];

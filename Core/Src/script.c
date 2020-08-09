@@ -5,7 +5,7 @@
   * @file		script.c
   * @date		7/23/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		iSensor-SPI-Buffer script module (loaded from SD card)
+  * @brief		iSensor-SPI-Buffer script module (loaded from SD card or provided via USB CLI)
  **/
 
 #include "script.h"

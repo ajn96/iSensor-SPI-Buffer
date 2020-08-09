@@ -10,7 +10,7 @@
 
 #include "main.h"
 #include "usbd_cdc_if.h"
-#include "cli.h"
+#include "usb_cli.h"
 #include "sd_card.h"
 
 /* Private function prototypes */

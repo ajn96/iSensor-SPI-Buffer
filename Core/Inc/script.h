@@ -13,7 +13,7 @@
 
 #include "main.h"
 #include "registers.h"
-#include "cli.h"
+#include "usb_cli.h"
 #include "sd_card.h"
 
 /** Available script commands */

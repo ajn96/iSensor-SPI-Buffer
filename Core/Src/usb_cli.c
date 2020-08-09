@@ -2,13 +2,13 @@
   * Copyright (c) Analog Devices Inc, 2020
   * All Rights Reserved.
   *
-  * @file		cli.c
+  * @file		usb_cli.c
   * @date		6/26/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		Implementation file for iSensor-SPI-Buffer command line register interface
+  * @brief		Implementation file for iSensor-SPI-Buffer USB command line register interface
  **/
 
-#include "cli.h"
+#include "usb_cli.h"
 
 /* Private function prototypes */
 static void ParseCommand();
