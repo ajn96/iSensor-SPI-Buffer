@@ -126,7 +126,7 @@ void USBRxHandler()
 				if(commandIndex > 0)
 					commandIndex--;
 				/* Echo \b, space, \b to console */
-				if(!(g_regs[USB_CONFIG_REG] & USB_ECHO_BITM))
+				if(!(g_regs[CLI_CONFIG_REG] & USB_ECHO_BITM))
 				{
 					EchoBuf[0] = '\b';
 					EchoBuf[1] = ' ';
@@ -138,7 +138,7 @@ void USBRxHandler()
 			else if(UserRxBufferFS[bufIndex] == '\r')
 			{
 				/* Send newline char if CLI echo is enabled */
-				if(!(g_regs[USB_CONFIG_REG] & USB_ECHO_BITM))
+				if(!(g_regs[CLI_CONFIG_REG] & USB_ECHO_BITM))
 				{
 					BlockingUSBTransmit(NewLineStr, sizeof(NewLineStr), 20);
 				}
@@ -158,7 +158,7 @@ void USBRxHandler()
 				CurrentCommand[commandIndex] = UserRxBufferFS[bufIndex];
 				commandIndex++;
 				/* Echo to console */
-				if(!(g_regs[USB_CONFIG_REG] & USB_ECHO_BITM))
+				if(!(g_regs[CLI_CONFIG_REG] & USB_ECHO_BITM))
 				{
 					EchoBuf[0] = UserRxBufferFS[bufIndex];
 					BlockingUSBTransmit(EchoBuf, 1, 20);
@@ -200,7 +200,7 @@ void USBReadBuf()
 		{
 			readVal = ReadReg(addr);
 			UShortToHex(writeBufPtr, readVal);
-			writeBufPtr[4] = g_regs[USB_CONFIG_REG] >> USB_DELIM_BITP;
+			writeBufPtr[4] = g_regs[CLI_CONFIG_REG] >> USB_DELIM_BITP;
 			writeBufPtr += 5;
 			count += 5;
 		}
@@ -325,9 +325,9 @@ static void ParseCommand()
 	if(validCmd)
 	{
 		/* Clear delim char in USB config */
-		g_regs[USB_CONFIG_REG] &= ~USB_DELIM_BITM;
+		g_regs[CLI_CONFIG_REG] &= ~USB_DELIM_BITM;
 		/* Set new value */
-		g_regs[USB_CONFIG_REG] |= (CurrentCommand[6] << USB_DELIM_BITP);
+		g_regs[CLI_CONFIG_REG] |= (CurrentCommand[6] << USB_DELIM_BITP);
 		return;
 	}
 
@@ -415,7 +415,7 @@ static void Read()
 		{
 			readVal = ReadReg(addr);
 			UShortToHex(writeBufPtr, readVal);
-			writeBufPtr[4] = g_regs[USB_CONFIG_REG] >> USB_DELIM_BITP;
+			writeBufPtr[4] = g_regs[CLI_CONFIG_REG] >> USB_DELIM_BITP;
 			writeBufPtr += 5;
 			count += 5;
 		}
@@ -479,11 +479,11 @@ static void Stream()
 	/* Set/clear stream interrupt enable flag */
 	if(args[0])
 	{
-		g_regs[USB_CONFIG_REG] |= USB_STREAM_BITM;
+		g_regs[CLI_CONFIG_REG] |= USB_STREAM_BITM;
 	}
 	else
 	{
-		g_regs[USB_CONFIG_REG] &= ~USB_STREAM_BITM;
+		g_regs[CLI_CONFIG_REG] &= ~USB_STREAM_BITM;
 	}
 }
 

@@ -263,6 +263,9 @@ static void PrepareRegsForFlash()
 		g_regs[addr] = 0;
 	}
 
+	/* Clear volatile bits in CLI_CONFIG */
+	g_regs[CLI_CONFIG_REG] &= CLI_CONFIG_CLEAR_MASK;
+
 	/* Increment endurance counter */
 	g_regs[ENDURANCE_REG]++;
 

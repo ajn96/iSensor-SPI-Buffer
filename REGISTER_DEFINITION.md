@@ -19,7 +19,7 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 | 0x0E | [ERROR_INT_CONFIG](#ERROR_INT_CONFIG) | 0x03FF | R/W | T | Error interrupt configuration register. Bitmask for STATUS register to determine which bits should trigger an error interrupt |
 | 0x10 | [IMU_SPI_CONFIG](#IMU_SPI_CONFIG) | 0x100F | R/W | T | IMU SPI configuration. Set SCLK frequency to the IMU and stall time between IMU SPI words |
 | 0x12 | [USER_SPI_CONFIG](#USER_SPI_CONFIG) | 0x0007 | R/W | T | User SPI configuration (SPI mode, etc.) |
-| 0x14 | [USB_CONFIG](#USB_CONFIG) | 0x2000 | R/W | T | USB CLI configuration |
+| 0x14 | [CLI_CONFIG](#CLI_CONFIG) | 0x2000 | R/W | T | Command line interface (CLI) configuration. Configure both USB CLI and SD card data logging CLI. |
 | 0x16 | [USER_COMMAND](#USER_COMMAND) | N/A | W | F | Command register (flash update, factory reset, clear buffer, software reset, etc) |
 | 0x18 | [USER_SCR_0](#USER_SCR_N) | 0x0000 | R/W | T | User scratch 0 register |
 | ... | ... | ... | ... | ... | ... |
@@ -194,17 +194,20 @@ The following capture shows the interrupt behavior with WATERMARK_INT_CONFIG set
 | 2 | MSB_FIRST | 1 = transmit MSB first, 0 = transmit LSB first |
 | 15:3 | RESERVED | Currently unused |
 
-## USB_CONFIG
+## CLI_CONFIG
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 0 | STREAM | USB data stream running |
-| 1 | ECHO_DISABLE | Disable command echo to CLI. By default, all characters sent to the CLI input are echoed to the output. Disabling this functionality allows for easier CLI scripting |
-| 2 | SCRIPT_AUTORUN | Start executing an SD card script automatically after the iSensor-SPI-Buffer firmware has finished initialization. This is equivalent to sending a SCRIPT START command immediately after the initialization process has finished |
-| 7:3 | RESERVED | Currently unused |
-| 15:8 | DELIM | Register read value delimiter character (ASCII), for USB CLI. Defaults to space character |
+| 0 | USB_STREAM | USB data stream running (stream command received). If SD_STREAM is set this bit will be cleared (USB streams have lower priority). This bit is volatile (cannot be set in flash). |
+| 1 | SD_STREAM | SD card data stream running (stream command executed as part of SD script execution process). SD card data streams have priority over a USB CLI stream. This bit is volatile (cannot be set in flash). |
+| 2 | USB_ECHO_DISABLE | Disable command echo to USB CLI. By default, all characters sent to the CLI input are echoed to the output. Disabling this functionality allows for easier CLI scripting from a host device (don't have to discard command echo back after transmitting a command). |
+| 3 | SCRIPT_AUTORUN | Start executing an SD card script automatically after the iSensor-SPI-Buffer firmware has finished initialization. This is equivalent to sending a SCRIPT START command immediately after the initialization process has finished |
+| 7:4 | RESERVED | Currently unused |
+| 15:8 | DELIM | Register read value delimiter character, in ASCII, for the CLI. Defaults to space character |
 
-For more details on the iSensor-SPI-Buffer USB interface, see the [USB_CLI](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/USB_CLI.md) document
+For more details on the iSensor-SPI-Buffer USB CLI, see the [USB_CLI](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/USB_CLI.md) document
+
+For more details on the iSensor-SPI-Buffer SD Card data logging CLI, see the [SD Scripts](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/SD_SCRIPTS.md) document
 
 ## USER_COMMAND
 

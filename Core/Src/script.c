@@ -233,9 +233,9 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 			break;
 		case delim:
 			/* Clear delim char in USB config */
-			g_regs[USB_CONFIG_REG] &= ~USB_DELIM_BITM;
+			g_regs[CLI_CONFIG_REG] &= ~USB_DELIM_BITM;
 			/* Set new value */
-			g_regs[USB_CONFIG_REG] |= ((scr->args[0] & 0xFF) << USB_DELIM_BITP);
+			g_regs[CLI_CONFIG_REG] |= ((scr->args[0] & 0xFF) << USB_DELIM_BITP);
 			break;
 		case readbuf:
 			ReadBufHandler(scr, outBuf, isUSB);
@@ -244,11 +244,11 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 			/* Set/clear stream interrupt enable flag */
 			if(scr->args[0])
 			{
-				g_regs[USB_CONFIG_REG] |= USB_STREAM_BITM;
+				g_regs[CLI_CONFIG_REG] |= USB_STREAM_BITM;
 			}
 			else
 			{
-				g_regs[USB_CONFIG_REG] &= ~USB_STREAM_BITM;
+				g_regs[CLI_CONFIG_REG] &= ~USB_STREAM_BITM;
 			}
 			break;
 		case freset:

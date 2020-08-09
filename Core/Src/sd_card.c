@@ -84,7 +84,7 @@ void SDCardInit()
   */
 void ScriptAutorun()
 {
-	if(((g_regs[USB_CONFIG_REG] & SD_AUTORUN_BITM) != 0)&&((g_regs[STATUS_0_REG] & STATUS_WATCHDOG) == 0))
+	if(((g_regs[CLI_CONFIG_REG] & SD_AUTORUN_BITM) != 0)&&((g_regs[STATUS_0_REG] & STATUS_WATCHDOG) == 0))
 	{
 		StartScript();
 	}

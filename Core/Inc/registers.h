@@ -46,7 +46,7 @@ void BufDequeueToOutputRegs();
 #define ERROR_INT_CONFIG_REG		0x07
 #define IMU_SPI_CONFIG_REG			0x08
 #define USER_SPI_CONFIG_REG			0x09
-#define USB_CONFIG_REG				0x0A
+#define CLI_CONFIG_REG				0x0A
 #define USER_COMMAND_REG			0x0B
 #define USER_SCR_0_REG				0x0C
 #define USER_SCR_7_REG				0x13
@@ -92,7 +92,7 @@ void BufDequeueToOutputRegs();
 #define ERROR_INT_CONFIG_DEFAULT	0xFFFC
 #define IMU_SPI_CONFIG_DEFAULT		0x100F
 #define USER_SPI_CONFIG_DEFAULT		0x0007
-#define USB_CONFIG_DEFAULT			0x2000
+#define CLI_CONFIG_DEFAULT			0x2000
 #define FLASH_SIG_DEFAULT			0x9D2A
 
 /* Update flags definitions */
@@ -150,5 +150,19 @@ void BufDequeueToOutputRegs();
 /* Watermark int config pulse mode mask */
 #define WATERMARK_PULSE_MASK 		(1 << 15)
 
+/* CLI_CONFIG register bit positions */
+#define USB_STREAM_BITP				0
+#define SD_STREAM_BITP				1
+#define USB_ECHO_BITP				2
+#define SD_AUTORUN_BITP				3
+#define USB_DELIM_BITP				8
+
+#define USB_STREAM_BITM				(1 << USB_STREAM_BITP)
+#define SD_STREAM_BITM				(1 << SD_STREAM_BITP)
+#define USB_ECHO_BITM				(1 << USB_ECHO_BITP)
+#define SD_AUTORUN_BITM				(1 << SD_AUTORUN_BITP)
+#define USB_DELIM_BITM				(0xFF << USB_DELIM_BITP)
+
+#define CLI_CONFIG_CLEAR_MASK		0xFF0C
 
 #endif /* INC_REGISTERS_H_ */
