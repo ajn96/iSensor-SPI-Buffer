@@ -47,6 +47,11 @@ static FIL outFile;
 /** File system object */
 static FATFS fs;
 
+void SDTxHandler(uint8_t* buf, uint32_t count)
+{
+
+}
+
 /**
   * @brief Init SD card hardware interface and FATFs driver
   *
@@ -176,12 +181,10 @@ void StopScript()
   *
   * This function is called from the main loop. It is responsible
   * for performing the actual script execution, and writing the
-  * output to the SD card.
+  * output to the SD card (via
   */
 void ScriptStep()
 {
-	uint32_t numBytes;
-
 	/* Exit if script not running */
 	if(!scriptRunning)
 	{
@@ -340,7 +343,7 @@ static bool ParseScriptFile()
 {
 	numCmds = 0;
 	bool endofFile = false;
-	char result;
+	char* result;
 
 	while(!endofFile)
 	{
@@ -353,7 +356,7 @@ static bool ParseScriptFile()
 		if(result)
 		{
 			/* We got a good line from the file, parse into command array */
-			cmdList[numCmds] = ParseScriptElement(&sd_buf);
+			ParseScriptElement(&sd_buf, &cmdList[numCmds]);
 			numCmds++;
 		}
 		else
@@ -406,7 +409,7 @@ static bool CommandPostLoadProcess()
 			/* Invalid command, return false */
 			return false;
 		}
-		if(cmdList[i].scrCommand = loop)
+		if(cmdList[i].scrCommand == loop)
 		{
 			/* Check that we aren't inside a previous loop */
 			if(startLoopIndex != INVALID_LOOP_INDEX)
@@ -418,7 +421,7 @@ static bool CommandPostLoadProcess()
 				startLoopIndex = i;
 			}
 		}
-		if(cmdList[i].scrCommand = endloop)
+		if(cmdList[i].scrCommand == endloop)
 		{
 			/* Check that we already hit a start loop command */
 			if(startLoopIndex == INVALID_LOOP_INDEX)

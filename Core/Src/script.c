@@ -11,16 +11,13 @@
 #include "script.h"
 
 /* Private function prototypes */
-static uint32_t ParseCommandArgs(uint8_t* commandBuf, uint32_t* args);
-static void UShortToHex(uint8_t* outBuf, uint16_t val);
-static uint32_t HexToUInt(uint8_t* commandBuf);
-static uint32_t ReadHandler(script* scr, uint8_t* outBuf);
+static uint32_t ParseCommandArgs(const uint8_t* commandBuf, uint32_t* args);
+static uint32_t ReadHandler(script* scr, uint8_t* outBuf, bool isUSB);
+static uint32_t ReadBufHandler(script* scr, uint8_t* outBuf, bool isUSB);
 static void WriteHandler(script* scr);
-static uint32_t ReadBufHandler(script* scr, uint8_t* outBuf);
-static uint32_t SleepHandler(script* scr, uint8_t* outBuf);
-static uint32_t LoopHandler(script* scr, uint8_t* outBuf);
-static uint32_t EndLoopHandler(script* scr, uint8_t* outBuf);
-static uint32_t StringEquals(uint8_t* string0, const uint8_t* compStr, uint32_t count);
+static void UShortToHex(uint8_t* outBuf, uint16_t val);
+static uint32_t HexToUInt(const uint8_t* commandBuf);
+static uint32_t StringEquals(const uint8_t* string0, const uint8_t* compStr, uint32_t count);
 
 /** Global register array. (from registers.c) */
 extern volatile uint16_t g_regs[];
@@ -67,189 +64,183 @@ static uint8_t InvalidCmdStr[] = "Error: Invalid command!\r\n";
 /** Print string for invalid argument */
 static uint8_t InvalidArgStr[] = "Error: Invalid argument!\r\n";
 
+/** Print string for unexpected processing */
+static uint8_t UnknownErrorStr[] = "Unknown error has occurred!\r\n";
+
 /** Print string for help command */
 static uint8_t HelpStr[] = "All numeric values are in hex. [] arguments are optional\r\n"
 		"help: Print available commands\r\n"
-		"reset: Performs a software reset\r\n"
+		"freset: Performs a factory reset, followed by flash update\r\n"
 		"read startAddr [endAddr = addr] [numReads = 1]: Read registers starting at startAddr and ending at endAddr numReads times\r\n"
 		"write addr value: Write the 8-bit value in value to register at address addr\r\n"
 		"readbuf: Read all buffer entries. Values for each entry are placed on a newline\r\n"
 		"stream startStop: Start (startStop != 0) or stop (startStop = 0) a read stream\r\n"
 		"delim char: Set the read output delimiter character to char\r\n";
 
-script ParseScriptElement(uint8_t* commandBuf)
+void ParseScriptElement(const uint8_t* commandBuf, script * scr)
 {
-	script scr = {};
-	scr.numArgs = 0;
-	scr.invalidArgs = 0;
+	scr->numArgs = 0;
+	scr->invalidArgs = 0;
 
 	if(StringEquals(commandBuf, ReadCmd, sizeof(ReadCmd) - 1))
 	{
-		scr.scrCommand = read;
+		scr->scrCommand = read;
 		/* Parse read arguments (1 - 3 arguments possible) */
-		scr.numArgs = ParseCommandArgs(commandBuf, scr.args);
-		if(scr.numArgs == 0)
+		scr->numArgs = ParseCommandArgs(commandBuf, scr->args);
+		if(scr->numArgs == 0)
 		{
 			/* Zero arguments is invalid */
-			scr.invalidArgs = 1;
+			scr->invalidArgs = 1;
 		}
-		else if(scr.numArgs == 2)
+		else if(scr->numArgs == 2)
 		{
 			/* Arg0 (start read addr) must be less than arg1 (end read addr) */
-			if(scr.args[0] > scr.args[1])
-				scr.invalidArgs = 1;
+			if(scr->args[0] > scr->args[1])
+				scr->invalidArgs = 1;
 		}
-		else if(scr.numArgs == 3)
+		else if(scr->numArgs == 3)
 		{
-			if(scr.args[0] > scr.args[1])
-				scr.invalidArgs = 1;
+			if(scr->args[0] > scr->args[1])
+				scr->invalidArgs = 1;
 
 			/* number of reads can't be 0 */
-			if(scr.args[2] == 0)
-				scr.invalidArgs = 1;
+			if(scr->args[2] == 0)
+				scr->invalidArgs = 1;
 		}
-		return scr;
+		return;
 	}
 
 	if(StringEquals(commandBuf, WriteCmd, sizeof(WriteCmd) - 1))
 	{
-		scr.scrCommand = write;
+		scr->scrCommand = write;
 		/* 2 args (write addr, write value) */
-		scr.numArgs = ParseCommandArgs(commandBuf, scr.args);
+		scr->numArgs = ParseCommandArgs(commandBuf, scr->args);
 		/* Check that we got two arguments */
-		if(scr.numArgs != 2)
-			scr.invalidArgs = 1;
-		return scr;
+		if(scr->numArgs != 2)
+			scr->invalidArgs = 1;
+		return;
 	}
 
 	if(StringEquals(commandBuf, StreamCmd, sizeof(StreamCmd) - 1))
 	{
-		scr.scrCommand = stream;
+		scr->scrCommand = stream;
 		/* 1 arg (stream enable/disable) */
-		scr.numArgs = ParseCommandArgs(commandBuf, scr.args);
+		scr->numArgs = ParseCommandArgs(commandBuf, scr->args);
 		/* Check that we got at least 1 argument */
-		if(scr.numArgs == 0)
-			scr.invalidArgs = 1;
-		return scr;
+		if(scr->numArgs == 0)
+			scr->invalidArgs = 1;
+		return;
 	}
 
 	if(StringEquals(commandBuf, DelimCmd, sizeof(DelimCmd) - 1))
 	{
-		scr.scrCommand = delim;
+		scr->scrCommand = delim;
 		/* 1 arg (delim char) */
-		scr.numArgs = 1;
-		scr.args[0] = commandBuf[6];
-		return scr;
+		scr->numArgs = 1;
+		scr->args[0] = commandBuf[6];
+		return;
 	}
 
 	if(StringEquals(commandBuf, SleepCmd, sizeof(SleepCmd) - 1))
 	{
-		scr.scrCommand = sleep;
+		scr->scrCommand = sleep;
 		/* 1 arg (sleep time, in ms) */
-		scr.numArgs = ParseCommandArgs(commandBuf, scr.args);
+		scr->numArgs = ParseCommandArgs(commandBuf, scr->args);
 		/* Check that we got at least 1 argument */
-		if(scr.numArgs == 0)
-			scr.invalidArgs = 1;
-		return scr;
+		if(scr->numArgs == 0)
+			scr->invalidArgs = 1;
+		return;
 	}
 
 	if(StringEquals(commandBuf, LoopCmd, sizeof(LoopCmd) - 1))
 	{
-		scr.scrCommand = loop;
+		scr->scrCommand = loop;
 		/* 1 arg (number of loops) */
-		scr.numArgs = ParseCommandArgs(commandBuf, scr.args);
+		scr->numArgs = ParseCommandArgs(commandBuf, scr->args);
 		/* Check that we got at least 1 argument */
-		if(scr.numArgs == 0)
-			scr.invalidArgs = 1;
-		return scr;
+		if(scr->numArgs == 0)
+			scr->invalidArgs = 1;
+		return;
 	}
 
 	if(StringEquals(commandBuf, EndloopCmd, sizeof(EndloopCmd) - 1))
 	{
-		scr.scrCommand = endloop;
+		scr->scrCommand = endloop;
 		/* No args */
-		return scr;
+		return;
 	}
 
 	if(StringEquals(commandBuf, FactoryResetCmd, sizeof(FactoryResetCmd) - 1))
 	{
-		scr.scrCommand = freset;
+		scr->scrCommand = freset;
 		/* No args */
-		return scr;
+		return;
 	}
 
 	if(StringEquals(commandBuf, HelpCmd, sizeof(HelpCmd) - 1))
 	{
-		scr.scrCommand = help;
+		scr->scrCommand = help;
 		/* No args */
-		return scr;
+		return;
 	}
 
 	if(StringEquals(commandBuf, ReadBufCmd, sizeof(ReadBufCmd) - 1))
 	{
-		scr.scrCommand = readbuf;
+		scr->scrCommand = readbuf;
 		/* No args */
-		return scr;
+		return;
 	}
 
 	/* No matching command */
-	scr.numArgs = 0;
-	scr.scrCommand = invalid;
-	return scr;
+	scr->numArgs = 0;
+	scr->scrCommand = invalid;
+	return;
 }
 
-uint32_t RunScriptElement(script* scr, uint8_t * outBuf)
+void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 {
-	uint32_t count = 0;
-
 	/* Check that command is valid */
 	if(scr->scrCommand >= invalid)
 	{
-		for(int i = 0; i < sizeof(InvalidCmdStr); i++)
-		{
-			outBuf[i] = InvalidCmdStr[i];
-			count++;
-		}
-		return count;
+		/* Transmit error and return */
+		if(isUSB)
+			USBRxHandler(InvalidCmdStr, sizeof(InvalidCmdStr));
+		else
+			SDTxHandler(InvalidCmdStr, sizeof(InvalidCmdStr));
+		return;
 	}
 
 	/* Check that args are valid */
 	if(scr->invalidArgs != 0)
 	{
-		for(int i = 0; i < sizeof(InvalidArgStr); i++)
-		{
-			outBuf[i] = InvalidArgStr[i];
-			count++;
-		}
-		return count;
+		/* Transmit error and return */
+		if(isUSB)
+			USBRxHandler(InvalidArgStr, sizeof(InvalidArgStr));
+		else
+			SDTxHandler(InvalidArgStr, sizeof(InvalidArgStr));
+		return;
 	}
 
 	/* Call the respective handler */
 	switch(scr->scrCommand)
 	{
 		case read:
-			count = ReadHandler(scr, outBuf);
+			ReadHandler(scr, outBuf, isUSB);
 			break;
 		case write:
-			/* Set count to 0 */
-			count = 0;
 			/* Call write handler */
 			WriteHandler(scr);
 			break;
 		case delim:
-			/* Set count to 0 */
-			count = 0;
 			/* Clear delim char in USB config */
 			g_regs[USB_CONFIG_REG] &= ~USB_DELIM_BITM;
 			/* Set new value */
 			g_regs[USB_CONFIG_REG] |= ((scr->args[0] & 0xFF) << USB_DELIM_BITP);
 			break;
 		case readbuf:
-			count = ReadBufHandler(scr, outBuf);
+			ReadBufHandler(scr, outBuf, isUSB);
 			break;
 		case stream:
-			/* Set output count to 0 */
-			count = 0;
 			/* Set/clear stream interrupt enable flag */
 			if(scr->args[0])
 			{
@@ -260,18 +251,7 @@ uint32_t RunScriptElement(script* scr, uint8_t * outBuf)
 				g_regs[USB_CONFIG_REG] &= ~USB_STREAM_BITM;
 			}
 			break;
-		case sleep:
-			count = SleepHandler(scr, outBuf);
-			break;
-		case loop:
-			count = LoopHandler(scr, outBuf);
-			break;
-		case endloop:
-			count = EndLoopHandler(scr, outBuf);
-			break;
 		case freset:
-			/* Set output count to 0 */
-			count = 0;
 			/* Perform factory reset */
 			g_regs[USER_COMMAND_REG] = CMD_FACTORY_RESET;
 			ProcessCommand();
@@ -280,21 +260,23 @@ uint32_t RunScriptElement(script* scr, uint8_t * outBuf)
 			ProcessCommand();
 			break;
 		case help:
-			/* Set output count to 0 */
-			count = 0;
-			for(int i = 0; i < sizeof(HelpStr); i++)
-			{
-				outBuf[i] = HelpStr[i];
-				count++;
-			}
+			/* Transmit help message */
+			if(isUSB)
+				USBRxHandler(HelpStr, sizeof(HelpStr));
+			else
+				SDTxHandler(HelpStr, sizeof(HelpStr));
 			break;
 		default:
-			count = 0;
+			/* Should not get here. Transmit error and return */
+			if(isUSB)
+				USBRxHandler(UnknownErrorStr, sizeof(UnknownErrorStr));
+			else
+				SDTxHandler(UnknownErrorStr, sizeof(UnknownErrorStr));
+			break;
 	}
-	return count;
 }
 
-static uint32_t ReadHandler(script* scr, uint8_t* outBuf)
+static uint32_t ReadHandler(script* scr, uint8_t* outBuf, bool isUSB)
 {
 	uint32_t count = 0;
 	return count;
@@ -310,25 +292,7 @@ static void WriteHandler(script* scr)
 	WriteReg(scr->args[0], scr->args[1]);
 }
 
-static uint32_t ReadBufHandler(script* scr, uint8_t* outBuf)
-{
-	uint32_t count = 0;
-	return count;
-}
-
-static uint32_t SleepHandler(script* scr, uint8_t* outBuf)
-{
-	uint32_t count = 0;
-	return count;
-}
-
-static uint32_t LoopHandler(script* scr, uint8_t* outBuf)
-{
-	uint32_t count = 0;
-	return count;
-}
-
-static uint32_t EndLoopHandler(script* scr, uint8_t* outBuf)
+static uint32_t ReadBufHandler(script* scr, uint8_t* outBuf, bool isUSB)
 {
 	uint32_t count = 0;
 	return count;
@@ -346,7 +310,7 @@ static uint32_t EndLoopHandler(script* scr, uint8_t* outBuf)
   * of arguments in the current command is placed in numArgs.
   * All arguments must be hex strings.
   */
-static uint32_t ParseCommandArgs(uint8_t* commandBuf, uint32_t* args)
+static uint32_t ParseCommandArgs(const uint8_t* commandBuf, uint32_t* args)
 {
 	/* Set number of args to 0*/
 	uint32_t numArgs = 0;
@@ -390,7 +354,7 @@ static uint32_t ParseCommandArgs(uint8_t* commandBuf, uint32_t* args)
   * The input string must be stored in CurrentCommand, with
   * cmdIndex set to point at the first value in the string.
   */
-static uint32_t HexToUInt(uint8_t* commandBuf)
+static uint32_t HexToUInt(const uint8_t* commandBuf)
 {
 	uint8_t currentByte;
 	uint32_t value = 0;
@@ -469,7 +433,7 @@ static void UShortToHex(uint8_t * outBuf, uint16_t val)
 		outBuf[3] += ('A' - 10);
 }
 
-static uint32_t StringEquals(uint8_t* string0, const uint8_t* compStr, uint32_t count)
+static uint32_t StringEquals(const uint8_t* string0, const uint8_t* compStr, uint32_t count)
 {
 	for(int i = 0; i < count; i++)
 	{

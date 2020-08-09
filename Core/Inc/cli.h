@@ -16,8 +16,9 @@
 #include "registers.h"
 
 /* Public function prototypes */
-void USBSerialHandler();
+void USBRxHandler();
 void USBReadBuf();
+void USBTxHandler(uint8_t* buf, uint32_t count);
 
 #define USB_STREAM_BITP				0
 #define USB_ECHO_BITP				1

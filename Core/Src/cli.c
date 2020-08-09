@@ -98,7 +98,7 @@ static uint32_t cmdIndex;
   * This function should be called periodically from
   * the main loop to check if new USB data has been received
   */
-void USBSerialHandler()
+void USBRxHandler()
 {
 	/* Track index within current command string */
 	static uint32_t commandIndex = 0;
@@ -166,6 +166,11 @@ void USBSerialHandler()
 			}
 		}
 	}
+}
+
+void USBTxHandler(uint8_t* buf, uint32_t count)
+{
+
 }
 
 /**

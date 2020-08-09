@@ -23,11 +23,11 @@ typedef enum
 	delim,
 	readbuf,
 	stream,
+	freset,
+	help,
 	sleep,
 	loop,
 	endloop,
-	freset,
-	help,
 	invalid
 }command;
 
@@ -46,7 +46,7 @@ typedef struct
 	uint32_t invalidArgs;
 }script;
 
-script ParseScriptElement(uint8_t* buf);
-uint32_t RunScriptElement(script* scr, uint8_t * outBuf);
+void ParseScriptElement(const uint8_t* commandBuf, script * scr);
+void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB);
 
 #endif /* INC_SCRIPT_H_ */

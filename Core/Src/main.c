@@ -228,7 +228,7 @@ int main(void)
 		  break;
 	  case 8:
 		  /* Handle any USB command line activity */
-		  USBSerialHandler();
+		  USBRxHandler();
 		  /* Go back to first state */
 		  state = 0;
 		  break;
