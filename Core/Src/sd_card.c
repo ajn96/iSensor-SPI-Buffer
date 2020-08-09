@@ -62,9 +62,20 @@ void SDCardInit()
 	MX_FATFS_Init();
 }
 
+/**
+  * @brief Run SD card script automatic execution process
+  *
+  * @return void
+  *
+  * This function is intended to be called at the end of the initialization
+  * portion of main, just before entering the cyclic executive. If the SD
+  * card autorun bit is set in USB_CONFIG and the watchdog reset bit is not
+  * set in STATUS, the script will be run. The watchdog reset check is in place to
+  * remove the potential for a watchdog reset loop.
+  */
 void ScriptAutorun()
 {
-	if(g_regs[USB_CONFIG_REG] & SD_AUTORUN_BITM)
+	if(((g_regs[USB_CONFIG_REG] & SD_AUTORUN_BITM) != 0)&&((g_regs[STATUS_0_REG] & STATUS_WATCHDOG) == 0))
 	{
 		StartScript();
 	}
