@@ -155,13 +155,13 @@ void BufDequeueToOutputRegs();
 #define SD_STREAM_BITP				1
 #define USB_ECHO_BITP				2
 #define SD_AUTORUN_BITP				3
-#define USB_DELIM_BITP				8
+#define CLI_DELIM_BITP				8
 
 #define USB_STREAM_BITM				(1 << USB_STREAM_BITP)
 #define SD_STREAM_BITM				(1 << SD_STREAM_BITP)
 #define USB_ECHO_BITM				(1 << USB_ECHO_BITP)
 #define SD_AUTORUN_BITM				(1 << SD_AUTORUN_BITP)
-#define USB_DELIM_BITM				(0xFF << USB_DELIM_BITP)
+#define CLI_DELIM_BITM				(0xFF << CLI_DELIM_BITP)
 
 #define CLI_CONFIG_CLEAR_MASK		0xFF0C
 

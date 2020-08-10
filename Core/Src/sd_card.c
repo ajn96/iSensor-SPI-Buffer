@@ -24,7 +24,7 @@ extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
 SPI_HandleTypeDef g_spi3;
 
 /** Buffer for SD card read/writes */
-static uint8_t sd_buf[1024];
+static uint8_t sd_buf[STREAM_BUF_SIZE];
 
 /* Command list. Loaded from cmd.txt on the SD card */
 static script cmdList[SCRIPT_MAX_ENTRIES];

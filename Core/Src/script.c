@@ -12,9 +12,11 @@
 
 /* Private function prototypes */
 static uint32_t ParseCommandArgs(const uint8_t* commandBuf, uint32_t* args);
-static uint32_t ReadHandler(script* scr, uint8_t* outBuf, bool isUSB);
-static uint32_t ReadBufHandler(uint8_t* outBuf, bool isUSB);
+static void ReadHandler(script* scr, uint8_t* outBuf, bool isUSB);
+static void ReadBufHandler(bool isUSB);
 static void WriteHandler(script* scr);
+static void StreamCmdHandler(script * scr, bool isUSB);
+static void FactoryResetHandler();
 static void UShortToHex(uint8_t* outBuf, uint16_t val);
 static uint32_t HexToUInt(const uint8_t* commandBuf);
 static uint32_t StringEquals(const uint8_t* string0, const uint8_t* compStr, uint32_t count);
@@ -23,7 +25,11 @@ static uint32_t StringEquals(const uint8_t* string0, const uint8_t* compStr, uin
 extern volatile uint16_t g_regs[];
 
 /* Buffer for stream data (USB or SD card) */
-static uint8_t StreamBuf[1024];
+static uint8_t StreamBuf_A[STREAM_BUF_SIZE];
+
+static uint8_t StreamBuf_B[STREAM_BUF_SIZE];
+
+static bool BufA;
 
 /* Current index within command buffer */
 static uint32_t cmdIndex;
@@ -64,6 +70,9 @@ static const uint8_t LoopCmd[] = "loop ";
 /** Print string for invalid command */
 static const uint8_t InvalidCmdStr[] = "Error: Invalid command!\r\n";
 
+/** Print string for not allowed command */
+static const uint8_t NotAllowedStr[] = "Error: Not allowed!\r\n";
+
 /** Print string for invalid argument */
 static const uint8_t InvalidArgStr[] = "Error: Invalid argument!\r\n";
 
@@ -91,13 +100,13 @@ void CheckStream()
 			/* Ensure USB stream is cleared */
 			g_regs[CLI_CONFIG_REG] &= ~(USB_STREAM_BITM);
 			/* Call handler */
-			ReadBufHandler(StreamBuf, false);
+			ReadBufHandler(false);
 		}
 		/* If USB stream then handle */
 		if(g_regs[CLI_CONFIG_REG] & USB_STREAM_BITM)
 		{
 			/* Call handler */
-			ReadBufHandler(StreamBuf, true);
+			ReadBufHandler(true);
 		}
 	}
 }
@@ -117,11 +126,18 @@ void ParseScriptElement(const uint8_t* commandBuf, script * scr)
 			/* Zero arguments is invalid */
 			scr->invalidArgs = 1;
 		}
+		else if(scr->numArgs == 1)
+		{
+			/* Sanitize */
+			scr->args[1] = scr->args[0];
+			scr->args[2] = 1;
+		}
 		else if(scr->numArgs == 2)
 		{
 			/* Arg0 (start read addr) must be less than arg1 (end read addr) */
 			if(scr->args[0] > scr->args[1])
 				scr->invalidArgs = 1;
+			scr->args[2] = 1;
 		}
 		else if(scr->numArgs == 3)
 		{
@@ -246,6 +262,17 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 		return;
 	}
 
+	/* Squash script elements not handled here (sleep, looping) */
+	if(scr->scrCommand > help)
+	{
+		/* Transmit error and return */
+		if(isUSB)
+			USBRxHandler(NotAllowedStr, sizeof(NotAllowedStr));
+		else
+			SDTxHandler(NotAllowedStr, sizeof(NotAllowedStr));
+		return;
+	}
+
 	/* Call the respective handler */
 	switch(scr->scrCommand)
 	{
@@ -253,36 +280,22 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 			ReadHandler(scr, outBuf, isUSB);
 			break;
 		case write:
-			/* Call write handler */
 			WriteHandler(scr);
 			break;
 		case delim:
 			/* Clear delim char in USB config */
-			g_regs[CLI_CONFIG_REG] &= ~USB_DELIM_BITM;
+			g_regs[CLI_CONFIG_REG] &= ~CLI_DELIM_BITM;
 			/* Set new value */
-			g_regs[CLI_CONFIG_REG] |= ((scr->args[0] & 0xFF) << USB_DELIM_BITP);
+			g_regs[CLI_CONFIG_REG] |= ((scr->args[0] & 0xFF) << CLI_DELIM_BITP);
 			break;
 		case readbuf:
-			ReadBufHandler(outBuf, isUSB);
+			ReadBufHandler(isUSB);
 			break;
 		case stream:
-			/* Set/clear stream interrupt enable flag */
-			if(scr->args[0])
-			{
-				g_regs[CLI_CONFIG_REG] |= USB_STREAM_BITM;
-			}
-			else
-			{
-				g_regs[CLI_CONFIG_REG] &= ~USB_STREAM_BITM;
-			}
+			StreamCmdHandler(scr, isUSB);
 			break;
 		case freset:
-			/* Perform factory reset */
-			g_regs[USER_COMMAND_REG] = CMD_FACTORY_RESET;
-			ProcessCommand();
-			/* Perform flash update */
-			g_regs[USER_COMMAND_REG] = CMD_FLASH_UPDATE;
-			ProcessCommand();
+			FactoryResetHandler();
 			break;
 		case help:
 			/* Transmit help message */
@@ -294,19 +307,117 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 		default:
 			/* Should not get here. Transmit error and return */
 			if(isUSB)
-				USBRxHandler(UnknownErrorStr, sizeof(UnknownErrorStr));
+				USBTxHandler(UnknownErrorStr, sizeof(UnknownErrorStr));
 			else
 				SDTxHandler(UnknownErrorStr, sizeof(UnknownErrorStr));
 			break;
 	}
 }
 
-static uint32_t ReadHandler(script* scr, uint8_t* outBuf, bool isUSB)
+static void StreamCmdHandler(script * scr, bool isUSB)
 {
-	uint32_t count = 0;
-	return count;
+	/* Set/clear stream interrupt enable flag */
+	if(scr->args[0])
+	{
+		if(isUSB && (!(g_regs[CLI_CONFIG_REG] & SD_STREAM_BITM)))
+			g_regs[CLI_CONFIG_REG] |= USB_STREAM_BITM;
+		else
+		{
+			g_regs[CLI_CONFIG_REG] |= SD_STREAM_BITM;
+			g_regs[CLI_CONFIG_REG] &= ~(USB_STREAM_BITM);
+		}
+	}
+	else
+	{
+		if(isUSB)
+			g_regs[CLI_CONFIG_REG] &= ~USB_STREAM_BITM;
+		else
+			g_regs[CLI_CONFIG_REG] &= ~SD_STREAM_BITM;
+	}
 }
 
+static void FactoryResetHandler()
+{
+	/* Perform factory reset */
+	g_regs[USER_COMMAND_REG] = CMD_FACTORY_RESET;
+	ProcessCommand();
+	/* Perform flash update */
+	g_regs[USER_COMMAND_REG] = CMD_FLASH_UPDATE;
+	ProcessCommand();
+}
+
+/**
+  * @brief Read command handler
+  *
+  * @return void
+  */
+static void ReadHandler(script* scr, uint8_t* outBuf, bool isUSB)
+{
+	/* Pointer within write buffer */
+	uint8_t* writeBufPtr;
+
+	/* Register read value */
+	uint16_t readVal;
+
+	/* Buffer byte count */
+	uint32_t count;
+
+	/* Init buffer variables */
+	writeBufPtr = outBuf;
+	count = 0;
+
+	/* Perform read */
+	for(int i = 0; i < scr->args[2]; i++)
+	{
+		for(uint32_t addr = scr->args[0]; addr < scr->args[1]; addr += 2)
+		{
+			readVal = ReadReg(addr);
+			UShortToHex(writeBufPtr, readVal);
+			writeBufPtr[4] = g_regs[CLI_CONFIG_REG] >> CLI_DELIM_BITP;
+			writeBufPtr += 5;
+			count += 5;
+			/* Check if transmit needed (not enough space for next loop) */
+			if((STREAM_BUF_SIZE - count) < 7)
+			{
+				if(isUSB)
+					USBTxHandler(outBuf, count);
+				else
+					SDTxHandler(outBuf, count);
+				/* Reset pointers */
+				writeBufPtr = outBuf;
+				count = 0;
+			}
+		}
+		/* Last read doesn't need delim char */
+		readVal = ReadReg(scr->args[1]);
+		UShortToHex(writeBufPtr, readVal);
+		writeBufPtr += 4;
+		count += 4;
+		/* Add newline */
+		writeBufPtr[0] = '\r';
+		writeBufPtr[1] = '\n';
+		writeBufPtr += 2;
+		count += 2;
+	}
+	/* transmit any remaineder data */
+	if(isUSB)
+		USBTxHandler(outBuf, count);
+	else
+		SDTxHandler(outBuf, count);
+}
+
+/**
+  * @brief Write command handler
+  *
+  * @return void
+  *
+  * @param scr pointer to script element containing write arguments
+  *
+  * The write address is passed in args[0]. The address is
+  * masked to only 7 bits (address space of a page). The
+  * write value is passed in args[1]. The write value is masked to
+  * 8 bits (byte-wise writes).
+  */
 static void WriteHandler(script* scr)
 {
 	/* Mask addr to 7 bits, value to 8 bits */
@@ -317,10 +428,83 @@ static void WriteHandler(script* scr)
 	WriteReg(scr->args[0], scr->args[1]);
 }
 
-static uint32_t ReadBufHandler(uint8_t* outBuf, bool isUSB)
+static void ReadBufHandler(bool isUSB)
 {
-	uint32_t count = 0;
-	return count;
+	uint32_t numBufs = g_regs[BUF_CNT_0_REG];
+	uint32_t bufLastAddr = g_regs[BUF_LEN_REG] + BUF_DATA_BASE_ADDR;
+	uint8_t* writeBufPtr;
+	uint8_t* activeBuf;
+	uint16_t readVal;
+	uint32_t count;
+
+	/* Set page to 255 (if not already) */
+	if(ReadReg(0) != BUF_READ_PAGE)
+	{
+		WriteReg(0, BUF_READ_PAGE);
+	}
+
+	if(BufA)
+	{
+		writeBufPtr = StreamBuf_B;
+		activeBuf = StreamBuf_B;
+		BufA = false;
+	}
+	else
+	{
+		writeBufPtr = StreamBuf_A;
+		activeBuf = StreamBuf_A;
+		BufA = true;
+	}
+	count = 0;
+
+	for(uint32_t buf = 0; buf < numBufs; buf++)
+	{
+		BufDequeueToOutputRegs();
+		for(uint32_t addr = BUF_BASE_ADDR; addr < bufLastAddr; addr += 2)
+		{
+			readVal = ReadReg(addr);
+			UShortToHex(writeBufPtr, readVal);
+			writeBufPtr[4] = g_regs[CLI_CONFIG_REG] >> CLI_DELIM_BITP;
+			writeBufPtr += 5;
+			count += 5;
+			if((STREAM_BUF_SIZE - count) < 7)
+			{
+				/* Perform transmit */
+				if(isUSB)
+					USBTxHandler(activeBuf, count);
+				else
+					SDTxHandler(activeBuf, count);
+				/* Reset pointers (ping/pong for stream) */
+				if(BufA)
+				{
+					writeBufPtr = StreamBuf_B;
+					activeBuf = StreamBuf_B;
+					BufA = false;
+				}
+				else
+				{
+					writeBufPtr = StreamBuf_A;
+					activeBuf = StreamBuf_A;
+					BufA = true;
+				}
+				count = 0;
+			}
+		}
+		readVal = ReadReg(bufLastAddr);
+		UShortToHex(writeBufPtr, readVal);
+		writeBufPtr += 4;
+		count += 4;
+		/* Insert newline at end */
+		writeBufPtr[0] = '\r';
+		writeBufPtr[1] = '\n';
+		writeBufPtr += 2;
+		count += 2;
+	}
+	/* Transmit any residual data */
+	if(isUSB)
+		USBTxHandler(activeBuf, count);
+	else
+		SDTxHandler(activeBuf, count);
 }
 
 /**

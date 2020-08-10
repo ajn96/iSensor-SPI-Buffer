@@ -14,16 +14,10 @@
 #include "main.h"
 #include "usbd_cdc_if.h"
 #include "registers.h"
+#include "script.h"
 
 /* Public function prototypes */
 void USBRxHandler();
-void USBReadBuf();
-void USBTxHandler(uint8_t* buf, uint32_t count);
-
-/** Buffer output base address (on page 255) */
-#define BUF_BASE_ADDR			8
-
-/** Buffer output data base address (on page 255) */
-#define BUF_DATA_BASE_ADDR		16
+void USBTxHandler(const uint8_t* buf, uint32_t count);
 
 #endif /* INC_USB_CLI_H_ */
