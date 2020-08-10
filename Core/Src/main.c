@@ -231,10 +231,10 @@ int main(void)
 		  USBRxHandler();
 		  /* Advance to next state */
 		  state = 9;
+		  break;
 	  case 9:
 		  /* Check stream status for CLI */
 		  CheckStream();
-		  break;
 		  /* Go back to first state */
 		  state = 0;
 		  break;

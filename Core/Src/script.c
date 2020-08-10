@@ -245,7 +245,7 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 	{
 		/* Transmit error and return */
 		if(isUSB)
-			USBRxHandler(InvalidCmdStr, sizeof(InvalidCmdStr));
+			USBTxHandler(InvalidCmdStr, sizeof(InvalidCmdStr));
 		else
 			SDTxHandler(InvalidCmdStr, sizeof(InvalidCmdStr));
 		return;
@@ -256,7 +256,7 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 	{
 		/* Transmit error and return */
 		if(isUSB)
-			USBRxHandler(InvalidArgStr, sizeof(InvalidArgStr));
+			USBTxHandler(InvalidArgStr, sizeof(InvalidArgStr));
 		else
 			SDTxHandler(InvalidArgStr, sizeof(InvalidArgStr));
 		return;
@@ -267,7 +267,7 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 	{
 		/* Transmit error and return */
 		if(isUSB)
-			USBRxHandler(NotAllowedStr, sizeof(NotAllowedStr));
+			USBTxHandler(NotAllowedStr, sizeof(NotAllowedStr));
 		else
 			SDTxHandler(NotAllowedStr, sizeof(NotAllowedStr));
 		return;
@@ -300,7 +300,7 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 		case help:
 			/* Transmit help message */
 			if(isUSB)
-				USBRxHandler(HelpStr, sizeof(HelpStr));
+				USBTxHandler(HelpStr, sizeof(HelpStr));
 			else
 				SDTxHandler(HelpStr, sizeof(HelpStr));
 			break;
@@ -523,6 +523,8 @@ static uint32_t ParseCommandArgs(const uint8_t* commandBuf, uint32_t* args)
 {
 	/* Set number of args to 0*/
 	uint32_t numArgs = 0;
+	/* Set command index to 0*/
+	cmdIndex = 0;
 
 	/* Run through command until we hit a space */
 	while(commandBuf[cmdIndex] != ' ')
