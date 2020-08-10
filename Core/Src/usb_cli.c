@@ -13,6 +13,9 @@
 /* Private function prototypes */
 static void BlockingUSBTransmit(const uint8_t * buf, uint32_t Len, uint32_t TimeoutMs);
 
+/** USB handle */
+extern USBD_HandleTypeDef hUsbDeviceFS;
+
 /** Global register array. (from registers.c) */
 extern volatile uint16_t g_regs[];
 
@@ -132,10 +135,14 @@ void USBTxHandler(const uint8_t* buf, uint32_t count)
   */
 static void BlockingUSBTransmit(const uint8_t * buf, uint32_t Len, uint32_t TimeoutMs)
 {
-	uint8_t status = CDC_Transmit_FS(buf, Len);
 	uint32_t endTime = HAL_GetTick() + TimeoutMs;
-	while((status != USBD_OK)&&(HAL_GetTick() < endTime))
+	/* Check for tx busy */
+	USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef*)hUsbDeviceFS.pClassData;
+	while((hcdc->TxState != 0) && (HAL_GetTick() < endTime));
+
+	if(hcdc->TxState == 0)
 	{
-		status = CDC_Transmit_FS(buf, Len);
+		USBD_CDC_SetTxBuffer(&hUsbDeviceFS, buf, Len);
+		USBD_CDC_TransmitPacket(&hUsbDeviceFS);
 	}
 }

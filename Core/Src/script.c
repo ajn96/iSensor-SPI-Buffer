@@ -24,11 +24,13 @@ static uint32_t StringEquals(const uint8_t* string0, const uint8_t* compStr, uin
 /** Global register array. (from registers.c) */
 extern volatile uint16_t g_regs[];
 
-/* Buffer for stream data (USB or SD card) */
+/* Buffer A for stream data (USB or SD card) */
 static uint8_t StreamBuf_A[STREAM_BUF_SIZE];
 
+/* Buffer B for stream data (USB or SD card) */
 static uint8_t StreamBuf_B[STREAM_BUF_SIZE];
 
+/** Track which buffer is in use */
 static bool BufA;
 
 /* Current index within command buffer */
@@ -378,7 +380,7 @@ static void ReadHandler(script* scr, uint8_t* outBuf, bool isUSB)
 	/* Perform read */
 	for(int i = 0; i < scr->args[2]; i++)
 	{
-		for(uint32_t addr = scr->args[0]; addr < scr->args[1]; addr += 2)
+		for(uint32_t addr = scr->args[0]; addr <= scr->args[1]; addr += 2)
 		{
 			readVal = ReadReg(addr);
 			UShortToHex(writeBufPtr, readVal);
@@ -386,7 +388,7 @@ static void ReadHandler(script* scr, uint8_t* outBuf, bool isUSB)
 			writeBufPtr += 5;
 			count += 5;
 			/* Check if transmit needed (not enough space for next loop) */
-			if((STREAM_BUF_SIZE - count) < 7)
+			if((STREAM_BUF_SIZE - count) < 6)
 			{
 				if(isUSB)
 					USBTxHandler(outBuf, count);
@@ -397,16 +399,14 @@ static void ReadHandler(script* scr, uint8_t* outBuf, bool isUSB)
 				count = 0;
 			}
 		}
-		/* Last read doesn't need delim char */
-		readVal = ReadReg(scr->args[1]);
-		UShortToHex(writeBufPtr, readVal);
-		writeBufPtr += 4;
-		count += 4;
+		/* Move write pointer back one to last delim */
+		writeBufPtr -= 1;
 		/* Add newline */
 		writeBufPtr[0] = '\r';
 		writeBufPtr[1] = '\n';
 		writeBufPtr += 2;
-		count += 2;
+		/* Only one new char added */
+		count += 1;
 	}
 	/* transmit any remaineder data */
 	if(isUSB)
@@ -469,14 +469,14 @@ static void ReadBufHandler(bool isUSB)
 	for(uint32_t buf = 0; buf < numBufs; buf++)
 	{
 		BufDequeueToOutputRegs();
-		for(uint32_t addr = BUF_BASE_ADDR; addr < bufLastAddr; addr += 2)
+		for(uint32_t addr = BUF_BASE_ADDR; addr <= bufLastAddr; addr += 2)
 		{
 			readVal = ReadReg(addr);
 			UShortToHex(writeBufPtr, readVal);
 			writeBufPtr[4] = g_regs[CLI_CONFIG_REG] >> CLI_DELIM_BITP;
 			writeBufPtr += 5;
 			count += 5;
-			if((STREAM_BUF_SIZE - count) < 7)
+			if((STREAM_BUF_SIZE - count) < 6)
 			{
 				/* Perform transmit */
 				if(isUSB)
@@ -499,15 +499,14 @@ static void ReadBufHandler(bool isUSB)
 				count = 0;
 			}
 		}
-		readVal = ReadReg(bufLastAddr);
-		UShortToHex(writeBufPtr, readVal);
-		writeBufPtr += 4;
-		count += 4;
-		/* Insert newline at end */
+		/* Move write pointer back one to last delim */
+		writeBufPtr -= 1;
+		/* Add newline */
 		writeBufPtr[0] = '\r';
 		writeBufPtr[1] = '\n';
 		writeBufPtr += 2;
-		count += 2;
+		/* Only one new char added */
+		count += 1;
 	}
 	/* Transmit any residual data */
 	if(isUSB)
