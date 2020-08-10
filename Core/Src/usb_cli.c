@@ -60,18 +60,8 @@ void USBRxHandler()
 		USBRxCount = 0;
 		for(bufIndex = 0; bufIndex < numBytes; bufIndex++)
 		{
-			/* Command is too long */
-			if(commandIndex > 64)
-			{
-				/* Echo to console, don't increment index or save data */
-				if(!(g_regs[CLI_CONFIG_REG] & USB_ECHO_BITM))
-				{
-					EchoBuf[0] = UserRxBufferFS[bufIndex];
-					BlockingUSBTransmit(EchoBuf, 1, 20);
-				}
-			}
 			/* Backspace typed in console */
-			else if(UserRxBufferFS[bufIndex] == '\b')
+			if(UserRxBufferFS[bufIndex] == '\b')
 			{
 				/* Move command index back one space */
 				if(commandIndex > 0)
@@ -108,8 +98,11 @@ void USBRxHandler()
 			else
 			{
 				/* Add char to current command */
-				CurrentCommand[commandIndex] = UserRxBufferFS[bufIndex];
-				commandIndex++;
+				if(commandIndex < 64)
+				{
+					CurrentCommand[commandIndex] = UserRxBufferFS[bufIndex];
+					commandIndex++;
+				}
 				/* Echo to console */
 				if(!(g_regs[CLI_CONFIG_REG] & USB_ECHO_BITM))
 				{
