@@ -127,9 +127,9 @@ void ParseScriptElement(const uint8_t* commandBuf, script * scr)
 		scr->scrCommand = read;
 		/* Parse read arguments (1 - 3 arguments possible) */
 		scr->numArgs = ParseCommandArgs(commandBuf, scr->args);
-		/* Clamp address values to 7-bit */
-		scr->args[0] &= 0x7F;
-		scr->args[1] &= 0x7F;
+		/* Clamp address values to 7-bit, don't care about LSB for read */
+		scr->args[0] &= 0x7E;
+		scr->args[1] &= 0x7E;
 		if(scr->numArgs == 0)
 		{
 			/* Zero arguments is invalid */
