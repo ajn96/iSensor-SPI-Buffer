@@ -91,8 +91,14 @@ static const uint8_t HelpStr[] = "All numeric values are in hex. [] arguments ar
 
 void CheckStream()
 {
+	uint16_t watermarkLevel = g_regs[WATERMARK_INT_CONFIG_REG] & ~WATERMARK_PULSE_MASK;
+
+	/* Min. water mark for stream is 1. Want to allow general value of zero for timing char */
+	if(watermarkLevel == 0)
+		watermarkLevel = 1;
+
 	/* Check water mark interrupt status */
-	if(g_regs[BUF_CNT_0_REG] >= (g_regs[WATERMARK_INT_CONFIG_REG] & ~WATERMARK_PULSE_MASK))
+	if(g_regs[BUF_CNT_0_REG] >= watermarkLevel)
 	{
 		/* If SD stream then handle */
 		if(g_regs[CLI_CONFIG_REG] & SD_STREAM_BITM)
