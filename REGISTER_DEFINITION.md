@@ -33,7 +33,8 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 | 0x48 | [UTC_TIMESTAMP_UPR](#UTC_TIMESTAMP_UPR) | 0x0000 | R/W | F | Upper 16 bits of UTC timestamp (PPS counter) |
 | 0x4A | [TIMESTAMP_LWR](#TIMESTAMP_LWR) | 0x0000 | R | F | Lower 16 bits of microsecond timestamp |
 | 0x4C | [TIMESTAMP_UPR](#TIMESTAMP_UPR) | 0x0000 | R | F | Upper 16 bits of microsecond timestamp |
-| 0x4E | [TEMP](#TEMP) | N/A | R | F | Temperature output. 1 degree C = 10LSB |
+| 0x4E | [TEMP_OUT](#TEMP_OUT) | N/A | R | F | Internal temperature output. 1 degree C = 10LSB |
+| 0x50 | [VDD_OUT](#VDD_OUT) | N/A | R | F | Measured Vdd output. 1V = 100LSBs (3.3V supply -> 330 LSBs) |
 | 0x70 | [FW_DAY_MONTH](#FW_DAY_MONTH) | N/A | R | T | Firmware build day and month |
 | 0x72 | [FW_YEAR](#FW_YEAR) | N/A | R | T | Firmware build year |
 | 0x74 | [DEV_SN_0](#DEV_SN_N) | N/A | R | T | Processor core serial number register, word 0 |
@@ -302,7 +303,7 @@ If the PPS signal is lost, the internal microsecond timer will continue counting
 
 ![PPS Unlock Plot](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/PPS_Unlock.png)
 
-## TEMP
+## TEMP_OUT
 
 | Bit  | Name | Description                                                 |
 | ---- | ---- | ----------------------------------------------------------- |
@@ -311,6 +312,16 @@ If the PPS signal is lost, the internal microsecond timer will continue counting
 This value is sourced from the thermistor embedded in the STM32F303 package. The temperature value is scaled using a two point temperature calibration provided by ST (measurements taken at 30C and 110C). Even though temperature output is calibrated, the measurement is very susceptible to heat from the STM32 processor core. If the temperature measurement ever goes out of range [-40C to 85C] a temperature warning flag will be set in the STATUS register.
 
 ![Temp warning plot](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/status_temp_warning.png)
+
+## VDD_OUT
+
+| Bit  | Name | Description                                     |
+| ---- | ---- | ----------------------------------------------- |
+| 15:0 | VDD  | Measured Vdd output. 1V = 100LSBs (3.3V -> 330) |
+
+The value of Vdd is calculated by measuring the value of VREFINT (internal regulated voltage reference) using the ADC and comparing against the expected measurement, with Vdd = 3.3V. Changes in Vdd (VREF) will cause an apparent change in the VREFINT measurement.
+
+
 
 ## FW_DAY_MONTH
 

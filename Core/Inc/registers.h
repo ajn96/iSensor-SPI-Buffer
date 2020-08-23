@@ -60,6 +60,7 @@ void BufDequeueToOutputRegs();
 #define TIMESTAMP_LWR_REG			0x25
 #define TIMESTAMP_UPR_REG			0x26
 #define TEMP_REG					0x27
+#define VDD_REG						0x28
 #define FW_DAY_MONTH_REG			0x38
 #define FW_YEAR_REG					0x39
 #define DEV_SN_REG					0x3A
