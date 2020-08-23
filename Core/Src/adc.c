@@ -8,7 +8,7 @@
   * @brief		Implementation file for iSensor-SPI-Buffer ADC module (for temp sensor)
  **/
 
-#include "temp.h"
+#include <adc.h>
 
 static void ADC1Init();
 static void ADC1Start();

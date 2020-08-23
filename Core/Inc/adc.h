@@ -8,8 +8,8 @@
   * @brief		Header file for iSensor-SPI-Buffer ADC module (for temp sensor)
  **/
 
-#ifndef INC_TEMP_H_
-#define INC_TEMP_H_
+#ifndef INC_ADC_H_
+#define INC_ADC_H_
 
 #include "registers.h"
 #include "stm32f3xx_hal_conf.h"
@@ -26,4 +26,4 @@ void UpdateTemp();
 /** VREFINT calibration value */
 #define VREFINT_CAL		((uint16_t*) ((uint32_t) 0x1FFFF7BA))
 
-#endif /* INC_TEMP_H_ */
+#endif /* INC_ADC_H_ */
