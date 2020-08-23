@@ -2,13 +2,13 @@
   * Copyright (c) Analog Devices Inc, 2020
   * All Rights Reserved.
   *
-  * @file		temp.c
+  * @file		adc.c
   * @date		7/10/2020
   * @author		A. Nolan (alex.nolan@analog.com)
-  * @brief		Implementation file for iSensor-SPI-Buffer ADC module (for temp sensor)
+  * @brief		Implementation file for iSensor-SPI-Buffer ADC module (for temp sensor and Vdd monitoring)
  **/
 
-#include <adc.h>
+#include "adc.h"
 
 static void ADC1Init();
 static void ADC1Start();
@@ -28,22 +28,23 @@ extern volatile uint16_t g_regs[];
   *
   * This function should be called once as part of the firmware initialization process
   */
-void TempInit()
+void ADCInit()
 {
 	ADC1Init();
 	ADC1Start();
 }
 
 /**
-  * @brief Read ADC temperature sensor output and load to output register
+  * @brief Read and scale ADC values then load to output registers
   *
   * @return void
   *
   * This function should be called periodically from the cyclic executive. It
   * updates the temperature sensor output value and flags any temperature over range
-  * events in the STATUS register (outside -40C to 85C)
+  * events in the STATUS register (outside -40C to 85C). It also updates the
+  * Vdd measurement output register.
   */
-void UpdateTemp()
+void UpdateADC()
 {
 	/* Read value from ADC and scale */
 	int16_t temp = ScaleTempData(hadc1.Instance->DR);
@@ -57,6 +58,10 @@ void UpdateTemp()
 		g_regs[STATUS_0_REG] |= STATUS_TEMP_WARNING;
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 	}
+
+	/* Get VREFINT ADC value and scale to Vdd */
+	temp = 0;
+	g_regs[VDD_REG] = GetVdd(temp);
 }
 
 /**

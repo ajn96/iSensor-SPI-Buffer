@@ -117,8 +117,8 @@ int main(void)
   /* Set DR int priority (lower than user SPI - no preemption) */
   HAL_NVIC_SetPriority(EXTI9_5_IRQn, 1, 0);
 
-  /* Init temp sensor (ADC1) */
-  TempInit();
+  /* Init ADC for housekeeping */
+  ADCInit();
 
   /* Configure and enable user SPI port (based on loaded register values) */
   UpdateUserSpiConfig();
@@ -221,8 +221,8 @@ int main(void)
 		  state = 7;
 		  break;
 	  case 7:
-		  /* Update temp register value */
-		  UpdateTemp();
+		  /* Update ADC state machine */
+		  UpdateADC();
 		  /* Advance to next state */
 		  state = 8;
 		  break;
