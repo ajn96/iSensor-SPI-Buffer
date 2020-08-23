@@ -95,7 +95,6 @@ void ADCInit()
   */
 void UpdateADC()
 {
-
 	static uint32_t adc_state = ADC_TEMP_START;
 
 	switch(adc_state)
@@ -190,6 +189,10 @@ static uint16_t GetVdd(uint32_t VrefMeasurement)
 static int16_t ScaleTempData(uint32_t rawTemp)
 {
 	int32_t divisor, result;
+
+	/* Compensate raw temp based on measured Vdd value */
+	rawTemp = rawTemp * g_regs[VDD_REG];
+	rawTemp = rawTemp / 330;
 
 	divisor = (*TS_CAL2) - (*TS_CAL1);
 	result = 800 * (rawTemp - (*TS_CAL1));
