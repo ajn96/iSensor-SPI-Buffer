@@ -311,6 +311,8 @@ If the PPS signal is lost, the internal microsecond timer will continue counting
 
 This value is sourced from the thermistor embedded in the STM32F303 package. The temperature value is scaled using a two point temperature calibration provided by ST (measurements taken at 30C and 110C). Even though temperature output is calibrated, the measurement is very susceptible to heat from the STM32 processor core. If the temperature measurement ever goes out of range [-40C to 85C] a temperature warning flag will be set in the STATUS register.
 
+The measured value of VDD is used to normalize the TEMP_OUT register value to a 3.3V ADC reference voltage. This normalization ensures good temperature sensor linearity across the valid supply range for the device (TEMP will no longer shift with voltage, as shown [here](https://github.com/ajn96/iSensor-SPI-Buffer/issues/17)). The downside of normalizing the measured temperature value with the measured Vdd value is that the noise of the temp sensor measurement increases, but this is an acceptable tradeoff.
+
 ![Temp warning plot](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/status_temp_warning.png)
 
 ## VDD_OUT
@@ -319,7 +321,7 @@ This value is sourced from the thermistor embedded in the STM32F303 package. The
 | ---- | ---- | ----------------------------------------------- |
 | 15:0 | VDD  | Measured Vdd output. 1V = 100LSBs (3.3V -> 330) |
 
-The value of Vdd is calculated by measuring the value of VREFINT (internal regulated voltage reference) using the ADC and comparing against the expected measurement, with Vdd = 3.3V. Changes in Vdd (VREF) will cause an apparent change in the VREFINT measurement.
+The value of Vdd is calculated by measuring the value of VREFINT (internal regulated voltage reference) using the ADC and comparing against the expected measurement, with Vdd = 3.3V. Changes in Vdd (VREF) will cause an apparent change in the VREFINT measurement, which can be used to calculate Vdd. 
 
 
 
