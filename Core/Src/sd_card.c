@@ -49,7 +49,15 @@ static FATFS fs;
 
 void SDTxHandler(const uint8_t* buf, uint32_t count)
 {
+	UINT writeCount = 0;
+	FRESULT result = f_write(&outFile, sd_buf, count, &writeCount);
 
+	/* Flag error if write was not processed correctly */
+	if((result != FR_OK) || (writeCount < count))
+	{
+		g_regs[STATUS_0_REG] |= STATUS_SCR_ERROR;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+	}
 }
 
 /**
@@ -243,6 +251,7 @@ void ScriptStep()
 	else
 	{
 		/* Generic script entry (no program execution control) */
+		RunScriptElement(&cmdList[cmdIndex], sd_buf, false);
 		cmdIndex++;
 	}
 }
@@ -355,7 +364,7 @@ static bool ParseScriptFile()
 			return false;
 
 		/* Read line from file */
-		result = f_gets(sd_buf, sizeof(sd_buf), &cmdFile);
+		result = f_gets((char *)sd_buf, sizeof(sd_buf), &cmdFile);
 		if(result)
 		{
 			/* We got a good line from the file, parse into command array */

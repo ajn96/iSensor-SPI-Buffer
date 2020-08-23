@@ -142,7 +142,7 @@ static void BlockingUSBTransmit(const uint8_t * buf, uint32_t Len, uint32_t Time
 
 	if(hcdc->TxState == 0)
 	{
-		USBD_CDC_SetTxBuffer(&hUsbDeviceFS, buf, Len);
+		USBD_CDC_SetTxBuffer(&hUsbDeviceFS, (uint8_t *) buf, Len);
 		USBD_CDC_TransmitPacket(&hUsbDeviceFS);
 	}
 }

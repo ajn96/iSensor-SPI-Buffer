@@ -164,7 +164,7 @@ static bool SD_RxDataBlock(BYTE *buff, UINT len)
 #if _USE_WRITE == 1
 static bool SD_TxDataBlock(const uint8_t *buff, BYTE token)
 {
-	uint8_t resp;
+	uint8_t resp = 0;
 	uint8_t i = 0;
 
 	/* wait SD ready */
