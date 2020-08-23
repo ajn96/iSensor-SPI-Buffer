@@ -86,6 +86,8 @@ void UpdateADC()
   */
 static uint16_t GetVdd(uint32_t VrefMeasurement)
 {
+	if(VrefMeasurement == 0)
+		return 0;
 	uint32_t val = (*VREFINT_CAL) * 330;
 	val = val / VrefMeasurement;
 	return val;
