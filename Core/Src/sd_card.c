@@ -463,11 +463,11 @@ static void SPI3_Init(void)
 	g_spi3.Instance = SPI3;
 	g_spi3.Init.Mode = SPI_MODE_MASTER;
 	g_spi3.Init.Direction = SPI_DIRECTION_2LINES;
-	g_spi3.Init.DataSize = SPI_DATASIZE_4BIT;
+	g_spi3.Init.DataSize = SPI_DATASIZE_8BIT;
 	g_spi3.Init.CLKPolarity = SPI_POLARITY_LOW;
 	g_spi3.Init.CLKPhase = SPI_PHASE_1EDGE;
 	g_spi3.Init.NSS = SPI_NSS_HARD_OUTPUT;
-	g_spi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+	g_spi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
 	g_spi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
 	g_spi3.Init.TIMode = SPI_TIMODE_DISABLE;
 	g_spi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
