@@ -35,4 +35,11 @@ typedef enum
 	true = 1
 }bool;
 
+#define STATE_CHECK_FLAGS		0
+#define STATE_CHECK_PPS			1
+#define STATE_READ_ADC			2
+#define STATE_CHECK_USB			3
+#define STATE_CHECK_STREAM		4
+#define STATE_STEP_SCRIPT		5
+
 #endif /* __MAIN_H */

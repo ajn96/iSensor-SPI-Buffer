@@ -154,93 +154,76 @@ int main(void)
 	  /* State machine for non-timing critical processing tasks */
 	  switch(state)
 	  {
-	  case 0:
+	  case STATE_CHECK_FLAGS:
 		  /* Handle capture enable */
 		  if(g_update_flags & ENABLE_CAPTURE_FLAG)
 		  {
 			  g_update_flags &= ~ENABLE_CAPTURE_FLAG;
 			  EnableDataCapture();
 		  }
-		  /* Advance to next state */
-		  state = 1;
-		  break;
-	  case 1:
 		  /* Handle user commands */
-		  if(g_update_flags & USER_COMMAND_FLAG)
+		  else if(g_update_flags & USER_COMMAND_FLAG)
 		  {
 			  g_update_flags &= ~USER_COMMAND_FLAG;
 			  ProcessCommand();
 		  }
-		  /* Advance to next state */
-		  state = 2;
-		  break;
-	  case 2:
 		  /* Handle change to DIO input config */
-		  if(g_update_flags & DIO_INPUT_CONFIG_FLAG)
+		  else if(g_update_flags & DIO_INPUT_CONFIG_FLAG)
 		  {
 			  g_update_flags &= ~DIO_INPUT_CONFIG_FLAG;
 			  UpdateDIOInputConfig();
 		  }
-		  /* Advance to next state */
-		  state = 3;
-		  break;
-	  case 3:
 		  /* Handle capture DIO output config change */
-		  if(g_update_flags & DIO_OUTPUT_CONFIG_FLAG)
+		  else if(g_update_flags & DIO_OUTPUT_CONFIG_FLAG)
 		  {
 			  g_update_flags &= ~DIO_OUTPUT_CONFIG_FLAG;
 			  UpdateDIOOutputConfig();
 		  }
-		  /* Advance to next state */
-		  state = 4;
-		  break;
-	  case 4:
 		  /* Handle change to IMU SPI config */
-		  if(g_update_flags & IMU_SPI_CONFIG_FLAG)
+		  else if(g_update_flags & IMU_SPI_CONFIG_FLAG)
 		  {
 			  g_update_flags &= ~IMU_SPI_CONFIG_FLAG;
 			  UpdateImuSpiConfig();
 		  }
-		  /* Advance to next state */
-		  state = 5;
-		  break;
-	  case 5:
 		  /* Handle change to user SPI config */
-		  if(g_update_flags & USER_SPI_CONFIG_FLAG)
+		  else if(g_update_flags & USER_SPI_CONFIG_FLAG)
 		  {
 			  g_update_flags &= ~USER_SPI_CONFIG_FLAG;
 			  UpdateUserSpiConfig();
 		  }
 		  /* Advance to next state */
-		  state = 6;
+		  state = STATE_CHECK_PPS;
 		  break;
-	  case 6:
+	  case STATE_CHECK_PPS:
 		  /* Check that PPS isn't unlocked */
 		  CheckPPSUnlock();
 		  /* Advance to next state */
-		  state = 7;
+		  state = STATE_READ_ADC;
 		  break;
-	  case 7:
+	  case STATE_READ_ADC:
 		  /* Update ADC state machine */
 		  UpdateADC();
 		  /* Advance to next state */
-		  state = 8;
+		  state = STATE_CHECK_USB;
 		  break;
-	  case 8:
+	  case STATE_CHECK_USB:
 		  /* Handle any USB command line Rx activity */
 		  USBRxHandler();
 		  /* Advance to next state */
-		  state = 9;
+		  state = STATE_CHECK_STREAM;
 		  break;
-	  case 9:
+	  case STATE_CHECK_STREAM:
 		  /* Check stream status for CLI */
 		  CheckStream();
-		  /* Go back to first state */
-		  state = 0;
+		  /* Advance to next state */
+		  state = STATE_STEP_SCRIPT;
 		  break;
+	  case STATE_STEP_SCRIPT:
+		  /* Call SD script step function */
+		  ScriptStep();
 	  default:
-		  /* Should not get here, go back to first state */
-		  state = 0;
+		  /* Go back to first state */
+		  state = STATE_CHECK_FLAGS;
 		  break;
 	  }
   }
