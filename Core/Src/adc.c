@@ -10,6 +10,7 @@
 
 #include "adc.h"
 
+/* Private function prototypes */
 static void ProcessTempReading();
 static int16_t ScaleTempData(uint32_t rawTemp);
 static uint16_t GetVdd(uint32_t VrefMeasurement);
@@ -91,10 +92,12 @@ void ADCInit()
   *
   * @return void
   *
-  * This function should be called periodically from the cyclic executive. It
-  * updates the temperature sensor output value and flags any temperature over range
-  * events in the STATUS register (outside -40C to 85C). It also updates the
-  * Vdd measurement output register.
+  * This function drives the ADC state machine and should be called
+  * periodically from the cyclic executive. The ADC is configured in
+  * non-continuous scanning mode, with the temp sensor and VREFINT
+  * channels enabled. For each channel, the state machine initiates
+  * an ADC sample, then goes to a wait state which does not advance until
+  * the EOC flag for that sample has been set.
   */
 void UpdateADC()
 {
@@ -132,6 +135,15 @@ void UpdateADC()
 	}
 }
 
+/**
+  * @brief Handle end of conversion for a temp sensor value
+  *
+  * This function reads the latest temp sensor output value and applies it
+  * to the temp sensor decimation averaging filter. If the end of a decimation
+  * period has been reached, it updates the temperature sensor output value
+  * and flags any temperature over range events in the STATUS register
+  * (outside -40C to 85C).
+  */
 static void ProcessTempReading()
 {
 	/* Read value from ADC and scale */
@@ -194,6 +206,10 @@ static uint16_t GetVdd(uint32_t VrefMeasurement)
   * @return temp value (10LSB = 1C)
   *
   * Temp (in C, 10LSB per degree) = (800 / (TS_CAL2  - TS_CAL1)) * (val - TS_CAL1) + 300
+  *
+  * The CAL values are measured with VREF = 3.3V at the factory. To make the measurement
+  * accurate, the most recent value read for VDD (using ADC VREFINT measurement) is used
+  * to normalize the raw temperature sensor measurement to a 3.3V reference voltage.
   */
 static int16_t ScaleTempData(uint32_t rawTemp)
 {
