@@ -81,6 +81,9 @@ void ADCInit()
 
 	/* Enable temp sensor */
 	ADC12_COMMON->CCR |= (1 << 23);
+
+	/* Stop ADC and calibrate */
+	HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED);
 }
 
 /**
@@ -99,11 +102,6 @@ void UpdateADC()
 
 	switch(adc_state)
 	{
-	case ADC_CAL:
-		/* Stop ADC and calibrate */
-		HAL_ADC_Stop(&hadc1);
-		HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED);
-		adc_state = ADC_TEMP_START;
 	case ADC_TEMP_START:
 		/* Start conversion, move to next state */
 		HAL_ADC_Start(&hadc1);
@@ -126,27 +124,38 @@ void UpdateADC()
 			/* Get VREFINT ADC value and scale to Vdd */
 			g_regs[VDD_REG] = GetVdd(hadc1.Instance->DR);
 			/* Back to temp */
-			adc_state = ADC_CAL;
+			adc_state = ADC_TEMP_START;
 		}
 		break;
 	default:
-		adc_state = ADC_CAL;
+		adc_state = ADC_TEMP_START;
 	}
 }
 
 static void ProcessTempReading()
 {
 	/* Read value from ADC and scale */
-	int16_t temp = ScaleTempData(hadc1.Instance->DR);
+	static uint32_t count = 0;
+	static int accum = 0;
 
-	/* Load to output reg */
-	g_regs[TEMP_REG] = (uint16_t) temp;
+	accum += ScaleTempData(hadc1.Instance->DR);
+	count += 1;
 
-	/* Check for alarm */
-	if((temp > 850)||(temp < -400))
+	if(count >= 4)
 	{
-		g_regs[STATUS_0_REG] |= STATUS_TEMP_WARNING;
-		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+		/* scale and load to output reg */
+		accum = accum >> 2;
+		g_regs[TEMP_REG] = (uint16_t) (accum);
+
+		/* Check for alarm */
+		if((accum > 850)||(accum < -400))
+		{
+			g_regs[STATUS_0_REG] |= STATUS_TEMP_WARNING;
+			g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+		}
+
+		accum = 0;
+		count = 0;
 	}
 }
 
