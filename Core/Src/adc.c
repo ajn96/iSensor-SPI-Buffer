@@ -68,22 +68,16 @@ void ADCInit()
 	/* Configure the ADC temp sensor channel */
 	sConfig.Channel = ADC_CHANNEL_TEMPSENSOR;
 	sConfig.Rank = 1;
-	sConfig.SamplingTime = ADC_SAMPLETIME_181CYCLES_5;
+	sConfig.SamplingTime = ADC_SAMPLETIME_601CYCLES_5;
 	sConfig.Offset = 0;
 	HAL_ADC_ConfigChannel(&hadc1, &sConfig);
 
 	/* Configure ADC vrefint channel */
 	sConfig.Channel = ADC_CHANNEL_VREFINT;
 	sConfig.Rank = 2;
-	sConfig.SamplingTime = ADC_SAMPLETIME_181CYCLES_5;
+	sConfig.SamplingTime = ADC_SAMPLETIME_601CYCLES_5;
 	sConfig.Offset = 0;
 	HAL_ADC_ConfigChannel(&hadc1, &sConfig);
-
-	/* Run ADC self-cal */
-	if(HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED) != HAL_OK)
-	{
-		Error_Handler();
-	}
 
 	/* Enable temp sensor */
 	ADC12_COMMON->CCR |= (1 << 23);
@@ -106,6 +100,11 @@ void UpdateADC()
 
 	switch(adc_state)
 	{
+	case ADC_CAL:
+		/* Stop ADC and calibrate */
+		HAL_ADC_Stop(&hadc1);
+		HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED);
+		adc_state = ADC_TEMP_START;
 	case ADC_TEMP_START:
 		/* Start conversion, move to next state */
 		HAL_ADC_Start(&hadc1);
@@ -128,11 +127,11 @@ void UpdateADC()
 			/* Get VREFINT ADC value and scale to Vdd */
 			g_regs[VDD_REG] = GetVdd(hadc1.Instance->DR);
 			/* Back to temp */
-			adc_state = ADC_TEMP_START;
+			adc_state = ADC_CAL;
 		}
 		break;
 	default:
-		adc_state = ADC_TEMP_START;
+		adc_state = ADC_CAL;
 	}
 }
 
