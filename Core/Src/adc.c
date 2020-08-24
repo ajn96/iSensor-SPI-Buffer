@@ -30,9 +30,11 @@ extern volatile uint16_t g_regs[];
   *
   * Initializes ADC1 in single sampling mode, with two input
   * channels converted (temp sensor and VREFINT). The sample time
-  * is set to 181 ADC cycles. The ADC is clocked from 72MHz core clock
-  * divided by 8. 181 cycles / (72MHz/8) -> 20.1us. The Temp sensor
+  * is set to 601 ADC cycles. The ADC is clocked from 72MHz core clock
+  * divided by 8. 601 cycles / (72MHz/8) -> 66us. The Temp sensor
   * requires a minimum 10us setting time for accurate measurements.
+  * Because these values are measured for diagnostics monitoring pursposes
+  * only, using a long sample time is not a problem.
   */
 void ADCInit()
 {
@@ -96,7 +98,9 @@ void ADCInit()
   * non-continuous scanning mode, with the temp sensor and VREFINT
   * channels enabled. For each channel, the state machine initiates
   * an ADC sample, then goes to a wait state which does not advance until
-  * the EOC flag for that sample has been set.
+  * the EOC flag for that sample has been set. The VREFINT channel is
+  * sampled prior to the temp sensor channel, because the calculated
+  * Vdd value is used to compensate the temp sensor scale factor.
   */
 void UpdateADC()
 {
