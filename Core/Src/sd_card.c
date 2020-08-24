@@ -307,7 +307,6 @@ static bool OpenScriptFiles()
 		return false;
 	}
 
-
 	/* Open script.txt in read only mode */
 	if(f_open(&cmdFile, "script.txt", FA_READ) != FR_OK)
 	{
@@ -322,7 +321,7 @@ static bool OpenScriptFiles()
 	}
 
 	/* Open result.txt in append write mode */
-	if(f_open(&outFile, "result.txt", FA_OPEN_ALWAYS) != FR_OK)
+	if(f_open(&outFile, "result.txt", (FA_OPEN_ALWAYS | FA_WRITE)) != FR_OK)
 	{
 		/* Attempt file close on script and result */
 		f_close(&outFile);
@@ -335,7 +334,8 @@ static bool OpenScriptFiles()
 		return false;
 	}
 
-	/* Seek to end of result.txt */
+	/* Seek to end of result.txt to append */
+	f_lseek(&outFile, outFile.fsize);
 
 	return true;
 }
@@ -467,7 +467,8 @@ static void SPI3_Init(void)
 	g_spi3.Init.CLKPolarity = SPI_POLARITY_LOW;
 	g_spi3.Init.CLKPhase = SPI_PHASE_1EDGE;
 	g_spi3.Init.NSS = SPI_NSS_HARD_OUTPUT;
-	g_spi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
+	/* 18MHz / 4 -> 4.25MHz SCLK */
+	g_spi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
 	g_spi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
 	g_spi3.Init.TIMode = SPI_TIMODE_DISABLE;
 	g_spi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;

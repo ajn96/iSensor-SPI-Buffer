@@ -21,7 +21,6 @@ static ADC_HandleTypeDef hadc1;
 /** Global register array. (from registers.c) */
 extern volatile uint16_t g_regs[];
 
-
 /**
   * @brief ADC1 Initialization Function
   *
