@@ -65,15 +65,15 @@ void ADCInit()
 		Error_Handler();
 	}
 
-	/* Configure the ADC temp sensor channel */
-	sConfig.Channel = ADC_CHANNEL_TEMPSENSOR;
+	/* Configure ADC vrefint channel */
+	sConfig.Channel = ADC_CHANNEL_VREFINT;
 	sConfig.Rank = 1;
 	sConfig.SamplingTime = ADC_SAMPLETIME_601CYCLES_5;
 	sConfig.Offset = 0;
 	HAL_ADC_ConfigChannel(&hadc1, &sConfig);
 
-	/* Configure ADC vrefint channel */
-	sConfig.Channel = ADC_CHANNEL_VREFINT;
+	/* Configure the ADC temp sensor channel */
+	sConfig.Channel = ADC_CHANNEL_TEMPSENSOR;
 	sConfig.Rank = 2;
 	sConfig.SamplingTime = ADC_SAMPLETIME_601CYCLES_5;
 	sConfig.Offset = 0;
@@ -100,7 +100,7 @@ void ADCInit()
   */
 void UpdateADC()
 {
-	static uint32_t adc_state = ADC_TEMP_START;
+	static uint32_t adc_state = ADC_VDD_START;
 
 	switch(adc_state)
 	{
@@ -130,7 +130,7 @@ void UpdateADC()
 		}
 		break;
 	default:
-		adc_state = ADC_TEMP_START;
+		adc_state = ADC_VDD_START;
 	}
 }
 

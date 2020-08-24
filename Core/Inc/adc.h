@@ -26,9 +26,9 @@ void UpdateADC();
 /** VREFINT calibration value */
 #define VREFINT_CAL		((uint16_t*) ((uint32_t) 0x1FFFF7BA))
 
-#define ADC_TEMP_START		0
-#define ADC_TEMP_READ		1
-#define ADC_VDD_START		2
-#define ADC_VDD_READ		3
+#define ADC_VDD_START		0
+#define ADC_VDD_READ		1
+#define ADC_TEMP_START		2
+#define ADC_TEMP_READ		3
 
 #endif /* INC_ADC_H_ */
