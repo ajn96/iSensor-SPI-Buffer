@@ -47,6 +47,19 @@ static FIL outFile;
 /** File system object */
 static FATFS fs;
 
+/**
+  * @brief SD card write handler function
+  *
+  * @param buf Buffer containing data to write
+  *
+  * @param count Number of bytes to write
+  *
+  * @return void
+  *
+  * This function is called by the script execution
+  * routines, when a script object is executed
+  * from a SD card script context.
+  */
 void SDTxHandler(const uint8_t* buf, uint32_t count)
 {
 	UINT writeCount = 0;
@@ -306,6 +319,16 @@ static bool SDCardAttached()
 		return true;
 }
 
+/**
+  * @brief Mount SD card an open "script.txt" and "result.txt"
+  *
+  * @return true if files are opened successfully, false otherwise
+  *
+  * This function first mounts an attached SD card, then populates the
+  * two file handles required for the application. If either file fails
+  * to open, both file handles are closed, and the SD card file
+  * system is unmounted.
+  */
 static bool OpenScriptFiles()
 {
 	/* mount SD card */
@@ -480,6 +503,11 @@ static bool CommandPostLoadProcess()
   * @brief SPI3 Initialization Function (SD card master SPI port)
   *
   * @return void
+  *
+  * Configures SPI 3 as master SPI port.
+  * SPI mode: 0
+  * SCLK Freq: 4.25MHz
+  * SPI word size: 8 bits
   */
 static void SPI3_Init(void)
 {
@@ -499,8 +527,5 @@ static void SPI3_Init(void)
 	g_spi3.Init.CRCPolynomial = 7;
 	g_spi3.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
 	g_spi3.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
-	if (HAL_SPI_Init(&g_spi3) != HAL_OK)
-	{
-	Error_Handler();
-	}
+	HAL_SPI_Init(&g_spi3);
 }
