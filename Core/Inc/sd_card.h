@@ -24,8 +24,20 @@ void StartScript();
 void StopScript();
 void SDTxHandler(const uint8_t* buf, uint32_t count);
 
+/** Maximum script file size supported */
 #define SCRIPT_MAX_ENTRIES	64
 
+/** Invalid loop index constant (used in parsing) */
 #define INVALID_LOOP_INDEX 	0xFFFFFFFF
+
+/* Script error bits */
+#define SCR_NO_SD				(1 << 0)
+#define SCR_MOUNT_ERROR			(1 << 1)
+#define SCR_SCRIPT_OPEN_ERROR	(1 << 2)
+#define SCR_RESULT_OPEN_ERROR	(1 << 3)
+#define SCR_PARSE_INVALID_CMD	(1 << 4)
+#define SCR_PARSE_INVALID_ARGS	(1 << 5)
+#define SCR_PARSE_INVALID_LOOP	(1 << 6)
+#define SCR_WRITE_FAIL			(1 << 7)
 
 #endif /* INC_SD_CARD_H_ */

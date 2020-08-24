@@ -55,6 +55,7 @@ void SDTxHandler(const uint8_t* buf, uint32_t count)
 	/* Flag error if write was not processed correctly */
 	if((result != FR_OK) || (writeCount < count))
 	{
+		g_regs[SCR_ERROR_REG] |= SCR_WRITE_FAIL;
 		g_regs[STATUS_0_REG] |= STATUS_SCR_ERROR;
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 	}
@@ -116,11 +117,16 @@ void StartScript()
 	/* Set script running flag to false */
 	scriptRunning = 0;
 
+	/* Init script line and error to 0 */
+	g_regs[SCR_LINE_REG] = 0;
+	g_regs[SCR_ERROR_REG] = 0;
+
 	/* Set error and return if no SD card attached */
 	if(!SDCardAttached())
 	{
 		g_regs[STATUS_0_REG] |= STATUS_SCR_ERROR;
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+		g_regs[SCR_ERROR_REG] |= SCR_NO_SD;
 		return;
 	}
 
@@ -177,6 +183,10 @@ void StopScript()
 	/* Clear script running flag */
 	scriptRunning = 0;
 
+	/* Set script line and error to 0 */
+	g_regs[SCR_LINE_REG] = 0;
+	g_regs[SCR_ERROR_REG] = 0;
+
 	/* Close all files and unmount SD card */
 	f_close(&cmdFile);
 	f_close(&outFile);
@@ -210,6 +220,7 @@ void ScriptStep()
 	}
 
 	/* Execute current command and write to file */
+	g_regs[SCR_LINE_REG] = cmdIndex + 1;
 
 	if(cmdList[cmdIndex].scrCommand == endloop)
 	{
@@ -303,6 +314,9 @@ static bool OpenScriptFiles()
 		/* Unmount */
 		f_mount(0, "", 0);
 
+		/* Save error */
+		g_regs[SCR_ERROR_REG] |= SCR_MOUNT_ERROR;
+
 		/* Return error */
 		return false;
 	}
@@ -315,6 +329,9 @@ static bool OpenScriptFiles()
 
 		/* Unmount */
 		f_mount(0, "", 0);
+
+		/* Save error */
+		g_regs[SCR_ERROR_REG] |= SCR_SCRIPT_OPEN_ERROR;
 
 		/* Return error */
 		return false;
@@ -329,6 +346,9 @@ static bool OpenScriptFiles()
 
 		/* Unmount */
 		f_mount(0, "", 0);
+
+		/* Save error */
+		g_regs[SCR_ERROR_REG] |= SCR_RESULT_OPEN_ERROR;
 
 		/* Return error */
 		return false;
@@ -414,11 +434,13 @@ static bool CommandPostLoadProcess()
 		if(cmdList[i].invalidArgs != 0)
 		{
 			/* Invalid arg, return false */
+			g_regs[SCR_ERROR_REG] |= SCR_PARSE_INVALID_ARGS;
 			return false;
 		}
 		if(cmdList[i].scrCommand >= invalid)
 		{
 			/* Invalid command, return false */
+			g_regs[SCR_ERROR_REG] |= SCR_PARSE_INVALID_CMD;
 			return false;
 		}
 		if(cmdList[i].scrCommand == loop)
@@ -426,6 +448,7 @@ static bool CommandPostLoadProcess()
 			/* Check that we aren't inside a previous loop */
 			if(startLoopIndex != INVALID_LOOP_INDEX)
 			{
+				g_regs[SCR_ERROR_REG] |= SCR_PARSE_INVALID_LOOP;
 				return false;
 			}
 			else
@@ -438,6 +461,7 @@ static bool CommandPostLoadProcess()
 			/* Check that we already hit a start loop command */
 			if(startLoopIndex == INVALID_LOOP_INDEX)
 			{
+				g_regs[SCR_ERROR_REG] |= SCR_PARSE_INVALID_LOOP;
 				return false;
 			}
 			else
