@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.4</span>
+   &#160;<span id="projectnumber">1.8</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -70,6 +70,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -81,7 +82,8 @@ $(function() {
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="main_8h_source.html">main.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="registers_8h_source.html">registers.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="cli_8h_source.html">cli.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="sd__card_8h_source.html">sd_card.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="usb__cli_8h_source.html">usb_cli.h</a>&quot;</code><br />
 </div>
 <p><a href="script_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -89,6 +91,16 @@ $(function() {
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structscript.html">script</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ac66c5df61455bee21a0ae0a2be510b4c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8h.html#ac66c5df61455bee21a0ae0a2be510b4c">BUF_BASE_ADDR</a>&#160;&#160;&#160;8</td></tr>
+<tr class="separator:ac66c5df61455bee21a0ae0a2be510b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab474ab6e248f8a7a04472c98100eade4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8h.html#ab474ab6e248f8a7a04472c98100eade4">BUF_DATA_BASE_ADDR</a>&#160;&#160;&#160;16</td></tr>
+<tr class="separator:ab474ab6e248f8a7a04472c98100eade4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab11983675d40a27dee780f0db1cf1940"><td class="memItemLeft" align="right" valign="top"><a id="ab11983675d40a27dee780f0db1cf1940"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>STREAM_BUF_SIZE</b>&#160;&#160;&#160;512</td></tr>
+<tr class="separator:ab11983675d40a27dee780f0db1cf1940"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -99,12 +111,12 @@ Enumerations</h2></td></tr>
 <b>readbuf</b>, 
 <br />
 &#160;&#160;<b>stream</b>, 
-<b>sleep</b>, 
-<b>loop</b>, 
-<b>endloop</b>, 
-<br />
-&#160;&#160;<b>freset</b>, 
+<b>freset</b>, 
 <b>help</b>, 
+<b>sleep</b>, 
+<br />
+&#160;&#160;<b>loop</b>, 
+<b>endloop</b>, 
 <b>invalid</b>
 <br />
  }</td></tr>
@@ -112,19 +124,53 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2cf64186f1b5eb9fb2e1c74c062d8d95"><td class="memItemLeft" align="right" valign="top"><a id="a2cf64186f1b5eb9fb2e1c74c062d8d95"></a>
-<a class="el" href="structscript.html">script</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ParseScriptElement</b> (uint8_t *buf)</td></tr>
-<tr class="separator:a2cf64186f1b5eb9fb2e1c74c062d8d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5bfb4bdf5378c45d949e9ac7d14fff64"><td class="memItemLeft" align="right" valign="top"><a id="a5bfb4bdf5378c45d949e9ac7d14fff64"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>RunScriptElement</b> (<a class="el" href="structscript.html">script</a> *scr, uint8_t *outBuf)</td></tr>
-<tr class="separator:a5bfb4bdf5378c45d949e9ac7d14fff64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f84e2d7b897f8a4ba6be2ef3145da41"><td class="memItemLeft" align="right" valign="top"><a id="a4f84e2d7b897f8a4ba6be2ef3145da41"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckStream</b> ()</td></tr>
+<tr class="separator:a4f84e2d7b897f8a4ba6be2ef3145da41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fcce12d9c19ab8120644cb4a2dd72fc"><td class="memItemLeft" align="right" valign="top"><a id="a3fcce12d9c19ab8120644cb4a2dd72fc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ParseScriptElement</b> (const uint8_t *commandBuf, <a class="el" href="structscript.html">script</a> *<a class="el" href="usb__cli_8c.html#a5a2b484670a50584223281c1ae87f9e3">scr</a>)</td></tr>
+<tr class="separator:a3fcce12d9c19ab8120644cb4a2dd72fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98a7ca2c973654de22337a46d3126505"><td class="memItemLeft" align="right" valign="top"><a id="a98a7ca2c973654de22337a46d3126505"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>RunScriptElement</b> (<a class="el" href="structscript.html">script</a> *<a class="el" href="usb__cli_8c.html#a5a2b484670a50584223281c1ae87f9e3">scr</a>, uint8_t *outBuf, <a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> isUSB)</td></tr>
+<tr class="separator:a98a7ca2c973654de22337a46d3126505"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header file for iSensor-SPI-Buffer script module (loaded from SD card) </p>
 <p>Copyright (c) Analog Devices Inc, 2020 All Rights Reserved.</p>
 <dl class="section date"><dt>Date</dt><dd>7/23/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
-</div><h2 class="groupheader">Enumeration Type Documentation</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ac66c5df61455bee21a0ae0a2be510b4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac66c5df61455bee21a0ae0a2be510b4c">&#9670;&nbsp;</a></span>BUF_BASE_ADDR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BUF_BASE_ADDR&#160;&#160;&#160;8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Buffer output base address (on page 255) </p>
+
+</div>
+</div>
+<a id="ab474ab6e248f8a7a04472c98100eade4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab474ab6e248f8a7a04472c98100eade4">&#9670;&nbsp;</a></span>BUF_DATA_BASE_ADDR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BUF_DATA_BASE_ADDR&#160;&#160;&#160;16</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Buffer output data base address (on page 255) </p>
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a9e0992eae3950adccaf4847fbff4231d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9e0992eae3950adccaf4847fbff4231d">&#9670;&nbsp;</a></span>command</h2>
 

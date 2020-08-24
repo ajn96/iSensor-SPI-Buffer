@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.4</span>
+   &#160;<span id="projectnumber">1.8</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -123,11 +123,11 @@ Macros</h2></td></tr>
 <tr class="memitem:a8c217977b0a8818bd7b45f9ff124b310"><td class="memItemLeft" align="right" valign="top"><a id="a8c217977b0a8818bd7b45f9ff124b310"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>USER_SPI_CONFIG_REG</b>&#160;&#160;&#160;0x09</td></tr>
 <tr class="separator:a8c217977b0a8818bd7b45f9ff124b310"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a353dde61959718fe1aa262ddb245484d"><td class="memItemLeft" align="right" valign="top"><a id="a353dde61959718fe1aa262ddb245484d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_CONFIG_REG</b>&#160;&#160;&#160;0x0A</td></tr>
-<tr class="separator:a353dde61959718fe1aa262ddb245484d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e80842250ebd4b51c3a8c8a94f32de9"><td class="memItemLeft" align="right" valign="top"><a id="a4e80842250ebd4b51c3a8c8a94f32de9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CLI_CONFIG_REG</b>&#160;&#160;&#160;0x0A</td></tr>
+<tr class="separator:a4e80842250ebd4b51c3a8c8a94f32de9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fc943b899f318a4e0022f3a35cce737"><td class="memItemLeft" align="right" valign="top"><a id="a9fc943b899f318a4e0022f3a35cce737"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>USER_COMMAND_REG</b>&#160;&#160;&#160;0x0B</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>USER_COMMAND_REG</b>&#160;&#160;&#160;0x0B /* Clears automatically */</td></tr>
 <tr class="separator:a9fc943b899f318a4e0022f3a35cce737"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1619a8c34a9367c84d2e61c499bfea1c"><td class="memItemLeft" align="right" valign="top"><a id="a1619a8c34a9367c84d2e61c499bfea1c"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>USER_SCR_0_REG</b>&#160;&#160;&#160;0x0C</td></tr>
@@ -165,6 +165,15 @@ Macros</h2></td></tr>
 <tr class="memitem:a3e084e101c10a284b0044a6b4986a368"><td class="memItemLeft" align="right" valign="top"><a id="a3e084e101c10a284b0044a6b4986a368"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>TEMP_REG</b>&#160;&#160;&#160;0x27</td></tr>
 <tr class="separator:a3e084e101c10a284b0044a6b4986a368"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c51bff05ce8743b2ee11d330342be07"><td class="memItemLeft" align="right" valign="top"><a id="a8c51bff05ce8743b2ee11d330342be07"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>VDD_REG</b>&#160;&#160;&#160;0x28</td></tr>
+<tr class="separator:a8c51bff05ce8743b2ee11d330342be07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af84a8d91de253a8cd7d170a44fcce2df"><td class="memItemLeft" align="right" valign="top"><a id="af84a8d91de253a8cd7d170a44fcce2df"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SCR_LINE_REG</b>&#160;&#160;&#160;0x32</td></tr>
+<tr class="separator:af84a8d91de253a8cd7d170a44fcce2df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac8f565f093ca3341877164cb9832675"><td class="memItemLeft" align="right" valign="top"><a id="aac8f565f093ca3341877164cb9832675"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SCR_ERROR_REG</b>&#160;&#160;&#160;0x33</td></tr>
+<tr class="separator:aac8f565f093ca3341877164cb9832675"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87c7b3483c83d436cc618f18e0e6792c"><td class="memItemLeft" align="right" valign="top"><a id="a87c7b3483c83d436cc618f18e0e6792c"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FW_DAY_MONTH_REG</b>&#160;&#160;&#160;0x38</td></tr>
 <tr class="separator:a87c7b3483c83d436cc618f18e0e6792c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -209,7 +218,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_DATA_0_REG</b>&#160;&#160;&#160;0x89</td></tr>
 <tr class="separator:aaef4c67582b679f6f8f187cf51d0bd41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d90879dde0a4ef3e14bcfbe31ec442b"><td class="memItemLeft" align="right" valign="top"><a id="a1d90879dde0a4ef3e14bcfbe31ec442b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FW_REV_DEFAULT</b>&#160;&#160;&#160;0x0105</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FW_REV_DEFAULT</b>&#160;&#160;&#160;0x0108</td></tr>
 <tr class="separator:a1d90879dde0a4ef3e14bcfbe31ec442b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1099031991c0f1d500a6f162e899265e"><td class="memItemLeft" align="right" valign="top"><a id="a1099031991c0f1d500a6f162e899265e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_CONFIG_DEFAULT</b>&#160;&#160;&#160;0x0000</td></tr>
@@ -235,9 +244,9 @@ Macros</h2></td></tr>
 <tr class="memitem:aa369458e98b943135ff31dc4e016cdd2"><td class="memItemLeft" align="right" valign="top"><a id="aa369458e98b943135ff31dc4e016cdd2"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>USER_SPI_CONFIG_DEFAULT</b>&#160;&#160;&#160;0x0007</td></tr>
 <tr class="separator:aa369458e98b943135ff31dc4e016cdd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66b0121ad2117043d300535fa08527c8"><td class="memItemLeft" align="right" valign="top"><a id="a66b0121ad2117043d300535fa08527c8"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_CONFIG_DEFAULT</b>&#160;&#160;&#160;0x2000</td></tr>
-<tr class="separator:a66b0121ad2117043d300535fa08527c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6f86494324602f37b7a0e74f7606014"><td class="memItemLeft" align="right" valign="top"><a id="ae6f86494324602f37b7a0e74f7606014"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CLI_CONFIG_DEFAULT</b>&#160;&#160;&#160;0x2000</td></tr>
+<tr class="separator:ae6f86494324602f37b7a0e74f7606014"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1db1c844a33fc35a43faecd8e3438870"><td class="memItemLeft" align="right" valign="top"><a id="a1db1c844a33fc35a43faecd8e3438870"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FLASH_SIG_DEFAULT</b>&#160;&#160;&#160;0x9D2A</td></tr>
 <tr class="separator:a1db1c844a33fc35a43faecd8e3438870"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -361,6 +370,42 @@ Macros</h2></td></tr>
 <tr class="memitem:a0d8a8429378f701266f5f23c47587ce2"><td class="memItemLeft" align="right" valign="top"><a id="a0d8a8429378f701266f5f23c47587ce2"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_CFG_MASK</b>&#160;&#160;&#160;(BUF_CFG_REPLACE_OLDEST|BUF_CFG_IMU_BURST|BUF_CFG_BUF_BURST)</td></tr>
 <tr class="separator:a0d8a8429378f701266f5f23c47587ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dccda6df509fcfb634fde632d4f9a6b"><td class="memItemLeft" align="right" valign="top"><a id="a0dccda6df509fcfb634fde632d4f9a6b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>WATERMARK_PULSE_MASK</b>&#160;&#160;&#160;(1 &lt;&lt; 15)</td></tr>
+<tr class="separator:a0dccda6df509fcfb634fde632d4f9a6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26d9df8422b58d3c2400192268cf8d95"><td class="memItemLeft" align="right" valign="top"><a id="a26d9df8422b58d3c2400192268cf8d95"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_STREAM_BITP</b>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a26d9df8422b58d3c2400192268cf8d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9d10afa5bf265455fbb06a7f8bd5136"><td class="memItemLeft" align="right" valign="top"><a id="ae9d10afa5bf265455fbb06a7f8bd5136"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SD_STREAM_BITP</b>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:ae9d10afa5bf265455fbb06a7f8bd5136"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ebe51b2dc297e992a81d5741ad2129b"><td class="memItemLeft" align="right" valign="top"><a id="a8ebe51b2dc297e992a81d5741ad2129b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_ECHO_BITP</b>&#160;&#160;&#160;2</td></tr>
+<tr class="separator:a8ebe51b2dc297e992a81d5741ad2129b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1411fe0343aad1093974753ae5ae74e"><td class="memItemLeft" align="right" valign="top"><a id="ad1411fe0343aad1093974753ae5ae74e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SD_AUTORUN_BITP</b>&#160;&#160;&#160;3</td></tr>
+<tr class="separator:ad1411fe0343aad1093974753ae5ae74e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00f3d1ffda98695ec2abd90523c4c9a8"><td class="memItemLeft" align="right" valign="top"><a id="a00f3d1ffda98695ec2abd90523c4c9a8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CLI_DELIM_BITP</b>&#160;&#160;&#160;8</td></tr>
+<tr class="separator:a00f3d1ffda98695ec2abd90523c4c9a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5e11e2ee4ffd64101e75f49a482026b"><td class="memItemLeft" align="right" valign="top"><a id="ac5e11e2ee4ffd64101e75f49a482026b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_STREAM_BITM</b>&#160;&#160;&#160;(1 &lt;&lt; USB_STREAM_BITP)</td></tr>
+<tr class="separator:ac5e11e2ee4ffd64101e75f49a482026b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a348b4da3250e8e32ee75ea1027ac55"><td class="memItemLeft" align="right" valign="top"><a id="a3a348b4da3250e8e32ee75ea1027ac55"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SD_STREAM_BITM</b>&#160;&#160;&#160;(1 &lt;&lt; SD_STREAM_BITP)</td></tr>
+<tr class="separator:a3a348b4da3250e8e32ee75ea1027ac55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea6a1952f88c8629b8576c35cbda4691"><td class="memItemLeft" align="right" valign="top"><a id="aea6a1952f88c8629b8576c35cbda4691"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>USB_ECHO_BITM</b>&#160;&#160;&#160;(1 &lt;&lt; USB_ECHO_BITP)</td></tr>
+<tr class="separator:aea6a1952f88c8629b8576c35cbda4691"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae69ecc6944fd0abcfe719477c30b2e54"><td class="memItemLeft" align="right" valign="top"><a id="ae69ecc6944fd0abcfe719477c30b2e54"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SD_AUTORUN_BITM</b>&#160;&#160;&#160;(1 &lt;&lt; SD_AUTORUN_BITP)</td></tr>
+<tr class="separator:ae69ecc6944fd0abcfe719477c30b2e54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea2f35fdf2c46c185a5a0627963e8441"><td class="memItemLeft" align="right" valign="top"><a id="aea2f35fdf2c46c185a5a0627963e8441"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CLI_DELIM_BITM</b>&#160;&#160;&#160;(0xFF &lt;&lt; CLI_DELIM_BITP)</td></tr>
+<tr class="separator:aea2f35fdf2c46c185a5a0627963e8441"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6de0a25cc4008c77ad1421241959b058"><td class="memItemLeft" align="right" valign="top"><a id="a6de0a25cc4008c77ad1421241959b058"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CLI_CONFIG_CLEAR_MASK</b>&#160;&#160;&#160;0xFF0C</td></tr>
+<tr class="separator:a6de0a25cc4008c77ad1421241959b058"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>

@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['newlinestr_473',['NewLineStr',['../cli_8c.html#a0d68c88152e39308920a3287cf37799f',1,'cli.c']]],
-  ['numargs_474',['numArgs',['../structscript.html#ac68b2fec5298b6e70d381b23ac570a93',1,'script::numArgs()'],['../cli_8c.html#ac68b2fec5298b6e70d381b23ac570a93',1,'numArgs():&#160;cli.c']]]
+  ['newlinestr_487',['NewLineStr',['../usb__cli_8c.html#a85840e2ca32e55f6c6aba8b7b0ff37ad',1,'usb_cli.c']]],
+  ['notallowedstr_488',['NotAllowedStr',['../script_8c.html#a71182335d7a57ebcbc29458310caae36',1,'script.c']]],
+  ['numargs_489',['numArgs',['../structscript.html#ac68b2fec5298b6e70d381b23ac570a93',1,'script']]]
 ];

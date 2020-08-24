@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.4</span>
+   &#160;<span id="projectnumber">1.8</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -99,7 +99,7 @@ $(function() {
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">0x12 </td><td class="markdownTableBodyNone"><a href="#USER_SPI_CONFIG">USER_SPI_CONFIG</a> </td><td class="markdownTableBodyNone">0x0007 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">User SPI configuration (SPI mode, etc.)  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">0x14 </td><td class="markdownTableBodyNone"><a href="#USB_CONFIG">USB_CONFIG</a> </td><td class="markdownTableBodyNone">0x2000 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">USB CLI configuration  </td></tr>
+<td class="markdownTableBodyNone">0x14 </td><td class="markdownTableBodyNone"><a href="#CLI_CONFIG">CLI_CONFIG</a> </td><td class="markdownTableBodyNone">0x2000 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Command line interface (CLI) configuration. Configure both USB CLI and SD card data logging CLI.  </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">0x16 </td><td class="markdownTableBodyNone"><a href="#USER_COMMAND">USER_COMMAND</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">W </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Command register (flash update, factory reset, clear buffer, software reset, etc)  </td></tr>
 <tr class="markdownTableRowOdd">
@@ -119,24 +119,30 @@ $(function() {
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">0x44 </td><td class="markdownTableBodyNone"><a href="#FAULT_CODE">FAULT_CODE</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Fault code, stored in case of a hard fault exception. This register is stored on a separate flash page from the primary register array and can only be cleared with a FAULT_CLEAR command  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">0x46 </td><td class="markdownTableBodyNone"><a href="#UTC_TIMESTAMP_LWR">UTC_TIMESTAMP_LWR</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Lower 16 bits of UTC timestamp (PPS counter)  </td></tr>
+<td class="markdownTableBodyNone">0x46 </td><td class="markdownTableBodyNone"><a href="#UTC_TIME_LWR">UTC_TIME_LWR</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Lower 16 bits of UTC timestamp (PPS counter)  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">0x48 </td><td class="markdownTableBodyNone"><a href="#UTC_TIMESTAMP_UPR">UTC_TIMESTAMP_UPR</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Upper 16 bits of UTC timestamp (PPS counter)  </td></tr>
+<td class="markdownTableBodyNone">0x48 </td><td class="markdownTableBodyNone"><a href="#UTC_TIME_UPR">UTC_TIME_UPR</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R/W </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Upper 16 bits of UTC timestamp (PPS counter)  </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">0x4A </td><td class="markdownTableBodyNone"><a href="#TIMESTAMP_LWR">TIMESTAMP_LWR</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Lower 16 bits of microsecond timestamp  </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">0x4C </td><td class="markdownTableBodyNone"><a href="#TIMESTAMP_UPR">TIMESTAMP_UPR</a> </td><td class="markdownTableBodyNone">0x0000 </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Upper 16 bits of microsecond timestamp  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">0x4E </td><td class="markdownTableBodyNone"><a href="#TEMP">TEMP</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Temperature output. 1 degree C = 10LSB  </td></tr>
+<td class="markdownTableBodyNone">0x4E </td><td class="markdownTableBodyNone"><a href="#TEMP_OUT">TEMP_OUT</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Internal temperature output. 1 degree C = 10LSB  </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x50 </td><td class="markdownTableBodyNone"><a href="#VDD_OUT">VDD_OUT</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Measured Vdd output. 1V = 100LSBs (3.3V supply -&gt; 330 LSBs)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x64 </td><td class="markdownTableBodyNone"><a href="#SCRIPT_LINE">SCRIPT_LINE</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Current script line being processed in an SD card script file. If no script is running, this register will be set to 0.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0x66 </td><td class="markdownTableBodyNone"><a href="#SCRIPT_ERROR">SCRIPT_ERROR</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">F </td><td class="markdownTableBodyNone">Flag for any errors which occurs during SD card script execution.  </td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">0x70 </td><td class="markdownTableBodyNone"><a href="#FW_DAY_MONTH">FW_DAY_MONTH</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Firmware build day and month  </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">0x72 </td><td class="markdownTableBodyNone"><a href="#FW_YEAR">FW_YEAR</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Firmware build year  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">0x74 </td><td class="markdownTableBodyNone"><a href="#DEV_SN_N">DEV_SN_0</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Processor core serial number register, word 0  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">...  </td></tr>
+<td class="markdownTableBodyNone">0x74 </td><td class="markdownTableBodyNone"><a href="#DEV_SN_N">DEV_SN_0</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Processor core serial number register, word 0  </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">... </td><td class="markdownTableBodyNone">...  </td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">0x7E </td><td class="markdownTableBodyNone"><a href="#DEV_SN_N">DEV_SN_5</a> </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">R </td><td class="markdownTableBodyNone">T </td><td class="markdownTableBodyNone">Processor core serial number register, word 5  </td></tr>
 </table>
 <h1>Page 254 - Buffer write data</h1>
@@ -285,14 +291,18 @@ $(function() {
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Bits </th><th class="markdownTableHeadNone">Description  </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">WATERMARK </td><td class="markdownTableBodyNone">Number of elements stored in buffer before asserting the iSensor-SPI-Buffer data ready interrupt. Range 0 - BUF_MAX_CNT  </td></tr>
+<td class="markdownTableBodyNone">14:0 </td><td class="markdownTableBodyNone">LEVEL </td><td class="markdownTableBodyNone">Number of elements stored in buffer before asserting the iSensor-SPI-Buffer data ready interrupt. Range 0 - BUF_MAX_CNT  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">15 </td><td class="markdownTableBodyNone">TOGGLE </td><td class="markdownTableBodyNone">When set, the watermark interrupt output will act as a ~10KHz, 50% duty cycle clock output when the watermark interrupt is triggered. If this bit is cleared, the watermark interrupt output is simply pulled high when triggered.  </td></tr>
 </table>
+<p>The following capture shows the interrupt behavior with WATERMARK_INT_CONFIG set to 0x8001 (TOGGLE enabled, 1 sample threshold). The attached EVAL-ADIS-FX3 master board is configured to trigger a buffer burst read on the rising edge of DIO2. The iSensor-SPI-Buffer board keeps giving the FX3 master clocks until the buffer is empty, then goes low. Once a new sample has been enqueued from the IMU, another pulse is generated, and clears when the master retrieves the sample.</p>
+<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/watermark_strobe_mode.JPG" alt="Watermark strobe" class="inline"/></p>
 <h2>ERROR_INT_CONFIG</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Bits </th><th class="markdownTableHeadNone">Description  </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">STATUS_MASK </td><td class="markdownTableBodyNone">Bitmask to set which bits in the iSensor-SPI-Buffer status register error bits will generate an interrupt when set. Set to 0xFFFF to enable all error interrupts, 0x0000 to disable all  </td></tr>
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">STATUS_MASK </td><td class="markdownTableBodyNone">Bitmask to set which bits in the iSensor-SPI-Buffer status register error bits will generate an interrupt when set. Set to 0xFFFF to enable all error interrupts, 0x0000 to disable all. This mask also applies to the error LED on the iSensor-SPI-Buffer, allowing for error detection without reading STATUS.  </td></tr>
 </table>
 <h2>IMU_SPI_CONFIG</h2>
 <table class="markdownTable">
@@ -330,22 +340,25 @@ $(function() {
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">15:3 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
 </table>
-<h2>USB_CONFIG</h2>
+<h2>CLI_CONFIG</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">STREAM </td><td class="markdownTableBodyNone">USB data stream running  </td></tr>
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">USB_STREAM </td><td class="markdownTableBodyNone">USB data stream running (stream command received). If SD_STREAM is set this bit will be cleared (USB streams have lower priority). This bit is volatile (cannot be set in flash).  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">ECHO_DISABLE </td><td class="markdownTableBodyNone">Disable command echo to CLI. By default, all characters sent to the CLI input are echoed to the output. Disabling this functionality allows for easier CLI scripting  </td></tr>
+<td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">SD_STREAM </td><td class="markdownTableBodyNone">SD card data stream running (stream command executed as part of SD script execution process). SD card data streams have priority over a USB CLI stream. This bit is volatile (cannot be set in flash).  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">2 </td><td class="markdownTableBodyNone">SCRIPT_AUTORUN </td><td class="markdownTableBodyNone">Start executing an SD card script automatically after the iSensor-SPI-Buffer firmware has finished initialization. This is equivalent to sending a SCRIPT START command immediately after the initialization process has finished  </td></tr>
+<td class="markdownTableBodyNone">2 </td><td class="markdownTableBodyNone">USB_ECHO_DISABLE </td><td class="markdownTableBodyNone">Disable command echo to USB CLI. By default, all characters sent to the CLI input are echoed to the output. Disabling this functionality allows for easier CLI scripting from a host device (don't have to discard command echo back after transmitting a command).  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">7:3 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<td class="markdownTableBodyNone">3 </td><td class="markdownTableBodyNone">SCRIPT_AUTORUN </td><td class="markdownTableBodyNone">Start executing an SD card script automatically after the iSensor-SPI-Buffer firmware has finished initialization. This is equivalent to sending a SCRIPT START command immediately after the initialization process has finished  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">15:8 </td><td class="markdownTableBodyNone">DELIM </td><td class="markdownTableBodyNone">Register read value delimiter character (ASCII), for USB CLI. Defaults to space character  </td></tr>
+<td class="markdownTableBodyNone">7:4 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">15:8 </td><td class="markdownTableBodyNone">DELIM </td><td class="markdownTableBodyNone">Register read value delimiter character, in ASCII, for the CLI. Defaults to space character  </td></tr>
 </table>
-<p>For more details on the iSensor-SPI-Buffer USB interface, see the <a href="https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/USB_CLI.md">USB_CLI</a> document</p>
+<p>For more details on the iSensor-SPI-Buffer USB CLI, see the <a href="https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/USB_CLI.md">USB_CLI</a> document</p>
+<p>For more details on the iSensor-SPI-Buffer SD Card data logging CLI, see the <a href="https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/SD_SCRIPTS.md">SD Scripts</a> document</p>
 <h2>USER_COMMAND</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -462,7 +475,7 @@ $(function() {
 <p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/PPS_Timestamp.png" alt="Timestamp Plot" class="inline"/></p>
 <p>If the PPS signal is lost, the internal microsecond timer will continue counting up, and the STATUS PPS Unlock bit will set. This allows a master device to continue tracking sample timestamps for a significant time even if the PPS signal is lost. The plot below shows that behavior.</p>
 <p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/PPS_Unlock.png" alt="PPS Unlock Plot" class="inline"/></p>
-<h2>TEMP</h2>
+<h2>TEMP_OUT</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
@@ -470,7 +483,47 @@ $(function() {
 <td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">TEMP </td><td class="markdownTableBodyNone">Temp sensor output. 1 degree C = 10LSB. Value of 0LSB -&gt; 0C  </td></tr>
 </table>
 <p>This value is sourced from the thermistor embedded in the STM32F303 package. The temperature value is scaled using a two point temperature calibration provided by ST (measurements taken at 30C and 110C). Even though temperature output is calibrated, the measurement is very susceptible to heat from the STM32 processor core. If the temperature measurement ever goes out of range [-40C to 85C] a temperature warning flag will be set in the STATUS register.</p>
+<p>The measured value of VDD is used to normalize the TEMP_OUT register value to a 3.3V ADC reference voltage. This normalization ensures good temperature sensor linearity across the valid supply range for the device (TEMP will no longer shift with voltage, as shown <a href="https://github.com/ajn96/iSensor-SPI-Buffer/issues/17">here</a>). The downside of normalizing the measured temperature value with the measured Vdd value is that the noise of the temp sensor measurement increases, but this is an acceptable tradeoff.</p>
 <p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/status_temp_warning.png" alt="Temp warning plot" class="inline"/></p>
+<h2>VDD_OUT</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">VDD </td><td class="markdownTableBodyNone">Measured Vdd output. 1V = 100LSBs (3.3V -&gt; 330)  </td></tr>
+</table>
+<p>The value of Vdd is calculated by measuring the value of VREFINT (internal regulated voltage reference) using the ADC and comparing against the expected measurement, with Vdd = 3.3V. Changes in Vdd (VREF) will cause an apparent change in the VREFINT measurement, which can be used to calculate Vdd.</p>
+<h2>SCRIPT_LINE</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">LINE </td><td class="markdownTableBodyNone">Line number in the provided SD card script (script.txt) which is currently being executed by the script execution engine. Will be set to zero when there is no script running.  </td></tr>
+</table>
+<h2>SCRIPT_ERROR</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Bit </th><th class="markdownTableHeadNone">Name </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">NO_SD </td><td class="markdownTableBodyNone">Set when a script start command is processed and there is no SD card attached. This is determined using the SD card detect pin. When this condition is detected, the script start process is aborted.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">MOUNT_ERROR </td><td class="markdownTableBodyNone">Set when the FAT file system fails to mount the SD card during the script setup process. When this condition is detected, the script start process is aborted.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">2 </td><td class="markdownTableBodyNone">SCRIPT_OPEN_ERROR </td><td class="markdownTableBodyNone">Set when the software cannot open "script.txt" in read only mode during the script setup process. When this condition is detected, the script start process is aborted.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">3 </td><td class="markdownTableBodyNone">RESULT_OPEN_ERROR </td><td class="markdownTableBodyNone">Set when the software cannot open "result.txt" in write mode during the script setup process. When this condition is detected, the script start process is aborted.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">4 </td><td class="markdownTableBodyNone">PARSE_INVALID_CMD </td><td class="markdownTableBodyNone">Set when the software opens script.txt for parsing, but one of the lines contains an invalid command. When this condition is detected, the script start process is aborted.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">5 </td><td class="markdownTableBodyNone">PARSE_INVALID_ARGS </td><td class="markdownTableBodyNone">Set when the software opens script.txt for parsing and detects a valid command with invalid arguments provided. When this condition is detected, the script start process is aborted.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">6 </td><td class="markdownTableBodyNone">PARSE_INVALID_LOOP </td><td class="markdownTableBodyNone">Set when the software opens script.txt for parsing and detects an invalid loop structure. Loops have a fixed loop count, and cannot be nested. When this condition is detected, the script start process is aborted.  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">7 </td><td class="markdownTableBodyNone">WRITE_FAIL </td><td class="markdownTableBodyNone">Set when a running script tries to write data to the output file and gets an error. This error does not stop the script execution process.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:8 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+</table>
+<p>The script error register is set to 0 when a script start or cancel command is received. Any errors which occur during the script load, parse, and execution process are bit or'd into this register.</p>
 <h2>FW_DAY_MONTH</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -600,7 +653,7 @@ $(function() {
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">SPI Word Number (16 bit words) </th><th class="markdownTableHeadNone">Master -&gt; iSensor-SPI-Buffer </th><th class="markdownTableHeadNone">iSensor-SPI-Buffer -&gt; Master  </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">0x0600 </td><td class="markdownTableBodyNone">0x0000  </td></tr>
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">0x0600 </td><td class="markdownTableBodyNone">BUF_CNT (after dequeue)  </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">0x0000 (Don't care) </td><td class="markdownTableBodyNone">BUF_UTC_TIME_LWR  </td></tr>
 <tr class="markdownTableRowOdd">

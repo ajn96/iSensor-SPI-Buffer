@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.4</span>
+   &#160;<span id="projectnumber">1.8</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -92,6 +92,9 @@ Functions</h2></td></tr>
 <tr class="memitem:af97575ad183f8358642b8158353e5727"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__spi_8h.html#af97575ad183f8358642b8158353e5727">UpdateUserSpiConfig</a> ()</td></tr>
 <tr class="memdesc:af97575ad183f8358642b8158353e5727"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register.  <a href="user__spi_8h.html#af97575ad183f8358642b8158353e5727">More...</a><br /></td></tr>
 <tr class="separator:af97575ad183f8358642b8158353e5727"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cf0803624b0e83866ea3dd06b23b05a"><td class="memItemLeft" align="right" valign="top"><a id="a0cf0803624b0e83866ea3dd06b23b05a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>UserSpiReset</b> ()</td></tr>
+<tr class="separator:a0cf0803624b0e83866ea3dd06b23b05a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header file for iSensor-SPI-Buffer user SPI (slave SPI) module. </p>
@@ -116,7 +119,7 @@ Functions</h2></td></tr>
 
 <p>Restore SPI functionality after a burst read. </p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function disables SPI2 DMA requests </p>
+<p>This function disables SPI2 DMA requests via hard reset, and disables SPI2 DMA channel </p>
 
 </div>
 </div>

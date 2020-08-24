@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.4</span>
+   &#160;<span id="projectnumber">1.8</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -82,8 +82,8 @@ $(function() {
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a686e0e25c004ba96a80b7f9eccb65f95"><td class="memItemLeft" align="right" valign="top"><a id="a686e0e25c004ba96a80b7f9eccb65f95"></a>
-static <a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>OpenScriptFiles</b> ()</td></tr>
+<tr class="memitem:a686e0e25c004ba96a80b7f9eccb65f95"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a686e0e25c004ba96a80b7f9eccb65f95">OpenScriptFiles</a> ()</td></tr>
+<tr class="memdesc:a686e0e25c004ba96a80b7f9eccb65f95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mount SD card an open "script.txt" and "result.txt".  <a href="sd__card_8c.html#a686e0e25c004ba96a80b7f9eccb65f95">More...</a><br /></td></tr>
 <tr class="separator:a686e0e25c004ba96a80b7f9eccb65f95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a091d146cc644caa26078156892f38997"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a091d146cc644caa26078156892f38997">SDCardAttached</a> ()</td></tr>
 <tr class="memdesc:a091d146cc644caa26078156892f38997"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if SD card is attached.  <a href="sd__card_8c.html#a091d146cc644caa26078156892f38997">More...</a><br /></td></tr>
@@ -91,14 +91,20 @@ static <a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool<
 <tr class="memitem:a1689ac486229c2f0a44ee3e69090f3ff"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a1689ac486229c2f0a44ee3e69090f3ff">ParseScriptFile</a> ()</td></tr>
 <tr class="memdesc:a1689ac486229c2f0a44ee3e69090f3ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse script.txt into script element array.  <a href="sd__card_8c.html#a1689ac486229c2f0a44ee3e69090f3ff">More...</a><br /></td></tr>
 <tr class="separator:a1689ac486229c2f0a44ee3e69090f3ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98569f945d958c0809e96005cdb2d3a7"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a98569f945d958c0809e96005cdb2d3a7">CommandPostLoadProcess</a> ()</td></tr>
+<tr class="memdesc:a98569f945d958c0809e96005cdb2d3a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process loaded command array.  <a href="sd__card_8c.html#a98569f945d958c0809e96005cdb2d3a7">More...</a><br /></td></tr>
+<tr class="separator:a98569f945d958c0809e96005cdb2d3a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa982ad2254de265717f1ad2404cf53ad"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#aa982ad2254de265717f1ad2404cf53ad">SPI3_Init</a> (void)</td></tr>
 <tr class="memdesc:aa982ad2254de265717f1ad2404cf53ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI3 Initialization Function (SD card master SPI port)  <a href="sd__card_8c.html#aa982ad2254de265717f1ad2404cf53ad">More...</a><br /></td></tr>
 <tr class="separator:aa982ad2254de265717f1ad2404cf53ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d1f2d063a0389e1db1e31b7cc174a89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a3d1f2d063a0389e1db1e31b7cc174a89">SDTxHandler</a> (const uint8_t *buf, uint32_t count)</td></tr>
+<tr class="memdesc:a3d1f2d063a0389e1db1e31b7cc174a89"><td class="mdescLeft">&#160;</td><td class="mdescRight">SD card write handler function.  <a href="sd__card_8c.html#a3d1f2d063a0389e1db1e31b7cc174a89">More...</a><br /></td></tr>
+<tr class="separator:a3d1f2d063a0389e1db1e31b7cc174a89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a625b0dce0e53a68e74b117c8ced97afe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a625b0dce0e53a68e74b117c8ced97afe">SDCardInit</a> ()</td></tr>
 <tr class="memdesc:a625b0dce0e53a68e74b117c8ced97afe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init SD card hardware interface and FATFs driver.  <a href="sd__card_8c.html#a625b0dce0e53a68e74b117c8ced97afe">More...</a><br /></td></tr>
 <tr class="separator:a625b0dce0e53a68e74b117c8ced97afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade0e1d4a61790fd47ec542cbf559af68"><td class="memItemLeft" align="right" valign="top"><a id="ade0e1d4a61790fd47ec542cbf559af68"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ScriptAutorun</b> ()</td></tr>
+<tr class="memitem:ade0e1d4a61790fd47ec542cbf559af68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#ade0e1d4a61790fd47ec542cbf559af68">ScriptAutorun</a> ()</td></tr>
+<tr class="memdesc:ade0e1d4a61790fd47ec542cbf559af68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run SD card script automatic execution process.  <a href="sd__card_8c.html#ade0e1d4a61790fd47ec542cbf559af68">More...</a><br /></td></tr>
 <tr class="separator:ade0e1d4a61790fd47ec542cbf559af68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3549a7ed2c1d2569224b55e2d286c0e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a3549a7ed2c1d2569224b55e2d286c0e8">StartScript</a> ()</td></tr>
 <tr class="memdesc:a3549a7ed2c1d2569224b55e2d286c0e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start script run.  <a href="sd__card_8c.html#a3549a7ed2c1d2569224b55e2d286c0e8">More...</a><br /></td></tr>
@@ -116,8 +122,10 @@ Variables</h2></td></tr>
 <tr class="separator:ad9abdec236745828926dbed3d25cfad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a939ff86f7bddb14b321f51d69a0c683d"><td class="memItemLeft" align="right" valign="top">SPI_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a939ff86f7bddb14b321f51d69a0c683d">g_spi3</a></td></tr>
 <tr class="separator:a939ff86f7bddb14b321f51d69a0c683d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82a90c63ceb17b161d89ae2fe043f8a0"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a82a90c63ceb17b161d89ae2fe043f8a0">sd_buf</a> [STREAM_BUF_SIZE]</td></tr>
+<tr class="separator:a82a90c63ceb17b161d89ae2fe043f8a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abac503ce5ea9f04c478a7938a9298277"><td class="memItemLeft" align="right" valign="top"><a id="abac503ce5ea9f04c478a7938a9298277"></a>
-static <a class="el" href="structscript.html">script</a>&#160;</td><td class="memItemRight" valign="bottom"><b>cmdList</b> [SCRIPT_MAX_ENTRIES]</td></tr>
+static <a class="el" href="structscript.html">script</a>&#160;</td><td class="memItemRight" valign="bottom"><b>cmdList</b> [<a class="el" href="sd__card_8h.html#a3744cf20327e23a2afb57c9051a55d75">SCRIPT_MAX_ENTRIES</a>]</td></tr>
 <tr class="separator:abac503ce5ea9f04c478a7938a9298277"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa910262b7076819c86978d461ecbcd7e"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#aa910262b7076819c86978d461ecbcd7e">cmdIndex</a></td></tr>
 <tr class="separator:aa910262b7076819c86978d461ecbcd7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,6 +147,64 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>numCmds</b
 <dl class="section date"><dt>Date</dt><dd>7/28/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a98569f945d958c0809e96005cdb2d3a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98569f945d958c0809e96005cdb2d3a7">&#9670;&nbsp;</a></span>CommandPostLoadProcess()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> CommandPostLoadProcess </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Process loaded command array. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if script is good, false otherwise</dd></dl>
+<p>This function checks all commands for validity (argument and command). It also sets up all loop state variables, and links the end loop commands to the corresponding start loops. </p>
+
+</div>
+</div>
+<a id="a686e0e25c004ba96a80b7f9eccb65f95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a686e0e25c004ba96a80b7f9eccb65f95">&#9670;&nbsp;</a></span>OpenScriptFiles()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> OpenScriptFiles </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mount SD card an open "script.txt" and "result.txt". </p>
+<dl class="section return"><dt>Returns</dt><dd>true if files are opened successfully, false otherwise</dd></dl>
+<p>This function first mounts an attached SD card, then populates the two file handles required for the application. If either file fails to open, both file handles are closed, and the SD card file system is unmounted. </p>
+
+</div>
+</div>
 <a id="a1689ac486229c2f0a44ee3e69090f3ff"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1689ac486229c2f0a44ee3e69090f3ff">&#9670;&nbsp;</a></span>ParseScriptFile()</h2>
 
@@ -168,6 +234,27 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>numCmds</b
 
 </div>
 </div>
+<a id="ade0e1d4a61790fd47ec542cbf559af68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade0e1d4a61790fd47ec542cbf559af68">&#9670;&nbsp;</a></span>ScriptAutorun()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ScriptAutorun </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Run SD card script automatic execution process. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function is intended to be called at the end of the initialization portion of main, just before entering the cyclic executive. If the SD card autorun bit is set in USB_CONFIG and the watchdog reset bit is not set in STATUS, the script will be run. The watchdog reset check is in place to remove the potential for a watchdog reset loop. </p>
+
+</div>
+</div>
 <a id="a32b1dbc0c13c1814f562104c761f8d6c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a32b1dbc0c13c1814f562104c761f8d6c">&#9670;&nbsp;</a></span>ScriptStep()</h2>
 
@@ -185,7 +272,7 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>numCmds</b
 
 <p>Step the script execution process. </p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function is called from the main loop. It is responsible for performing the actual script execution, and writing the output to the SD card. </p>
+<p>This function is called from the main loop. It is responsible for performing the actual script execution, and writing the output to the SD card (via </p>
 
 </div>
 </div>
@@ -239,6 +326,45 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>numCmds</b
 
 </div>
 </div>
+<a id="a3d1f2d063a0389e1db1e31b7cc174a89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d1f2d063a0389e1db1e31b7cc174a89">&#9670;&nbsp;</a></span>SDTxHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDTxHandler </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>SD card write handler function. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buf</td><td>Buffer containing data to write</td></tr>
+    <tr><td class="paramname">count</td><td>Number of bytes to write</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function is called by the script execution routines, when a script object is executed from a SD card script context. </p>
+
+</div>
+</div>
 <a id="aa982ad2254de265717f1ad2404cf53ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa982ad2254de265717f1ad2404cf53ad">&#9670;&nbsp;</a></span>SPI3_Init()</h2>
 
@@ -264,7 +390,8 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>numCmds</b
 </div><div class="memdoc">
 
 <p>SPI3 Initialization Function (SD card master SPI port) </p>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>Configures SPI 3 as master SPI port. SPI mode: 0 SCLK Freq: 4.25MHz SPI word size: 8 bits </p>
 
 </div>
 </div>
@@ -453,6 +580,29 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>numCmds</b
 </table>
 </div><div class="memdoc">
 <p>Track if a script is actively running </p>
+
+</div>
+</div>
+<a id="a82a90c63ceb17b161d89ae2fe043f8a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82a90c63ceb17b161d89ae2fe043f8a0">&#9670;&nbsp;</a></span>sd_buf</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t sd_buf[STREAM_BUF_SIZE]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Buffer for SD card read/writes </p>
 
 </div>
 </div>

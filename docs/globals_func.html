@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.4</span>
+   &#160;<span id="projectnumber">1.8</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -78,11 +78,9 @@ $(function() {
 
 
 <h3><a id="index_a"></a>- a -</h3><ul>
-<li>ADC1Init()
-: <a class="el" href="temp_8c.html#a6fd53b8ff5522aef32d4269c09773530">temp.c</a>
-</li>
-<li>ADC1Start()
-: <a class="el" href="temp_8c.html#a83a921de33830b5f83a76247e30e169c">temp.c</a>
+<li>ADCInit()
+: <a class="el" href="adc_8h.html#adb6cb5368cffd96c7e2cce8c72744ea2">adc.h</a>
+, <a class="el" href="adc_8c.html#adb6cb5368cffd96c7e2cce8c72744ea2">adc.c</a>
 </li>
 <li>ApplySclkDivider()
 : <a class="el" href="imu__spi_8c.html#a640286632dd94b1015f32a9892f83322">imu_spi.c</a>
@@ -92,7 +90,7 @@ $(function() {
 
 <h3><a id="index_b"></a>- b -</h3><ul>
 <li>BlockingUSBTransmit()
-: <a class="el" href="cli_8c.html#a34f869363ebc818c68ecdd6e53664074">cli.c</a>
+: <a class="el" href="usb__cli_8c.html#acf72acd18f3746ad119ce59694797a54">usb_cli.c</a>
 </li>
 <li>BufAddElement()
 : <a class="el" href="buffer_8h.html#a87a48cf043865363f9b934ba3e0db68a">buffer.h</a>
@@ -111,15 +109,15 @@ $(function() {
 , <a class="el" href="buffer_8c.html#a608864e62e34b7c269cd79d2c7294a48">buffer.c</a>
 </li>
 <li>BufTakeElement()
-: <a class="el" href="buffer_8h.html#afdd89b201e54e51e1fe4f9954fb2e1b0">buffer.h</a>
-, <a class="el" href="buffer_8c.html#afdd89b201e54e51e1fe4f9954fb2e1b0">buffer.c</a>
+: <a class="el" href="buffer_8c.html#afdd89b201e54e51e1fe4f9954fb2e1b0">buffer.c</a>
+, <a class="el" href="buffer_8h.html#afdd89b201e54e51e1fe4f9954fb2e1b0">buffer.h</a>
 </li>
 <li>BuildDIOOutputConfigReg()
 : <a class="el" href="dio_8c.html#a28a551718a1faaa39a66752c1dbdf3b6">dio.c</a>
 </li>
 <li>BurstReadDisable()
-: <a class="el" href="user__spi_8h.html#a3ba4975cc957879494953133d89031a5">user_spi.h</a>
-, <a class="el" href="user__spi_8c.html#a3ba4975cc957879494953133d89031a5">user_spi.c</a>
+: <a class="el" href="user__spi_8c.html#a3ba4975cc957879494953133d89031a5">user_spi.c</a>
+, <a class="el" href="user__spi_8h.html#a3ba4975cc957879494953133d89031a5">user_spi.h</a>
 </li>
 <li>BurstReadSetup()
 : <a class="el" href="user__spi_8h.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00">user_spi.h</a>
@@ -138,24 +136,27 @@ $(function() {
 , <a class="el" href="flash_8c.html#a3e2a702707895bee69f8a070f89c7bf1">flash.c</a>
 </li>
 <li>CheckPPSUnlock()
-: <a class="el" href="timer_8h.html#a927c9c42c21c7bf05c51c6e9253e82b3">timer.h</a>
-, <a class="el" href="timer_8c.html#a927c9c42c21c7bf05c51c6e9253e82b3">timer.c</a>
+: <a class="el" href="timer_8c.html#a927c9c42c21c7bf05c51c6e9253e82b3">timer.c</a>
+, <a class="el" href="timer_8h.html#a927c9c42c21c7bf05c51c6e9253e82b3">timer.h</a>
 </li>
 <li>CheckWatchDogStatus()
 : <a class="el" href="watchdog_8h.html#ae1d7795593b89a0508b7d5adb1924f69">watchdog.h</a>
 , <a class="el" href="watchdog_8c.html#ae1d7795593b89a0508b7d5adb1924f69">watchdog.c</a>
 </li>
 <li>ClearMicrosecondTimer()
-: <a class="el" href="timer_8h.html#aee4842c061c047f9938eccfbbecf9d34">timer.h</a>
-, <a class="el" href="timer_8c.html#aee4842c061c047f9938eccfbbecf9d34">timer.c</a>
+: <a class="el" href="timer_8c.html#aee4842c061c047f9938eccfbbecf9d34">timer.c</a>
+, <a class="el" href="timer_8h.html#aee4842c061c047f9938eccfbbecf9d34">timer.h</a>
+</li>
+<li>CommandPostLoadProcess()
+: <a class="el" href="sd__card_8c.html#a98569f945d958c0809e96005cdb2d3a7">sd_card.c</a>
 </li>
 <li>ConfigureImuCsTimer()
 : <a class="el" href="imu__spi_8h.html#af83f777aa978e03f1c4a74c719b45de2">imu_spi.h</a>
 , <a class="el" href="imu__spi_8c.html#af83f777aa978e03f1c4a74c719b45de2">imu_spi.c</a>
 </li>
 <li>ConfigureImuSpiTimer()
-: <a class="el" href="imu__spi_8h.html#adfad8c7379c01cb09a7e3754c33e169b">imu_spi.h</a>
-, <a class="el" href="imu__spi_8c.html#adfad8c7379c01cb09a7e3754c33e169b">imu_spi.c</a>
+: <a class="el" href="imu__spi_8c.html#adfad8c7379c01cb09a7e3754c33e169b">imu_spi.c</a>
+, <a class="el" href="imu__spi_8h.html#adfad8c7379c01cb09a7e3754c33e169b">imu_spi.h</a>
 </li>
 </ul>
 
@@ -166,16 +167,16 @@ $(function() {
 , <a class="el" href="stm32f3xx__it_8c.html#adbdfb05858cc36fc520974df37ec3cb0">stm32f3xx_it.c</a>
 </li>
 <li>DisableDataCapture()
-: <a class="el" href="data__capture_8h.html#ab71775102e1565ca2e8fd384d27204b3">data_capture.h</a>
-, <a class="el" href="data__capture_8c.html#ab71775102e1565ca2e8fd384d27204b3">data_capture.c</a>
+: <a class="el" href="data__capture_8c.html#ab71775102e1565ca2e8fd384d27204b3">data_capture.c</a>
+, <a class="el" href="data__capture_8h.html#ab71775102e1565ca2e8fd384d27204b3">data_capture.h</a>
 </li>
 <li>DisableImuSpiDMA()
 : <a class="el" href="imu__spi_8h.html#a50a9e9e1e661156087f12a81c2b6bc30">imu_spi.h</a>
 , <a class="el" href="imu__spi_8c.html#a50a9e9e1e661156087f12a81c2b6bc30">imu_spi.c</a>
 </li>
 <li>DisablePPSTimer()
-: <a class="el" href="timer_8h.html#a674d0d6bc8aa368d9b71e03e7a54cd13">timer.h</a>
-, <a class="el" href="timer_8c.html#a674d0d6bc8aa368d9b71e03e7a54cd13">timer.c</a>
+: <a class="el" href="timer_8c.html#a674d0d6bc8aa368d9b71e03e7a54cd13">timer.c</a>
+, <a class="el" href="timer_8h.html#a674d0d6bc8aa368d9b71e03e7a54cd13">timer.h</a>
 </li>
 <li>DMA1_Channel2_IRQHandler()
 : <a class="el" href="isr_8h.html#a0c3390d4dc5cfceccbeda71aa672d99d">isr.h</a>
@@ -204,16 +205,16 @@ $(function() {
 , <a class="el" href="data__capture_8c.html#ac4b2f76f70859603c0d2ba1957afb21b">data_capture.c</a>
 </li>
 <li>EnablePPSTimer()
-: <a class="el" href="timer_8h.html#a37f8e3e4c93dca1f52d2459e0e915d5e">timer.h</a>
-, <a class="el" href="timer_8c.html#a37f8e3e4c93dca1f52d2459e0e915d5e">timer.c</a>
+: <a class="el" href="timer_8c.html#a37f8e3e4c93dca1f52d2459e0e915d5e">timer.c</a>
+, <a class="el" href="timer_8h.html#a37f8e3e4c93dca1f52d2459e0e915d5e">timer.h</a>
 </li>
 <li>EnableWatchDog()
 : <a class="el" href="watchdog_8h.html#a1e202ecb064c61a96112d66e624272f7">watchdog.h</a>
 , <a class="el" href="watchdog_8c.html#a1e202ecb064c61a96112d66e624272f7">watchdog.c</a>
 </li>
 <li>Error_Handler()
-: <a class="el" href="main_8h.html#a1730ffe1e560465665eb47d9264826f9">main.h</a>
-, <a class="el" href="main_8c.html#a1730ffe1e560465665eb47d9264826f9">main.c</a>
+: <a class="el" href="main_8c.html#a1730ffe1e560465665eb47d9264826f9">main.c</a>
+, <a class="el" href="main_8h.html#a1730ffe1e560465665eb47d9264826f9">main.h</a>
 </li>
 <li>EXTI15_10_IRQHandler()
 : <a class="el" href="isr_8h.html#a738473a5b43f6c92b80ce1d3d6f77ed9">isr.h</a>
@@ -224,8 +225,8 @@ $(function() {
 , <a class="el" href="isr_8c.html#acd7f454d4f8ce7b9b1caebf717e40e55">isr.c</a>
 </li>
 <li>EXTI9_5_IRQHandler()
-: <a class="el" href="isr_8h.html#a9f0a091727452df71a1760d1133bf9b4">isr.h</a>
-, <a class="el" href="isr_8c.html#a9f0a091727452df71a1760d1133bf9b4">isr.c</a>
+: <a class="el" href="isr_8c.html#a9f0a091727452df71a1760d1133bf9b4">isr.c</a>
+, <a class="el" href="isr_8h.html#a9f0a091727452df71a1760d1133bf9b4">isr.h</a>
 </li>
 </ul>
 
@@ -236,8 +237,8 @@ $(function() {
 , <a class="el" href="registers_8c.html#a1e4cc4aaf47e349fdaedc1df90274cab">registers.c</a>
 </li>
 <li>FeedWatchDog()
-: <a class="el" href="watchdog_8h.html#a8ea40194cba4ee3987e74a1ec77091fc">watchdog.h</a>
-, <a class="el" href="watchdog_8c.html#a8ea40194cba4ee3987e74a1ec77091fc">watchdog.c</a>
+: <a class="el" href="watchdog_8c.html#a8ea40194cba4ee3987e74a1ec77091fc">watchdog.c</a>
+, <a class="el" href="watchdog_8h.html#a8ea40194cba4ee3987e74a1ec77091fc">watchdog.h</a>
 </li>
 <li>FinishImuBurst()
 : <a class="el" href="isr_8c.html#af1b2415315c15bd1688844b89f63ea7f">isr.c</a>
@@ -267,16 +268,19 @@ $(function() {
 , <a class="el" href="registers_8c.html#a042bb33891e7dcafa8dcf3a696eaa451">registers.c</a>
 </li>
 <li>GetHardwareID()
-: <a class="el" href="dio_8h.html#a23bbc6369c345ac12e5de302c02db52b">dio.h</a>
-, <a class="el" href="dio_8c.html#a23bbc6369c345ac12e5de302c02db52b">dio.c</a>
+: <a class="el" href="dio_8c.html#a23bbc6369c345ac12e5de302c02db52b">dio.c</a>
+, <a class="el" href="dio_8h.html#a23bbc6369c345ac12e5de302c02db52b">dio.h</a>
 </li>
 <li>GetMicrosecondTimestamp()
 : <a class="el" href="timer_8h.html#a42165c313ad966bc655a7b7db5bd0264">timer.h</a>
 , <a class="el" href="timer_8c.html#a42165c313ad966bc655a7b7db5bd0264">timer.c</a>
 </li>
 <li>GetSN()
-: <a class="el" href="registers_8h.html#a7b32151b1c6c1f3adcf8c1b2d245d191">registers.h</a>
-, <a class="el" href="registers_8c.html#a7b32151b1c6c1f3adcf8c1b2d245d191">registers.c</a>
+: <a class="el" href="registers_8c.html#a7b32151b1c6c1f3adcf8c1b2d245d191">registers.c</a>
+, <a class="el" href="registers_8h.html#a7b32151b1c6c1f3adcf8c1b2d245d191">registers.h</a>
+</li>
+<li>GetVdd()
+: <a class="el" href="adc_8c.html#a7c7436c8ad95d28579575f233c6b3010">adc.c</a>
 </li>
 </ul>
 
@@ -287,8 +291,7 @@ $(function() {
 , <a class="el" href="isr_8c.html#a2bffc10d5bd4106753b7c30e86903bea">isr.c</a>
 </li>
 <li>HexToUInt()
-: <a class="el" href="cli_8c.html#aa95e8571d898b54da256081bf33704fa">cli.c</a>
-, <a class="el" href="script_8c.html#a837eb7d2d5f536c49cf57b012ef4fe4b">script.c</a>
+: <a class="el" href="script_8c.html#a89bcaf676924699ae15b7ad7162fa604">script.c</a>
 </li>
 </ul>
 
@@ -299,16 +302,16 @@ $(function() {
 , <a class="el" href="imu__spi_8c.html#a7b6cb18f2a8ada801f09a5c593afbdc7">imu_spi.c</a>
 </li>
 <li>ImuSpiTransfer()
-: <a class="el" href="imu__spi_8h.html#a282b6361f14c10a21b150aa10c26e03f">imu_spi.h</a>
-, <a class="el" href="imu__spi_8c.html#a282b6361f14c10a21b150aa10c26e03f">imu_spi.c</a>
+: <a class="el" href="imu__spi_8c.html#a282b6361f14c10a21b150aa10c26e03f">imu_spi.c</a>
+, <a class="el" href="imu__spi_8h.html#a282b6361f14c10a21b150aa10c26e03f">imu_spi.h</a>
 </li>
 <li>ImuWriteReg()
 : <a class="el" href="imu__spi_8h.html#ae35146a7cc10e15dd1cb67520515c43c">imu_spi.h</a>
 , <a class="el" href="imu__spi_8c.html#ae35146a7cc10e15dd1cb67520515c43c">imu_spi.c</a>
 </li>
 <li>IncrementPPSTime()
-: <a class="el" href="timer_8h.html#aa070c28f17a0f620ec21a681b383769a">timer.h</a>
-, <a class="el" href="timer_8c.html#aa070c28f17a0f620ec21a681b383769a">timer.c</a>
+: <a class="el" href="timer_8c.html#aa070c28f17a0f620ec21a681b383769a">timer.c</a>
+, <a class="el" href="timer_8h.html#aa070c28f17a0f620ec21a681b383769a">timer.h</a>
 </li>
 <li>InitImuCsTimer()
 : <a class="el" href="imu__spi_8h.html#a814e8222e8a4eda9663f65501d41580a">imu_spi.h</a>
@@ -319,8 +322,8 @@ $(function() {
 , <a class="el" href="imu__spi_8c.html#a825031cb5959ebd7d20be9f25c64092a">imu_spi.c</a>
 </li>
 <li>InitMicrosecondTimer()
-: <a class="el" href="timer_8h.html#a69df0b9d0c856817c7e0406ddfd1ae01">timer.h</a>
-, <a class="el" href="timer_8c.html#a69df0b9d0c856817c7e0406ddfd1ae01">timer.c</a>
+: <a class="el" href="timer_8c.html#a69df0b9d0c856817c7e0406ddfd1ae01">timer.c</a>
+, <a class="el" href="timer_8h.html#a69df0b9d0c856817c7e0406ddfd1ae01">timer.h</a>
 </li>
 <li>InitTIM2()
 : <a class="el" href="timer_8c.html#a2728000ef526683ed785c3fbf3387409">timer.c</a>
@@ -361,13 +364,16 @@ $(function() {
 </ul>
 
 
-<h3><a id="index_p"></a>- p -</h3><ul>
-<li>ParseCommand()
-: <a class="el" href="cli_8c.html#ab0fd0bb5d8793eeb0751e12dd138f8c9">cli.c</a>
+<h3><a id="index_o"></a>- o -</h3><ul>
+<li>OpenScriptFiles()
+: <a class="el" href="sd__card_8c.html#a686e0e25c004ba96a80b7f9eccb65f95">sd_card.c</a>
 </li>
+</ul>
+
+
+<h3><a id="index_p"></a>- p -</h3><ul>
 <li>ParseCommandArgs()
-: <a class="el" href="cli_8c.html#aefe442aeea7954d86134b4e2b0142949">cli.c</a>
-, <a class="el" href="script_8c.html#a8ca1acc3c2f70de254b6033abd7842ef">script.c</a>
+: <a class="el" href="script_8c.html#ac102053883fd128a64731e1b89e2d5bc">script.c</a>
 </li>
 <li>ParseDIOOutputConfig()
 : <a class="el" href="dio_8c.html#a96da6e323e19cd740908ac240c9f76d3">dio.c</a>
@@ -389,12 +395,15 @@ $(function() {
 <li>ProcessRegWrite()
 : <a class="el" href="registers_8c.html#a2ea4f0af5f4a2eb7d525810686c24c06">registers.c</a>
 </li>
+<li>ProcessTempReading()
+: <a class="el" href="adc_8c.html#a55995e9dd1e94588c71e49f40dc2dd61">adc.c</a>
+</li>
 </ul>
 
 
 <h3><a id="index_r"></a>- r -</h3><ul>
-<li>Read()
-: <a class="el" href="cli_8c.html#ad724793ac6cd1e1b7f4a7a563c5c703a">cli.c</a>
+<li>ReadHandler()
+: <a class="el" href="script_8c.html#ac667819c6a60b19091561cb8a62e0f2b">script.c</a>
 </li>
 <li>ReadReg()
 : <a class="el" href="registers_8h.html#aeee7c6312a09dcb27a9d0b68fe37afcf">registers.h</a>
@@ -409,7 +418,11 @@ $(function() {
 
 <h3><a id="index_s"></a>- s -</h3><ul>
 <li>ScaleTempData()
-: <a class="el" href="temp_8c.html#a57cb7226dfb1ff1a7329f1ac9d4f512d">temp.c</a>
+: <a class="el" href="adc_8c.html#a57cb7226dfb1ff1a7329f1ac9d4f512d">adc.c</a>
+</li>
+<li>ScriptAutorun()
+: <a class="el" href="sd__card_8h.html#ade0e1d4a61790fd47ec542cbf559af68">sd_card.h</a>
+, <a class="el" href="sd__card_8c.html#ade0e1d4a61790fd47ec542cbf559af68">sd_card.c</a>
 </li>
 <li>ScriptStep()
 : <a class="el" href="sd__card_8h.html#a32b1dbc0c13c1814f562104c761f8d6c">sd_card.h</a>
@@ -419,8 +432,12 @@ $(function() {
 : <a class="el" href="sd__card_8c.html#a091d146cc644caa26078156892f38997">sd_card.c</a>
 </li>
 <li>SDCardInit()
-: <a class="el" href="sd__card_8h.html#a625b0dce0e53a68e74b117c8ced97afe">sd_card.h</a>
-, <a class="el" href="sd__card_8c.html#a625b0dce0e53a68e74b117c8ced97afe">sd_card.c</a>
+: <a class="el" href="sd__card_8c.html#a625b0dce0e53a68e74b117c8ced97afe">sd_card.c</a>
+, <a class="el" href="sd__card_8h.html#a625b0dce0e53a68e74b117c8ced97afe">sd_card.h</a>
+</li>
+<li>SDTxHandler()
+: <a class="el" href="sd__card_8h.html#a3d1f2d063a0389e1db1e31b7cc174a89">sd_card.h</a>
+, <a class="el" href="sd__card_8c.html#a3d1f2d063a0389e1db1e31b7cc174a89">sd_card.c</a>
 </li>
 <li>SleepMicroseconds()
 : <a class="el" href="timer_8h.html#ad679c296af1e7b89bd58be986d71d985">timer.h</a>
@@ -430,8 +447,8 @@ $(function() {
 : <a class="el" href="sd__card_8c.html#aa982ad2254de265717f1ad2404cf53ad">sd_card.c</a>
 </li>
 <li>StartImuBurst()
-: <a class="el" href="imu__spi_8h.html#ae6a71708bd067b831a355da7d5e7a1b7">imu_spi.h</a>
-, <a class="el" href="imu__spi_8c.html#ae6a71708bd067b831a355da7d5e7a1b7">imu_spi.c</a>
+: <a class="el" href="imu__spi_8c.html#ae6a71708bd067b831a355da7d5e7a1b7">imu_spi.c</a>
+, <a class="el" href="imu__spi_8h.html#ae6a71708bd067b831a355da7d5e7a1b7">imu_spi.h</a>
 </li>
 <li>StartScript()
 : <a class="el" href="sd__card_8h.html#a3549a7ed2c1d2569224b55e2d286c0e8">sd_card.h</a>
@@ -441,12 +458,9 @@ $(function() {
 : <a class="el" href="sd__card_8h.html#ad6088aedec2b1022a826a94f45805854">sd_card.h</a>
 , <a class="el" href="sd__card_8c.html#ad6088aedec2b1022a826a94f45805854">sd_card.c</a>
 </li>
-<li>Stream()
-: <a class="el" href="cli_8c.html#aff24599cb1c74b2533af432154f6a06e">cli.c</a>
-</li>
 <li>SVC_Handler()
-: <a class="el" href="stm32f3xx__it_8h.html#a3e5ddb3df0d62f2dc357e64a3f04a6ce">stm32f3xx_it.h</a>
-, <a class="el" href="stm32f3xx__it_8c.html#a3e5ddb3df0d62f2dc357e64a3f04a6ce">stm32f3xx_it.c</a>
+: <a class="el" href="stm32f3xx__it_8c.html#a3e5ddb3df0d62f2dc357e64a3f04a6ce">stm32f3xx_it.c</a>
+, <a class="el" href="stm32f3xx__it_8h.html#a3e5ddb3df0d62f2dc357e64a3f04a6ce">stm32f3xx_it.h</a>
 </li>
 <li>SystemClock_Config()
 : <a class="el" href="main_8c.html#ad554cbf06ce0fa6f92a0c4152b8a4c64">main.c</a>
@@ -465,45 +479,41 @@ $(function() {
 
 
 <h3><a id="index_t"></a>- t -</h3><ul>
-<li>TempInit()
-: <a class="el" href="temp_8h.html#a58739d6d0d1d87e784cc1a5482ea13a6">temp.h</a>
-, <a class="el" href="temp_8c.html#a58739d6d0d1d87e784cc1a5482ea13a6">temp.c</a>
-</li>
 <li>TIM4_IRQHandler()
 : <a class="el" href="isr_8h.html#a6e7703924e97aa04dbae6b88adcec3d1">isr.h</a>
 , <a class="el" href="isr_8c.html#a6e7703924e97aa04dbae6b88adcec3d1">isr.c</a>
 </li>
 <li>TurnOffLED()
-: <a class="el" href="led_8h.html#a33badabbc4771ff785afaea9dcb90adc">led.h</a>
-, <a class="el" href="led_8c.html#a33badabbc4771ff785afaea9dcb90adc">led.c</a>
+: <a class="el" href="led_8c.html#a33badabbc4771ff785afaea9dcb90adc">led.c</a>
+, <a class="el" href="led_8h.html#a33badabbc4771ff785afaea9dcb90adc">led.h</a>
 </li>
 <li>TurnOnLED()
-: <a class="el" href="led_8h.html#a99d3a7743f7abf1c66201c0b1297040a">led.h</a>
-, <a class="el" href="led_8c.html#a99d3a7743f7abf1c66201c0b1297040a">led.c</a>
+: <a class="el" href="led_8c.html#a99d3a7743f7abf1c66201c0b1297040a">led.c</a>
+, <a class="el" href="led_8h.html#a99d3a7743f7abf1c66201c0b1297040a">led.h</a>
 </li>
 </ul>
 
 
 <h3><a id="index_u"></a>- u -</h3><ul>
+<li>UpdateADC()
+: <a class="el" href="adc_8h.html#a88d8b1c45444aeddd983d3add5e8224e">adc.h</a>
+, <a class="el" href="adc_8c.html#a88d8b1c45444aeddd983d3add5e8224e">adc.c</a>
+</li>
 <li>UpdateDIOInputConfig()
-: <a class="el" href="dio_8h.html#ad38b20e2c54a770ce6af80547abbce43">dio.h</a>
-, <a class="el" href="dio_8c.html#ad38b20e2c54a770ce6af80547abbce43">dio.c</a>
+: <a class="el" href="dio_8c.html#ad38b20e2c54a770ce6af80547abbce43">dio.c</a>
+, <a class="el" href="dio_8h.html#ad38b20e2c54a770ce6af80547abbce43">dio.h</a>
 </li>
 <li>UpdateDIOOutputConfig()
 : <a class="el" href="dio_8h.html#a643b4c5d55edcd285e5440bc1caf17a4">dio.h</a>
 , <a class="el" href="dio_8c.html#a643b4c5d55edcd285e5440bc1caf17a4">dio.c</a>
 </li>
 <li>UpdateImuSpiConfig()
-: <a class="el" href="imu__spi_8h.html#a2e5c87a639e8ca9a6f61d05052df5fb8">imu_spi.h</a>
-, <a class="el" href="imu__spi_8c.html#a2e5c87a639e8ca9a6f61d05052df5fb8">imu_spi.c</a>
+: <a class="el" href="imu__spi_8c.html#a2e5c87a639e8ca9a6f61d05052df5fb8">imu_spi.c</a>
+, <a class="el" href="imu__spi_8h.html#a2e5c87a639e8ca9a6f61d05052df5fb8">imu_spi.h</a>
 </li>
 <li>UpdateOutputPins()
 : <a class="el" href="user__interrupt_8h.html#a79317c41e270f99812a71133ea9df355">user_interrupt.h</a>
 , <a class="el" href="user__interrupt_8c.html#addaedaa5323a42d2e7144a285edc8611">user_interrupt.c</a>
-</li>
-<li>UpdateTemp()
-: <a class="el" href="temp_8h.html#ad0bf0000555bdc1e1259b7fb6f0e16ea">temp.h</a>
-, <a class="el" href="temp_8c.html#ad0bf0000555bdc1e1259b7fb6f0e16ea">temp.c</a>
 </li>
 <li>UpdateUserInterrupt()
 : <a class="el" href="user__interrupt_8h.html#a7462f47cda251a48a22aad3c1773ab09">user_interrupt.h</a>
@@ -520,17 +530,12 @@ $(function() {
 <li>USB_LP_CAN_RX0_IRQHandler()
 : <a class="el" href="stm32f3xx__it_8c.html#a6543c7b9f9bdb00685db956a0e7c560b">stm32f3xx_it.c</a>
 </li>
-<li>USBReadBuf()
-: <a class="el" href="cli_8h.html#aceb394d4a71272370a5b2196789a4abe">cli.h</a>
-, <a class="el" href="cli_8c.html#aceb394d4a71272370a5b2196789a4abe">cli.c</a>
-</li>
-<li>USBSerialHandler()
-: <a class="el" href="cli_8h.html#a06341c7477d45abdc32876b3ea418065">cli.h</a>
-, <a class="el" href="cli_8c.html#a06341c7477d45abdc32876b3ea418065">cli.c</a>
+<li>USBRxHandler()
+: <a class="el" href="usb__cli_8c.html#af3dfc46e9419ce7b06e35ccf57b57e88">usb_cli.c</a>
+, <a class="el" href="usb__cli_8h.html#af3dfc46e9419ce7b06e35ccf57b57e88">usb_cli.h</a>
 </li>
 <li>UShortToHex()
-: <a class="el" href="cli_8c.html#aea16d045e8282ac0a27d9ac0f520c286">cli.c</a>
-, <a class="el" href="script_8c.html#aea16d045e8282ac0a27d9ac0f520c286">script.c</a>
+: <a class="el" href="script_8c.html#aea16d045e8282ac0a27d9ac0f520c286">script.c</a>
 </li>
 </ul>
 
@@ -543,12 +548,12 @@ $(function() {
 
 
 <h3><a id="index_w"></a>- w -</h3><ul>
-<li>Write()
-: <a class="el" href="cli_8c.html#a44ffda3e58f981f7f6631a12b7b8162b">cli.c</a>
+<li>WriteHandler()
+: <a class="el" href="script_8c.html#a84be1b50cabc1d7855f02d66a171a92e">script.c</a>
 </li>
 <li>WriteReg()
-: <a class="el" href="registers_8h.html#a14e4e9f1315bb4941574076d9a824d4a">registers.h</a>
-, <a class="el" href="registers_8c.html#a14e4e9f1315bb4941574076d9a824d4a">registers.c</a>
+: <a class="el" href="registers_8c.html#a14e4e9f1315bb4941574076d9a824d4a">registers.c</a>
+, <a class="el" href="registers_8h.html#a14e4e9f1315bb4941574076d9a824d4a">registers.h</a>
 </li>
 </ul>
 </div><!-- contents -->

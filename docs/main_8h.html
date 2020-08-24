@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.4</span>
+   &#160;<span id="projectnumber">1.8</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -69,6 +69,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -88,10 +89,31 @@ $(function() {
 <code>#include &quot;<a class="el" href="timer_8h_source.html">timer.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="dio_8h_source.html">dio.h</a>&quot;</code><br />
 <code>#include &quot;usb_device.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="temp_8h_source.html">temp.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="adc_8h_source.html">adc.h</a>&quot;</code><br />
 </div>
 <p><a href="main_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ae7f0e61dac690b0527e89373cba7ccae"><td class="memItemLeft" align="right" valign="top"><a id="ae7f0e61dac690b0527e89373cba7ccae"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>STATE_CHECK_FLAGS</b>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:ae7f0e61dac690b0527e89373cba7ccae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a682e0226ddf3789186b60f7a8acc0f92"><td class="memItemLeft" align="right" valign="top"><a id="a682e0226ddf3789186b60f7a8acc0f92"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>STATE_CHECK_PPS</b>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a682e0226ddf3789186b60f7a8acc0f92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52fac1022cf48b4c82c46e43e19583e8"><td class="memItemLeft" align="right" valign="top"><a id="a52fac1022cf48b4c82c46e43e19583e8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>STATE_READ_ADC</b>&#160;&#160;&#160;2</td></tr>
+<tr class="separator:a52fac1022cf48b4c82c46e43e19583e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8fd9abe0531ee8f550d277f5d7cb9c0"><td class="memItemLeft" align="right" valign="top"><a id="ac8fd9abe0531ee8f550d277f5d7cb9c0"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>STATE_CHECK_USB</b>&#160;&#160;&#160;3</td></tr>
+<tr class="separator:ac8fd9abe0531ee8f550d277f5d7cb9c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b3018a222bad513317bf84c44b5561a"><td class="memItemLeft" align="right" valign="top"><a id="a7b3018a222bad513317bf84c44b5561a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>STATE_CHECK_STREAM</b>&#160;&#160;&#160;4</td></tr>
+<tr class="separator:a7b3018a222bad513317bf84c44b5561a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a842931ff21ba28fce21713ed2437e8f6"><td class="memItemLeft" align="right" valign="top"><a id="a842931ff21ba28fce21713ed2437e8f6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>STATE_STEP_SCRIPT</b>&#160;&#160;&#160;5</td></tr>
+<tr class="separator:a842931ff21ba28fce21713ed2437e8f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:af6a258d8f3ee5206d682d799316314b1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> { <b>false</b> = 0, 

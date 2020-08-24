@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.4</span>
+   &#160;<span id="projectnumber">1.8</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -87,17 +87,42 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a3744cf20327e23a2afb57c9051a55d75"><td class="memItemLeft" align="right" valign="top"><a id="a3744cf20327e23a2afb57c9051a55d75"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SCRIPT_MAX_ENTRIES</b>&#160;&#160;&#160;64</td></tr>
+<tr class="memitem:a3744cf20327e23a2afb57c9051a55d75"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8h.html#a3744cf20327e23a2afb57c9051a55d75">SCRIPT_MAX_ENTRIES</a>&#160;&#160;&#160;64</td></tr>
 <tr class="separator:a3744cf20327e23a2afb57c9051a55d75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a401e9c8ec9c02712524bb0be33a650ba"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8h.html#a401e9c8ec9c02712524bb0be33a650ba">INVALID_LOOP_INDEX</a>&#160;&#160;&#160;0xFFFFFFFF</td></tr>
+<tr class="separator:a401e9c8ec9c02712524bb0be33a650ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2da3e65f17534a42826fd4fd43732f7f"><td class="memItemLeft" align="right" valign="top"><a id="a2da3e65f17534a42826fd4fd43732f7f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SCR_NO_SD</b>&#160;&#160;&#160;(1 &lt;&lt; 0)</td></tr>
+<tr class="separator:a2da3e65f17534a42826fd4fd43732f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3771b3acd072cbeb44468fd248dbf80a"><td class="memItemLeft" align="right" valign="top"><a id="a3771b3acd072cbeb44468fd248dbf80a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SCR_MOUNT_ERROR</b>&#160;&#160;&#160;(1 &lt;&lt; 1)</td></tr>
+<tr class="separator:a3771b3acd072cbeb44468fd248dbf80a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf63d96cfc947ee0febd09a7a5c06869"><td class="memItemLeft" align="right" valign="top"><a id="aaf63d96cfc947ee0febd09a7a5c06869"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SCR_SCRIPT_OPEN_ERROR</b>&#160;&#160;&#160;(1 &lt;&lt; 2)</td></tr>
+<tr class="separator:aaf63d96cfc947ee0febd09a7a5c06869"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af708ad40645e8e520b2ee052021e6b3f"><td class="memItemLeft" align="right" valign="top"><a id="af708ad40645e8e520b2ee052021e6b3f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SCR_RESULT_OPEN_ERROR</b>&#160;&#160;&#160;(1 &lt;&lt; 3)</td></tr>
+<tr class="separator:af708ad40645e8e520b2ee052021e6b3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a124637fa0da7eb9f3f35c3cfcf5472a6"><td class="memItemLeft" align="right" valign="top"><a id="a124637fa0da7eb9f3f35c3cfcf5472a6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SCR_PARSE_INVALID_CMD</b>&#160;&#160;&#160;(1 &lt;&lt; 4)</td></tr>
+<tr class="separator:a124637fa0da7eb9f3f35c3cfcf5472a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd6f3ffe35881c3c21f9621f1c95d9ee"><td class="memItemLeft" align="right" valign="top"><a id="acd6f3ffe35881c3c21f9621f1c95d9ee"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SCR_PARSE_INVALID_ARGS</b>&#160;&#160;&#160;(1 &lt;&lt; 5)</td></tr>
+<tr class="separator:acd6f3ffe35881c3c21f9621f1c95d9ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1661d06e3c99bd118697678b5a8a4d10"><td class="memItemLeft" align="right" valign="top"><a id="a1661d06e3c99bd118697678b5a8a4d10"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SCR_PARSE_INVALID_LOOP</b>&#160;&#160;&#160;(1 &lt;&lt; 6)</td></tr>
+<tr class="separator:a1661d06e3c99bd118697678b5a8a4d10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefb858c87399166137b0648dc9bdcfb5"><td class="memItemLeft" align="right" valign="top"><a id="aefb858c87399166137b0648dc9bdcfb5"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SCR_WRITE_FAIL</b>&#160;&#160;&#160;(1 &lt;&lt; 7)</td></tr>
+<tr class="separator:aefb858c87399166137b0648dc9bdcfb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a625b0dce0e53a68e74b117c8ced97afe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8h.html#a625b0dce0e53a68e74b117c8ced97afe">SDCardInit</a> ()</td></tr>
 <tr class="memdesc:a625b0dce0e53a68e74b117c8ced97afe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init SD card hardware interface and FATFs driver.  <a href="sd__card_8h.html#a625b0dce0e53a68e74b117c8ced97afe">More...</a><br /></td></tr>
 <tr class="separator:a625b0dce0e53a68e74b117c8ced97afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade0e1d4a61790fd47ec542cbf559af68"><td class="memItemLeft" align="right" valign="top"><a id="ade0e1d4a61790fd47ec542cbf559af68"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ScriptAutorun</b> ()</td></tr>
+<tr class="memitem:ade0e1d4a61790fd47ec542cbf559af68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8h.html#ade0e1d4a61790fd47ec542cbf559af68">ScriptAutorun</a> ()</td></tr>
+<tr class="memdesc:ade0e1d4a61790fd47ec542cbf559af68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run SD card script automatic execution process.  <a href="sd__card_8h.html#ade0e1d4a61790fd47ec542cbf559af68">More...</a><br /></td></tr>
 <tr class="separator:ade0e1d4a61790fd47ec542cbf559af68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32b1dbc0c13c1814f562104c761f8d6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8h.html#a32b1dbc0c13c1814f562104c761f8d6c">ScriptStep</a> ()</td></tr>
 <tr class="memdesc:a32b1dbc0c13c1814f562104c761f8d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Step the script execution process.  <a href="sd__card_8h.html#a32b1dbc0c13c1814f562104c761f8d6c">More...</a><br /></td></tr>
@@ -108,13 +133,68 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ScriptAutorun</b> ()<
 <tr class="memitem:ad6088aedec2b1022a826a94f45805854"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8h.html#ad6088aedec2b1022a826a94f45805854">StopScript</a> ()</td></tr>
 <tr class="memdesc:ad6088aedec2b1022a826a94f45805854"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop a running SD card script.  <a href="sd__card_8h.html#ad6088aedec2b1022a826a94f45805854">More...</a><br /></td></tr>
 <tr class="separator:ad6088aedec2b1022a826a94f45805854"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d1f2d063a0389e1db1e31b7cc174a89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8h.html#a3d1f2d063a0389e1db1e31b7cc174a89">SDTxHandler</a> (const uint8_t *buf, uint32_t count)</td></tr>
+<tr class="memdesc:a3d1f2d063a0389e1db1e31b7cc174a89"><td class="mdescLeft">&#160;</td><td class="mdescRight">SD card write handler function.  <a href="sd__card_8h.html#a3d1f2d063a0389e1db1e31b7cc174a89">More...</a><br /></td></tr>
+<tr class="separator:a3d1f2d063a0389e1db1e31b7cc174a89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header file for iSensor-SPI-Buffer SD card interfacing and script execution module. </p>
 <p>Copyright (c) Analog Devices Inc, 2020 All Rights Reserved.</p>
 <dl class="section date"><dt>Date</dt><dd>7/28/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
-</div><h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a401e9c8ec9c02712524bb0be33a650ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a401e9c8ec9c02712524bb0be33a650ba">&#9670;&nbsp;</a></span>INVALID_LOOP_INDEX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define INVALID_LOOP_INDEX&#160;&#160;&#160;0xFFFFFFFF</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Invalid loop index constant (used in parsing) </p>
+
+</div>
+</div>
+<a id="a3744cf20327e23a2afb57c9051a55d75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3744cf20327e23a2afb57c9051a55d75">&#9670;&nbsp;</a></span>SCRIPT_MAX_ENTRIES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SCRIPT_MAX_ENTRIES&#160;&#160;&#160;64</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Maximum script file size supported </p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ade0e1d4a61790fd47ec542cbf559af68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade0e1d4a61790fd47ec542cbf559af68">&#9670;&nbsp;</a></span>ScriptAutorun()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ScriptAutorun </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Run SD card script automatic execution process. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function is intended to be called at the end of the initialization portion of main, just before entering the cyclic executive. If the SD card autorun bit is set in USB_CONFIG and the watchdog reset bit is not set in STATUS, the script will be run. The watchdog reset check is in place to remove the potential for a watchdog reset loop. </p>
+
+</div>
+</div>
 <a id="a32b1dbc0c13c1814f562104c761f8d6c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a32b1dbc0c13c1814f562104c761f8d6c">&#9670;&nbsp;</a></span>ScriptStep()</h2>
 
@@ -132,7 +212,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ScriptAutorun</b> ()<
 
 <p>Step the script execution process. </p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function is called from the main loop. It is responsible for performing the actual script execution, and writing the output to the SD card. </p>
+<p>This function is called from the main loop. It is responsible for performing the actual script execution, and writing the output to the SD card (via </p>
 
 </div>
 </div>
@@ -154,6 +234,45 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ScriptAutorun</b> ()<
 <p>Init SD card hardware interface and FATFs driver. </p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
 <p>This function configures the SPI3 port for use with an SD card and inits all GPIO as needed. This function is called directly by the application on startup. It does not attempt to connect to the SD card in any way.lked right into tha </p>
+
+</div>
+</div>
+<a id="a3d1f2d063a0389e1db1e31b7cc174a89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d1f2d063a0389e1db1e31b7cc174a89">&#9670;&nbsp;</a></span>SDTxHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDTxHandler </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>SD card write handler function. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buf</td><td>Buffer containing data to write</td></tr>
+    <tr><td class="paramname">count</td><td>Number of bytes to write</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function is called by the script execution routines, when a script object is executed from a SD card script context. </p>
 
 </div>
 </div>
