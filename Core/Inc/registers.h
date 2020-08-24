@@ -37,6 +37,7 @@ void BufDequeueToOutputRegs();
 /** iSensor-SPI-Buffer config settings page */
 #define BUF_CONFIG_PAGE				253
 
+/* Non-volatile R/W regs */
 #define BUF_CONFIG_REG				0x01
 #define BUF_LEN_REG					0x02
 #define BUF_MAX_CNT_REG				0x03
@@ -47,20 +48,32 @@ void BufDequeueToOutputRegs();
 #define IMU_SPI_CONFIG_REG			0x08
 #define USER_SPI_CONFIG_REG			0x09
 #define CLI_CONFIG_REG				0x0A
-#define USER_COMMAND_REG			0x0B
+#define USER_COMMAND_REG			0x0B /* Clears automatically */
 #define USER_SCR_0_REG				0x0C
 #define USER_SCR_7_REG				0x13
+
+/* Non-volatile read only regs */
 #define FW_REV_REG					0x14
 #define ENDURANCE_REG				0x15
+
+/* Volatile general info regs */
 #define STATUS_0_REG				0x20
 #define BUF_CNT_0_REG				0x21
 #define FAULT_CODE_REG				0x22
+
+/* Volatile time stamp and output data regs */
 #define UTC_TIMESTAMP_LWR_REG		0x23
 #define UTC_TIMESTAMP_UPR_REG		0x24
 #define TIMESTAMP_LWR_REG			0x25
 #define TIMESTAMP_UPR_REG			0x26
 #define TEMP_REG					0x27
 #define VDD_REG						0x28
+
+/* Volatile script info regs */
+#define SCR_LINE_REG				0x32
+#define SCR_ERROR_REG				0x33
+
+/* Non-volatile device info regs */
 #define FW_DAY_MONTH_REG			0x38
 #define FW_YEAR_REG					0x39
 #define DEV_SN_REG					0x3A

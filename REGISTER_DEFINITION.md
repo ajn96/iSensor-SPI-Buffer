@@ -29,12 +29,14 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 | 0x40 | [STATUS](#STATUS) | N/A | R | F | Device status register. Clears on read |
 | 0x42 | [BUF_CNT](#BUF_CNT) | 0x0000 | R | F | The current number of samples stored in buffer |
 | 0x44 | [FAULT_CODE](#FAULT_CODE) | 0x0000 | R | N/A | Fault code, stored in case of a hard fault exception. This register is stored on a separate flash page from the primary register array and can only be cleared with a FAULT_CLEAR command |
-| 0x46 | [UTC_TIMESTAMP_LWR](#UTC_TIMESTAMP_LWR) | 0x0000 | R/W | F | Lower 16 bits of UTC timestamp (PPS counter) |
-| 0x48 | [UTC_TIMESTAMP_UPR](#UTC_TIMESTAMP_UPR) | 0x0000 | R/W | F | Upper 16 bits of UTC timestamp (PPS counter) |
+| 0x46 | [UTC_TIME_LWR](#UTC_TIME_LWR) | 0x0000 | R/W | F | Lower 16 bits of UTC timestamp (PPS counter) |
+| 0x48 | [UTC_TIME_UPR](#UTC_TIME_UPR) | 0x0000 | R/W | F | Upper 16 bits of UTC timestamp (PPS counter) |
 | 0x4A | [TIMESTAMP_LWR](#TIMESTAMP_LWR) | 0x0000 | R | F | Lower 16 bits of microsecond timestamp |
 | 0x4C | [TIMESTAMP_UPR](#TIMESTAMP_UPR) | 0x0000 | R | F | Upper 16 bits of microsecond timestamp |
 | 0x4E | [TEMP_OUT](#TEMP_OUT) | N/A | R | F | Internal temperature output. 1 degree C = 10LSB |
 | 0x50 | [VDD_OUT](#VDD_OUT) | N/A | R | F | Measured Vdd output. 1V = 100LSBs (3.3V supply -> 330 LSBs) |
+| 0x64 | [SCRIPT_LINE](#SCRIPT_LINE) | N/A | R | F | Current script line being processed in an SD card script file. If no script is running, this register will be set to 0. |
+| 0x66 | [SCRIPT_ERROR](#SCRIPT_ERROR) | N/A | R | F | Flag for any errors which occurs during SD card script execution. |
 | 0x70 | [FW_DAY_MONTH](#FW_DAY_MONTH) | N/A | R | T | Firmware build day and month |
 | 0x72 | [FW_YEAR](#FW_YEAR) | N/A | R | T | Firmware build year |
 | 0x74 | [DEV_SN_0](#DEV_SN_N) | N/A | R | T | Processor core serial number register, word 0 |
@@ -324,6 +326,28 @@ The measured value of VDD is used to normalize the TEMP_OUT register value to a 
 The value of Vdd is calculated by measuring the value of VREFINT (internal regulated voltage reference) using the ADC and comparing against the expected measurement, with Vdd = 3.3V. Changes in Vdd (VREF) will cause an apparent change in the VREFINT measurement, which can be used to calculate Vdd. 
 
 
+
+## SCRIPT_LINE
+
+| Bit  | Name | Description                                                  |
+| ---- | ---- | ------------------------------------------------------------ |
+| 15:0 | LINE | Line number in the provided SD card script (script.txt) which is currently being executed by the script execution engine. Will be set to zero when there is no script running. |
+
+## SCRIPT_ERROR
+
+| Bit  | Name               | Description                                                  |
+| ---- | ------------------ | ------------------------------------------------------------ |
+| 0    | NO_SD              | Set when a script start command is processed and there is no SD card attached. This is determined using the SD card detect pin. When this condition is detected, the script start process is aborted. |
+| 1    | MOUNT_ERROR        | Set when the FAT file system fails to mount the SD card during the script setup process. When this condition is detected, the script start process is aborted. |
+| 2    | SCRIPT_OPEN_ERROR  | Set when the software cannot open "script.txt" in read only mode during the script setup process. When this condition is detected, the script start process is aborted. |
+| 3    | RESULT_OPEN_ERROR  | Set when the software cannot open "result.txt" in write mode during the script setup process. When this condition is detected, the script start process is aborted. |
+| 4    | PARSE_INVALID_CMD  | Set when the software opens script.txt for parsing, but one of the lines contains an invalid command. When this condition is detected, the script start process is aborted. |
+| 5    | PARSE_INVALID_ARGS | Set when the software opens script.txt for parsing and detects a valid command with invalid arguments provided. When this condition is detected, the script start process is aborted. |
+| 6    | PARSE_INVALID_LOOP | Set when the software opens script.txt for parsing and detects an invalid loop structure. Loops have a fixed loop count, and cannot be nested. When this condition is detected, the script start process is aborted. |
+| 7    | WRITE_FAIL         | Set when a running script tries to write data to the output file and gets an error. This error does not stop the script execution process. |
+| 15:8 | RESERVED           | Currently unused                                             |
+
+The script error register is set to 0 when a script start or cancel command is received. Any errors which occur during the script load, parse, and execution process are bit or'd into this register.
 
 ## FW_DAY_MONTH
 
