@@ -16,6 +16,7 @@ static bool SDCardAttached();
 static bool ParseScriptFile();
 static bool CommandPostLoadProcess();
 static void SPI3_Init(void);
+static void ParseReadBuffer(UINT bytesRead);
 
 /** Global register array (from registers.c) */
 extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
@@ -159,9 +160,9 @@ void StartScript()
 		return;
 	}
 
-	/* If we reach here, script is loaded and good. Can start execution process */
-
-	/* Set script running status bit (sticky so won't clear on read) */
+	/* If we reach here, script is loaded and good. Can start execution
+	 * process. First set script running status bit
+	 * (sticky so won't clear on read) */
 	g_regs[STATUS_0_REG] |= STATUS_SCR_RUNNING;
 	g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 
@@ -360,8 +361,8 @@ static bool OpenScriptFiles()
 		return false;
 	}
 
-	/* Open result.txt in append write mode */
-	if(f_open(&outFile, "result.txt", (FA_OPEN_ALWAYS | FA_WRITE)) != FR_OK)
+	/* Open result.txt in write mode */
+	if(f_open(&outFile, "result.txt", (FA_CREATE_ALWAYS|FA_WRITE)) != FR_OK)
 	{
 		/* Attempt file close on script and result */
 		f_close(&outFile);
@@ -397,40 +398,77 @@ static bool OpenScriptFiles()
 static bool ParseScriptFile()
 {
 	numCmds = 0;
-	bool endofFile = false;
-	char* result;
+	UINT fileLen;
+	UINT bytesRead;
+	UINT totalBytesRead;
 
-	while(!endofFile)
+	fileLen = cmdFile.fsize;
+	totalBytesRead = 0;
+	while(totalBytesRead < fileLen)
 	{
 		/* If we got too many lines return false */
 		if(numCmds >= SCRIPT_MAX_ENTRIES)
 			return false;
 
-		/* Read line from file */
-		result = f_gets((char *)sd_buf, sizeof(sd_buf), &cmdFile);
-		if(result)
-		{
-			/* We got a good line from the file, parse into command array */
-			ParseScriptElement(sd_buf, &cmdList[numCmds]);
-			numCmds++;
-		}
-		else
-		{
-			/* hit end of file */
-			endofFile = true;
-		}
+		/* Read buffer from file */
+		f_read(&cmdFile, (char *)sd_buf, sizeof(sd_buf), &bytesRead);
+		if(bytesRead == 0)
+			return false;
+		totalBytesRead += bytesRead;
 
-		/* Clear buf */
-		for(int i = 0; i < sizeof(sd_buf); i++)
-		{
-			sd_buf[i] = 0;
-		}
+		/* Parse */
+		ParseReadBuffer(bytesRead);
 	}
 
 	/* Close command file */
 	f_close(&cmdFile);
 	/* Perform post-load processing and return result */
 	return CommandPostLoadProcess();
+}
+
+static void ParseReadBuffer(UINT bytesRead)
+{
+	/* Buffer to read command into. Static allows for state persistence across multiple calls */
+	static uint8_t cmd[64] = {0};
+	static int cmdIndex = 0;
+
+	/* Go through read data splitting along \n */
+	for(int i = 0; i < bytesRead; i++)
+	{
+		if(sd_buf[i] == '\n')
+		{
+			/* We got a good line from the file, parse into command array */
+			ParseScriptElement(cmd, &cmdList[numCmds]);
+			numCmds++;
+			if(numCmds >= SCRIPT_MAX_ENTRIES)
+				return;
+			cmdIndex = 0;
+			for(int j = 0; j < 64; j++)
+				cmd[j] = 0;
+		}
+		else if(sd_buf[i] == '\r')
+		{
+			/* Ignore \r */
+		}
+		else if(cmdIndex < 64)
+		{
+			cmd[cmdIndex] = sd_buf[i];
+			cmdIndex++;
+		}
+		else
+		{
+			/* Extra data is ignored */
+		}
+	}
+	if((bytesRead < sizeof(sd_buf)) && (cmdIndex > 0))
+	{
+		/* Clean up command at end of file */
+		ParseScriptElement(cmd, &cmdList[numCmds]);
+		numCmds++;
+		cmdIndex = 0;
+		for(int j = 0; j < 64; j++)
+			cmd[j] = 0;
+	}
 }
 
 /**
@@ -519,8 +557,8 @@ static void SPI3_Init(void)
 	g_spi3.Init.CLKPolarity = SPI_POLARITY_LOW;
 	g_spi3.Init.CLKPhase = SPI_PHASE_1EDGE;
 	g_spi3.Init.NSS = SPI_NSS_HARD_OUTPUT;
-	/* 18MHz / 4 -> 4.25MHz SCLK */
-	g_spi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
+	/* 18MHz / 8 -> 2.125MHz SCLK */
+	g_spi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
 	g_spi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
 	g_spi3.Init.TIMode = SPI_TIMODE_DISABLE;
 	g_spi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
