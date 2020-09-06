@@ -333,6 +333,28 @@ The value of Vdd is calculated by measuring the value of VREFINT (internal regul
 | ---- | ---- | ------------------------------------------------------------ |
 | 15:0 | LINE | Line number in the provided SD card script (script.txt) which is currently being executed by the script execution engine. Will be set to zero when there is no script running. |
 
+The image below shows the script line number value as a simple script executes:
+
+`sleep 1f4`
+
+`sleep 3e8`
+
+`sleep 5dc`
+
+`sleep 1f4`
+
+`sleep 3e8`
+
+`sleep 5dc`
+
+`sleep 1f4`
+
+`sleep 3e8`
+
+`sleep 5dc`
+
+![Script Execution](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/script_execution.png)
+
 ## SCRIPT_ERROR
 
 | Bit  | Name               | Description                                                  |
