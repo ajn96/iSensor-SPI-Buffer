@@ -393,7 +393,8 @@ For example, the year 2020 would be represented by 0x2020. The DAY/MONTH/YEAR va
 | Bit | Name | Description |
 | --- | --- | --- |
 | 7:0 | MINOR | Minor firmware revision number, in BCD |
-| 15:8 | MAJOR | Major firmware revision number, in BCD |
+| 14:8 | MAJOR | Major firmware revision number, in BCD (second digit limited to 7, giving max possible firmware rev 79.99) |
+| 15 | DEBUG | Set if the running firmware was compiled with debug flags enabled. The recommended way to use the iSensor-SPI-Buffer firmware is in release mode (DEBUG = 0). |
 
 This rev corresponds to the release tag for the firmware. For example, rev 1.15 would be represented by 0x0115 in FW_REV.
 
