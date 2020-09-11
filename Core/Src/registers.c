@@ -454,6 +454,11 @@ void GetBuildDate()
 
 	/* Also load FW rev here just in case */
 	g_regs[FW_REV_REG] = FW_REV_DEFAULT;
+
+	/* Set MSB of firmware rev register if compiled under debug mode */
+#ifdef DEBUG
+	g_regs[FW_REV_REG] |= 0x8000;
+#endif
 }
 
 /**
