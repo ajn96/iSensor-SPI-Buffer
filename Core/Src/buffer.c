@@ -74,11 +74,18 @@ uint32_t BufCanAddElement()
   * @return Pointer to the element retrieved from the buffer
   *
   * In FIFO mode (queue) this function takes from the tail and moves the tail
-  * pointer down.
+  * pointer down. This function is called from the main loop when a buffer
+  * dequeue is requested. As such, the ISRs are disabled for the duration
+  * of this function execution to prevent issues with g_bufCount being
+  * inadvertently changed
   */
 uint8_t* BufTakeElement()
 {
 	uint8_t* buf_addr = buf;
+
+	/* Enter critical */
+	__disable_irq();
+
 	/* In FIFO mode take from the tail and move tail down */
 	if(g_bufCount)
 	{
@@ -105,6 +112,10 @@ uint8_t* BufTakeElement()
 	/* Update buffer count register */
 	g_regs[BUF_CNT_0_REG] = g_bufCount;
 	g_regs[BUF_CNT_1_REG] = g_regs[BUF_CNT_0_REG];
+
+	/* Exit critical */
+	__enable_irq();
+
 	/* Return pointer to the buffer entry */
 	return buf_addr;
 }
