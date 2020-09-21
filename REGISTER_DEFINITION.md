@@ -119,10 +119,11 @@ When the BUF_BURST bit is set and the buffer retrieve register is read, the user
 | --- | --- | --- |
 | 3:0 | DR_SELECT | Select which IMU DIO ouput pin is treated as data ready. Can only select one pin |
 | 4 | DR_POLARITY | Data ready trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge |
-| 7:5 | RESERVED | Currently unused |
+| 6:5 | RESERVED | Currently unused |
+| 7 | PPS_POLARITY | PPS trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge |
 | 11:8 | PPS_SELECT | Select which host processor DIO output pin acts as a Pulse Per Second (PPS) input, for timebase synchronization |
-| 12 | PPS_POLARITY | PPS trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge |
-| 15:13 | RESERVED | Currently unused |
+| 13:12 | PPS_FREQ     | Select the PPS input frequency (10 ^ (PPS_FREQ) Hz). A value of 0 corresponds to a real PPS signal (one pulse per second), which is the recommended way to use the PPS input. A value of 1 -> 10Hz, 2 -> 100Hz and 3 -> 1000Hz for the PPS input signal. The UTC_TIMESTAMP will be scaled based on the frequency value provided here. |
+| 15:14 | RESERVED | Currently unused |
 
 For each field in DIO_INPUT_CONFIG, the following pin mapping is made:
 * Bit0 -> DIO1
