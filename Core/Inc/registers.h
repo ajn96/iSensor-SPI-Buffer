@@ -97,7 +97,7 @@ void BufDequeueToOutputRegs();
 #define BUF_DATA_0_REG				0x89
 
 /* Register (non-zero) default values */
-#define FW_REV_DEFAULT				0x0109
+#define FW_REV_DEFAULT				0x0110
 #define BUF_CONFIG_DEFAULT			0x0000
 #define BUF_LEN_DEFAULT				0x0014
 #define DIO_INPUT_CONFIG_DEFAULT	0x0011
