@@ -58,13 +58,13 @@ void UpdateDIOInputConfig()
 
 	/* Must be one, and only one bit set in drPins. If none, defaults to DIO1 set */
 	if(config & 0x1)
-		config &= 0x1F11;
+		config &= 0x3F91;
 	else if(config & 0x2)
-		config &= 0x1F12;
+		config &= 0x3F92;
 	else if(config & 0x4)
-		config &= 0x1F14;
+		config &= 0x3F94;
 	else if(config & 0x8)
-		config &= 0x1F18;
+		config &= 0x3F98;
 	else
 		config |= 0x1;
 
