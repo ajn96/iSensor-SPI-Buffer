@@ -54,7 +54,7 @@ void UpdateDIOInputConfig()
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
 	/* Clear unused bits */
-	config &= 0x1F1F;
+	config &= 0x3F9F;
 
 	/* Must be one, and only one bit set in drPins. If none, defaults to DIO1 set */
 	if(config & 0x1)

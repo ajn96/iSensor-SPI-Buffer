@@ -26,6 +26,12 @@ uint32_t g_PPSInterruptMask = 0;
 /** TIM2 handle */
 static TIM_HandleTypeDef htim2;
 
+/* Track number of "PPS" ticks which have occurred in last second */
+static uint32_t PPS_TickCount;
+
+/* Number of PPS ticks per sec */
+static uint32_t PPS_MaxTickCount;
+
 /**
   * @brief Check if the PPS signal is unlocked (greater than 1100ms since last PPS strobe)
   *
@@ -144,27 +150,37 @@ void DisablePPSTimer()
   * @brief Increment PPS timestamp by 1
   *
   * @return void
+  *
+  * This function should be called whenever a PPS interrupt is generated. It
+  * handles PPS tick count incrementation, and resetting the microsecond timestamp
+  * every time one second has elapsed.
   */
 void IncrementPPSTime()
 {
-	/* Get the internal timestamp for period measurement */
-	uint32_t internalTime = GetMicrosecondTimestamp();
+	uint32_t internalTime, startTime;
 
-	/* Get starting PPS timestamp and increment */
-	uint32_t startTime = GetPPSTimestamp();
-	startTime++;
-	g_regs[UTC_TIMESTAMP_LWR_REG] = startTime & 0xFFFF;
-	g_regs[UTC_TIMESTAMP_UPR_REG] = (startTime >> 16);
-
-	/* If the PPS period is outside of 1 second +- 10ms (1%) then flag PPS unlock error */
-	if((internalTime > 1010000)||(internalTime < 990000))
+	/* Increment tick count and check if one second has passed */
+	PPS_TickCount++;
+	if(PPS_TickCount >= PPS_MaxTickCount)
 	{
-		g_regs[STATUS_0_REG] |= STATUS_PPS_UNLOCK;
-		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+		/* Get the internal timestamp for period measurement */
+		internalTime = GetMicrosecondTimestamp();
+		/* Clear microsecond tick counter */
+		ClearMicrosecondTimer();
+		/* Reset tick count for next second */
+		PPS_TickCount = 0;
+		/* Get starting PPS timestamp and increment */
+		startTime = GetPPSTimestamp();
+		startTime++;
+		g_regs[UTC_TIMESTAMP_LWR_REG] = startTime & 0xFFFF;
+		g_regs[UTC_TIMESTAMP_UPR_REG] = (startTime >> 16);
+		/* Check for unlock: If the PPS period is outside of 1 second +- 10ms (1%) then flag PPS unlock error */
+		if((internalTime > 1010000)||(internalTime < 990000))
+		{
+			g_regs[STATUS_0_REG] |= STATUS_PPS_UNLOCK;
+			g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+		}
 	}
-
-	/* Clear microsecond tick counter */
-	ClearMicrosecondTimer();
 }
 
 /**
@@ -197,18 +213,57 @@ static void InitTIM2(uint32_t timerfreq)
 	TIM2->CR1 = 0x1;
 }
 
+/**
+  * @brief Configure PPS timer based on DIO_INPUT_CONFIG value
+  *
+  * @param enable Bool flagging if PPS functionality is being enabled or disabled
+  *
+  * This function sets up the PPS input pin, as well as the expected "PPS" period.
+  */
 static void ConfigurePPSPins(uint32_t enable)
 {
 	/* GPIO config struct */
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-	uint32_t ppsConfig;
+	/* Field values for DIO_INPUT_CONFIG */
+	uint32_t ppsConfig, freqConfig;
 
 	/* Get current config value */
 	uint32_t config = g_regs[DIO_INPUT_CONFIG_REG];
 
-	/* Shift down so PPS timer setting is in lower 5 bits */
-	ppsConfig = config >> 8;
+	/* Get PPS settings from config reg */
+	ppsConfig = config & 0xF80;
+
+	/* Get freq setting (0 - 3) */
+	freqConfig = (config >> 12) & 0x3;
+
+	/* Set freq values */
+	switch(freqConfig)
+	{
+	case 0:
+		/* 1Hz sync */
+		PPS_MaxTickCount = 1;
+		break;
+	case 1:
+		/* 1Hz sync */
+		PPS_MaxTickCount = 10;
+		break;
+	case 2:
+		/* 1Hz sync */
+		PPS_MaxTickCount = 100;
+		break;
+	case 3:
+		/* 1Hz sync */
+		PPS_MaxTickCount = 1000;
+		break;
+	default:
+		/* 1Hz sync */
+		PPS_MaxTickCount = 1;
+		freqConfig = 0;
+		break;
+	}
+	/* Init tick count to 0 */
+	PPS_TickCount = 0;
 
 	/* Clear pending PPS EXTI interrupts */
 	EXTI->PR |= PPS_INT_MASK;
@@ -220,7 +275,7 @@ static void ConfigurePPSPins(uint32_t enable)
 	/* Set mode */
 	if(enable)
 	{
-		if(ppsConfig & 0x10)
+		if(ppsConfig & 0x80)
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
 		else
 			GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
@@ -231,7 +286,7 @@ static void ConfigurePPSPins(uint32_t enable)
 	}
 
 	/* DIO1 slave (PB4) */
-	if(ppsConfig & 0x1)
+	if(ppsConfig & 0x100)
 	{
 		/* PB4 is PPS pin */
 		HAL_GPIO_DeInit(GPIOB, GPIO_PIN_4);
@@ -253,11 +308,11 @@ static void ConfigurePPSPins(uint32_t enable)
 		g_PPSInterruptMask = 0;
 
 		/* Mask other PPS config bits */
-		ppsConfig &= 0x11;
+		ppsConfig &= 0x180;
 	}
 
 	/* DIO2 slave (PB8) */
-	if(ppsConfig & 0x2)
+	if(ppsConfig & 0x200)
 	{
 		/* PB8 is PPS pin */
 		HAL_GPIO_DeInit(GPIOB, GPIO_PIN_8);
@@ -282,11 +337,11 @@ static void ConfigurePPSPins(uint32_t enable)
 		}
 
 		/* Mask other PPS config bits */
-		ppsConfig &= 0x12;
+		ppsConfig &= 0x280;
 	}
 
 	/* DIO3 slave (PC7) */
-	if(ppsConfig & 0x4)
+	if(ppsConfig & 0x400)
 	{
 		/* PC7 is PPS pin */
 		HAL_GPIO_DeInit(GPIOC, GPIO_PIN_7);
@@ -311,11 +366,11 @@ static void ConfigurePPSPins(uint32_t enable)
 		}
 
 		/* Mask other PPS config bits */
-		ppsConfig &= 0x14;
+		ppsConfig &= 0x480;
 	}
 
 	/* DIO4 slave (PA8) */
-	if(ppsConfig & 0x8)
+	if(ppsConfig & 0x800)
 	{
 		/* PA8 is PPS pin */
 		HAL_GPIO_DeInit(GPIOA, GPIO_PIN_8);
@@ -340,16 +395,16 @@ static void ConfigurePPSPins(uint32_t enable)
 		}
 
 		/* Mask other PPS config bits */
-		ppsConfig &= 0x18;
+		ppsConfig &= 0x880;
 	}
 
 	/* Apply setting back to DIO_INPUT_CONFIG */
-	g_regs[DIO_INPUT_CONFIG_REG] = (ppsConfig << 8) | (config & 0xFF);
+	g_regs[DIO_INPUT_CONFIG_REG] = (freqConfig << 12) | (ppsConfig) | (config & 0x1F);
 
 	/* Apply setting to pin struct */
 	if(enable)
 	{
-		g_pinConfig.ppsPin = ppsConfig & 0xF;
+		g_pinConfig.ppsPin = (ppsConfig >> 8) & 0xF;
 	}
 	else
 	{
