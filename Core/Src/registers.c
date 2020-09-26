@@ -350,7 +350,7 @@ void FactoryReset()
 
 	/* Apply all settings and reset buffer */
 	UpdateImuSpiConfig();
-	UpdateUserSpiConfig();
+	UpdateUserSpiConfig(false);
 	UpdateDIOOutputConfig();
 	UpdateDIOInputConfig();
 	BufReset();

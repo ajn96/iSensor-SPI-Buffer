@@ -196,7 +196,8 @@ The following capture shows the interrupt behavior with WATERMARK_INT_CONFIG set
 | 0 | CPHA | SPI clock phase |
 | 1 | CPOL | SPI clock polarity |
 | 2 | MSB_FIRST | 1 = transmit MSB first, 0 = transmit LSB first |
-| 15:3 | RESERVED | Currently unused |
+| 7:3 | RESERVED | Currently unused |
+| 15:8 | KEY | The KEY field must be set to 0xA5 for a write to USER_SPI_CONFIG to be processed. Any other value will result in the write being rejected, and no change made to the user SPI port functionality. This prevents inadvertent changing of the SPI mode |
 
 ## CLI_CONFIG
 

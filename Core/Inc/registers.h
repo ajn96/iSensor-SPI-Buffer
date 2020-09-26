@@ -12,12 +12,12 @@
 #define INC_REGISTERS_H_
 
 /* Includes */
-#include "user_spi.h"
 #include "imu_spi.h"
 #include "main.h"
 #include "buffer.h"
 #include "flash.h"
 #include "data_capture.h"
+#include "user_spi.h"
 
 /* Public function prototypes */
 uint16_t ReadReg(uint8_t regAddr);

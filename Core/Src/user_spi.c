@@ -96,14 +96,30 @@ void BurstReadDisable()
 /**
   * @brief Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register
   *
+  * @param CheckUnlock Flag to check if the USER_SPI is unlocked (0xA5 written to config reg upper)
+  *
   * @return void
   *
   * This function performs all needed initialization for the slave SPI port, and should
-  * be called as start of the firmware start up process.
+  * be called as start of the firmware start up process. If CheckUnlock is true, then
+  * the function will check that the upper 8 bits of USER_SPI_CONFIG is 0xA5. If it is
+  * not, the SPI update will not be processed. This prevents accidental writes to the
+  * SPI config register.
   */
-void UpdateUserSpiConfig()
+void UpdateUserSpiConfig(uint32_t CheckUnlock)
 {
 	uint16_t config = g_regs[USER_SPI_CONFIG_REG];
+	static uint16_t lastConfig = USER_SPI_CONFIG_DEFAULT;
+
+	if(CheckUnlock)
+	{
+		if((config >> 8) != 0xA5)
+		{
+			/* Block register update */
+			g_regs[USER_SPI_CONFIG_REG] = lastConfig;
+			return;
+		}
+	}
 
 	/* mask unused bits */
 	config &= SPI_CONF_MASK;
@@ -171,5 +187,8 @@ void UpdateUserSpiConfig()
 
 	/* Apply config value in use back to register */
 	g_regs[USER_SPI_CONFIG_REG] = config;
+
+	/* Save last valid config */
+	lastConfig = config;
 }
 

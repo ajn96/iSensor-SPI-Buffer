@@ -12,11 +12,12 @@
 #define INC_USER_SPI_H_
 
 #include "registers.h"
+#include "main.h"
 
 /* Public function prototypes */
 void BurstReadSetup();
 void BurstReadDisable();
-void UpdateUserSpiConfig();
+void UpdateUserSpiConfig(uint32_t CheckUnlock);
 void UserSpiReset();
 
 #endif /* INC_USER_SPI_H_ */

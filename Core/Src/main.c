@@ -121,7 +121,7 @@ int main(void)
   ADCInit();
 
   /* Configure and enable user SPI port (based on loaded register values) */
-  UpdateUserSpiConfig();
+  UpdateUserSpiConfig(false);
 
   /* Init and Enable DMA channels */
   DMA_Init();
@@ -189,7 +189,7 @@ int main(void)
 		  else if(g_update_flags & USER_SPI_CONFIG_FLAG)
 		  {
 			  g_update_flags &= ~USER_SPI_CONFIG_FLAG;
-			  UpdateUserSpiConfig();
+			  UpdateUserSpiConfig(true);
 		  }
 		  /* Advance to next state */
 		  state = STATE_CHECK_PPS;
