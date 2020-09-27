@@ -156,10 +156,10 @@ static void ProcessTempReading()
 	accum += ScaleTempData(hadc1.Instance->DR);
 	count += 1;
 
-	if(count >= 4)
+	if(count >= 8)
 	{
 		/* scale and load to output reg */
-		accum = accum >> 2;
+		accum = accum >> 3;
 		g_regs[TEMP_REG] = (uint16_t) (accum);
 
 		/* Check for alarm */

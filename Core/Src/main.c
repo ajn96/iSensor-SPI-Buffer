@@ -362,7 +362,7 @@ static void SystemClock_Config(void)
   PeriphClkInit.USBClockSelection = RCC_USBCLKSOURCE_PLL_DIV1_5;
   PeriphClkInit.Tim2ClockSelection = RCC_TIM2CLK_HCLK;
   PeriphClkInit.Tim34ClockSelection = RCC_TIM34CLK_HCLK;
-  PeriphClkInit.Adc12ClockSelection = RCC_ADC12PLLCLK_DIV8;
+  PeriphClkInit.Adc12ClockSelection = RCC_ADC12PLLCLK_DIV16;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
