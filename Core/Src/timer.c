@@ -66,14 +66,14 @@ void CheckPPSUnlock()
  **/
 void SleepMicroseconds(uint32_t microseconds)
 {
-	/* Get the start time */
-	uint32_t clk_cycle_start = DWT->CYCCNT;
+	/* Reset timer */
+	DWT->CYCCNT = 0;
 
 	/* Go to number of cycles for system */
 	microseconds *= (HAL_RCC_GetHCLKFreq() / 1000000);
 
 	/* Delay till end */
-	while ((DWT->CYCCNT - clk_cycle_start) < microseconds);
+	while (DWT->CYCCNT < microseconds);
 }
 
 /**
