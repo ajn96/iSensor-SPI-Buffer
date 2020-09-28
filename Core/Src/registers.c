@@ -212,9 +212,13 @@ uint16_t WriteReg(uint8_t regAddr, uint8_t regValue)
 
 		/* Enable/disable capture as needed */
 		if(selected_page == BUF_READ_PAGE)
+		{
 			g_update_flags |= ENABLE_CAPTURE_FLAG;
-		else if (lastPage == BUF_READ_PAGE)
+		}
+		else if(lastPage == BUF_READ_PAGE)
+		{
 			g_update_flags |= DISABLE_CAPTURE_FLAG;
+		}
 		lastPage = selected_page;
 	}
 

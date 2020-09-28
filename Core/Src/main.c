@@ -155,17 +155,19 @@ int main(void)
 	  switch(state)
 	  {
 	  case STATE_CHECK_FLAGS:
-		  /* Handle capture enable */
-		  if(g_update_flags & ENABLE_CAPTURE_FLAG)
-		  {
-			  g_update_flags &= ~ENABLE_CAPTURE_FLAG;
-			  EnableDataCapture();
-		  }
 		  /* Handle capture disable */
 		  if(g_update_flags & DISABLE_CAPTURE_FLAG)
 		  {
 			  g_update_flags &= ~DISABLE_CAPTURE_FLAG;
+			  /* Make sure both can't be set */
+			  g_update_flags &= ~(ENABLE_CAPTURE_FLAG);
 			  DisableDataCapture();
+		  }
+		  /* Handle capture enable */
+		  else if(g_update_flags & ENABLE_CAPTURE_FLAG)
+		  {
+			  g_update_flags &= ~ENABLE_CAPTURE_FLAG;
+			  EnableDataCapture();
 		  }
 		  /* Handle user commands */
 		  else if(g_update_flags & USER_COMMAND_FLAG)
