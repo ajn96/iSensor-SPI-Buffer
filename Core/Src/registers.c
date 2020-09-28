@@ -200,12 +200,22 @@ uint16_t ReadReg(uint8_t regAddr)
   */
 uint16_t WriteReg(uint8_t regAddr, uint8_t regValue)
 {
+	/* Track last selected page */
+	static uint16_t lastPage = BUF_CONFIG_PAGE;
 	uint16_t regIndex;
 
 	/* Handle page register writes first */
 	if(regAddr == 0)
 	{
+		/* Get new page */
 		selected_page = regValue;
+
+		/* Enable/disable capture as needed */
+		if(selected_page == BUF_READ_PAGE)
+			g_update_flags |= ENABLE_CAPTURE_FLAG;
+		else if (lastPage == BUF_READ_PAGE)
+			g_update_flags |= DISABLE_CAPTURE_FLAG;
+		lastPage = selected_page;
 	}
 
 	if(selected_page < BUF_CONFIG_PAGE)
@@ -487,14 +497,9 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	/* The regAddr will be in range 0 - 127 for register index in range 0 - 63*/
 	regIndex += (regAddr >> 1);
 
-	/* If page register write then enable/disable capture as needed */
-	if(regAddr == 0)
+	/* Handle page reg */
+	if(regAddr < 2)
 	{
-		if(selected_page == BUF_READ_PAGE)
-			g_update_flags |= ENABLE_CAPTURE_FLAG;
-		else
-			g_update_flags |= DISABLE_CAPTURE_FLAG;
-
 		/* Return reg index (points to page reg instance) */
 		return regIndex;
 	}
