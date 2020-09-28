@@ -162,8 +162,9 @@ uint16_t ImuSpiTransfer(uint32_t MOSI)
 	/* Load data to SPI1 tx */
 	SPI1->DR = MOSI;
 
-	/* Wait for rx done */
-	while(!(SPI1->SR & SPI_SR_RXNE));
+	/* Wait for rx done, or timeout (16 bits @140KHz -> 114us, round up to 130us for timeout) */
+	DWT->CYCCNT = 0;
+	while(((SPI1->SR & SPI_SR_RXNE) == 0) && (DWT->CYCCNT < 9360));
 
 	/* Bring CS high */
 	TIM3->CR1 = 0;
