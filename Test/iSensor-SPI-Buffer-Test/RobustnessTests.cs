@@ -98,7 +98,7 @@ namespace iSensor_SPI_Buffer_Test
             bool goodFreq = true;
             uint readVal, expectedVal;
 
-            while(goodFreq)
+            while (goodFreq)
             {
                 Console.WriteLine("Testing SCLK freq of " + freq.ToString() + "Hz");
                 FX3.SclkFrequency = freq;
@@ -131,6 +131,70 @@ namespace iSensor_SPI_Buffer_Test
 
             Assert.LessOrEqual(readStall, 5, "ERROR: Max stall 5us allowed");
             Assert.LessOrEqual(writeStall, 5, "ERROR: Max stall 5us allowed");
+        }
+
+        [Test]
+        public void PageSwitchTest()
+        {
+            InitializeTestCase();
+
+            WriteUnsigned("BUF_CONFIG", 6);
+            WriteUnsigned("DIO_INPUT_CONFIG", 1);
+            WriteUnsigned("DIO_OUTPUT_CONFIG", 1);
+
+            FX3.StartPWM(1000, 0.5, FX3.DIO1);
+            FX3.StallTime = 50;
+            FX3.SclkFrequency = 8000000;
+
+            Console.WriteLine("Status: 0x" + ReadUnsigned("STATUS").ToString("X4"));
+
+            for(int trial = 0; trial < 128; trial++)
+            {
+                try
+                {
+                    PageSwitchSequence();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                    System.Threading.Thread.Sleep(2200);
+                    Console.WriteLine("Status: 0x" + ReadUnsigned("STATUS_1").ToString("X4"));
+                    CheckDUTConnection();
+                }
+            }
+
+        }
+
+        private void PageSwitchSequence()
+        {
+            CheckDUTConnection();
+            Console.WriteLine("Moving to page 255...");
+            ReadUnsigned("BUF_SIG");
+            System.Threading.Thread.Sleep(100);
+            Console.WriteLine("Buffer count: " + ReadUnsigned("BUF_CNT_1").ToString());
+            Console.WriteLine("Status: 0x" + ReadUnsigned("STATUS_1").ToString("X4"));
+
+            Console.WriteLine("Moving to IMU page...");
+            for (uint addr = 2; addr < 126; addr += 2)
+            {
+                Dut.ReadUnsigned(new RegClass { Page = 0, Address = 2, NumBytes = 2 });
+                System.Threading.Thread.Sleep(10);
+            }
+
+            Console.WriteLine("Moving to page 255...");
+            Console.WriteLine("Buffer count: " + ReadUnsigned("BUF_CNT_1").ToString());
+            Console.WriteLine("Status: 0x" + ReadUnsigned("STATUS_1").ToString("X4"));
+
+            Console.WriteLine("Moving to page 253...");
+            Console.WriteLine("Buffer count: " + ReadUnsigned("BUF_CNT").ToString());
+            Console.WriteLine("Status: 0x" + ReadUnsigned("STATUS").ToString("X4"));
+            System.Threading.Thread.Sleep(100);
+            CheckDUTConnection();
+            Console.WriteLine("Buffer count: " + ReadUnsigned("BUF_CNT").ToString());
+            Console.WriteLine("Clearing buffer...");
+            WriteUnsigned("USER_COMMAND", 1u << COMMAND_CLEAR_BUFFER, false);
+            System.Threading.Thread.Sleep(10);
+            Console.WriteLine("Buffer count: " + ReadUnsigned("BUF_CNT").ToString());
         }
     }
 }
