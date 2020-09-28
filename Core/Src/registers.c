@@ -488,12 +488,12 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	regIndex += (regAddr >> 1);
 
 	/* If page register write then enable/disable capture as needed */
-	if(regAddr < 2)
+	if(regAddr == 0)
 	{
 		if(selected_page == BUF_READ_PAGE)
 			g_update_flags |= ENABLE_CAPTURE_FLAG;
 		else
-			DisableDataCapture();
+			g_update_flags |= DISABLE_CAPTURE_FLAG;
 
 		/* Return reg index (points to page reg instance) */
 		return regIndex;

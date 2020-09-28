@@ -117,6 +117,7 @@ void BufDequeueToOutputRegs();
 #define DIO_INPUT_CONFIG_FLAG		(1 << 4)
 #define ENABLE_CAPTURE_FLAG			(1 << 5)
 #define DEQUEUE_BUF_FLAG			(1 << 6)
+#define DISABLE_CAPTURE_FLAG		(1 << 7)
 
 /* Command register bits */
 #define CMD_CLEAR_BUFFER			(1 << 0)

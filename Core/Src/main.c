@@ -161,6 +161,12 @@ int main(void)
 			  g_update_flags &= ~ENABLE_CAPTURE_FLAG;
 			  EnableDataCapture();
 		  }
+		  /* Handle capture disable */
+		  if(g_update_flags & DISABLE_CAPTURE_FLAG)
+		  {
+			  g_update_flags &= ~DISABLE_CAPTURE_FLAG;
+			  DisableDataCapture();
+		  }
 		  /* Handle user commands */
 		  else if(g_update_flags & USER_COMMAND_FLAG)
 		  {
