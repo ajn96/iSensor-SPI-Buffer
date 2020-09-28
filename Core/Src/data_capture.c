@@ -33,7 +33,7 @@ extern uint32_t g_PPSInterruptMask;
 void EnableDataCapture()
 {
 	/* Clear pending data ready interrupts */
-	EXTI->PR |= DATA_READY_INT_MASK;
+	EXTI->PR = DATA_READY_INT_MASK;
 
 	/* Update DIO input config (assign DR interrupt) */
 	UpdateDIOInputConfig();
@@ -69,7 +69,7 @@ void DisableDataCapture()
 	EXTI->IMR &= ~(DATA_READY_INT_MASK);
 
 	/* Clear any pending interrupts */
-	EXTI->PR |= DATA_READY_INT_MASK;
+	EXTI->PR = DATA_READY_INT_MASK;
 	TIM4->SR &= ~TIM_SR_UIF;
 
 	/* Capture in progress set to false */
