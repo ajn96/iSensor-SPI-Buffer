@@ -358,7 +358,7 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 			break;
 		case echo:
 			g_regs[CLI_CONFIG_REG] &= ~USB_ECHO_BITM;
-			if(scr-> args[0] == 0)
+			if(scr->args[0] == 0)
 			{
 				/* Echo disable (set the bit) */
 				g_regs[CLI_CONFIG_REG] |= USB_ECHO_BITM;
