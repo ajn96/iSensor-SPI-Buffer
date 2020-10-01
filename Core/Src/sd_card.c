@@ -165,7 +165,7 @@ void StartScript()
 	}
 
 	/* Write start message */
-	SDTxHandler(ScriptStart, sizeof(ScriptStart));
+	SDTxHandler(ScriptStart, sizeof(ScriptStart) - 1);
 
 	/* If we reach here, script is loaded and good. Can start execution
 	 * process. First set script running status bit
