@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: user_spi.h Source File</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/user_spi.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -77,19 +77,25 @@ $(function() {
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define INC_USER_SPI_H_</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="registers_8h.html">registers.h</a>&quot;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordtype">void</span> <a class="code" href="user__spi_8h.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00">BurstReadSetup</a>();</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> <a class="code" href="user__spi_8h.html#a3ba4975cc957879494953133d89031a5">BurstReadDisable</a>();</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keywordtype">void</span> <a class="code" href="user__spi_8h.html#af97575ad183f8358642b8158353e5727">UpdateUserSpiConfig</a>();</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> UserSpiReset();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_USER_SPI_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="main_8h.html">main.h</a>&quot;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> <a class="code" href="user__spi_8c.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00">BurstReadSetup</a>();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="user__spi_8c.html#a3ba4975cc957879494953133d89031a5">BurstReadDisable</a>();</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> <a class="code" href="user__spi_8c.html#ad15c7b76347823955edf42ec381e9793">UpdateUserSpiConfig</a>(uint32_t CheckUnlock);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">void</span> <a class="code" href="user__spi_8c.html#a0cf0803624b0e83866ea3dd06b23b05a">UserSpiReset</a>();</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">/* @endcond */</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_USER_SPI_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="auser__spi_8h_html_a4f1e131bf66f71bfe6d9c3b30f3d9d00"><div class="ttname"><a href="user__spi_8h.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00">BurstReadSetup</a></div><div class="ttdeci">void BurstReadSetup()</div><div class="ttdoc">Configures SPI for a burst buffer read.</div><div class="ttdef"><b>Definition:</b> user_spi.c:44</div></div>
-<div class="ttc" id="auser__spi_8h_html_a3ba4975cc957879494953133d89031a5"><div class="ttname"><a href="user__spi_8h.html#a3ba4975cc957879494953133d89031a5">BurstReadDisable</a></div><div class="ttdeci">void BurstReadDisable()</div><div class="ttdoc">Restore SPI functionality after a burst read.</div><div class="ttdef"><b>Definition:</b> user_spi.c:90</div></div>
+<div class="ttc" id="auser__spi_8c_html_a0cf0803624b0e83866ea3dd06b23b05a"><div class="ttname"><a href="user__spi_8c.html#a0cf0803624b0e83866ea3dd06b23b05a">UserSpiReset</a></div><div class="ttdeci">void UserSpiReset()</div><div class="ttdoc">Reset user SPI port.</div><div class="ttdef"><b>Definition:</b> user_spi.c:34</div></div>
+<div class="ttc" id="auser__spi_8c_html_ad15c7b76347823955edf42ec381e9793"><div class="ttname"><a href="user__spi_8c.html#ad15c7b76347823955edf42ec381e9793">UpdateUserSpiConfig</a></div><div class="ttdeci">void UpdateUserSpiConfig(uint32_t CheckUnlock)</div><div class="ttdoc">Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register.</div><div class="ttdef"><b>Definition:</b> user_spi.c:115</div></div>
+<div class="ttc" id="amain_8h_html"><div class="ttname"><a href="main_8h.html">main.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer main.</div></div>
+<div class="ttc" id="auser__spi_8c_html_a3ba4975cc957879494953133d89031a5"><div class="ttname"><a href="user__spi_8c.html#a3ba4975cc957879494953133d89031a5">BurstReadDisable</a></div><div class="ttdeci">void BurstReadDisable()</div><div class="ttdoc">Restore SPI functionality after a burst read.</div><div class="ttdef"><b>Definition:</b> user_spi.c:96</div></div>
 <div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
-<div class="ttc" id="auser__spi_8h_html_af97575ad183f8358642b8158353e5727"><div class="ttname"><a href="user__spi_8h.html#af97575ad183f8358642b8158353e5727">UpdateUserSpiConfig</a></div><div class="ttdeci">void UpdateUserSpiConfig()</div><div class="ttdoc">Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register.</div><div class="ttdef"><b>Definition:</b> user_spi.c:104</div></div>
+<div class="ttc" id="auser__spi_8c_html_a4f1e131bf66f71bfe6d9c3b30f3d9d00"><div class="ttname"><a href="user__spi_8c.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00">BurstReadSetup</a></div><div class="ttdeci">void BurstReadSetup()</div><div class="ttdoc">Configures SPI for a burst buffer read.</div><div class="ttdef"><b>Definition:</b> user_spi.c:50</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

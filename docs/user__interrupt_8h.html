@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: user_interrupt.h File Reference</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/user_interrupt.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -69,8 +69,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
 <div class="title">user_interrupt.h File Reference</div>  </div>
 </div><!--header-->
@@ -84,91 +83,44 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a5c899f31b1cf4a79368a9577fcf202d7"><td class="memItemLeft" align="right" valign="top"><a id="a5c899f31b1cf4a79368a9577fcf202d7"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>WATERMARK_FREQ</b>&#160;&#160;&#160;10000</td></tr>
+<tr class="memitem:a5c899f31b1cf4a79368a9577fcf202d7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__interrupt_8h.html#a5c899f31b1cf4a79368a9577fcf202d7">WATERMARK_FREQ</a>&#160;&#160;&#160;10000</td></tr>
 <tr class="separator:a5c899f31b1cf4a79368a9577fcf202d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6189f3a2a7b6c1c76627f282b57aeb7"><td class="memItemLeft" align="right" valign="top"><a id="af6189f3a2a7b6c1c76627f282b57aeb7"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>WATERMARK_HALF_PERIOD_TICKS</b>&#160;&#160;&#160;(uint32_t) (72000000 / (WATERMARK_FREQ * 2))</td></tr>
+<tr class="memitem:af6189f3a2a7b6c1c76627f282b57aeb7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__interrupt_8h.html#af6189f3a2a7b6c1c76627f282b57aeb7">WATERMARK_HALF_PERIOD_TICKS</a>&#160;&#160;&#160;(uint32_t) (72000000 / (<a class="el" href="user__interrupt_8h.html#a5c899f31b1cf4a79368a9577fcf202d7">WATERMARK_FREQ</a> * 2))</td></tr>
 <tr class="separator:af6189f3a2a7b6c1c76627f282b57aeb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a7462f47cda251a48a22aad3c1773ab09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__interrupt_8h.html#a7462f47cda251a48a22aad3c1773ab09">UpdateUserInterrupt</a> ()</td></tr>
-<tr class="memdesc:a7462f47cda251a48a22aad3c1773ab09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the user interrupt (data ready) signal status.  <a href="user__interrupt_8h.html#a7462f47cda251a48a22aad3c1773ab09">More...</a><br /></td></tr>
-<tr class="separator:a7462f47cda251a48a22aad3c1773ab09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79317c41e270f99812a71133ea9df355"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__interrupt_8h.html#a79317c41e270f99812a71133ea9df355">UpdateOutputPins</a> (uint32_t interrupt, uint32_t overflow, uint32_t error)</td></tr>
-<tr class="memdesc:a79317c41e270f99812a71133ea9df355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the output pins based on given interrupt/overflow status.  <a href="user__interrupt_8h.html#a79317c41e270f99812a71133ea9df355">More...</a><br /></td></tr>
-<tr class="separator:a79317c41e270f99812a71133ea9df355"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header file for iSensor-SPI-Buffer user interrupt (data ready) config and generation functions. </p>
 <p>Copyright (c) Analog Devices Inc, 2020 All Rights Reserved.</p>
 <dl class="section date"><dt>Date</dt><dd>3/18/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a id="a79317c41e270f99812a71133ea9df355"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79317c41e270f99812a71133ea9df355">&#9670;&nbsp;</a></span>UpdateOutputPins()</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a5c899f31b1cf4a79368a9577fcf202d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c899f31b1cf4a79368a9577fcf202d7">&#9670;&nbsp;</a></span>WATERMARK_FREQ</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void UpdateOutputPins </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>watermark</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>overflow</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>error</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">#define WATERMARK_FREQ&#160;&#160;&#160;10000</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Updates the output pins based on given interrupt/overflow status. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">watermark</td><td>The buffer water mark interrupt status</td></tr>
-    <tr><td class="paramname">overflow</td><td>The buffer overflow interrupt status</td></tr>
-    <tr><td class="paramname">error</td><td>The buffer error interrupt status</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<p>Watermark interrupt toggle freq (Hz) when in toggle mode </p>
 
 </div>
 </div>
-<a id="a7462f47cda251a48a22aad3c1773ab09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7462f47cda251a48a22aad3c1773ab09">&#9670;&nbsp;</a></span>UpdateUserInterrupt()</h2>
+<a id="af6189f3a2a7b6c1c76627f282b57aeb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6189f3a2a7b6c1c76627f282b57aeb7">&#9670;&nbsp;</a></span>WATERMARK_HALF_PERIOD_TICKS</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void UpdateUserInterrupt </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td class="memname">#define WATERMARK_HALF_PERIOD_TICKS&#160;&#160;&#160;(uint32_t) (72000000 / (<a class="el" href="user__interrupt_8h.html#a5c899f31b1cf4a79368a9577fcf202d7">WATERMARK_FREQ</a> * 2))</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Updates the user interrupt (data ready) signal status. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function is called periodically from the main loop. It clears or sets the selected interrupt and overflow notification pins (DIOx_Slave) and also updates the STATUS register flags </p>
+<p>Number of CPU ticks per watermark toggle </p>
 
 </div>
 </div>

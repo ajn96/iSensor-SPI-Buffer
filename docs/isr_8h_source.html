@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: isr.h Source File</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/isr.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -83,41 +83,46 @@ $(function() {
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="data__capture_8h.html">data_capture.h</a>&quot;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="timer_8h.html">timer.h</a>&quot;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">/* User SPI port related interrupts */</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8h.html#a738473a5b43f6c92b80ce1d3d6f77ed9">EXTI15_10_IRQHandler</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8h.html#abd16b3391557c4a3a8020d675e2c452f">DMA1_Channel5_IRQHandler</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">/* IMU SPI port related interrupts */</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8h.html#a0c3390d4dc5cfceccbeda71aa672d99d">DMA1_Channel2_IRQHandler</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8h.html#aadb8937353693c94b0d8e32fc6f18fc2">DMA1_Channel3_IRQHandler</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">/* User SPI port related interrupts */</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8c.html#a738473a5b43f6c92b80ce1d3d6f77ed9">EXTI15_10_IRQHandler</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8c.html#abd16b3391557c4a3a8020d675e2c452f">DMA1_Channel5_IRQHandler</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">/* Data ready related interrupts */</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8h.html#a9f0a091727452df71a1760d1133bf9b4">EXTI9_5_IRQHandler</a>();</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8h.html#acd7f454d4f8ce7b9b1caebf717e40e55">EXTI4_IRQHandler</a>();</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8h.html#a6e7703924e97aa04dbae6b88adcec3d1">TIM4_IRQHandler</a>();</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">/* Fault exceptions */</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8h.html#a2bffc10d5bd4106753b7c30e86903bea">HardFault_Handler</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8h.html#a3150f74512510287a942624aa9b44cc5">MemManage_Handler</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8h.html#a850cefb17a977292ae5eb4cafa9976c3">BusFault_Handler</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8h.html#a1d98923de2ed6b7309b66f9ba2971647">UsageFault_Handler</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_ISR_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">/* IMU SPI port related interrupts */</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8c.html#a0c3390d4dc5cfceccbeda71aa672d99d">DMA1_Channel2_IRQHandler</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8c.html#aadb8937353693c94b0d8e32fc6f18fc2">DMA1_Channel3_IRQHandler</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">/* Data ready related interrupts */</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8c.html#a9f0a091727452df71a1760d1133bf9b4">EXTI9_5_IRQHandler</a>();</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8c.html#acd7f454d4f8ce7b9b1caebf717e40e55">EXTI4_IRQHandler</a>();</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8c.html#a6e7703924e97aa04dbae6b88adcec3d1">TIM4_IRQHandler</a>();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">/* Fault exceptions */</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8c.html#a2bffc10d5bd4106753b7c30e86903bea">HardFault_Handler</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8c.html#a3150f74512510287a942624aa9b44cc5">MemManage_Handler</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8c.html#a850cefb17a977292ae5eb4cafa9976c3">BusFault_Handler</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keywordtype">void</span> <a class="code" href="isr_8c.html#a1d98923de2ed6b7309b66f9ba2971647">UsageFault_Handler</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">/* @endcond */</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_ISR_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aisr_8h_html_a1d98923de2ed6b7309b66f9ba2971647"><div class="ttname"><a href="isr_8h.html#a1d98923de2ed6b7309b66f9ba2971647">UsageFault_Handler</a></div><div class="ttdeci">void UsageFault_Handler(void)</div><div class="ttdoc">This function handles Undefined instruction or illegal state.</div><div class="ttdef"><b>Definition:</b> isr.c:562</div></div>
-<div class="ttc" id="aisr_8h_html_a3150f74512510287a942624aa9b44cc5"><div class="ttname"><a href="isr_8h.html#a3150f74512510287a942624aa9b44cc5">MemManage_Handler</a></div><div class="ttdeci">void MemManage_Handler(void)</div><div class="ttdoc">This function handles Memory management fault.</div><div class="ttdef"><b>Definition:</b> isr.c:538</div></div>
-<div class="ttc" id="aisr_8h_html_a850cefb17a977292ae5eb4cafa9976c3"><div class="ttname"><a href="isr_8h.html#a850cefb17a977292ae5eb4cafa9976c3">BusFault_Handler</a></div><div class="ttdeci">void BusFault_Handler(void)</div><div class="ttdoc">This function handles Pre-fetch fault, memory access fault.</div><div class="ttdef"><b>Definition:</b> isr.c:550</div></div>
-<div class="ttc" id="aisr_8h_html_acd7f454d4f8ce7b9b1caebf717e40e55"><div class="ttname"><a href="isr_8h.html#acd7f454d4f8ce7b9b1caebf717e40e55">EXTI4_IRQHandler</a></div><div class="ttdeci">void EXTI4_IRQHandler()</div><div class="ttdoc">EXTI 4 interrupt handler.</div><div class="ttdef"><b>Definition:</b> isr.c:182</div></div>
-<div class="ttc" id="aisr_8h_html_aadb8937353693c94b0d8e32fc6f18fc2"><div class="ttname"><a href="isr_8h.html#aadb8937353693c94b0d8e32fc6f18fc2">DMA1_Channel3_IRQHandler</a></div><div class="ttdeci">void DMA1_Channel3_IRQHandler(void)</div><div class="ttdoc">This function handles DMA1 channel3 global interrupt (spi1 (IMU) Tx).</div><div class="ttdef"><b>Definition:</b> isr.c:311</div></div>
-<div class="ttc" id="aisr_8h_html_abd16b3391557c4a3a8020d675e2c452f"><div class="ttname"><a href="isr_8h.html#abd16b3391557c4a3a8020d675e2c452f">DMA1_Channel5_IRQHandler</a></div><div class="ttdeci">void DMA1_Channel5_IRQHandler(void)</div><div class="ttdoc">This function handles DMA1 channel5 global interrupt (spi2 (user) Tx).</div><div class="ttdef"><b>Definition:</b> isr.c:386</div></div>
+<div class="ttc" id="aisr_8c_html_aadb8937353693c94b0d8e32fc6f18fc2"><div class="ttname"><a href="isr_8c.html#aadb8937353693c94b0d8e32fc6f18fc2">DMA1_Channel3_IRQHandler</a></div><div class="ttdeci">void DMA1_Channel3_IRQHandler(void)</div><div class="ttdoc">This function handles DMA1 channel3 global interrupt (spi1 (IMU) Tx).</div><div class="ttdef"><b>Definition:</b> isr.c:311</div></div>
+<div class="ttc" id="aisr_8c_html_abd16b3391557c4a3a8020d675e2c452f"><div class="ttname"><a href="isr_8c.html#abd16b3391557c4a3a8020d675e2c452f">DMA1_Channel5_IRQHandler</a></div><div class="ttdeci">void DMA1_Channel5_IRQHandler(void)</div><div class="ttdoc">This function handles DMA1 channel5 global interrupt (spi2 (user) Tx).</div><div class="ttdef"><b>Definition:</b> isr.c:386</div></div>
+<div class="ttc" id="aisr_8c_html_a850cefb17a977292ae5eb4cafa9976c3"><div class="ttname"><a href="isr_8c.html#a850cefb17a977292ae5eb4cafa9976c3">BusFault_Handler</a></div><div class="ttdeci">void BusFault_Handler(void)</div><div class="ttdoc">This function handles Pre-fetch fault, memory access fault.</div><div class="ttdef"><b>Definition:</b> isr.c:550</div></div>
+<div class="ttc" id="aisr_8c_html_acd7f454d4f8ce7b9b1caebf717e40e55"><div class="ttname"><a href="isr_8c.html#acd7f454d4f8ce7b9b1caebf717e40e55">EXTI4_IRQHandler</a></div><div class="ttdeci">void EXTI4_IRQHandler()</div><div class="ttdoc">EXTI 4 interrupt handler.</div><div class="ttdef"><b>Definition:</b> isr.c:182</div></div>
+<div class="ttc" id="aisr_8c_html_a3150f74512510287a942624aa9b44cc5"><div class="ttname"><a href="isr_8c.html#a3150f74512510287a942624aa9b44cc5">MemManage_Handler</a></div><div class="ttdeci">void MemManage_Handler(void)</div><div class="ttdoc">This function handles Memory management fault.</div><div class="ttdef"><b>Definition:</b> isr.c:538</div></div>
+<div class="ttc" id="aisr_8c_html_a6e7703924e97aa04dbae6b88adcec3d1"><div class="ttname"><a href="isr_8c.html#a6e7703924e97aa04dbae6b88adcec3d1">TIM4_IRQHandler</a></div><div class="ttdeci">void TIM4_IRQHandler()</div><div class="ttdoc">IMU SPI timer ISR.</div><div class="ttdef"><b>Definition:</b> isr.c:199</div></div>
+<div class="ttc" id="aisr_8c_html_a0c3390d4dc5cfceccbeda71aa672d99d"><div class="ttname"><a href="isr_8c.html#a0c3390d4dc5cfceccbeda71aa672d99d">DMA1_Channel2_IRQHandler</a></div><div class="ttdeci">void DMA1_Channel2_IRQHandler(void)</div><div class="ttdoc">This function handles DMA1 channel2 global interrupt (spi1 (IMU) Rx).</div><div class="ttdef"><b>Definition:</b> isr.c:273</div></div>
+<div class="ttc" id="aisr_8c_html_a2bffc10d5bd4106753b7c30e86903bea"><div class="ttname"><a href="isr_8c.html#a2bffc10d5bd4106753b7c30e86903bea">HardFault_Handler</a></div><div class="ttdeci">void HardFault_Handler(void)</div><div class="ttdoc">This function handles Hard fault interrupt.</div><div class="ttdef"><b>Definition:</b> isr.c:526</div></div>
 <div class="ttc" id="atimer_8h_html"><div class="ttname"><a href="timer_8h.html">timer.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer timer module.</div></div>
-<div class="ttc" id="aisr_8h_html_a738473a5b43f6c92b80ce1d3d6f77ed9"><div class="ttname"><a href="isr_8h.html#a738473a5b43f6c92b80ce1d3d6f77ed9">EXTI15_10_IRQHandler</a></div><div class="ttdeci">void EXTI15_10_IRQHandler(void)</div><div class="ttdoc">This function handles the user SPI (SPI2) chip select rising edge.</div><div class="ttdef"><b>Definition:</b> isr.c:416</div></div>
-<div class="ttc" id="aisr_8h_html_a9f0a091727452df71a1760d1133bf9b4"><div class="ttname"><a href="isr_8h.html#a9f0a091727452df71a1760d1133bf9b4">EXTI9_5_IRQHandler</a></div><div class="ttdeci">void EXTI9_5_IRQHandler()</div><div class="ttdoc">IMU data ready ISR. Kicks off data capture process.</div><div class="ttdef"><b>Definition:</b> isr.c:72</div></div>
-<div class="ttc" id="aisr_8h_html_a0c3390d4dc5cfceccbeda71aa672d99d"><div class="ttname"><a href="isr_8h.html#a0c3390d4dc5cfceccbeda71aa672d99d">DMA1_Channel2_IRQHandler</a></div><div class="ttdeci">void DMA1_Channel2_IRQHandler(void)</div><div class="ttdoc">This function handles DMA1 channel2 global interrupt (spi1 (IMU) Rx).</div><div class="ttdef"><b>Definition:</b> isr.c:273</div></div>
+<div class="ttc" id="aisr_8c_html_a9f0a091727452df71a1760d1133bf9b4"><div class="ttname"><a href="isr_8c.html#a9f0a091727452df71a1760d1133bf9b4">EXTI9_5_IRQHandler</a></div><div class="ttdeci">void EXTI9_5_IRQHandler()</div><div class="ttdoc">IMU data ready ISR. Kicks off data capture process.</div><div class="ttdef"><b>Definition:</b> isr.c:72</div></div>
 <div class="ttc" id="aimu__spi_8h_html"><div class="ttname"><a href="imu__spi_8h.html">imu_spi.h</a></div><div class="ttdoc">Implementation for iSensor-SPI-Buffer IMU interfacing module.</div></div>
 <div class="ttc" id="abuffer_8h_html"><div class="ttname"><a href="buffer_8h.html">buffer.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer buffer data structure module.</div></div>
-<div class="ttc" id="aisr_8h_html_a2bffc10d5bd4106753b7c30e86903bea"><div class="ttname"><a href="isr_8h.html#a2bffc10d5bd4106753b7c30e86903bea">HardFault_Handler</a></div><div class="ttdeci">void HardFault_Handler(void)</div><div class="ttdoc">This function handles Hard fault interrupt.</div><div class="ttdef"><b>Definition:</b> isr.c:526</div></div>
-<div class="ttc" id="aisr_8h_html_a6e7703924e97aa04dbae6b88adcec3d1"><div class="ttname"><a href="isr_8h.html#a6e7703924e97aa04dbae6b88adcec3d1">TIM4_IRQHandler</a></div><div class="ttdeci">void TIM4_IRQHandler()</div><div class="ttdoc">IMU SPI timer ISR.</div><div class="ttdef"><b>Definition:</b> isr.c:199</div></div>
+<div class="ttc" id="aisr_8c_html_a738473a5b43f6c92b80ce1d3d6f77ed9"><div class="ttname"><a href="isr_8c.html#a738473a5b43f6c92b80ce1d3d6f77ed9">EXTI15_10_IRQHandler</a></div><div class="ttdeci">void EXTI15_10_IRQHandler(void)</div><div class="ttdoc">This function handles the user SPI (SPI2) chip select rising edge.</div><div class="ttdef"><b>Definition:</b> isr.c:416</div></div>
+<div class="ttc" id="aisr_8c_html_a1d98923de2ed6b7309b66f9ba2971647"><div class="ttname"><a href="isr_8c.html#a1d98923de2ed6b7309b66f9ba2971647">UsageFault_Handler</a></div><div class="ttdeci">void UsageFault_Handler(void)</div><div class="ttdoc">This function handles Undefined instruction or illegal state.</div><div class="ttdef"><b>Definition:</b> isr.c:562</div></div>
 <div class="ttc" id="adata__capture_8h_html"><div class="ttname"><a href="data__capture_8h.html">data_capture.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer autonomous IMU data acquisition module.</div></div>
 <div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
 <!-- start footer part -->

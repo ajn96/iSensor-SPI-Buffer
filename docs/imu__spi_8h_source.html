@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: imu_spi.h Source File</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/imu_spi.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -83,39 +83,38 @@ $(function() {
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;stm32f3xx_hal.h&quot;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;uint16_t <a class="code" href="imu__spi_8h.html#a282b6361f14c10a21b150aa10c26e03f">ImuSpiTransfer</a>(uint32_t MOSI);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;uint16_t <a class="code" href="imu__spi_8h.html#a7b6cb18f2a8ada801f09a5c593afbdc7">ImuReadReg</a>(uint8_t RegAddr);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;uint16_t <a class="code" href="imu__spi_8h.html#ae35146a7cc10e15dd1cb67520515c43c">ImuWriteReg</a>(uint8_t RegAddr, uint8_t RegValue);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">void</span> <a class="code" href="imu__spi_8h.html#a2e5c87a639e8ca9a6f61d05052df5fb8">UpdateImuSpiConfig</a>();</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> EnableImuSpiDMA();</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> <a class="code" href="imu__spi_8h.html#a50a9e9e1e661156087f12a81c2b6bc30">DisableImuSpiDMA</a>();</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> <a class="code" href="imu__spi_8h.html#ae6a71708bd067b831a355da7d5e7a1b7">StartImuBurst</a>(uint8_t * bufEntry);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">void</span> <a class="code" href="imu__spi_8h.html#a4436256162e4bd2d584ae13d86c7aa9f">ResetImu</a>();</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">/* Timer config */</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keywordtype">void</span> <a class="code" href="imu__spi_8h.html#a814e8222e8a4eda9663f65501d41580a">InitImuCsTimer</a>();</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keywordtype">void</span> <a class="code" href="imu__spi_8h.html#af83f777aa978e03f1c4a74c719b45de2">ConfigureImuCsTimer</a>(uint32_t period);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keywordtype">void</span> <a class="code" href="imu__spi_8h.html#a825031cb5959ebd7d20be9f25c64092a">InitImuSpiTimer</a>();</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">void</span> <a class="code" href="imu__spi_8h.html#adfad8c7379c01cb09a7e3754c33e169b">ConfigureImuSpiTimer</a>(uint32_t period);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;uint16_t <a class="code" href="imu__spi_8c.html#a282b6361f14c10a21b150aa10c26e03f">ImuSpiTransfer</a>(uint32_t MOSI);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;uint16_t <a class="code" href="imu__spi_8c.html#a7b6cb18f2a8ada801f09a5c593afbdc7">ImuReadReg</a>(uint8_t RegAddr);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;uint16_t <a class="code" href="imu__spi_8c.html#ae35146a7cc10e15dd1cb67520515c43c">ImuWriteReg</a>(uint8_t RegAddr, uint8_t RegValue);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> <a class="code" href="imu__spi_8c.html#a2e5c87a639e8ca9a6f61d05052df5fb8">UpdateImuSpiConfig</a>();</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> EnableImuSpiDMA();</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> <a class="code" href="imu__spi_8c.html#a50a9e9e1e661156087f12a81c2b6bc30">DisableImuSpiDMA</a>();</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keywordtype">void</span> <a class="code" href="imu__spi_8c.html#ae6a71708bd067b831a355da7d5e7a1b7">StartImuBurst</a>(uint8_t * bufEntry);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">void</span> <a class="code" href="imu__spi_8c.html#a4436256162e4bd2d584ae13d86c7aa9f">ResetImu</a>();</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">void</span> <a class="code" href="imu__spi_8c.html#a814e8222e8a4eda9663f65501d41580a">InitImuCsTimer</a>();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">void</span> <a class="code" href="imu__spi_8c.html#af83f777aa978e03f1c4a74c719b45de2">ConfigureImuCsTimer</a>(uint32_t period);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keywordtype">void</span> <a class="code" href="imu__spi_8c.html#a825031cb5959ebd7d20be9f25c64092a">InitImuSpiTimer</a>();</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keywordtype">void</span> <a class="code" href="imu__spi_8c.html#adfad8c7379c01cb09a7e3754c33e169b">ConfigureImuSpiTimer</a>(uint32_t period);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">/* @endcond */</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aimu__spi_8h_html_a4436256162e4bd2d584ae13d86c7aa9f"><div class="ttname"><a href="imu__spi_8h.html#a4436256162e4bd2d584ae13d86c7aa9f">ResetImu</a></div><div class="ttdeci">void ResetImu()</div><div class="ttdoc">Hardware reset connected IMU.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:38</div></div>
-<div class="ttc" id="aimu__spi_8h_html_a2e5c87a639e8ca9a6f61d05052df5fb8"><div class="ttname"><a href="imu__spi_8h.html#a2e5c87a639e8ca9a6f61d05052df5fb8">UpdateImuSpiConfig</a></div><div class="ttdeci">void UpdateImuSpiConfig()</div><div class="ttdoc">Processes any changes to IMU_SPI_CONFIG reg and applies.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:368</div></div>
-<div class="ttc" id="aimu__spi_8h_html_a7b6cb18f2a8ada801f09a5c593afbdc7"><div class="ttname"><a href="imu__spi_8h.html#a7b6cb18f2a8ada801f09a5c593afbdc7">ImuReadReg</a></div><div class="ttdeci">uint16_t ImuReadReg(uint8_t RegAddr)</div><div class="ttdoc">Reads 16 bit value from the IMU.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:186</div></div>
-<div class="ttc" id="aimu__spi_8h_html_af83f777aa978e03f1c4a74c719b45de2"><div class="ttname"><a href="imu__spi_8h.html#af83f777aa978e03f1c4a74c719b45de2">ConfigureImuCsTimer</a></div><div class="ttdeci">void ConfigureImuCsTimer(uint32_t period)</div><div class="ttdoc">Sets the TIM3 period for use in PWM mode to drive CS.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:237</div></div>
-<div class="ttc" id="aimu__spi_8h_html_ae35146a7cc10e15dd1cb67520515c43c"><div class="ttname"><a href="imu__spi_8h.html#ae35146a7cc10e15dd1cb67520515c43c">ImuWriteReg</a></div><div class="ttdeci">uint16_t ImuWriteReg(uint8_t RegAddr, uint8_t RegValue)</div><div class="ttdoc">Writes an 8 bit value to the IMU.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:217</div></div>
-<div class="ttc" id="aimu__spi_8h_html_a825031cb5959ebd7d20be9f25c64092a"><div class="ttname"><a href="imu__spi_8h.html#a825031cb5959ebd7d20be9f25c64092a">InitImuSpiTimer</a></div><div class="ttdeci">void InitImuSpiTimer()</div><div class="ttdoc">Inits TIM4 for use as a IMU spi period timer.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:327</div></div>
-<div class="ttc" id="aimu__spi_8h_html_a50a9e9e1e661156087f12a81c2b6bc30"><div class="ttname"><a href="imu__spi_8h.html#a50a9e9e1e661156087f12a81c2b6bc30">DisableImuSpiDMA</a></div><div class="ttdeci">void DisableImuSpiDMA()</div><div class="ttdoc">Disable IMU burst data stream.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:50</div></div>
+<div class="ttc" id="aimu__spi_8c_html_ae6a71708bd067b831a355da7d5e7a1b7"><div class="ttname"><a href="imu__spi_8c.html#ae6a71708bd067b831a355da7d5e7a1b7">StartImuBurst</a></div><div class="ttdeci">void StartImuBurst(uint8_t *bufEntry)</div><div class="ttdoc">Start an IMU burst data capture (using DMA)</div><div class="ttdef"><b>Definition:</b> imu_spi.c:73</div></div>
+<div class="ttc" id="aimu__spi_8c_html_a7b6cb18f2a8ada801f09a5c593afbdc7"><div class="ttname"><a href="imu__spi_8c.html#a7b6cb18f2a8ada801f09a5c593afbdc7">ImuReadReg</a></div><div class="ttdeci">uint16_t ImuReadReg(uint8_t RegAddr)</div><div class="ttdoc">Reads 16 bit value from the IMU.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:187</div></div>
+<div class="ttc" id="aimu__spi_8c_html_a825031cb5959ebd7d20be9f25c64092a"><div class="ttname"><a href="imu__spi_8c.html#a825031cb5959ebd7d20be9f25c64092a">InitImuSpiTimer</a></div><div class="ttdeci">void InitImuSpiTimer()</div><div class="ttdoc">Inits TIM4 for use as a IMU spi period timer.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:328</div></div>
+<div class="ttc" id="aimu__spi_8c_html_a2e5c87a639e8ca9a6f61d05052df5fb8"><div class="ttname"><a href="imu__spi_8c.html#a2e5c87a639e8ca9a6f61d05052df5fb8">UpdateImuSpiConfig</a></div><div class="ttdeci">void UpdateImuSpiConfig()</div><div class="ttdoc">Processes any changes to IMU_SPI_CONFIG reg and applies.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:369</div></div>
+<div class="ttc" id="aimu__spi_8c_html_af83f777aa978e03f1c4a74c719b45de2"><div class="ttname"><a href="imu__spi_8c.html#af83f777aa978e03f1c4a74c719b45de2">ConfigureImuCsTimer</a></div><div class="ttdeci">void ConfigureImuCsTimer(uint32_t period)</div><div class="ttdoc">Sets the TIM3 period for use in PWM mode to drive CS.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:238</div></div>
+<div class="ttc" id="aimu__spi_8c_html_a282b6361f14c10a21b150aa10c26e03f"><div class="ttname"><a href="imu__spi_8c.html#a282b6361f14c10a21b150aa10c26e03f">ImuSpiTransfer</a></div><div class="ttdeci">uint16_t ImuSpiTransfer(uint32_t MOSI)</div><div class="ttdoc">Basic IMU SPI data transfer function (protocol agnostic).</div><div class="ttdef"><b>Definition:</b> imu_spi.c:155</div></div>
+<div class="ttc" id="aimu__spi_8c_html_ae35146a7cc10e15dd1cb67520515c43c"><div class="ttname"><a href="imu__spi_8c.html#ae35146a7cc10e15dd1cb67520515c43c">ImuWriteReg</a></div><div class="ttdeci">uint16_t ImuWriteReg(uint8_t RegAddr, uint8_t RegValue)</div><div class="ttdoc">Writes an 8 bit value to the IMU.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:218</div></div>
+<div class="ttc" id="aimu__spi_8c_html_a814e8222e8a4eda9663f65501d41580a"><div class="ttname"><a href="imu__spi_8c.html#a814e8222e8a4eda9663f65501d41580a">InitImuCsTimer</a></div><div class="ttdeci">void InitImuCsTimer()</div><div class="ttdoc">Inits TIM3 for use in PWM mode to drive CS.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:261</div></div>
 <div class="ttc" id="atimer_8h_html"><div class="ttname"><a href="timer_8h.html">timer.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer timer module.</div></div>
-<div class="ttc" id="aimu__spi_8h_html_a814e8222e8a4eda9663f65501d41580a"><div class="ttname"><a href="imu__spi_8h.html#a814e8222e8a4eda9663f65501d41580a">InitImuCsTimer</a></div><div class="ttdeci">void InitImuCsTimer()</div><div class="ttdoc">Inits TIM3 for use in PWM mode to drive CS.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:260</div></div>
+<div class="ttc" id="aimu__spi_8c_html_a50a9e9e1e661156087f12a81c2b6bc30"><div class="ttname"><a href="imu__spi_8c.html#a50a9e9e1e661156087f12a81c2b6bc30">DisableImuSpiDMA</a></div><div class="ttdeci">void DisableImuSpiDMA()</div><div class="ttdoc">Disable IMU burst data stream.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:50</div></div>
+<div class="ttc" id="aimu__spi_8c_html_adfad8c7379c01cb09a7e3754c33e169b"><div class="ttname"><a href="imu__spi_8c.html#adfad8c7379c01cb09a7e3754c33e169b">ConfigureImuSpiTimer</a></div><div class="ttdeci">void ConfigureImuSpiTimer(uint32_t period)</div><div class="ttdoc">Configures the period on TIM4.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:305</div></div>
 <div class="ttc" id="amain_8h_html"><div class="ttname"><a href="main_8h.html">main.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer main.</div></div>
-<div class="ttc" id="aimu__spi_8h_html_ae6a71708bd067b831a355da7d5e7a1b7"><div class="ttname"><a href="imu__spi_8h.html#ae6a71708bd067b831a355da7d5e7a1b7">StartImuBurst</a></div><div class="ttdeci">void StartImuBurst(uint8_t *bufEntry)</div><div class="ttdoc">Start an IMU burst data capture (using DMA)</div><div class="ttdef"><b>Definition:</b> imu_spi.c:73</div></div>
-<div class="ttc" id="aimu__spi_8h_html_adfad8c7379c01cb09a7e3754c33e169b"><div class="ttname"><a href="imu__spi_8h.html#adfad8c7379c01cb09a7e3754c33e169b">ConfigureImuSpiTimer</a></div><div class="ttdeci">void ConfigureImuSpiTimer(uint32_t period)</div><div class="ttdoc">Configures the period on TIM4.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:304</div></div>
 <div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
-<div class="ttc" id="aimu__spi_8h_html_a282b6361f14c10a21b150aa10c26e03f"><div class="ttname"><a href="imu__spi_8h.html#a282b6361f14c10a21b150aa10c26e03f">ImuSpiTransfer</a></div><div class="ttdeci">uint16_t ImuSpiTransfer(uint32_t MOSI)</div><div class="ttdoc">Basic IMU SPI data transfer function (protocol agnostic).</div><div class="ttdef"><b>Definition:</b> imu_spi.c:155</div></div>
+<div class="ttc" id="aimu__spi_8c_html_a4436256162e4bd2d584ae13d86c7aa9f"><div class="ttname"><a href="imu__spi_8c.html#a4436256162e4bd2d584ae13d86c7aa9f">ResetImu</a></div><div class="ttdeci">void ResetImu()</div><div class="ttdoc">Hardware reset connected IMU.</div><div class="ttdef"><b>Definition:</b> imu_spi.c:38</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

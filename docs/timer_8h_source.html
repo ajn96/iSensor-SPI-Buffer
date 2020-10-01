@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: timer.h Source File</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/timer.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -79,29 +79,33 @@ $(function() {
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="main_8h.html">main.h</a>&quot;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordtype">void</span> <a class="code" href="timer_8h.html#a69df0b9d0c856817c7e0406ddfd1ae01">InitMicrosecondTimer</a>();</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> <a class="code" href="timer_8h.html#aee4842c061c047f9938eccfbbecf9d34">ClearMicrosecondTimer</a>();</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;uint32_t <a class="code" href="timer_8h.html#a42165c313ad966bc655a7b7db5bd0264">GetMicrosecondTimestamp</a>();</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> <a class="code" href="timer_8h.html#a37f8e3e4c93dca1f52d2459e0e915d5e">EnablePPSTimer</a>();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="timer_8h.html#a674d0d6bc8aa368d9b71e03e7a54cd13">DisablePPSTimer</a>();</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> <a class="code" href="timer_8h.html#aa070c28f17a0f620ec21a681b383769a">IncrementPPSTime</a>();</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;uint32_t GetPPSTimestamp();</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">void</span> <a class="code" href="timer_8h.html#ad679c296af1e7b89bd58be986d71d985">SleepMicroseconds</a>(uint32_t microseconds);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">void</span> <a class="code" href="timer_8h.html#a927c9c42c21c7bf05c51c6e9253e82b3">CheckPPSUnlock</a>();</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define PPS_INT_MASK            GPIO_PIN_8|GPIO_PIN_7|GPIO_PIN_4</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="timer_8h.html#a07acefd857a03f40d1cec2ba628478c3">   29</a></span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_TIMER_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keywordtype">void</span> <a class="code" href="timer_8c.html#a69df0b9d0c856817c7e0406ddfd1ae01">InitMicrosecondTimer</a>();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> <a class="code" href="timer_8c.html#aee4842c061c047f9938eccfbbecf9d34">ClearMicrosecondTimer</a>();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;uint32_t <a class="code" href="timer_8c.html#a42165c313ad966bc655a7b7db5bd0264">GetMicrosecondTimestamp</a>();</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> <a class="code" href="timer_8c.html#a37f8e3e4c93dca1f52d2459e0e915d5e">EnablePPSTimer</a>();</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">void</span> <a class="code" href="timer_8c.html#a674d0d6bc8aa368d9b71e03e7a54cd13">DisablePPSTimer</a>();</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">void</span> <a class="code" href="timer_8c.html#aa070c28f17a0f620ec21a681b383769a">IncrementPPSTime</a>();</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;uint32_t <a class="code" href="timer_8c.html#af3a8b8ce4dc5d61599ad5cef8dcd003a">GetPPSTimestamp</a>();</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> <a class="code" href="timer_8c.html#ad679c296af1e7b89bd58be986d71d985">SleepMicroseconds</a>(uint32_t microseconds);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> <a class="code" href="timer_8c.html#a927c9c42c21c7bf05c51c6e9253e82b3">CheckPPSUnlock</a>();</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">/* @endcond */</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#define PPS_INT_MASK            GPIO_PIN_8|GPIO_PIN_7|GPIO_PIN_4</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="timer_8h.html#a07acefd857a03f40d1cec2ba628478c3">   32</a></span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_TIMER_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="atimer_8h_html_a927c9c42c21c7bf05c51c6e9253e82b3"><div class="ttname"><a href="timer_8h.html#a927c9c42c21c7bf05c51c6e9253e82b3">CheckPPSUnlock</a></div><div class="ttdeci">void CheckPPSUnlock()</div><div class="ttdoc">Check if the PPS signal is unlocked (greater than 1100ms since last PPS strobe)</div><div class="ttdef"><b>Definition:</b> timer.c:36</div></div>
-<div class="ttc" id="atimer_8h_html_a674d0d6bc8aa368d9b71e03e7a54cd13"><div class="ttname"><a href="timer_8h.html#a674d0d6bc8aa368d9b71e03e7a54cd13">DisablePPSTimer</a></div><div class="ttdeci">void DisablePPSTimer()</div><div class="ttdoc">Disable PPS timer functionality.</div><div class="ttdef"><b>Definition:</b> timer.c:137</div></div>
-<div class="ttc" id="atimer_8h_html_aee4842c061c047f9938eccfbbecf9d34"><div class="ttname"><a href="timer_8h.html#aee4842c061c047f9938eccfbbecf9d34">ClearMicrosecondTimer</a></div><div class="ttdeci">void ClearMicrosecondTimer()</div><div class="ttdoc">Reset TIM2 counter to 0.</div><div class="ttdef"><b>Definition:</b> timer.c:105</div></div>
-<div class="ttc" id="atimer_8h_html_aa070c28f17a0f620ec21a681b383769a"><div class="ttname"><a href="timer_8h.html#aa070c28f17a0f620ec21a681b383769a">IncrementPPSTime</a></div><div class="ttdeci">void IncrementPPSTime()</div><div class="ttdoc">Increment PPS timestamp by 1.</div><div class="ttdef"><b>Definition:</b> timer.c:148</div></div>
-<div class="ttc" id="atimer_8h_html_a69df0b9d0c856817c7e0406ddfd1ae01"><div class="ttname"><a href="timer_8h.html#a69df0b9d0c856817c7e0406ddfd1ae01">InitMicrosecondTimer</a></div><div class="ttdeci">void InitMicrosecondTimer()</div><div class="ttdoc">Init TIM2 to operate in 32-bit mode with a 1MHz timebase.</div><div class="ttdef"><b>Definition:</b> timer.c:95</div></div>
-<div class="ttc" id="atimer_8h_html_a42165c313ad966bc655a7b7db5bd0264"><div class="ttname"><a href="timer_8h.html#a42165c313ad966bc655a7b7db5bd0264">GetMicrosecondTimestamp</a></div><div class="ttdeci">uint32_t GetMicrosecondTimestamp()</div><div class="ttdoc">Gets the current 32-bit value from the IMU sample timestamp timer.</div><div class="ttdef"><b>Definition:</b> timer.c:78</div></div>
-<div class="ttc" id="atimer_8h_html_a37f8e3e4c93dca1f52d2459e0e915d5e"><div class="ttname"><a href="timer_8h.html#a37f8e3e4c93dca1f52d2459e0e915d5e">EnablePPSTimer</a></div><div class="ttdeci">void EnablePPSTimer()</div><div class="ttdoc">Enable PPS input for time stamp synchronization (improved long term stability over 20ppm crystal).</div><div class="ttdef"><b>Definition:</b> timer.c:126</div></div>
-<div class="ttc" id="atimer_8h_html_ad679c296af1e7b89bd58be986d71d985"><div class="ttname"><a href="timer_8h.html#ad679c296af1e7b89bd58be986d71d985">SleepMicroseconds</a></div><div class="ttdeci">void SleepMicroseconds(uint32_t microseconds)</div><div class="ttdoc">Blocking sleep function call.</div><div class="ttdef"><b>Definition:</b> timer.c:61</div></div>
+<div class="ttc" id="atimer_8c_html_a674d0d6bc8aa368d9b71e03e7a54cd13"><div class="ttname"><a href="timer_8c.html#a674d0d6bc8aa368d9b71e03e7a54cd13">DisablePPSTimer</a></div><div class="ttdeci">void DisablePPSTimer()</div><div class="ttdoc">Disable PPS timer functionality.</div><div class="ttdef"><b>Definition:</b> timer.c:152</div></div>
+<div class="ttc" id="atimer_8c_html_aee4842c061c047f9938eccfbbecf9d34"><div class="ttname"><a href="timer_8c.html#aee4842c061c047f9938eccfbbecf9d34">ClearMicrosecondTimer</a></div><div class="ttdeci">void ClearMicrosecondTimer()</div><div class="ttdoc">Reset TIM2 counter to 0.</div><div class="ttdef"><b>Definition:</b> timer.c:120</div></div>
+<div class="ttc" id="atimer_8c_html_a42165c313ad966bc655a7b7db5bd0264"><div class="ttname"><a href="timer_8c.html#a42165c313ad966bc655a7b7db5bd0264">GetMicrosecondTimestamp</a></div><div class="ttdeci">uint32_t GetMicrosecondTimestamp()</div><div class="ttdoc">Gets the current 32-bit value from the IMU sample timestamp timer.</div><div class="ttdef"><b>Definition:</b> timer.c:85</div></div>
+<div class="ttc" id="atimer_8c_html_af3a8b8ce4dc5d61599ad5cef8dcd003a"><div class="ttname"><a href="timer_8c.html#af3a8b8ce4dc5d61599ad5cef8dcd003a">GetPPSTimestamp</a></div><div class="ttdeci">uint32_t GetPPSTimestamp()</div><div class="ttdoc">Gets the current 32-bit value from PPS timestamp registers.</div><div class="ttdef"><b>Definition:</b> timer.c:95</div></div>
+<div class="ttc" id="atimer_8c_html_a37f8e3e4c93dca1f52d2459e0e915d5e"><div class="ttname"><a href="timer_8c.html#a37f8e3e4c93dca1f52d2459e0e915d5e">EnablePPSTimer</a></div><div class="ttdeci">void EnablePPSTimer()</div><div class="ttdoc">Enable PPS input for time stamp synchronization (improved long term stability over 20ppm crystal).</div><div class="ttdef"><b>Definition:</b> timer.c:141</div></div>
+<div class="ttc" id="atimer_8c_html_a927c9c42c21c7bf05c51c6e9253e82b3"><div class="ttname"><a href="timer_8c.html#a927c9c42c21c7bf05c51c6e9253e82b3">CheckPPSUnlock</a></div><div class="ttdeci">void CheckPPSUnlock()</div><div class="ttdoc">Check if the PPS signal is unlocked (greater than 1100ms since last PPS strobe)</div><div class="ttdef"><b>Definition:</b> timer.c:46</div></div>
+<div class="ttc" id="atimer_8c_html_ad679c296af1e7b89bd58be986d71d985"><div class="ttname"><a href="timer_8c.html#ad679c296af1e7b89bd58be986d71d985">SleepMicroseconds</a></div><div class="ttdeci">void SleepMicroseconds(uint32_t microseconds)</div><div class="ttdoc">Blocking sleep function call.</div><div class="ttdef"><b>Definition:</b> timer.c:71</div></div>
 <div class="ttc" id="amain_8h_html"><div class="ttname"><a href="main_8h.html">main.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer main.</div></div>
+<div class="ttc" id="atimer_8c_html_aa070c28f17a0f620ec21a681b383769a"><div class="ttname"><a href="timer_8c.html#aa070c28f17a0f620ec21a681b383769a">IncrementPPSTime</a></div><div class="ttdeci">void IncrementPPSTime()</div><div class="ttdoc">Increment PPS timestamp by 1.</div><div class="ttdef"><b>Definition:</b> timer.c:167</div></div>
+<div class="ttc" id="atimer_8c_html_a69df0b9d0c856817c7e0406ddfd1ae01"><div class="ttname"><a href="timer_8c.html#a69df0b9d0c856817c7e0406ddfd1ae01">InitMicrosecondTimer</a></div><div class="ttdeci">void InitMicrosecondTimer()</div><div class="ttdoc">Init TIM2 to operate in 32-bit mode with a 1MHz timebase.</div><div class="ttdef"><b>Definition:</b> timer.c:107</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

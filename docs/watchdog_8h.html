@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: watchdog.h File Reference</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/watchdog.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -69,8 +69,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
 <div class="title">watchdog.h File Reference</div>  </div>
 </div><!--header-->
@@ -93,18 +92,6 @@ Macros</h2></td></tr>
 <tr class="separator:a44d6ab64d92657ef31d5fdd310454902"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afba5e13764a7ca464de426c8fecd61eb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="watchdog_8h.html#afba5e13764a7ca464de426c8fecd61eb">WATCHDOG_UNLOCK_KEY</a>&#160;&#160;&#160;0x00005555</td></tr>
 <tr class="separator:afba5e13764a7ca464de426c8fecd61eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ae1d7795593b89a0508b7d5adb1924f69"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="watchdog_8h.html#ae1d7795593b89a0508b7d5adb1924f69">CheckWatchDogStatus</a> ()</td></tr>
-<tr class="memdesc:ae1d7795593b89a0508b7d5adb1924f69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if system reset from independent watch dog timeout and sets the appropriate STATUS flag.  <a href="watchdog_8h.html#ae1d7795593b89a0508b7d5adb1924f69">More...</a><br /></td></tr>
-<tr class="separator:ae1d7795593b89a0508b7d5adb1924f69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ea40194cba4ee3987e74a1ec77091fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="watchdog_8h.html#a8ea40194cba4ee3987e74a1ec77091fc">FeedWatchDog</a> ()</td></tr>
-<tr class="memdesc:a8ea40194cba4ee3987e74a1ec77091fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feeds the watchdog timer. Should be called periodically from main loop.  <a href="watchdog_8h.html#a8ea40194cba4ee3987e74a1ec77091fc">More...</a><br /></td></tr>
-<tr class="separator:a8ea40194cba4ee3987e74a1ec77091fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e202ecb064c61a96112d66e624272f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="watchdog_8h.html#a1e202ecb064c61a96112d66e624272f7">EnableWatchDog</a> (uint32_t timeout_ms)</td></tr>
-<tr class="memdesc:a1e202ecb064c61a96112d66e624272f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables watch dog reset functionality.  <a href="watchdog_8h.html#a1e202ecb064c61a96112d66e624272f7">More...</a><br /></td></tr>
-<tr class="separator:a1e202ecb064c61a96112d66e624272f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header file for iSensor-SPI-Buffer watchdog timer module. </p>
@@ -169,77 +156,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Watchdog key register write value to unlock watchdog timer </p>
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="ae1d7795593b89a0508b7d5adb1924f69"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1d7795593b89a0508b7d5adb1924f69">&#9670;&nbsp;</a></span>CheckWatchDogStatus()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void CheckWatchDogStatus </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Check if system reset from independent watch dog timeout and sets the appropriate STATUS flag. </p>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-
-</div>
-</div>
-<a id="a1e202ecb064c61a96112d66e624272f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e202ecb064c61a96112d66e624272f7">&#9670;&nbsp;</a></span>EnableWatchDog()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void EnableWatchDog </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>timeout_ms</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Enables watch dog reset functionality. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">timeout_ms</td><td>The watch dog reset time (in ms)</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This functions calculates the watch dog time base based on desired timeout, to give the best granularity. The STM32 independent watch dog peripheral runs on a 40KHz RC oscillator. This 40KHz clock can be divided down in range 4 - 256. The watchdog itself resets the system when the watchdog timer reaches a value of 0 (12 bit counter).</p>
-<p>Min timeout (highest resolution): 4095 / (40KHz / 4) -&gt; 0.410s</p>
-<p>Max timeout: 4095 / (40KHz / 256) -&gt; 26.2s </p>
-
-</div>
-</div>
-<a id="a8ea40194cba4ee3987e74a1ec77091fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ea40194cba4ee3987e74a1ec77091fc">&#9670;&nbsp;</a></span>FeedWatchDog()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void FeedWatchDog </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Feeds the watchdog timer. Should be called periodically from main loop. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>If this function is not called within the reset period, the watchdog timer will trip and force a system reset. Default watchdog timeout is 2s, which should be significantly longer than any operation execution time in firmware. </p>
 
 </div>
 </div>

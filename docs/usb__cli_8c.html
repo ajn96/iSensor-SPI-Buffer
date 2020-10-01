@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: usb_cli.c File Reference</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Src/usb_cli.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -88,8 +88,8 @@ Functions</h2></td></tr>
 <tr class="memitem:af3dfc46e9419ce7b06e35ccf57b57e88"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usb__cli_8c.html#af3dfc46e9419ce7b06e35ccf57b57e88">USBRxHandler</a> ()</td></tr>
 <tr class="memdesc:af3dfc46e9419ce7b06e35ccf57b57e88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handler for received USB data.  <a href="usb__cli_8c.html#af3dfc46e9419ce7b06e35ccf57b57e88">More...</a><br /></td></tr>
 <tr class="separator:af3dfc46e9419ce7b06e35ccf57b57e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a084d43d822ed3a12e013d5d39d9209ff"><td class="memItemLeft" align="right" valign="top"><a id="a084d43d822ed3a12e013d5d39d9209ff"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>USBTxHandler</b> (const uint8_t *buf, uint32_t count)</td></tr>
+<tr class="memitem:a084d43d822ed3a12e013d5d39d9209ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usb__cli_8c.html#a084d43d822ed3a12e013d5d39d9209ff">USBTxHandler</a> (const uint8_t *buf, uint32_t count)</td></tr>
+<tr class="memdesc:a084d43d822ed3a12e013d5d39d9209ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">USB write handler.  <a href="usb__cli_8c.html#a084d43d822ed3a12e013d5d39d9209ff">More...</a><br /></td></tr>
 <tr class="separator:a084d43d822ed3a12e013d5d39d9209ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
@@ -190,6 +190,45 @@ Variables</h2></td></tr>
 <p>Handler for received USB data. </p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
 <p>This function should be called periodically from the main loop to check if new USB data has been received </p>
+
+</div>
+</div>
+<a id="a084d43d822ed3a12e013d5d39d9209ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a084d43d822ed3a12e013d5d39d9209ff">&#9670;&nbsp;</a></span>USBTxHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void USBTxHandler </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>USB write handler. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buf</td><td>Buffer containing data to write</td></tr>
+    <tr><td class="paramname">count</td><td>Number of bytes to write</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function is called by the script execution routines, when a script object is executed from a USB CLI context. </p>
 
 </div>
 </div>

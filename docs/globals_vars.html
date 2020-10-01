@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -105,7 +105,11 @@ $(function() {
 : <a class="el" href="sd__card_8c.html#ac705de537563d408cefd29fdcd813d80">sd_card.c</a>
 </li>
 <li>cmdIndex
-: <a class="el" href="sd__card_8c.html#aa910262b7076819c86978d461ecbcd7e">sd_card.c</a>
+: <a class="el" href="script_8c.html#aa910262b7076819c86978d461ecbcd7e">script.c</a>
+, <a class="el" href="sd__card_8c.html#aa910262b7076819c86978d461ecbcd7e">sd_card.c</a>
+</li>
+<li>cmdList
+: <a class="el" href="sd__card_8c.html#abac503ce5ea9f04c478a7938a9298277">sd_card.c</a>
 </li>
 <li>CurrentCommand
 : <a class="el" href="usb__cli_8c.html#a7eb50a0004951396ce14c5ca1c974d10">usb_cli.c</a>
@@ -123,6 +127,9 @@ $(function() {
 <h3><a id="index_e"></a>- e -</h3><ul>
 <li>EchoBuf
 : <a class="el" href="usb__cli_8c.html#aabcd584879c47e2cf6ce8893010e6b92">usb_cli.c</a>
+</li>
+<li>EchoCmd
+: <a class="el" href="script_8c.html#a16f14c91b787013557e902ccbec3e120">script.c</a>
 </li>
 <li>EndloopCmd
 : <a class="el" href="script_8c.html#a10077c1a7acafedcf51fc0883d33723b">script.c</a>
@@ -183,26 +190,26 @@ $(function() {
 , <a class="el" href="timer_8c.html#a8612b680a1efebe782532fc810863fca">timer.c</a>
 </li>
 <li>g_regs
-: <a class="el" href="adc_8c.html#a498acc08ff841f6655df28c1681f954f">adc.c</a>
-, <a class="el" href="buffer_8c.html#a498acc08ff841f6655df28c1681f954f">buffer.c</a>
-, <a class="el" href="data__capture_8c.html#ad9abdec236745828926dbed3d25cfad5">data_capture.c</a>
+: <a class="el" href="data__capture_8c.html#ad9abdec236745828926dbed3d25cfad5">data_capture.c</a>
 , <a class="el" href="dio_8c.html#ad9abdec236745828926dbed3d25cfad5">dio.c</a>
 , <a class="el" href="flash_8c.html#ad9abdec236745828926dbed3d25cfad5">flash.c</a>
-, <a class="el" href="imu__spi_8c.html#ad9abdec236745828926dbed3d25cfad5">imu_spi.c</a>
+, <a class="el" href="user__spi_8c.html#ad9abdec236745828926dbed3d25cfad5">user_spi.c</a>
 , <a class="el" href="isr_8c.html#ad9abdec236745828926dbed3d25cfad5">isr.c</a>
 , <a class="el" href="led_8c.html#ad9abdec236745828926dbed3d25cfad5">led.c</a>
 , <a class="el" href="script_8c.html#a498acc08ff841f6655df28c1681f954f">script.c</a>
 , <a class="el" href="sd__card_8c.html#ad9abdec236745828926dbed3d25cfad5">sd_card.c</a>
 , <a class="el" href="timer_8c.html#ad9abdec236745828926dbed3d25cfad5">timer.c</a>
 , <a class="el" href="usb__cli_8c.html#a498acc08ff841f6655df28c1681f954f">usb_cli.c</a>
+, <a class="el" href="imu__spi_8c.html#ad9abdec236745828926dbed3d25cfad5">imu_spi.c</a>
 , <a class="el" href="user__interrupt_8c.html#ad9abdec236745828926dbed3d25cfad5">user_interrupt.c</a>
-, <a class="el" href="user__spi_8c.html#ad9abdec236745828926dbed3d25cfad5">user_spi.c</a>
 , <a class="el" href="watchdog_8c.html#ad9abdec236745828926dbed3d25cfad5">watchdog.c</a>
+, <a class="el" href="adc_8c.html#a498acc08ff841f6655df28c1681f954f">adc.c</a>
+, <a class="el" href="buffer_8c.html#a498acc08ff841f6655df28c1681f954f">buffer.c</a>
 </li>
 <li>g_spi1
-: <a class="el" href="imu__spi_8c.html#ac7374f4f68aaef9867e081e6cb59e3d9">imu_spi.c</a>
+: <a class="el" href="main_8c.html#ac7374f4f68aaef9867e081e6cb59e3d9">main.c</a>
+, <a class="el" href="imu__spi_8c.html#ac7374f4f68aaef9867e081e6cb59e3d9">imu_spi.c</a>
 , <a class="el" href="isr_8c.html#ac7374f4f68aaef9867e081e6cb59e3d9">isr.c</a>
-, <a class="el" href="main_8c.html#ac7374f4f68aaef9867e081e6cb59e3d9">main.c</a>
 </li>
 <li>g_spi2
 : <a class="el" href="main_8c.html#a35c3e3dee022adebf0fc138c81b515b9">main.c</a>
@@ -240,6 +247,9 @@ $(function() {
 <li>HelpStr
 : <a class="el" href="script_8c.html#a995debb8ab7308e9324e122fcc2b1de3">script.c</a>
 </li>
+<li>hpcd_USB_FS
+: <a class="el" href="stm32f3xx__it_8c.html#afabb8e1d05154a3b694f4f4d150b194f">stm32f3xx_it.c</a>
+</li>
 <li>htim2
 : <a class="el" href="timer_8c.html#a2c80fd5510e2990a59a5c90d745c716c">timer.c</a>
 </li>
@@ -248,6 +258,9 @@ $(function() {
 </li>
 <li>htim4
 : <a class="el" href="imu__spi_8c.html#a85788cec5a97ee377e4ee2e74f026484">imu_spi.c</a>
+</li>
+<li>htim8
+: <a class="el" href="timer_8c.html#a5faa27108379f799afb6984010bf0384">timer.c</a>
 </li>
 <li>hUsbDeviceFS
 : <a class="el" href="usb__cli_8c.html#afe8a2d9e10b33d5e7906f9f04f95358e">usb_cli.c</a>
@@ -285,12 +298,25 @@ $(function() {
 <li>NotAllowedStr
 : <a class="el" href="script_8c.html#a71182335d7a57ebcbc29458310caae36">script.c</a>
 </li>
+<li>numCmds
+: <a class="el" href="sd__card_8c.html#a61c98c8516ad997ffdb632f5353d6482">sd_card.c</a>
+</li>
 </ul>
 
 
 <h3><a id="index_o"></a>- o -</h3><ul>
 <li>outFile
 : <a class="el" href="sd__card_8c.html#a9f3ea9e7a9d4ae77e9288e3a97f5409a">sd_card.c</a>
+</li>
+</ul>
+
+
+<h3><a id="index_p"></a>- p -</h3><ul>
+<li>PPS_MaxTickCount
+: <a class="el" href="timer_8c.html#a25b1a9ecd618a5656d91eaae3405237d">timer.c</a>
+</li>
+<li>PPS_TickCount
+: <a class="el" href="timer_8c.html#a34e402f1a247cdf0f46ab19996544ad6">timer.c</a>
 </li>
 </ul>
 
@@ -312,6 +338,9 @@ $(function() {
 <li>scriptRunning
 : <a class="el" href="sd__card_8c.html#af2bd5f17cf66c0253d4be43b778a5d1b">sd_card.c</a>
 </li>
+<li>ScriptStart
+: <a class="el" href="sd__card_8c.html#aa54421e5905f4717c763a1943c79b469">sd_card.c</a>
+</li>
 <li>sd_buf
 : <a class="el" href="sd__card_8c.html#a82a90c63ceb17b161d89ae2fe043f8a0">sd_card.c</a>
 </li>
@@ -324,8 +353,24 @@ $(function() {
 <li>state
 : <a class="el" href="main_8c.html#a1b0c7bd4d79798ef4e0ce23894c9aeb2">main.c</a>
 </li>
+<li>StreamBuf_A
+: <a class="el" href="script_8c.html#a2c2c158f71b500735f46b4986c71a35b">script.c</a>
+</li>
+<li>StreamBuf_B
+: <a class="el" href="script_8c.html#ac2f10200da148bc47d589e784165f565">script.c</a>
+</li>
 <li>StreamCmd
 : <a class="el" href="script_8c.html#a838678d9aa6daf012f6e60df0c962a6d">script.c</a>
+</li>
+</ul>
+
+
+<h3><a id="index_t"></a>- t -</h3><ul>
+<li>Timer1
+: <a class="el" href="stm32f3xx__it_8c.html#ab8421453c1cb542905d54e2aa747863e">stm32f3xx_it.c</a>
+</li>
+<li>Timer2
+: <a class="el" href="stm32f3xx__it_8c.html#af14e7ef7e69cf56470599553e9d50aea">stm32f3xx_it.c</a>
 </li>
 </ul>
 

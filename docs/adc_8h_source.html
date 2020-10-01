@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: adc.h Source File</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/adc.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -79,26 +79,33 @@ $(function() {
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="registers_8h.html">registers.h</a>&quot;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="stm32f3xx__hal__conf_8h.html">stm32f3xx_hal_conf.h</a>&quot;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordtype">void</span> <a class="code" href="adc_8h.html#adb6cb5368cffd96c7e2cce8c72744ea2">ADCInit</a>();</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> <a class="code" href="adc_8h.html#a88d8b1c45444aeddd983d3add5e8224e">UpdateADC</a>();</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define TS_CAL1         ((uint16_t*) ((uint32_t) 0x1FFFF7B8))</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="adc_8h.html#aae5ffe51f62b02abbdb9ae7d644298fe">   22</a></span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define TS_CAL2         ((uint16_t*) ((uint32_t) 0x1FFFF7C2))</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="adc_8h.html#a33906f7922bfa1d2dc8d9068b9f7be45">   25</a></span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define VREFINT_CAL     ((uint16_t*) ((uint32_t) 0x1FFFF7BA))</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="adc_8h.html#a03cffacf7161050bb7fd4dc549ce0f21">   28</a></span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define ADC_TEMP_START      0</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#define ADC_TEMP_READ       1</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#define ADC_VDD_START       2</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define ADC_VDD_READ        3</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_ADC_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> <a class="code" href="adc_8c.html#adb6cb5368cffd96c7e2cce8c72744ea2">ADCInit</a>();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="adc_8c.html#a88d8b1c45444aeddd983d3add5e8224e">UpdateADC</a>();</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">/* @endcond */</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#define TS_CAL1         ((uint16_t*) ((uint32_t) 0x1FFFF7B8))</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="adc_8h.html#aae5ffe51f62b02abbdb9ae7d644298fe">   26</a></span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define TS_CAL2         ((uint16_t*) ((uint32_t) 0x1FFFF7C2))</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="adc_8h.html#a33906f7922bfa1d2dc8d9068b9f7be45">   29</a></span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#define VREFINT_CAL     ((uint16_t*) ((uint32_t) 0x1FFFF7BA))</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="adc_8h.html#a03cffacf7161050bb7fd4dc549ce0f21">   32</a></span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#define ADC_VDD_START       0</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="adc_8h.html#a055b4a6a5a51fd9588355c7dd3f1b7c0">   35</a></span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#define ADC_VDD_READ        1</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="adc_8h.html#a0689dd86033fd5aeb822d2279ecbf733">   38</a></span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#define ADC_TEMP_START      2</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="adc_8h.html#a8b70cdb388ad494425d10a09ed566b44">   41</a></span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#define ADC_TEMP_READ       3</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="adc_8h.html#a135151cc09e1094dbb0163c3d696e630">   44</a></span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_ADC_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="astm32f3xx__hal__conf_8h_html"><div class="ttname"><a href="stm32f3xx__hal__conf_8h.html">stm32f3xx_hal_conf.h</a></div><div class="ttdoc">HAL configuration file.</div></div>
-<div class="ttc" id="aadc_8h_html_a88d8b1c45444aeddd983d3add5e8224e"><div class="ttname"><a href="adc_8h.html#a88d8b1c45444aeddd983d3add5e8224e">UpdateADC</a></div><div class="ttdeci">void UpdateADC()</div><div class="ttdoc">Read and scale ADC values then load to output registers.</div><div class="ttdef"><b>Definition:</b> adc.c:101</div></div>
-<div class="ttc" id="aadc_8h_html_adb6cb5368cffd96c7e2cce8c72744ea2"><div class="ttname"><a href="adc_8h.html#adb6cb5368cffd96c7e2cce8c72744ea2">ADCInit</a></div><div class="ttdeci">void ADCInit()</div><div class="ttdoc">ADC1 Initialization Function.</div><div class="ttdef"><b>Definition:</b> adc.c:37</div></div>
+<div class="ttc" id="aadc_8c_html_adb6cb5368cffd96c7e2cce8c72744ea2"><div class="ttname"><a href="adc_8c.html#adb6cb5368cffd96c7e2cce8c72744ea2">ADCInit</a></div><div class="ttdeci">void ADCInit()</div><div class="ttdoc">ADC1 Initialization Function.</div><div class="ttdef"><b>Definition:</b> adc.c:39</div></div>
 <div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
+<div class="ttc" id="aadc_8c_html_a88d8b1c45444aeddd983d3add5e8224e"><div class="ttname"><a href="adc_8c.html#a88d8b1c45444aeddd983d3add5e8224e">UpdateADC</a></div><div class="ttdeci">void UpdateADC()</div><div class="ttdoc">Read and scale ADC values then load to output registers.</div><div class="ttdef"><b>Definition:</b> adc.c:105</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

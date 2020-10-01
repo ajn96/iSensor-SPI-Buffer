@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -241,13 +241,15 @@ $(function() {
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">4 </td><td class="markdownTableBodyNone">DR_POLARITY </td><td class="markdownTableBodyNone">Data ready trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">7:5 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<td class="markdownTableBodyNone">6:5 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">11:8 </td><td class="markdownTableBodyNone">PPS_SELECT </td><td class="markdownTableBodyNone">Select which host processor DIO output pin acts as a Pulse Per Second (PPS) input, for timebase synchronization  </td></tr>
+<td class="markdownTableBodyNone">7 </td><td class="markdownTableBodyNone">PPS_POLARITY </td><td class="markdownTableBodyNone">PPS trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">12 </td><td class="markdownTableBodyNone">PPS_POLARITY </td><td class="markdownTableBodyNone">PPS trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge  </td></tr>
+<td class="markdownTableBodyNone">11:8 </td><td class="markdownTableBodyNone">PPS_SELECT </td><td class="markdownTableBodyNone">Select which host processor DIO output pin acts as a Pulse Per Second (PPS) input, for timebase synchronization  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">15:13 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<td class="markdownTableBodyNone">13:12 </td><td class="markdownTableBodyNone">PPS_FREQ </td><td class="markdownTableBodyNone">Select the PPS input frequency (10 ^ (PPS_FREQ) Hz). A value of 0 corresponds to a real PPS signal (one pulse per second), which is the recommended way to use the PPS input. A value of 1 -&gt; 10Hz, 2 -&gt; 100Hz and 3 -&gt; 1000Hz for the PPS input signal. The UTC_TIMESTAMP will be scaled based on the frequency value provided here.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:14 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
 </table>
 <p>For each field in DIO_INPUT_CONFIG, the following pin mapping is made:</p><ul>
 <li>Bit0 -&gt; DIO1</li>
@@ -338,7 +340,9 @@ $(function() {
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">2 </td><td class="markdownTableBodyNone">MSB_FIRST </td><td class="markdownTableBodyNone">1 = transmit MSB first, 0 = transmit LSB first  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">15:3 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<td class="markdownTableBodyNone">7:3 </td><td class="markdownTableBodyNone">RESERVED </td><td class="markdownTableBodyNone">Currently unused  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15:8 </td><td class="markdownTableBodyNone">KEY </td><td class="markdownTableBodyNone">The KEY field must be set to 0xA5 for a write to USER_SPI_CONFIG to be processed. Any other value will result in the write being rejected, and no change made to the user SPI port functionality. This prevents inadvertent changing of the SPI mode  </td></tr>
 </table>
 <h2>CLI_CONFIG</h2>
 <table class="markdownTable">
@@ -500,6 +504,17 @@ $(function() {
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">15:0 </td><td class="markdownTableBodyNone">LINE </td><td class="markdownTableBodyNone">Line number in the provided SD card script (script.txt) which is currently being executed by the script execution engine. Will be set to zero when there is no script running.  </td></tr>
 </table>
+<p>The image below shows the script line number value as a simple script executes:</p>
+<p><code>sleep 1f4</code></p>
+<p><code>sleep 3e8</code></p>
+<p><code>sleep 5dc</code></p>
+<p><code>sleep 1f4</code></p>
+<p><code>sleep 3e8</code></p>
+<p><code>sleep 5dc</code></p>
+<p><code>sleep 1f4</code></p>
+<p><code>sleep 3e8</code></p>
+<p><code>sleep 5dc</code></p>
+<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/script_execution.png" alt="Script Execution" class="inline"/></p>
 <h2>SCRIPT_ERROR</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -549,7 +564,9 @@ $(function() {
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">7:0 </td><td class="markdownTableBodyNone">MINOR </td><td class="markdownTableBodyNone">Minor firmware revision number, in BCD  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">15:8 </td><td class="markdownTableBodyNone">MAJOR </td><td class="markdownTableBodyNone">Major firmware revision number, in BCD  </td></tr>
+<td class="markdownTableBodyNone">14:8 </td><td class="markdownTableBodyNone">MAJOR </td><td class="markdownTableBodyNone">Major firmware revision number, in BCD (second digit limited to 7, giving max possible firmware rev 79.99)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">15 </td><td class="markdownTableBodyNone">DEBUG </td><td class="markdownTableBodyNone">Set if the running firmware was compiled with debug flags enabled. The recommended way to use the iSensor-SPI-Buffer firmware is in release mode (DEBUG = 0).  </td></tr>
 </table>
 <p>This rev corresponds to the release tag for the firmware. For example, rev 1.15 would be represented by 0x0115 in FW_REV.</p>
 <h2>DEV_SN_N</h2>

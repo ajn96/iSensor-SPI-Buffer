@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: timer.c File Reference</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Src/timer.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -85,8 +85,11 @@ Functions</h2></td></tr>
 <tr class="memitem:a2728000ef526683ed785c3fbf3387409"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a2728000ef526683ed785c3fbf3387409">InitTIM2</a> (uint32_t timerfreq)</td></tr>
 <tr class="memdesc:a2728000ef526683ed785c3fbf3387409"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables IMU sample timestamp timer.  <a href="timer_8c.html#a2728000ef526683ed785c3fbf3387409">More...</a><br /></td></tr>
 <tr class="separator:a2728000ef526683ed785c3fbf3387409"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a82b83a176c98133d53885e74c58d5d"><td class="memItemLeft" align="right" valign="top"><a id="a0a82b83a176c98133d53885e74c58d5d"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>ConfigurePPSPins</b> (uint32_t enable)</td></tr>
+<tr class="memitem:a48e16631741f22e5a4165516df4d18f7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a48e16631741f22e5a4165516df4d18f7">InitTIM8</a> ()</td></tr>
+<tr class="memdesc:a48e16631741f22e5a4165516df4d18f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables TIM8 as general 1MHz timer.  <a href="timer_8c.html#a48e16631741f22e5a4165516df4d18f7">More...</a><br /></td></tr>
+<tr class="separator:a48e16631741f22e5a4165516df4d18f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a82b83a176c98133d53885e74c58d5d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a0a82b83a176c98133d53885e74c58d5d">ConfigurePPSPins</a> (uint32_t enable)</td></tr>
+<tr class="memdesc:a0a82b83a176c98133d53885e74c58d5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure PPS timer based on DIO_INPUT_CONFIG value.  <a href="timer_8c.html#a0a82b83a176c98133d53885e74c58d5d">More...</a><br /></td></tr>
 <tr class="separator:a0a82b83a176c98133d53885e74c58d5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a927c9c42c21c7bf05c51c6e9253e82b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a927c9c42c21c7bf05c51c6e9253e82b3">CheckPPSUnlock</a> ()</td></tr>
 <tr class="memdesc:a927c9c42c21c7bf05c51c6e9253e82b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the PPS signal is unlocked (greater than 1100ms since last PPS strobe)  <a href="timer_8c.html#a927c9c42c21c7bf05c51c6e9253e82b3">More...</a><br /></td></tr>
@@ -97,8 +100,8 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ConfigurePPSPi
 <tr class="memitem:a42165c313ad966bc655a7b7db5bd0264"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a42165c313ad966bc655a7b7db5bd0264">GetMicrosecondTimestamp</a> ()</td></tr>
 <tr class="memdesc:a42165c313ad966bc655a7b7db5bd0264"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current 32-bit value from the IMU sample timestamp timer.  <a href="timer_8c.html#a42165c313ad966bc655a7b7db5bd0264">More...</a><br /></td></tr>
 <tr class="separator:a42165c313ad966bc655a7b7db5bd0264"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3a8b8ce4dc5d61599ad5cef8dcd003a"><td class="memItemLeft" align="right" valign="top"><a id="af3a8b8ce4dc5d61599ad5cef8dcd003a"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetPPSTimestamp</b> ()</td></tr>
+<tr class="memitem:af3a8b8ce4dc5d61599ad5cef8dcd003a"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#af3a8b8ce4dc5d61599ad5cef8dcd003a">GetPPSTimestamp</a> ()</td></tr>
+<tr class="memdesc:af3a8b8ce4dc5d61599ad5cef8dcd003a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current 32-bit value from PPS timestamp registers.  <a href="timer_8c.html#af3a8b8ce4dc5d61599ad5cef8dcd003a">More...</a><br /></td></tr>
 <tr class="separator:af3a8b8ce4dc5d61599ad5cef8dcd003a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69df0b9d0c856817c7e0406ddfd1ae01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a69df0b9d0c856817c7e0406ddfd1ae01">InitMicrosecondTimer</a> ()</td></tr>
 <tr class="memdesc:a69df0b9d0c856817c7e0406ddfd1ae01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init TIM2 to operate in 32-bit mode with a 1MHz timebase.  <a href="timer_8c.html#a69df0b9d0c856817c7e0406ddfd1ae01">More...</a><br /></td></tr>
@@ -126,6 +129,12 @@ Variables</h2></td></tr>
 <tr class="separator:a8612b680a1efebe782532fc810863fca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c80fd5510e2990a59a5c90d745c716c"><td class="memItemLeft" align="right" valign="top">static TIM_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a2c80fd5510e2990a59a5c90d745c716c">htim2</a></td></tr>
 <tr class="separator:a2c80fd5510e2990a59a5c90d745c716c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5faa27108379f799afb6984010bf0384"><td class="memItemLeft" align="right" valign="top">static TIM_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a5faa27108379f799afb6984010bf0384">htim8</a></td></tr>
+<tr class="separator:a5faa27108379f799afb6984010bf0384"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34e402f1a247cdf0f46ab19996544ad6"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a34e402f1a247cdf0f46ab19996544ad6">PPS_TickCount</a></td></tr>
+<tr class="separator:a34e402f1a247cdf0f46ab19996544ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25b1a9ecd618a5656d91eaae3405237d"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html#a25b1a9ecd618a5656d91eaae3405237d">PPS_MaxTickCount</a></td></tr>
+<tr class="separator:a25b1a9ecd618a5656d91eaae3405237d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation for for iSensor-SPI-Buffer timer module. Covers microsecond timer and PPS timer. </p>
@@ -171,6 +180,41 @@ Variables</h2></td></tr>
 
 <p>Reset TIM2 counter to 0. </p>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a id="a0a82b83a176c98133d53885e74c58d5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a82b83a176c98133d53885e74c58d5d">&#9670;&nbsp;</a></span>ConfigurePPSPins()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void ConfigurePPSPins </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Configure PPS timer based on DIO_INPUT_CONFIG value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable</td><td>Bool flagging if PPS functionality is being enabled or disabled</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function sets up the PPS input pin, as well as the expected "PPS" period. </p>
 
 </div>
 </div>
@@ -237,6 +281,26 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="af3a8b8ce4dc5d61599ad5cef8dcd003a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3a8b8ce4dc5d61599ad5cef8dcd003a">&#9670;&nbsp;</a></span>GetPPSTimestamp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t GetPPSTimestamp </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the current 32-bit value from PPS timestamp registers. </p>
+<dl class="section return"><dt>Returns</dt><dd>The PPS counter value </dd></dl>
+
+</div>
+</div>
 <a id="aa070c28f17a0f620ec21a681b383769a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa070c28f17a0f620ec21a681b383769a">&#9670;&nbsp;</a></span>IncrementPPSTime()</h2>
 
@@ -253,7 +317,8 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Increment PPS timestamp by 1. </p>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function should be called whenever a PPS interrupt is generated. It handles PPS tick count incrementation, and resetting the microsecond timestamp every time one second has elapsed. </p>
 
 </div>
 </div>
@@ -314,6 +379,33 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a48e16631741f22e5a4165516df4d18f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48e16631741f22e5a4165516df4d18f7">&#9670;&nbsp;</a></span>InitTIM8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void InitTIM8 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enables TIM8 as general 1MHz timer. </p>
+
+</div>
+</div>
 <a id="ad679c296af1e7b89bd58be986d71d985"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad679c296af1e7b89bd58be986d71d985">&#9670;&nbsp;</a></span>SleepMicroseconds()</h2>
 
@@ -338,7 +430,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function uses DWT peripheral (data watchpoint and trace) cycle counter to perform delay. </p>
+<p>This function uses TIM6 to perform delay. </p>
 
 </div>
 </div>
@@ -409,6 +501,75 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>TIM2 handle </p>
+
+</div>
+</div>
+<a id="a5faa27108379f799afb6984010bf0384"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5faa27108379f799afb6984010bf0384">&#9670;&nbsp;</a></span>htim8</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TIM_HandleTypeDef htim8</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>TIM8 handle for init </p>
+
+</div>
+</div>
+<a id="a25b1a9ecd618a5656d91eaae3405237d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25b1a9ecd618a5656d91eaae3405237d">&#9670;&nbsp;</a></span>PPS_MaxTickCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t PPS_MaxTickCount</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Number of PPS ticks per sec </p>
+
+</div>
+</div>
+<a id="a34e402f1a247cdf0f46ab19996544ad6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34e402f1a247cdf0f46ab19996544ad6">&#9670;&nbsp;</a></span>PPS_TickCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t PPS_TickCount</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Track number of "PPS" ticks which have occurred in last second </p>
 
 </div>
 </div>

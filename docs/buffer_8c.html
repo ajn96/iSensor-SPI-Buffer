@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: buffer.c File Reference</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Src/buffer.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -233,7 +233,7 @@ Variables</h2></td></tr>
 
 <p>Take a single element from the buffer. </p>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the element retrieved from the buffer</dd></dl>
-<p>In FIFO mode (queue) this function takes from the tail and moves the tail pointer down. </p>
+<p>In FIFO mode (queue) this function takes from the tail and moves the tail pointer down. This function is called from the main loop when a buffer dequeue is requested. As such, the ISRs are disabled for the duration of this function execution to prevent issues with g_bufCount being inadvertently changed </p>
 
 </div>
 </div>

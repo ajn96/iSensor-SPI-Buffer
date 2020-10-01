@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: dio.h File Reference</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/dio.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -71,8 +71,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle">
 <div class="title">dio.h File Reference</div>  </div>
 </div><!--header-->
@@ -99,18 +98,6 @@ Macros</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:ad9566a73aa524180d467768ff9f132f5"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_d_i_o_config.html">DIOConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dio_8h.html#ad9566a73aa524180d467768ff9f132f5">DIOConfig</a></td></tr>
 <tr class="separator:ad9566a73aa524180d467768ff9f132f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ad38b20e2c54a770ce6af80547abbce43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dio_8h.html#ad38b20e2c54a770ce6af80547abbce43">UpdateDIOInputConfig</a> ()</td></tr>
-<tr class="memdesc:ad38b20e2c54a770ce6af80547abbce43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates and updates the data ready and PPS input configuration based on DIO_INPUT_CONFIG.  <a href="dio_8h.html#ad38b20e2c54a770ce6af80547abbce43">More...</a><br /></td></tr>
-<tr class="separator:ad38b20e2c54a770ce6af80547abbce43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a643b4c5d55edcd285e5440bc1caf17a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dio_8h.html#a643b4c5d55edcd285e5440bc1caf17a4">UpdateDIOOutputConfig</a> ()</td></tr>
-<tr class="memdesc:a643b4c5d55edcd285e5440bc1caf17a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates DIO_OUTPUT_CONFIG settings and applies to GPIO.  <a href="dio_8h.html#a643b4c5d55edcd285e5440bc1caf17a4">More...</a><br /></td></tr>
-<tr class="separator:a643b4c5d55edcd285e5440bc1caf17a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23bbc6369c345ac12e5de302c02db52b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dio_8h.html#a23bbc6369c345ac12e5de302c02db52b">GetHardwareID</a> ()</td></tr>
-<tr class="memdesc:a23bbc6369c345ac12e5de302c02db52b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets two bit hardware identification code from identifier pins.  <a href="dio_8h.html#a23bbc6369c345ac12e5de302c02db52b">More...</a><br /></td></tr>
-<tr class="separator:a23bbc6369c345ac12e5de302c02db52b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header file for iSensor-SPI-Buffer DIO interfacing module. </p>
@@ -146,73 +133,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Struct representing DIO configuration settings </p>
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a23bbc6369c345ac12e5de302c02db52b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23bbc6369c345ac12e5de302c02db52b">&#9670;&nbsp;</a></span>GetHardwareID()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t GetHardwareID </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gets two bit hardware identification code from identifier pins. </p>
-<dl class="section return"><dt>Returns</dt><dd>ID code read from ID pins (0 - 3) </dd></dl>
-
-</div>
-</div>
-<a id="ad38b20e2c54a770ce6af80547abbce43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad38b20e2c54a770ce6af80547abbce43">&#9670;&nbsp;</a></span>UpdateDIOInputConfig()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void UpdateDIOInputConfig </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Validates and updates the data ready and PPS input configuration based on DIO_INPUT_CONFIG. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function validates the DIO_INPUT_CONFIG contents, then uses the selected DR configuration to enable the selected DIOn_Master pin as an interrupt source with the desired polarity. This function does not enable PPS input (just ensures that only one bit is set). </p>
-
-</div>
-</div>
-<a id="a643b4c5d55edcd285e5440bc1caf17a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a643b4c5d55edcd285e5440bc1caf17a4">&#9670;&nbsp;</a></span>UpdateDIOOutputConfig()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void UpdateDIOOutputConfig </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Validates DIO_OUTPUT_CONFIG settings and applies to GPIO. </p>
-<p>General procedure is as follows:</p>
-<p>passPins Set SW_IN1 - SW_IN4 output values based on passPins. These act as inputs to the ADG1611 analog switch. For each bit set in passPins, configure the corresponding DIOx_Slave signal as an input (tristate). Only perform this configuration if the pin is not currently acting as a PPS input</p>
-<p>watermarkPins Configure selected watermark interrupt pins as output GPIO</p>
-<p>overflowPins Configure selected overflow interrupt pins as output GPIO</p>
-<p>errorPins Configure selected error interrupt pins as output GPIO</p>
-<p>Any pins which are unused will be configured as inputs. </p>
 
 </div>
 </div>

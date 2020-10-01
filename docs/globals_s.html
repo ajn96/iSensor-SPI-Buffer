@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -73,19 +73,44 @@ $(function() {
 <li>scr
 : <a class="el" href="usb__cli_8c.html#a5a2b484670a50584223281c1ae87f9e3">usb_cli.c</a>
 </li>
+<li>SCR_MOUNT_ERROR
+: <a class="el" href="sd__card_8h.html#a3771b3acd072cbeb44468fd248dbf80a">sd_card.h</a>
+</li>
+<li>SCR_NO_SD
+: <a class="el" href="sd__card_8h.html#a2da3e65f17534a42826fd4fd43732f7f">sd_card.h</a>
+</li>
+<li>SCR_PARSE_INVALID_ARGS
+: <a class="el" href="sd__card_8h.html#acd6f3ffe35881c3c21f9621f1c95d9ee">sd_card.h</a>
+</li>
+<li>SCR_PARSE_INVALID_CMD
+: <a class="el" href="sd__card_8h.html#a124637fa0da7eb9f3f35c3cfcf5472a6">sd_card.h</a>
+</li>
+<li>SCR_PARSE_INVALID_LOOP
+: <a class="el" href="sd__card_8h.html#a1661d06e3c99bd118697678b5a8a4d10">sd_card.h</a>
+</li>
+<li>SCR_RESULT_OPEN_ERROR
+: <a class="el" href="sd__card_8h.html#af708ad40645e8e520b2ee052021e6b3f">sd_card.h</a>
+</li>
+<li>SCR_SCRIPT_OPEN_ERROR
+: <a class="el" href="sd__card_8h.html#aaf63d96cfc947ee0febd09a7a5c06869">sd_card.h</a>
+</li>
+<li>SCR_WRITE_FAIL
+: <a class="el" href="sd__card_8h.html#aefb858c87399166137b0648dc9bdcfb5">sd_card.h</a>
+</li>
 <li>SCRIPT_MAX_ENTRIES
 : <a class="el" href="sd__card_8h.html#a3744cf20327e23a2afb57c9051a55d75">sd_card.h</a>
 </li>
 <li>ScriptAutorun()
-: <a class="el" href="sd__card_8h.html#ade0e1d4a61790fd47ec542cbf559af68">sd_card.h</a>
-, <a class="el" href="sd__card_8c.html#ade0e1d4a61790fd47ec542cbf559af68">sd_card.c</a>
+: <a class="el" href="sd__card_8c.html#ade0e1d4a61790fd47ec542cbf559af68">sd_card.c</a>
 </li>
 <li>scriptRunning
 : <a class="el" href="sd__card_8c.html#af2bd5f17cf66c0253d4be43b778a5d1b">sd_card.c</a>
 </li>
+<li>ScriptStart
+: <a class="el" href="sd__card_8c.html#aa54421e5905f4717c763a1943c79b469">sd_card.c</a>
+</li>
 <li>ScriptStep()
 : <a class="el" href="sd__card_8c.html#a32b1dbc0c13c1814f562104c761f8d6c">sd_card.c</a>
-, <a class="el" href="sd__card_8h.html#a32b1dbc0c13c1814f562104c761f8d6c">sd_card.h</a>
 </li>
 <li>sd_buf
 : <a class="el" href="sd__card_8c.html#a82a90c63ceb17b161d89ae2fe043f8a0">sd_card.c</a>
@@ -94,12 +119,10 @@ $(function() {
 : <a class="el" href="sd__card_8c.html#a091d146cc644caa26078156892f38997">sd_card.c</a>
 </li>
 <li>SDCardInit()
-: <a class="el" href="sd__card_8h.html#a625b0dce0e53a68e74b117c8ced97afe">sd_card.h</a>
-, <a class="el" href="sd__card_8c.html#a625b0dce0e53a68e74b117c8ced97afe">sd_card.c</a>
+: <a class="el" href="sd__card_8c.html#a625b0dce0e53a68e74b117c8ced97afe">sd_card.c</a>
 </li>
 <li>SDTxHandler()
-: <a class="el" href="sd__card_8h.html#a3d1f2d063a0389e1db1e31b7cc174a89">sd_card.h</a>
-, <a class="el" href="sd__card_8c.html#a3d1f2d063a0389e1db1e31b7cc174a89">sd_card.c</a>
+: <a class="el" href="sd__card_8c.html#a3d1f2d063a0389e1db1e31b7cc174a89">sd_card.c</a>
 </li>
 <li>selected_page
 : <a class="el" href="registers_8c.html#a954f038896c833cf36970b00a32329ac">registers.c</a>
@@ -108,36 +131,64 @@ $(function() {
 : <a class="el" href="script_8c.html#a6f69b79ce36d4c2cec8d4475cf0fbfa9">script.c</a>
 </li>
 <li>SleepMicroseconds()
-: <a class="el" href="timer_8h.html#ad679c296af1e7b89bd58be986d71d985">timer.h</a>
-, <a class="el" href="timer_8c.html#ad679c296af1e7b89bd58be986d71d985">timer.c</a>
+: <a class="el" href="timer_8c.html#ad679c296af1e7b89bd58be986d71d985">timer.c</a>
 </li>
 <li>SPI3_Init()
 : <a class="el" href="sd__card_8c.html#aa982ad2254de265717f1ad2404cf53ad">sd_card.c</a>
 </li>
 <li>StartImuBurst()
-: <a class="el" href="imu__spi_8h.html#ae6a71708bd067b831a355da7d5e7a1b7">imu_spi.h</a>
-, <a class="el" href="imu__spi_8c.html#ae6a71708bd067b831a355da7d5e7a1b7">imu_spi.c</a>
+: <a class="el" href="imu__spi_8c.html#ae6a71708bd067b831a355da7d5e7a1b7">imu_spi.c</a>
 </li>
 <li>StartScript()
-: <a class="el" href="sd__card_8h.html#a3549a7ed2c1d2569224b55e2d286c0e8">sd_card.h</a>
-, <a class="el" href="sd__card_8c.html#a3549a7ed2c1d2569224b55e2d286c0e8">sd_card.c</a>
+: <a class="el" href="sd__card_8c.html#a3549a7ed2c1d2569224b55e2d286c0e8">sd_card.c</a>
 </li>
 <li>state
 : <a class="el" href="main_8c.html#a1b0c7bd4d79798ef4e0ce23894c9aeb2">main.c</a>
 </li>
+<li>STATE_CHECK_FLAGS
+: <a class="el" href="main_8h.html#ae7f0e61dac690b0527e89373cba7ccae">main.h</a>
+</li>
+<li>STATE_CHECK_PPS
+: <a class="el" href="main_8h.html#a682e0226ddf3789186b60f7a8acc0f92">main.h</a>
+</li>
+<li>STATE_CHECK_STREAM
+: <a class="el" href="main_8h.html#a7b3018a222bad513317bf84c44b5561a">main.h</a>
+</li>
+<li>STATE_CHECK_USB
+: <a class="el" href="main_8h.html#ac8fd9abe0531ee8f550d277f5d7cb9c0">main.h</a>
+</li>
+<li>STATE_READ_ADC
+: <a class="el" href="main_8h.html#a52fac1022cf48b4c82c46e43e19583e8">main.h</a>
+</li>
+<li>STATE_STEP_SCRIPT
+: <a class="el" href="main_8h.html#a842931ff21ba28fce21713ed2437e8f6">main.h</a>
+</li>
 <li>StopScript()
-: <a class="el" href="sd__card_8h.html#ad6088aedec2b1022a826a94f45805854">sd_card.h</a>
-, <a class="el" href="sd__card_8c.html#ad6088aedec2b1022a826a94f45805854">sd_card.c</a>
+: <a class="el" href="sd__card_8c.html#ad6088aedec2b1022a826a94f45805854">sd_card.c</a>
+</li>
+<li>STREAM_BUF_SIZE
+: <a class="el" href="script_8h.html#ab11983675d40a27dee780f0db1cf1940">script.h</a>
+</li>
+<li>StreamBuf_A
+: <a class="el" href="script_8c.html#a2c2c158f71b500735f46b4986c71a35b">script.c</a>
+</li>
+<li>StreamBuf_B
+: <a class="el" href="script_8c.html#ac2f10200da148bc47d589e784165f565">script.c</a>
 </li>
 <li>StreamCmd
 : <a class="el" href="script_8c.html#a838678d9aa6daf012f6e60df0c962a6d">script.c</a>
 </li>
+<li>StreamCmdHandler()
+: <a class="el" href="script_8c.html#af89dbb7337295273d850a3a30f470a07">script.c</a>
+</li>
+<li>StringEquals()
+: <a class="el" href="script_8c.html#aac02092c0bf9da73f01289bd584041db">script.c</a>
+</li>
 <li>SVC_Handler()
-: <a class="el" href="stm32f3xx__it_8h.html#a3e5ddb3df0d62f2dc357e64a3f04a6ce">stm32f3xx_it.h</a>
-, <a class="el" href="stm32f3xx__it_8c.html#a3e5ddb3df0d62f2dc357e64a3f04a6ce">stm32f3xx_it.c</a>
+: <a class="el" href="stm32f3xx__it_8c.html#a3e5ddb3df0d62f2dc357e64a3f04a6ce">stm32f3xx_it.c</a>
 </li>
 <li>SystemClock_Config()
-: <a class="el" href="main_8c.html#ad554cbf06ce0fa6f92a0c4152b8a4c64">main.c</a>
+: <a class="el" href="main_8c.html#adb3d07f85f8bc162c1c66f1ee17ce361">main.c</a>
 </li>
 <li>SystemCoreClockUpdate()
 : <a class="el" href="group___s_t_m32_f3xx___system___private___functions.html#gae0c36a9591fe6e9c45ecb21a794f0f0f">system_stm32f3xx.c</a>
@@ -147,7 +198,6 @@ $(function() {
 </li>
 <li>SysTick_Handler()
 : <a class="el" href="stm32f3xx__it_8c.html#ab5e09814056d617c521549e542639b7e">stm32f3xx_it.c</a>
-, <a class="el" href="stm32f3xx__it_8h.html#ab5e09814056d617c521549e542639b7e">stm32f3xx_it.h</a>
 </li>
 </ul>
 </div><!-- contents -->

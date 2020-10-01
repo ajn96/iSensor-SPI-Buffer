@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -97,6 +97,8 @@ $(function() {
 <td class="markdownTableBodyNone">write </td><td class="markdownTableBodyNone">Register address </td><td class="markdownTableBodyNone">Write Value </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Write a byte to the specified register  </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">delim </td><td class="markdownTableBodyNone">Delimiter character </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Set the delimiter character which is placed between register values for read operations (comma, space, etc) This value is stored in USB_CONFIG  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">echo </td><td class="markdownTableBodyNone">Enable/Disable </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Enables or disable the command line echo. If the echo is disabled, the characters sent to the CLI will not be sent back (useful for scripting)  </td></tr>
 </table>
 <p>Help Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_help.JPG" alt="Help" class="inline"/></p>
 <p>Factory Reset Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_reset.JPG" alt="Factory Reset" class="inline"/></p>
@@ -105,7 +107,9 @@ $(function() {
 <p>Delim Set Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_delim.JPG" alt="Delim" class="inline"/></p>
 <p>Read Buffer Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_readbuf.JPG" alt="ReadBuf" class="inline"/></p>
 <p>Stream Command (WATERMARK_INT_CONFIG set to 60)</p>
-<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_stream.JPG" alt="Stream" class="inline"/> </p>
+<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_stream.JPG" alt="Stream" class="inline"/></p>
+<p>Echo Command</p>
+<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_echo.JPG" alt="Echo" class="inline"/> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

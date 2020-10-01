@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: script.c File Reference</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Src/script.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -88,51 +88,48 @@ Functions</h2></td></tr>
 <tr class="memitem:ac667819c6a60b19091561cb8a62e0f2b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#ac667819c6a60b19091561cb8a62e0f2b">ReadHandler</a> (<a class="el" href="structscript.html">script</a> *<a class="el" href="usb__cli_8c.html#a5a2b484670a50584223281c1ae87f9e3">scr</a>, uint8_t *outBuf, <a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> isUSB)</td></tr>
 <tr class="memdesc:ac667819c6a60b19091561cb8a62e0f2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read command handler.  <a href="script_8c.html#ac667819c6a60b19091561cb8a62e0f2b">More...</a><br /></td></tr>
 <tr class="separator:ac667819c6a60b19091561cb8a62e0f2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7eaa80de5518e1d26a29fd05006cf1dd"><td class="memItemLeft" align="right" valign="top"><a id="a7eaa80de5518e1d26a29fd05006cf1dd"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>ReadBufHandler</b> (<a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> isUSB)</td></tr>
+<tr class="memitem:a7eaa80de5518e1d26a29fd05006cf1dd"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a7eaa80de5518e1d26a29fd05006cf1dd">ReadBufHandler</a> (<a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> isUSB)</td></tr>
+<tr class="memdesc:a7eaa80de5518e1d26a29fd05006cf1dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handler for ReadBuf command.  <a href="script_8c.html#a7eaa80de5518e1d26a29fd05006cf1dd">More...</a><br /></td></tr>
 <tr class="separator:a7eaa80de5518e1d26a29fd05006cf1dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84be1b50cabc1d7855f02d66a171a92e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a84be1b50cabc1d7855f02d66a171a92e">WriteHandler</a> (<a class="el" href="structscript.html">script</a> *<a class="el" href="usb__cli_8c.html#a5a2b484670a50584223281c1ae87f9e3">scr</a>)</td></tr>
 <tr class="memdesc:a84be1b50cabc1d7855f02d66a171a92e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write command handler.  <a href="script_8c.html#a84be1b50cabc1d7855f02d66a171a92e">More...</a><br /></td></tr>
 <tr class="separator:a84be1b50cabc1d7855f02d66a171a92e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af89dbb7337295273d850a3a30f470a07"><td class="memItemLeft" align="right" valign="top"><a id="af89dbb7337295273d850a3a30f470a07"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>StreamCmdHandler</b> (<a class="el" href="structscript.html">script</a> *<a class="el" href="usb__cli_8c.html#a5a2b484670a50584223281c1ae87f9e3">scr</a>, <a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> isUSB)</td></tr>
+<tr class="memitem:af89dbb7337295273d850a3a30f470a07"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#af89dbb7337295273d850a3a30f470a07">StreamCmdHandler</a> (<a class="el" href="structscript.html">script</a> *<a class="el" href="usb__cli_8c.html#a5a2b484670a50584223281c1ae87f9e3">scr</a>, <a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> isUSB)</td></tr>
+<tr class="memdesc:af89dbb7337295273d850a3a30f470a07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handler for stream start/stop command.  <a href="script_8c.html#af89dbb7337295273d850a3a30f470a07">More...</a><br /></td></tr>
 <tr class="separator:af89dbb7337295273d850a3a30f470a07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2eadbf1ec7b976d56578ea374bdbc099"><td class="memItemLeft" align="right" valign="top"><a id="a2eadbf1ec7b976d56578ea374bdbc099"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>FactoryResetHandler</b> ()</td></tr>
+<tr class="memitem:a2eadbf1ec7b976d56578ea374bdbc099"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a2eadbf1ec7b976d56578ea374bdbc099">FactoryResetHandler</a> ()</td></tr>
+<tr class="memdesc:a2eadbf1ec7b976d56578ea374bdbc099"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a factory reset + flash update.  <a href="script_8c.html#a2eadbf1ec7b976d56578ea374bdbc099">More...</a><br /></td></tr>
 <tr class="separator:a2eadbf1ec7b976d56578ea374bdbc099"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea16d045e8282ac0a27d9ac0f520c286"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#aea16d045e8282ac0a27d9ac0f520c286">UShortToHex</a> (uint8_t *outBuf, uint16_t val)</td></tr>
-<tr class="memdesc:aea16d045e8282ac0a27d9ac0f520c286"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a 16 bit value to the corresponding hex string.  <a href="script_8c.html#aea16d045e8282ac0a27d9ac0f520c286">More...</a><br /></td></tr>
+<tr class="memdesc:aea16d045e8282ac0a27d9ac0f520c286"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a 16 bit value to the corresponding hex string (4 chars)  <a href="script_8c.html#aea16d045e8282ac0a27d9ac0f520c286">More...</a><br /></td></tr>
 <tr class="separator:aea16d045e8282ac0a27d9ac0f520c286"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89bcaf676924699ae15b7ad7162fa604"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a89bcaf676924699ae15b7ad7162fa604">HexToUInt</a> (const uint8_t *commandBuf)</td></tr>
 <tr class="memdesc:a89bcaf676924699ae15b7ad7162fa604"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a hex string to a 32 bit uint.  <a href="script_8c.html#a89bcaf676924699ae15b7ad7162fa604">More...</a><br /></td></tr>
 <tr class="separator:a89bcaf676924699ae15b7ad7162fa604"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c136130d62e8dc2c6b0387b1dcb2692"><td class="memItemLeft" align="right" valign="top"><a id="a6c136130d62e8dc2c6b0387b1dcb2692"></a>
-static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>StringEquals</b> (const uint8_t *string0, const uint8_t *compStr, uint32_t count)</td></tr>
-<tr class="separator:a6c136130d62e8dc2c6b0387b1dcb2692"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f84e2d7b897f8a4ba6be2ef3145da41"><td class="memItemLeft" align="right" valign="top"><a id="a4f84e2d7b897f8a4ba6be2ef3145da41"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckStream</b> ()</td></tr>
+<tr class="memitem:aac02092c0bf9da73f01289bd584041db"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#aac02092c0bf9da73f01289bd584041db">StringEquals</a> (const uint8_t *string0, const uint8_t *string1, uint32_t count)</td></tr>
+<tr class="memdesc:aac02092c0bf9da73f01289bd584041db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check equality between two strings.  <a href="script_8c.html#aac02092c0bf9da73f01289bd584041db">More...</a><br /></td></tr>
+<tr class="separator:aac02092c0bf9da73f01289bd584041db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f84e2d7b897f8a4ba6be2ef3145da41"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a4f84e2d7b897f8a4ba6be2ef3145da41">CheckStream</a> ()</td></tr>
+<tr class="memdesc:a4f84e2d7b897f8a4ba6be2ef3145da41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the stream status.  <a href="script_8c.html#a4f84e2d7b897f8a4ba6be2ef3145da41">More...</a><br /></td></tr>
 <tr class="separator:a4f84e2d7b897f8a4ba6be2ef3145da41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fcce12d9c19ab8120644cb4a2dd72fc"><td class="memItemLeft" align="right" valign="top"><a id="a3fcce12d9c19ab8120644cb4a2dd72fc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ParseScriptElement</b> (const uint8_t *commandBuf, <a class="el" href="structscript.html">script</a> *<a class="el" href="usb__cli_8c.html#a5a2b484670a50584223281c1ae87f9e3">scr</a>)</td></tr>
+<tr class="memitem:a3fcce12d9c19ab8120644cb4a2dd72fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a3fcce12d9c19ab8120644cb4a2dd72fc">ParseScriptElement</a> (const uint8_t *commandBuf, <a class="el" href="structscript.html">script</a> *<a class="el" href="usb__cli_8c.html#a5a2b484670a50584223281c1ae87f9e3">scr</a>)</td></tr>
+<tr class="memdesc:a3fcce12d9c19ab8120644cb4a2dd72fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a command string into a script element.  <a href="script_8c.html#a3fcce12d9c19ab8120644cb4a2dd72fc">More...</a><br /></td></tr>
 <tr class="separator:a3fcce12d9c19ab8120644cb4a2dd72fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98a7ca2c973654de22337a46d3126505"><td class="memItemLeft" align="right" valign="top"><a id="a98a7ca2c973654de22337a46d3126505"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>RunScriptElement</b> (<a class="el" href="structscript.html">script</a> *<a class="el" href="usb__cli_8c.html#a5a2b484670a50584223281c1ae87f9e3">scr</a>, uint8_t *outBuf, <a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> isUSB)</td></tr>
+<tr class="memitem:a98a7ca2c973654de22337a46d3126505"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a98a7ca2c973654de22337a46d3126505">RunScriptElement</a> (<a class="el" href="structscript.html">script</a> *<a class="el" href="usb__cli_8c.html#a5a2b484670a50584223281c1ae87f9e3">scr</a>, uint8_t *outBuf, <a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> isUSB)</td></tr>
+<tr class="memdesc:a98a7ca2c973654de22337a46d3126505"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a script element.  <a href="script_8c.html#a98a7ca2c973654de22337a46d3126505">More...</a><br /></td></tr>
 <tr class="separator:a98a7ca2c973654de22337a46d3126505"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a498acc08ff841f6655df28c1681f954f"><td class="memItemLeft" align="right" valign="top">volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a498acc08ff841f6655df28c1681f954f">g_regs</a> []</td></tr>
 <tr class="separator:a498acc08ff841f6655df28c1681f954f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c2c158f71b500735f46b4986c71a35b"><td class="memItemLeft" align="right" valign="top"><a id="a2c2c158f71b500735f46b4986c71a35b"></a>
-static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>StreamBuf_A</b> [STREAM_BUF_SIZE]</td></tr>
+<tr class="memitem:a2c2c158f71b500735f46b4986c71a35b"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a2c2c158f71b500735f46b4986c71a35b">StreamBuf_A</a> [<a class="el" href="script_8h.html#ab11983675d40a27dee780f0db1cf1940">STREAM_BUF_SIZE</a>]</td></tr>
 <tr class="separator:a2c2c158f71b500735f46b4986c71a35b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2f10200da148bc47d589e784165f565"><td class="memItemLeft" align="right" valign="top"><a id="ac2f10200da148bc47d589e784165f565"></a>
-static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>StreamBuf_B</b> [STREAM_BUF_SIZE]</td></tr>
+<tr class="memitem:ac2f10200da148bc47d589e784165f565"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#ac2f10200da148bc47d589e784165f565">StreamBuf_B</a> [<a class="el" href="script_8h.html#ab11983675d40a27dee780f0db1cf1940">STREAM_BUF_SIZE</a>]</td></tr>
 <tr class="separator:ac2f10200da148bc47d589e784165f565"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d4964370d251ff2c5bb7b782333d825"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a1d4964370d251ff2c5bb7b782333d825">BufA</a></td></tr>
 <tr class="separator:a1d4964370d251ff2c5bb7b782333d825"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa910262b7076819c86978d461ecbcd7e"><td class="memItemLeft" align="right" valign="top"><a id="aa910262b7076819c86978d461ecbcd7e"></a>
-static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>cmdIndex</b></td></tr>
+<tr class="memitem:aa910262b7076819c86978d461ecbcd7e"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#aa910262b7076819c86978d461ecbcd7e">cmdIndex</a></td></tr>
 <tr class="separator:aa910262b7076819c86978d461ecbcd7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabdeef34fcad1c19feb28c6861a4c49d"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#aabdeef34fcad1c19feb28c6861a4c49d">goodArg</a></td></tr>
 <tr class="separator:aabdeef34fcad1c19feb28c6861a4c49d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,17 +149,19 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>cmdIndex</
 <tr class="separator:a838678d9aa6daf012f6e60df0c962a6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60f481e0a6db5359b3076169e47e3afe"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a60f481e0a6db5359b3076169e47e3afe">DelimCmd</a> [] = &quot;delim &quot;</td></tr>
 <tr class="separator:a60f481e0a6db5359b3076169e47e3afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16f14c91b787013557e902ccbec3e120"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a16f14c91b787013557e902ccbec3e120">EchoCmd</a> [] = &quot;echo &quot;</td></tr>
+<tr class="separator:a16f14c91b787013557e902ccbec3e120"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f69b79ce36d4c2cec8d4475cf0fbfa9"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a6f69b79ce36d4c2cec8d4475cf0fbfa9">SleepCmd</a> [] = &quot;sleep &quot;</td></tr>
 <tr class="separator:a6f69b79ce36d4c2cec8d4475cf0fbfa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b9ad508a3887d54053a4a75c9fea203"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a5b9ad508a3887d54053a4a75c9fea203">LoopCmd</a> [] = &quot;loop &quot;</td></tr>
 <tr class="separator:a5b9ad508a3887d54053a4a75c9fea203"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fd6c2cb1b738a075b82adf282f156ca"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a0fd6c2cb1b738a075b82adf282f156ca">InvalidCmdStr</a> [] = &quot;Error: Invalid command!\r\n&quot;</td></tr>
 <tr class="separator:a0fd6c2cb1b738a075b82adf282f156ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71182335d7a57ebcbc29458310caae36"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a71182335d7a57ebcbc29458310caae36">NotAllowedStr</a> [] = &quot;Error: Not allowed!\r\n&quot;</td></tr>
+<tr class="memitem:a71182335d7a57ebcbc29458310caae36"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a71182335d7a57ebcbc29458310caae36">NotAllowedStr</a> [] = &quot;Error: Command not allowed!\r\n&quot;</td></tr>
 <tr class="separator:a71182335d7a57ebcbc29458310caae36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abab39dcfc250e9dcbaee407db02a36d6"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#abab39dcfc250e9dcbaee407db02a36d6">InvalidArgStr</a> [] = &quot;Error: Invalid argument!\r\n&quot;</td></tr>
 <tr class="separator:abab39dcfc250e9dcbaee407db02a36d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f0841705f3688c489af288bf79ca848"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a1f0841705f3688c489af288bf79ca848">UnknownErrorStr</a> [] = &quot;Unknown error has occurred!\r\n&quot;</td></tr>
+<tr class="memitem:a1f0841705f3688c489af288bf79ca848"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a1f0841705f3688c489af288bf79ca848">UnknownErrorStr</a> [] = &quot;An unknown error has occurred!\r\n&quot;</td></tr>
 <tr class="separator:a1f0841705f3688c489af288bf79ca848"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a995debb8ab7308e9324e122fcc2b1de3"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html#a995debb8ab7308e9324e122fcc2b1de3">HelpStr</a> []</td></tr>
 <tr class="separator:a995debb8ab7308e9324e122fcc2b1de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,6 +172,57 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>cmdIndex</
 <dl class="section date"><dt>Date</dt><dd>7/23/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a4f84e2d7b897f8a4ba6be2ef3145da41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f84e2d7b897f8a4ba6be2ef3145da41">&#9670;&nbsp;</a></span>CheckStream()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CheckStream </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check the stream status. </p>
+<p>This function checks if a watermark interrupt is asserted, based on a minimum watermark level of</p><ol type="1">
+<li>If a watermark is asserted, and a stream is running, then <a class="el" href="script_8c.html#a7eaa80de5518e1d26a29fd05006cf1dd" title="Handler for ReadBuf command.">ReadBufHandler()</a> is called, with isUSB set to match the stream source. SD card streams have priority over USB streams, and will cancel a running USB stream. </li>
+</ol>
+
+</div>
+</div>
+<a id="a2eadbf1ec7b976d56578ea374bdbc099"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2eadbf1ec7b976d56578ea374bdbc099">&#9670;&nbsp;</a></span>FactoryResetHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void FactoryResetHandler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Executes a factory reset + flash update. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function is called when the USB CLI executes a freset command. </p>
+
+</div>
+</div>
 <a id="a89bcaf676924699ae15b7ad7162fa604"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a89bcaf676924699ae15b7ad7162fa604">&#9670;&nbsp;</a></span>HexToUInt()</h2>
 
@@ -249,6 +299,81 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>cmdIndex</
 
 </div>
 </div>
+<a id="a3fcce12d9c19ab8120644cb4a2dd72fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fcce12d9c19ab8120644cb4a2dd72fc">&#9670;&nbsp;</a></span>ParseScriptElement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ParseScriptElement </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>commandBuf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structscript.html">script</a> *&#160;</td>
+          <td class="paramname"><em>scr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parse a command string into a script element. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">commandBuf</td><td>Script command string (from CLI or SD card)</td></tr>
+    <tr><td class="paramname">scr</td><td>Script element to populate</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function parses the script command type from the available list of script commands, by comparison to a pre-defined string literal. Then, the arguments for each particular command type are parsed and validated. </p>
+
+</div>
+</div>
+<a id="a7eaa80de5518e1d26a29fd05006cf1dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7eaa80de5518e1d26a29fd05006cf1dd">&#9670;&nbsp;</a></span>ReadBufHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void ReadBufHandler </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td>
+          <td class="paramname"><em>isUSB</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Handler for ReadBuf command. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">isUSB</td><td>Flag indicating if output data should be sent to USB or SD card</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function uses a ping-pong architecture for the buffer transmit data. This avoids potential data corruption issues (USB transmit is non-blocking) </p>
+
+</div>
+</div>
 <a id="ac667819c6a60b19091561cb8a62e0f2b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac667819c6a60b19091561cb8a62e0f2b">&#9670;&nbsp;</a></span>ReadHandler()</h2>
 
@@ -290,7 +415,162 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>cmdIndex</
 </div><div class="memdoc">
 
 <p>Read command handler. </p>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scr</td><td>Script element being executed. Contains read arguments</td></tr>
+    <tr><td class="paramname">outBuf</td><td>Buffer to write data to. Must be at least STREAM_BUF_SIZE bytes</td></tr>
+    <tr><td class="paramname">isUSB</td><td>Flag indicating if output data should be sent to USB or SD card</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function handles all read commands from SD scripts or the USB CLI. Output data is filled to STREAM_BUF_SIZE, then transmitted. The arguments provided in scr are assumed to be valid prior to this function being called, so no additional input validation is performed. </p>
+
+</div>
+</div>
+<a id="a98a7ca2c973654de22337a46d3126505"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98a7ca2c973654de22337a46d3126505">&#9670;&nbsp;</a></span>RunScriptElement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RunScriptElement </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structscript.html">script</a> *&#160;</td>
+          <td class="paramname"><em>scr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>outBuf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td>
+          <td class="paramname"><em>isUSB</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Executes a script element. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scr</td><td>The script element to execute</td></tr>
+    <tr><td class="paramname">outBuf</td><td>Output buffer to write script result to</td></tr>
+    <tr><td class="paramname">isUSB</td><td>Flag indicating if output data should be transmitted to USB CLI or SD card</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function handles all non-control based script elements. It also performs input validation on the script object, and will print an error message for an invalid command or invalid arguments. If the command and arguments are good, this function calls the lower level handler corresponding to the script item. Currently is just a switch statement, could do some neat stuff with a function pointer table in the future. </p>
+
+</div>
+</div>
+<a id="af89dbb7337295273d850a3a30f470a07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af89dbb7337295273d850a3a30f470a07">&#9670;&nbsp;</a></span>StreamCmdHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void StreamCmdHandler </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structscript.html">script</a> *&#160;</td>
+          <td class="paramname"><em>scr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td>
+          <td class="paramname"><em>isUSB</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Handler for stream start/stop command. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scr</td><td>Script element being executed</td></tr>
+    <tr><td class="paramname">isUSB</td><td>flag indicating if command came from SD script or USB CLI</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function manages stream priorities. If a stream is already running for the SD card script, a USB stream will not be started. The system currently only supports streaming data to one destination at a time. </p>
+
+</div>
+</div>
+<a id="aac02092c0bf9da73f01289bd584041db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac02092c0bf9da73f01289bd584041db">&#9670;&nbsp;</a></span>StringEquals()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static uint32_t StringEquals </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>string0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>string1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check equality between two strings. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">string0</td><td>First string to compare</td></tr>
+    <tr><td class="paramname">string1</td><td>Second string to compare</td></tr>
+    <tr><td class="paramname">count</td><td>Number of chars to compare (from start)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 for equal strings, 0 for not equal </dd></dl>
 
 </div>
 </div>
@@ -328,7 +608,7 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>cmdIndex</
 </table>
 </div><div class="memdoc">
 
-<p>Convert a 16 bit value to the corresponding hex string. </p>
+<p>Convert a 16 bit value to the corresponding hex string (4 chars) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">outBuf</td><td>Buffer to place the string result in</td></tr>
@@ -400,6 +680,29 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>cmdIndex</
 
 </div>
 </div>
+<a id="aa910262b7076819c86978d461ecbcd7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa910262b7076819c86978d461ecbcd7e">&#9670;&nbsp;</a></span>cmdIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t cmdIndex</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Current index within command buffer </p>
+
+</div>
+</div>
 <a id="a60f481e0a6db5359b3076169e47e3afe"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a60f481e0a6db5359b3076169e47e3afe">&#9670;&nbsp;</a></span>DelimCmd</h2>
 
@@ -420,6 +723,29 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>cmdIndex</
 </table>
 </div><div class="memdoc">
 <p>String literal for delim set command. Must be followed by a space </p>
+
+</div>
+</div>
+<a id="a16f14c91b787013557e902ccbec3e120"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16f14c91b787013557e902ccbec3e120">&#9670;&nbsp;</a></span>EchoCmd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t EchoCmd[] = &quot;echo &quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>String literal for echo enable/disable command. Must be followed by a space </p>
 
 </div>
 </div>
@@ -549,14 +875,15 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>cmdIndex</
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="stringliteral">&quot;All numeric values are in hex. [] arguments are optional\r\n&quot;</span></div>
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="stringliteral">&quot;All numeric argument values must be provided in hex. [] arguments are optional\r\n\r\n&quot;</span></div>
 <div class="line">        <span class="stringliteral">&quot;help: Print available commands\r\n&quot;</span></div>
-<div class="line">        <span class="stringliteral">&quot;freset: Performs a factory reset, followed by flash update\r\n&quot;</span></div>
-<div class="line">        <span class="stringliteral">&quot;read startAddr [endAddr = addr] [numReads = 1]: Read registers starting at startAddr and ending at endAddr numReads times\r\n&quot;</span></div>
+<div class="line">        <span class="stringliteral">&quot;freset: Performs a factory reset, followed by flash update. This restores the firmware to a known good state\r\n&quot;</span></div>
+<div class="line">        <span class="stringliteral">&quot;read startAddr [endAddr = addr] [numReads = 1]: Read registers starting at startAddr and ending at endAddr, numReads times\r\n&quot;</span></div>
 <div class="line">        <span class="stringliteral">&quot;write addr value: Write the 8-bit value in value to register at address addr\r\n&quot;</span></div>
-<div class="line">        <span class="stringliteral">&quot;readbuf: Read all buffer entries. Values for each entry are placed on a newline\r\n&quot;</span></div>
-<div class="line">        <span class="stringliteral">&quot;stream startStop: Start (startStop != 0) or stop (startStop = 0) a read stream\r\n&quot;</span></div>
-<div class="line">        <span class="stringliteral">&quot;delim char: Set the read output delimiter character to char\r\n&quot;</span></div>
+<div class="line">        <span class="stringliteral">&quot;readbuf: Read all stored buffer entries. Values for each entry are placed on a newline\r\n&quot;</span></div>
+<div class="line">        <span class="stringliteral">&quot;stream startStop: Start (argument != 0) or stop (argument == 0) a read stream\r\n&quot;</span></div>
+<div class="line">        <span class="stringliteral">&quot;delim delimChar: Set the read output delimiter character (between register values) to delimChar\r\n&quot;</span></div>
+<div class="line">        <span class="stringliteral">&quot;echo enableDisable: Enable (argument != 0) or disable (argument == 0) USB command line echo\r\n&quot;</span></div>
 </div><!-- fragment --><p>Print string for help command </p>
 
 </div>
@@ -640,7 +967,7 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>cmdIndex</
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t NotAllowedStr[] = &quot;Error: Not allowed!\r\n&quot;</td>
+          <td class="memname">const uint8_t NotAllowedStr[] = &quot;Error: Command not allowed!\r\n&quot;</td>
         </tr>
       </table>
   </td>
@@ -722,6 +1049,52 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>cmdIndex</
 
 </div>
 </div>
+<a id="a2c2c158f71b500735f46b4986c71a35b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c2c158f71b500735f46b4986c71a35b">&#9670;&nbsp;</a></span>StreamBuf_A</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t StreamBuf_A[<a class="el" href="script_8h.html#ab11983675d40a27dee780f0db1cf1940">STREAM_BUF_SIZE</a>]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Buffer A for stream data (USB or SD card) ping/pong </p>
+
+</div>
+</div>
+<a id="ac2f10200da148bc47d589e784165f565"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2f10200da148bc47d589e784165f565">&#9670;&nbsp;</a></span>StreamBuf_B</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t StreamBuf_B[<a class="el" href="script_8h.html#ab11983675d40a27dee780f0db1cf1940">STREAM_BUF_SIZE</a>]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Buffer B for stream data (USB or SD card) ping/pong </p>
+
+</div>
+</div>
 <a id="a838678d9aa6daf012f6e60df0c962a6d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a838678d9aa6daf012f6e60df0c962a6d">&#9670;&nbsp;</a></span>StreamCmd</h2>
 
@@ -755,7 +1128,7 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>cmdIndex</
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t UnknownErrorStr[] = &quot;Unknown error has occurred!\r\n&quot;</td>
+          <td class="memname">const uint8_t UnknownErrorStr[] = &quot;An unknown error has occurred!\r\n&quot;</td>
         </tr>
       </table>
   </td>

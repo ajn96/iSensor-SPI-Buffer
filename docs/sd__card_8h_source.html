@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: sd_card.h Source File</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/sd_card.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -82,38 +82,49 @@ $(function() {
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="timer_8h.html">timer.h</a>&quot;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">/* Public functions */</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sd__card_8h.html#a625b0dce0e53a68e74b117c8ced97afe">SDCardInit</a>();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sd__card_8h.html#ade0e1d4a61790fd47ec542cbf559af68">ScriptAutorun</a>();</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sd__card_8h.html#a32b1dbc0c13c1814f562104c761f8d6c">ScriptStep</a>();</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sd__card_8h.html#a3549a7ed2c1d2569224b55e2d286c0e8">StartScript</a>();</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sd__card_8h.html#ad6088aedec2b1022a826a94f45805854">StopScript</a>();</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sd__card_8h.html#a3d1f2d063a0389e1db1e31b7cc174a89">SDTxHandler</a>(<span class="keyword">const</span> uint8_t* buf, uint32_t count);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define SCRIPT_MAX_ENTRIES  64</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="sd__card_8h.html#a3744cf20327e23a2afb57c9051a55d75">   29</a></span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#define INVALID_LOOP_INDEX  0xFFFFFFFF</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="sd__card_8h.html#a401e9c8ec9c02712524bb0be33a650ba">   32</a></span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">/* Script error bits */</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#define SCR_NO_SD               (1 &lt;&lt; 0)</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#define SCR_MOUNT_ERROR         (1 &lt;&lt; 1)</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#define SCR_SCRIPT_OPEN_ERROR   (1 &lt;&lt; 2)</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#define SCR_RESULT_OPEN_ERROR   (1 &lt;&lt; 3)</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#define SCR_PARSE_INVALID_CMD   (1 &lt;&lt; 4)</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define SCR_PARSE_INVALID_ARGS  (1 &lt;&lt; 5)</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#define SCR_PARSE_INVALID_LOOP  (1 &lt;&lt; 6)</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#define SCR_WRITE_FAIL          (1 &lt;&lt; 7)</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_SD_CARD_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sd__card_8c.html#a625b0dce0e53a68e74b117c8ced97afe">SDCardInit</a>();</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sd__card_8c.html#ade0e1d4a61790fd47ec542cbf559af68">ScriptAutorun</a>();</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sd__card_8c.html#a32b1dbc0c13c1814f562104c761f8d6c">ScriptStep</a>();</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sd__card_8c.html#a3549a7ed2c1d2569224b55e2d286c0e8">StartScript</a>();</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sd__card_8c.html#ad6088aedec2b1022a826a94f45805854">StopScript</a>();</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sd__card_8c.html#a3d1f2d063a0389e1db1e31b7cc174a89">SDTxHandler</a>(<span class="keyword">const</span> uint8_t* buf, uint32_t count);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">/* @endcond */</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#define SCRIPT_MAX_ENTRIES  64</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="sd__card_8h.html#a3744cf20327e23a2afb57c9051a55d75">   32</a></span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#define INVALID_LOOP_INDEX  0xFFFFFFFF</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="sd__card_8h.html#a401e9c8ec9c02712524bb0be33a650ba">   35</a></span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">/* Script error bits */</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define SCR_NO_SD               (1 &lt;&lt; 0)</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="sd__card_8h.html#a2da3e65f17534a42826fd4fd43732f7f">   40</a></span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#define SCR_MOUNT_ERROR         (1 &lt;&lt; 1)</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="sd__card_8h.html#a3771b3acd072cbeb44468fd248dbf80a">   43</a></span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#define SCR_SCRIPT_OPEN_ERROR   (1 &lt;&lt; 2)</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="sd__card_8h.html#aaf63d96cfc947ee0febd09a7a5c06869">   46</a></span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#define SCR_RESULT_OPEN_ERROR   (1 &lt;&lt; 3)</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="sd__card_8h.html#af708ad40645e8e520b2ee052021e6b3f">   49</a></span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#define SCR_PARSE_INVALID_CMD   (1 &lt;&lt; 4)</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="sd__card_8h.html#a124637fa0da7eb9f3f35c3cfcf5472a6">   52</a></span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#define SCR_PARSE_INVALID_ARGS  (1 &lt;&lt; 5)</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="sd__card_8h.html#acd6f3ffe35881c3c21f9621f1c95d9ee">   55</a></span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#define SCR_PARSE_INVALID_LOOP  (1 &lt;&lt; 6)</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="sd__card_8h.html#a1661d06e3c99bd118697678b5a8a4d10">   58</a></span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#define SCR_WRITE_FAIL          (1 &lt;&lt; 7)</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="sd__card_8h.html#aefb858c87399166137b0648dc9bdcfb5">   61</a></span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_SD_CARD_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="asd__card_8h_html_ade0e1d4a61790fd47ec542cbf559af68"><div class="ttname"><a href="sd__card_8h.html#ade0e1d4a61790fd47ec542cbf559af68">ScriptAutorun</a></div><div class="ttdeci">void ScriptAutorun()</div><div class="ttdoc">Run SD card script automatic execution process.</div><div class="ttdef"><b>Definition:</b> sd_card.c:107</div></div>
-<div class="ttc" id="asd__card_8h_html_a3549a7ed2c1d2569224b55e2d286c0e8"><div class="ttname"><a href="sd__card_8h.html#a3549a7ed2c1d2569224b55e2d286c0e8">StartScript</a></div><div class="ttdeci">void StartScript()</div><div class="ttdoc">Start script run.</div><div class="ttdef"><b>Definition:</b> sd_card.c:128</div></div>
-<div class="ttc" id="asd__card_8h_html_a625b0dce0e53a68e74b117c8ced97afe"><div class="ttname"><a href="sd__card_8h.html#a625b0dce0e53a68e74b117c8ced97afe">SDCardInit</a></div><div class="ttdeci">void SDCardInit()</div><div class="ttdoc">Init SD card hardware interface and FATFs driver.</div><div class="ttdef"><b>Definition:</b> sd_card.c:87</div></div>
+<div class="ttc" id="asd__card_8c_html_a625b0dce0e53a68e74b117c8ced97afe"><div class="ttname"><a href="sd__card_8c.html#a625b0dce0e53a68e74b117c8ced97afe">SDCardInit</a></div><div class="ttdeci">void SDCardInit()</div><div class="ttdoc">Init SD card hardware interface and FATFs driver.</div><div class="ttdef"><b>Definition:</b> sd_card.c:92</div></div>
+<div class="ttc" id="asd__card_8c_html_a3549a7ed2c1d2569224b55e2d286c0e8"><div class="ttname"><a href="sd__card_8c.html#a3549a7ed2c1d2569224b55e2d286c0e8">StartScript</a></div><div class="ttdeci">void StartScript()</div><div class="ttdoc">Start script run.</div><div class="ttdef"><b>Definition:</b> sd_card.c:133</div></div>
 <div class="ttc" id="atimer_8h_html"><div class="ttname"><a href="timer_8h.html">timer.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer timer module.</div></div>
-<div class="ttc" id="asd__card_8h_html_ad6088aedec2b1022a826a94f45805854"><div class="ttname"><a href="sd__card_8h.html#ad6088aedec2b1022a826a94f45805854">StopScript</a></div><div class="ttdeci">void StopScript()</div><div class="ttdoc">Stop a running SD card script.</div><div class="ttdef"><b>Definition:</b> sd_card.c:187</div></div>
+<div class="ttc" id="asd__card_8c_html_ad6088aedec2b1022a826a94f45805854"><div class="ttname"><a href="sd__card_8c.html#ad6088aedec2b1022a826a94f45805854">StopScript</a></div><div class="ttdeci">void StopScript()</div><div class="ttdoc">Stop a running SD card script.</div><div class="ttdef"><b>Definition:</b> sd_card.c:195</div></div>
 <div class="ttc" id="ascript_8h_html"><div class="ttname"><a href="script_8h.html">script.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer script module (loaded from SD card)</div></div>
+<div class="ttc" id="asd__card_8c_html_a32b1dbc0c13c1814f562104c761f8d6c"><div class="ttname"><a href="sd__card_8c.html#a32b1dbc0c13c1814f562104c761f8d6c">ScriptStep</a></div><div class="ttdeci">void ScriptStep()</div><div class="ttdoc">Step the script execution process.</div><div class="ttdef"><b>Definition:</b> sd_card.c:228</div></div>
 <div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
-<div class="ttc" id="asd__card_8h_html_a32b1dbc0c13c1814f562104c761f8d6c"><div class="ttname"><a href="sd__card_8h.html#a32b1dbc0c13c1814f562104c761f8d6c">ScriptStep</a></div><div class="ttdeci">void ScriptStep()</div><div class="ttdoc">Step the script execution process.</div><div class="ttdef"><b>Definition:</b> sd_card.c:220</div></div>
-<div class="ttc" id="asd__card_8h_html_a3d1f2d063a0389e1db1e31b7cc174a89"><div class="ttname"><a href="sd__card_8h.html#a3d1f2d063a0389e1db1e31b7cc174a89">SDTxHandler</a></div><div class="ttdeci">void SDTxHandler(const uint8_t *buf, uint32_t count)</div><div class="ttdoc">SD card write handler function.</div><div class="ttdef"><b>Definition:</b> sd_card.c:63</div></div>
+<div class="ttc" id="asd__card_8c_html_a3d1f2d063a0389e1db1e31b7cc174a89"><div class="ttname"><a href="sd__card_8c.html#a3d1f2d063a0389e1db1e31b7cc174a89">SDTxHandler</a></div><div class="ttdeci">void SDTxHandler(const uint8_t *buf, uint32_t count)</div><div class="ttdoc">SD card write handler function.</div><div class="ttdef"><b>Definition:</b> sd_card.c:67</div></div>
+<div class="ttc" id="asd__card_8c_html_ade0e1d4a61790fd47ec542cbf559af68"><div class="ttname"><a href="sd__card_8c.html#ade0e1d4a61790fd47ec542cbf559af68">ScriptAutorun</a></div><div class="ttdeci">void ScriptAutorun()</div><div class="ttdoc">Run SD card script automatic execution process.</div><div class="ttdef"><b>Definition:</b> sd_card.c:112</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

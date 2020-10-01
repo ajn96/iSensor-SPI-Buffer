@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: adc.c File Reference</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Src/adc.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -129,7 +129,7 @@ Variables</h2></td></tr>
 <p>ADC1 Initialization Function. </p>
 <dl class="section return"><dt>Returns</dt><dd>None</dd></dl>
 <p>This function should be called once as part of the firmware initialization process.</p>
-<p>Initializes ADC1 in single sampling mode, with two input channels converted (temp sensor and VREFINT). The sample time is set to 181 ADC cycles. The ADC is clocked from 72MHz core clock divided by 8. 181 cycles / (72MHz/8) -&gt; 20.1us. The Temp sensor requires a minimum 10us setting time for accurate measurements. </p>
+<p>Initializes ADC1 in single sampling mode, with two input channels converted (temp sensor and VREFINT). The sample time is set to 601 ADC cycles. The ADC is clocked from 72MHz core clock divided by 8. 601 cycles / (72MHz/8) -&gt; 66us. The Temp sensor requires a minimum 10us setting time for accurate measurements. Because these values are measured for diagnostics monitoring pursposes only, using a long sample time is not a problem. </p>
 
 </div>
 </div>
@@ -243,7 +243,7 @@ Variables</h2></td></tr>
 
 <p>Read and scale ADC values then load to output registers. </p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function drives the ADC state machine and should be called periodically from the cyclic executive. The ADC is configured in non-continuous scanning mode, with the temp sensor and VREFINT channels enabled. For each channel, the state machine initiates an ADC sample, then goes to a wait state which does not advance until the EOC flag for that sample has been set. </p>
+<p>This function drives the ADC state machine and should be called periodically from the cyclic executive. The ADC is configured in non-continuous scanning mode, with the temp sensor and VREFINT channels enabled. For each channel, the state machine initiates an ADC sample, then goes to a wait state which does not advance until the EOC flag for that sample has been set. The VREFINT channel is sampled prior to the temp sensor channel, because the calculated Vdd value is used to compensate the temp sensor scale factor. </p>
 
 </div>
 </div>

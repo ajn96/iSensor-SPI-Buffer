@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: script.h Source File</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/script.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -86,49 +86,57 @@ $(function() {
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    read,</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    write,</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    delim,</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    readbuf,</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    stream,</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    freset,</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    help,</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    sleep,</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    loop,</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    endloop,</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    invalid</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;}<a class="code" href="script_8h.html#a9e0992eae3950adccaf4847fbff4231d">command</a>;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="structscript.html">   35</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="structscript.html#a31120e9029e1644197ba7edee6c89064">   38</a></span>&#160;    <a class="code" href="script_8h.html#a9e0992eae3950adccaf4847fbff4231d">command</a> <a class="code" href="structscript.html#a31120e9029e1644197ba7edee6c89064">scrCommand</a>;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="structscript.html#a988c3a7b6b5970b44a0ff380cfb78c76">   41</a></span>&#160;    uint32_t args[3];</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="structscript.html#ac68b2fec5298b6e70d381b23ac570a93">   44</a></span>&#160;    uint32_t <a class="code" href="structscript.html#ac68b2fec5298b6e70d381b23ac570a93">numArgs</a>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="structscript.html#a2e937875532e182079404ecdb3aaec32">   47</a></span>&#160;    uint32_t <a class="code" href="structscript.html#a2e937875532e182079404ecdb3aaec32">invalidArgs</a>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}<a class="code" href="structscript.html">script</a>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keywordtype">void</span> CheckStream();</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">void</span> ParseScriptElement(<span class="keyword">const</span> uint8_t* commandBuf, <a class="code" href="structscript.html">script</a> * <a class="code" href="usb__cli_8c.html#a5a2b484670a50584223281c1ae87f9e3">scr</a>);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">void</span> RunScriptElement(<a class="code" href="structscript.html">script</a>* <a class="code" href="usb__cli_8c.html#a5a2b484670a50584223281c1ae87f9e3">scr</a>, uint8_t * outBuf, <span class="keywordtype">bool</span> isUSB);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    echo,</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    readbuf,</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    stream,</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    freset,</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    help,</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    sleep,</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    loop,</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    endloop,</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    invalid</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}<a class="code" href="script_8h.html#a9e0992eae3950adccaf4847fbff4231d">command</a>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="structscript.html">   37</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="structscript.html#a31120e9029e1644197ba7edee6c89064">   40</a></span>&#160;    <a class="code" href="script_8h.html#a9e0992eae3950adccaf4847fbff4231d">command</a> <a class="code" href="structscript.html#a31120e9029e1644197ba7edee6c89064">scrCommand</a>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="structscript.html#a988c3a7b6b5970b44a0ff380cfb78c76">   43</a></span>&#160;    uint32_t args[3];</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="structscript.html#ac68b2fec5298b6e70d381b23ac570a93">   46</a></span>&#160;    uint32_t <a class="code" href="structscript.html#ac68b2fec5298b6e70d381b23ac570a93">numArgs</a>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="structscript.html#a2e937875532e182079404ecdb3aaec32">   49</a></span>&#160;    uint32_t <a class="code" href="structscript.html#a2e937875532e182079404ecdb3aaec32">invalidArgs</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}<a class="code" href="structscript.html">script</a>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#define BUF_BASE_ADDR           8</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="script_8h.html#ac66c5df61455bee21a0ae0a2be510b4c">   56</a></span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#define BUF_DATA_BASE_ADDR      16</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="script_8h.html#ab474ab6e248f8a7a04472c98100eade4">   59</a></span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#define STREAM_BUF_SIZE         512</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_SCRIPT_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keywordtype">void</span> <a class="code" href="script_8c.html#a4f84e2d7b897f8a4ba6be2ef3145da41">CheckStream</a>();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keywordtype">void</span> <a class="code" href="script_8c.html#a3fcce12d9c19ab8120644cb4a2dd72fc">ParseScriptElement</a>(<span class="keyword">const</span> uint8_t* commandBuf, <a class="code" href="structscript.html">script</a> * <a class="code" href="usb__cli_8c.html#a5a2b484670a50584223281c1ae87f9e3">scr</a>);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keywordtype">void</span> <a class="code" href="script_8c.html#a98a7ca2c973654de22337a46d3126505">RunScriptElement</a>(<a class="code" href="structscript.html">script</a>* <a class="code" href="usb__cli_8c.html#a5a2b484670a50584223281c1ae87f9e3">scr</a>, uint8_t * outBuf, <span class="keywordtype">bool</span> isUSB);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">/* @endcond */</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#define BUF_BASE_ADDR           8</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="script_8h.html#ac66c5df61455bee21a0ae0a2be510b4c">   62</a></span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#define BUF_DATA_BASE_ADDR      16</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="script_8h.html#ab474ab6e248f8a7a04472c98100eade4">   65</a></span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#define STREAM_BUF_SIZE         512</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="script_8h.html#ab11983675d40a27dee780f0db1cf1940">   68</a></span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_SCRIPT_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="ausb__cli_8h_html"><div class="ttname"><a href="usb__cli_8h.html">usb_cli.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer USB command line register interface.</div></div>
-<div class="ttc" id="astructscript_html_a2e937875532e182079404ecdb3aaec32"><div class="ttname"><a href="structscript.html#a2e937875532e182079404ecdb3aaec32">script::invalidArgs</a></div><div class="ttdeci">uint32_t invalidArgs</div><div class="ttdef"><b>Definition:</b> script.h:47</div></div>
-<div class="ttc" id="astructscript_html_ac68b2fec5298b6e70d381b23ac570a93"><div class="ttname"><a href="structscript.html#ac68b2fec5298b6e70d381b23ac570a93">script::numArgs</a></div><div class="ttdeci">uint32_t numArgs</div><div class="ttdef"><b>Definition:</b> script.h:44</div></div>
+<div class="ttc" id="astructscript_html_a2e937875532e182079404ecdb3aaec32"><div class="ttname"><a href="structscript.html#a2e937875532e182079404ecdb3aaec32">script::invalidArgs</a></div><div class="ttdeci">uint32_t invalidArgs</div><div class="ttdef"><b>Definition:</b> script.h:49</div></div>
+<div class="ttc" id="astructscript_html_ac68b2fec5298b6e70d381b23ac570a93"><div class="ttname"><a href="structscript.html#ac68b2fec5298b6e70d381b23ac570a93">script::numArgs</a></div><div class="ttdeci">uint32_t numArgs</div><div class="ttdef"><b>Definition:</b> script.h:46</div></div>
 <div class="ttc" id="asd__card_8h_html"><div class="ttname"><a href="sd__card_8h.html">sd_card.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer SD card interfacing and script execution module.</div></div>
 <div class="ttc" id="ausb__cli_8c_html_a5a2b484670a50584223281c1ae87f9e3"><div class="ttname"><a href="usb__cli_8c.html#a5a2b484670a50584223281c1ae87f9e3">scr</a></div><div class="ttdeci">static script scr</div><div class="ttdef"><b>Definition:</b> usb_cli.c:35</div></div>
+<div class="ttc" id="ascript_8c_html_a98a7ca2c973654de22337a46d3126505"><div class="ttname"><a href="script_8c.html#a98a7ca2c973654de22337a46d3126505">RunScriptElement</a></div><div class="ttdeci">void RunScriptElement(script *scr, uint8_t *outBuf, bool isUSB)</div><div class="ttdoc">Executes a script element.</div><div class="ttdef"><b>Definition:</b> script.c:309</div></div>
 <div class="ttc" id="amain_8h_html"><div class="ttname"><a href="main_8h.html">main.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer main.</div></div>
+<div class="ttc" id="ascript_8c_html_a4f84e2d7b897f8a4ba6be2ef3145da41"><div class="ttname"><a href="script_8c.html#a4f84e2d7b897f8a4ba6be2ef3145da41">CheckStream</a></div><div class="ttdeci">void CheckStream()</div><div class="ttdoc">Check the stream status.</div><div class="ttdef"><b>Definition:</b> script.c:108</div></div>
 <div class="ttc" id="ascript_8h_html_a9e0992eae3950adccaf4847fbff4231d"><div class="ttname"><a href="script_8h.html#a9e0992eae3950adccaf4847fbff4231d">command</a></div><div class="ttdeci">command</div><div class="ttdef"><b>Definition:</b> script.h:21</div></div>
-<div class="ttc" id="astructscript_html_a31120e9029e1644197ba7edee6c89064"><div class="ttname"><a href="structscript.html#a31120e9029e1644197ba7edee6c89064">script::scrCommand</a></div><div class="ttdeci">command scrCommand</div><div class="ttdef"><b>Definition:</b> script.h:38</div></div>
+<div class="ttc" id="astructscript_html_a31120e9029e1644197ba7edee6c89064"><div class="ttname"><a href="structscript.html#a31120e9029e1644197ba7edee6c89064">script::scrCommand</a></div><div class="ttdeci">command scrCommand</div><div class="ttdef"><b>Definition:</b> script.h:40</div></div>
+<div class="ttc" id="ascript_8c_html_a3fcce12d9c19ab8120644cb4a2dd72fc"><div class="ttname"><a href="script_8c.html#a3fcce12d9c19ab8120644cb4a2dd72fc">ParseScriptElement</a></div><div class="ttdeci">void ParseScriptElement(const uint8_t *commandBuf, script *scr)</div><div class="ttdoc">Parse a command string into a script element.</div><div class="ttdef"><b>Definition:</b> script.c:150</div></div>
 <div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
-<div class="ttc" id="astructscript_html"><div class="ttname"><a href="structscript.html">script</a></div><div class="ttdef"><b>Definition:</b> script.h:36</div></div>
+<div class="ttc" id="astructscript_html"><div class="ttname"><a href="structscript.html">script</a></div><div class="ttdef"><b>Definition:</b> script.h:38</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

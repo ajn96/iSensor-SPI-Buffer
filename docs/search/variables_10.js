@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['watermarkpins_508',['watermarkPins',['../struct_d_i_o_config.html#a3908e5bdf07ce8f75fab5a4bbea457fc',1,'DIOConfig']]],
-  ['wordscaptured_509',['WordsCaptured',['../isr_8c.html#a411f48ca6e6d3feb9fd3d3426c1c92c7',1,'isr.c']]],
-  ['writecmd_510',['WriteCmd',['../script_8c.html#af8ddcf9309a7d7b4b420ee4a898c1815',1,'script.c']]]
+  ['unknownerrorstr_575',['UnknownErrorStr',['../script_8c.html#a1f0841705f3688c489af288bf79ca848',1,'script.c']]],
+  ['usbrxcount_576',['USBRxCount',['../usb__cli_8c.html#ad09aea1179c1b299f0e0545bf2b2872c',1,'usb_cli.c']]],
+  ['userrxbufferfs_577',['UserRxBufferFS',['../usb__cli_8c.html#a1e37e6616e6affe5acf9c0befd063f6a',1,'usb_cli.c']]],
+  ['usertxbufferfs_578',['UserTxBufferFS',['../usb__cli_8c.html#ad48fea85cdb7aed49bf62140a52f23e0',1,'usb_cli.c']]]
 ];

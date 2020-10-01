@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: user_interrupt.h Source File</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/user_interrupt.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -80,16 +80,20 @@ $(function() {
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="registers_8h.html">registers.h</a>&quot;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> <a class="code" href="user__interrupt_8h.html#a7462f47cda251a48a22aad3c1773ab09">UpdateUserInterrupt</a>();</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keywordtype">void</span> <a class="code" href="user__interrupt_8h.html#a79317c41e270f99812a71133ea9df355">UpdateOutputPins</a>(uint32_t interrupt, uint32_t overflow, uint32_t error);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define WATERMARK_FREQ                  10000</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#define WATERMARK_HALF_PERIOD_TICKS     (uint32_t) (72000000 / (WATERMARK_FREQ * 2))</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> <a class="code" href="user__interrupt_8c.html#a7462f47cda251a48a22aad3c1773ab09">UpdateUserInterrupt</a>();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="user__interrupt_8c.html#addaedaa5323a42d2e7144a285edc8611">UpdateOutputPins</a>(uint32_t interrupt, uint32_t overflow, uint32_t error);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">/* @endcond */</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_USER_INTERRUPT_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#define WATERMARK_FREQ                  10000</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="user__interrupt_8h.html#a5c899f31b1cf4a79368a9577fcf202d7">   26</a></span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define WATERMARK_HALF_PERIOD_TICKS     (uint32_t) (72000000 / (WATERMARK_FREQ * 2))</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="user__interrupt_8h.html#af6189f3a2a7b6c1c76627f282b57aeb7">   29</a></span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_USER_INTERRUPT_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="auser__interrupt_8h_html_a7462f47cda251a48a22aad3c1773ab09"><div class="ttname"><a href="user__interrupt_8h.html#a7462f47cda251a48a22aad3c1773ab09">UpdateUserInterrupt</a></div><div class="ttdeci">void UpdateUserInterrupt()</div><div class="ttdoc">Updates the user interrupt (data ready) signal status.</div><div class="ttdef"><b>Definition:</b> user_interrupt.c:28</div></div>
-<div class="ttc" id="auser__interrupt_8h_html_a79317c41e270f99812a71133ea9df355"><div class="ttname"><a href="user__interrupt_8h.html#a79317c41e270f99812a71133ea9df355">UpdateOutputPins</a></div><div class="ttdeci">void UpdateOutputPins(uint32_t interrupt, uint32_t overflow, uint32_t error)</div><div class="ttdoc">Updates the output pins based on given interrupt/overflow status.</div><div class="ttdef"><b>Definition:</b> user_interrupt.c:108</div></div>
+<div class="ttc" id="auser__interrupt_8c_html_addaedaa5323a42d2e7144a285edc8611"><div class="ttname"><a href="user__interrupt_8c.html#addaedaa5323a42d2e7144a285edc8611">UpdateOutputPins</a></div><div class="ttdeci">void UpdateOutputPins(uint32_t watermark, uint32_t overflow, uint32_t error)</div><div class="ttdoc">Updates the output pins based on given interrupt/overflow status.</div><div class="ttdef"><b>Definition:</b> user_interrupt.c:108</div></div>
+<div class="ttc" id="auser__interrupt_8c_html_a7462f47cda251a48a22aad3c1773ab09"><div class="ttname"><a href="user__interrupt_8c.html#a7462f47cda251a48a22aad3c1773ab09">UpdateUserInterrupt</a></div><div class="ttdeci">void UpdateUserInterrupt()</div><div class="ttdoc">Updates the user interrupt (data ready) signal status.</div><div class="ttdef"><b>Definition:</b> user_interrupt.c:28</div></div>
 <div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: led.h File Reference</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/led.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -70,8 +70,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
 <div class="title">led.h File Reference</div>  </div>
 </div><!--header-->
@@ -95,15 +94,6 @@ Enumerations</h2></td></tr>
 <b>Green</b> = 1
  }</td></tr>
 <tr class="separator:aadcb6002d2b42fdfe01490f730ab00a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a99d3a7743f7abf1c66201c0b1297040a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="led_8h.html#a99d3a7743f7abf1c66201c0b1297040a">TurnOnLED</a> (<a class="el" href="led_8h.html#aadcb6002d2b42fdfe01490f730ab00a6">LED</a> light)</td></tr>
-<tr class="memdesc:a99d3a7743f7abf1c66201c0b1297040a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turn on a selected LED.  <a href="led_8h.html#a99d3a7743f7abf1c66201c0b1297040a">More...</a><br /></td></tr>
-<tr class="separator:a99d3a7743f7abf1c66201c0b1297040a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33badabbc4771ff785afaea9dcb90adc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="led_8h.html#a33badabbc4771ff785afaea9dcb90adc">TurnOffLED</a> (<a class="el" href="led_8h.html#aadcb6002d2b42fdfe01490f730ab00a6">LED</a> light)</td></tr>
-<tr class="memdesc:a33badabbc4771ff785afaea9dcb90adc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turn off a selected LED.  <a href="led_8h.html#a33badabbc4771ff785afaea9dcb90adc">More...</a><br /></td></tr>
-<tr class="separator:a33badabbc4771ff785afaea9dcb90adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header file for iSensor-SPI-Buffer LED control module. </p>
@@ -139,61 +129,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Enum for available LED's </p>
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a33badabbc4771ff785afaea9dcb90adc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33badabbc4771ff785afaea9dcb90adc">&#9670;&nbsp;</a></span>TurnOffLED()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TurnOffLED </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="led_8h.html#aadcb6002d2b42fdfe01490f730ab00a6">LED</a>&#160;</td>
-          <td class="paramname"><em>light</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Turn off a selected LED. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">light</td><td>The LED to turn off. Must be of type LED</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-
-</div>
-</div>
-<a id="a99d3a7743f7abf1c66201c0b1297040a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99d3a7743f7abf1c66201c0b1297040a">&#9670;&nbsp;</a></span>TurnOnLED()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TurnOnLED </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="led_8h.html#aadcb6002d2b42fdfe01490f730ab00a6">LED</a>&#160;</td>
-          <td class="paramname"><em>light</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Turn on a selected LED. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">light</td><td>The LED to turn on. Must be of type LED</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
 </div>

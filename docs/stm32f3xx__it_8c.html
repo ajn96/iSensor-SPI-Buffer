@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: stm32f3xx_it.c File Reference</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Src/stm32f3xx_it.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -111,14 +111,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stm3
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:afabb8e1d05154a3b694f4f4d150b194f"><td class="memItemLeft" align="right" valign="top"><a id="afabb8e1d05154a3b694f4f4d150b194f"></a>
-PCD_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><b>hpcd_USB_FS</b></td></tr>
+<tr class="memitem:afabb8e1d05154a3b694f4f4d150b194f"><td class="memItemLeft" align="right" valign="top">PCD_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stm32f3xx__it_8c.html#afabb8e1d05154a3b694f4f4d150b194f">hpcd_USB_FS</a></td></tr>
 <tr class="separator:afabb8e1d05154a3b694f4f4d150b194f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8421453c1cb542905d54e2aa747863e"><td class="memItemLeft" align="right" valign="top"><a id="ab8421453c1cb542905d54e2aa747863e"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>Timer1</b></td></tr>
+<tr class="memitem:ab8421453c1cb542905d54e2aa747863e"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stm32f3xx__it_8c.html#ab8421453c1cb542905d54e2aa747863e">Timer1</a></td></tr>
 <tr class="separator:ab8421453c1cb542905d54e2aa747863e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af14e7ef7e69cf56470599553e9d50aea"><td class="memItemLeft" align="right" valign="top"><a id="af14e7ef7e69cf56470599553e9d50aea"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>Timer2</b></td></tr>
+<tr class="memitem:af14e7ef7e69cf56470599553e9d50aea"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stm32f3xx__it_8c.html#af14e7ef7e69cf56470599553e9d50aea">Timer2</a></td></tr>
 <tr class="separator:af14e7ef7e69cf56470599553e9d50aea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -126,7 +123,53 @@ uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>Timer2</b></td></
 <dl class="section attention"><dt>Attention</dt><dd></dd></dl>
 <h2><center>&copy; Copyright (c) 2020 STMicroelectronics. All rights reserved.</center></h2>
 <p>This software component is licensed by ST under BSD 3-Clause license, the "License"; You may not use this file except in compliance with the License. You may obtain a copy of the License at: opensource.org/licenses/BSD-3-Clause </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Variable Documentation</h2>
+<a id="afabb8e1d05154a3b694f4f4d150b194f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afabb8e1d05154a3b694f4f4d150b194f">&#9670;&nbsp;</a></span>hpcd_USB_FS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">PCD_HandleTypeDef hpcd_USB_FS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>USB handle (Used in USB ISR) </p>
+
+</div>
+</div>
+<a id="ab8421453c1cb542905d54e2aa747863e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8421453c1cb542905d54e2aa747863e">&#9670;&nbsp;</a></span>Timer1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t Timer1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>1ms Timer1 Counter for FATFs </p>
+
+</div>
+</div>
+<a id="af14e7ef7e69cf56470599553e9d50aea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af14e7ef7e69cf56470599553e9d50aea">&#9670;&nbsp;</a></span>Timer2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t Timer2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>1ms Timer2 Counter for FATFs </p>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

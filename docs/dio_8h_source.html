@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: dio.h Source File</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/dio.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -94,26 +94,29 @@ $(function() {
 <div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="dio_8h.html#ad9566a73aa524180d467768ff9f132f5">   35</a></span>&#160;}<a class="code" href="dio_8h.html#ad9566a73aa524180d467768ff9f132f5">DIOConfig</a>;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keywordtype">void</span> <a class="code" href="dio_8h.html#ad38b20e2c54a770ce6af80547abbce43">UpdateDIOInputConfig</a>();</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">void</span> <a class="code" href="dio_8h.html#a643b4c5d55edcd285e5440bc1caf17a4">UpdateDIOOutputConfig</a>();</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;uint32_t <a class="code" href="dio_8h.html#a23bbc6369c345ac12e5de302c02db52b">GetHardwareID</a>();</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#define DATA_READY_INT_MASK     GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_9</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="dio_8h.html#a8fc55dc20edabab3d19c20221f5c28e0">   44</a></span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_DIO_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keywordtype">void</span> <a class="code" href="dio_8c.html#ad38b20e2c54a770ce6af80547abbce43">UpdateDIOInputConfig</a>();</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">void</span> <a class="code" href="dio_8c.html#a643b4c5d55edcd285e5440bc1caf17a4">UpdateDIOOutputConfig</a>();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;uint32_t <a class="code" href="dio_8c.html#a23bbc6369c345ac12e5de302c02db52b">GetHardwareID</a>();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">/* @endcond */</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#define DATA_READY_INT_MASK     GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_9</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="dio_8h.html#a8fc55dc20edabab3d19c20221f5c28e0">   47</a></span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_DIO_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="adio_8h_html_ad9566a73aa524180d467768ff9f132f5"><div class="ttname"><a href="dio_8h.html#ad9566a73aa524180d467768ff9f132f5">DIOConfig</a></div><div class="ttdeci">struct DIOConfig DIOConfig</div></div>
-<div class="ttc" id="adio_8h_html_a643b4c5d55edcd285e5440bc1caf17a4"><div class="ttname"><a href="dio_8h.html#a643b4c5d55edcd285e5440bc1caf17a4">UpdateDIOOutputConfig</a></div><div class="ttdeci">void UpdateDIOOutputConfig()</div><div class="ttdoc">Validates DIO_OUTPUT_CONFIG settings and applies to GPIO.</div><div class="ttdef"><b>Definition:</b> dio.c:165</div></div>
+<div class="ttc" id="adio_8c_html_ad38b20e2c54a770ce6af80547abbce43"><div class="ttname"><a href="dio_8c.html#ad38b20e2c54a770ce6af80547abbce43">UpdateDIOInputConfig</a></div><div class="ttdeci">void UpdateDIOInputConfig()</div><div class="ttdoc">Validates and updates the data ready and PPS input configuration based on DIO_INPUT_CONFIG.</div><div class="ttdef"><b>Definition:</b> dio.c:49</div></div>
 <div class="ttc" id="astruct_d_i_o_config_html_a649c80f118ae93452d24930563ee106d"><div class="ttname"><a href="struct_d_i_o_config.html#a649c80f118ae93452d24930563ee106d">DIOConfig::errorPins</a></div><div class="ttdeci">uint32_t errorPins</div><div class="ttdef"><b>Definition:</b> dio.h:30</div></div>
+<div class="ttc" id="adio_8c_html_a23bbc6369c345ac12e5de302c02db52b"><div class="ttname"><a href="dio_8c.html#a23bbc6369c345ac12e5de302c02db52b">GetHardwareID</a></div><div class="ttdeci">uint32_t GetHardwareID()</div><div class="ttdoc">Gets two bit hardware identification code from identifier pins.</div><div class="ttdef"><b>Definition:</b> dio.c:29</div></div>
 <div class="ttc" id="astruct_d_i_o_config_html_abbad0864d58ef2eaad7c0294147e5c48"><div class="ttname"><a href="struct_d_i_o_config.html#abbad0864d58ef2eaad7c0294147e5c48">DIOConfig::passPins</a></div><div class="ttdeci">uint32_t passPins</div><div class="ttdef"><b>Definition:</b> dio.h:21</div></div>
 <div class="ttc" id="astruct_d_i_o_config_html_a3908e5bdf07ce8f75fab5a4bbea457fc"><div class="ttname"><a href="struct_d_i_o_config.html#a3908e5bdf07ce8f75fab5a4bbea457fc">DIOConfig::watermarkPins</a></div><div class="ttdeci">uint32_t watermarkPins</div><div class="ttdef"><b>Definition:</b> dio.h:24</div></div>
-<div class="ttc" id="adio_8h_html_ad38b20e2c54a770ce6af80547abbce43"><div class="ttname"><a href="dio_8h.html#ad38b20e2c54a770ce6af80547abbce43">UpdateDIOInputConfig</a></div><div class="ttdeci">void UpdateDIOInputConfig()</div><div class="ttdoc">Validates and updates the data ready and PPS input configuration based on DIO_INPUT_CONFIG.</div><div class="ttdef"><b>Definition:</b> dio.c:49</div></div>
 <div class="ttc" id="astruct_d_i_o_config_html_ad9ec588c586728cdc2cdf769b3c630df"><div class="ttname"><a href="struct_d_i_o_config.html#ad9ec588c586728cdc2cdf769b3c630df">DIOConfig::overflowPins</a></div><div class="ttdeci">uint32_t overflowPins</div><div class="ttdef"><b>Definition:</b> dio.h:27</div></div>
+<div class="ttc" id="adio_8c_html_a643b4c5d55edcd285e5440bc1caf17a4"><div class="ttname"><a href="dio_8c.html#a643b4c5d55edcd285e5440bc1caf17a4">UpdateDIOOutputConfig</a></div><div class="ttdeci">void UpdateDIOOutputConfig()</div><div class="ttdoc">Validates DIO_OUTPUT_CONFIG settings and applies to GPIO.</div><div class="ttdef"><b>Definition:</b> dio.c:165</div></div>
 <div class="ttc" id="astruct_d_i_o_config_html_ab868a146e3d9f5d2c10c6304c4059ee9"><div class="ttname"><a href="struct_d_i_o_config.html#ab868a146e3d9f5d2c10c6304c4059ee9">DIOConfig::ppsPin</a></div><div class="ttdeci">uint32_t ppsPin</div><div class="ttdef"><b>Definition:</b> dio.h:33</div></div>
 <div class="ttc" id="adata__capture_8h_html"><div class="ttname"><a href="data__capture_8h.html">data_capture.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer autonomous IMU data acquisition module.</div></div>
 <div class="ttc" id="astruct_d_i_o_config_html"><div class="ttname"><a href="struct_d_i_o_config.html">DIOConfig</a></div><div class="ttdef"><b>Definition:</b> dio.h:19</div></div>
 <div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
-<div class="ttc" id="adio_8h_html_a23bbc6369c345ac12e5de302c02db52b"><div class="ttname"><a href="dio_8h.html#a23bbc6369c345ac12e5de302c02db52b">GetHardwareID</a></div><div class="ttdeci">uint32_t GetHardwareID()</div><div class="ttdoc">Gets two bit hardware identification code from identifier pins.</div><div class="ttdef"><b>Definition:</b> dio.c:29</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

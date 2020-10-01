@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: main.h Source File</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/main.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -91,32 +91,40 @@ $(function() {
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="adc_8h.html">adc.h</a>&quot;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keywordtype">void</span> <a class="code" href="main_8h.html#a1730ffe1e560465665eb47d9264826f9">Error_Handler</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">   32</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">enum</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">false</span> = 0,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">true</span> = 1</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}<a class="code" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#define STATE_CHECK_FLAGS       0</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define STATE_CHECK_PPS         1</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#define STATE_READ_ADC          2</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#define STATE_CHECK_USB         3</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#define STATE_CHECK_STREAM      4</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#define STATE_STEP_SCRIPT       5</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __MAIN_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">void</span> <a class="code" href="main_8c.html#ad4e07955fadfeb416e9620ddb42f8fe9">Error_Handler</a>();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">/* @endcond */</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">   35</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">enum</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">false</span> = 0,</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">true</span> = 1</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}<a class="code" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#define STATE_CHECK_FLAGS       0</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="main_8h.html#ae7f0e61dac690b0527e89373cba7ccae">   43</a></span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#define STATE_CHECK_PPS         1</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="main_8h.html#a682e0226ddf3789186b60f7a8acc0f92">   46</a></span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#define STATE_READ_ADC          2</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="main_8h.html#a52fac1022cf48b4c82c46e43e19583e8">   49</a></span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#define STATE_CHECK_USB         3</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="main_8h.html#ac8fd9abe0531ee8f550d277f5d7cb9c0">   52</a></span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#define STATE_CHECK_STREAM      4</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="main_8h.html#a7b3018a222bad513317bf84c44b5561a">   55</a></span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#define STATE_STEP_SCRIPT       5</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="main_8h.html#a842931ff21ba28fce21713ed2437e8f6">   58</a></span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __MAIN_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="awatchdog_8h_html"><div class="ttname"><a href="watchdog_8h.html">watchdog.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer watchdog timer module.</div></div>
-<div class="ttc" id="amain_8h_html_af6a258d8f3ee5206d682d799316314b1"><div class="ttname"><a href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a></div><div class="ttdeci">bool</div><div class="ttdef"><b>Definition:</b> main.h:33</div></div>
+<div class="ttc" id="amain_8h_html_af6a258d8f3ee5206d682d799316314b1"><div class="ttname"><a href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a></div><div class="ttdeci">bool</div><div class="ttdef"><b>Definition:</b> main.h:36</div></div>
 <div class="ttc" id="adio_8h_html"><div class="ttname"><a href="dio_8h.html">dio.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer DIO interfacing module.</div></div>
 <div class="ttc" id="aadc_8h_html"><div class="ttname"><a href="adc_8h.html">adc.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer ADC module (for temp sensor and Vdd monitoring)</div></div>
 <div class="ttc" id="atimer_8h_html"><div class="ttname"><a href="timer_8h.html">timer.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer timer module.</div></div>
 <div class="ttc" id="aled_8h_html"><div class="ttname"><a href="led_8h.html">led.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer LED control module.</div></div>
 <div class="ttc" id="abuffer_8h_html"><div class="ttname"><a href="buffer_8h.html">buffer.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer buffer data structure module.</div></div>
 <div class="ttc" id="auser__interrupt_8h_html"><div class="ttname"><a href="user__interrupt_8h.html">user_interrupt.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer user interrupt (data ready) config and generation functions.</div></div>
-<div class="ttc" id="amain_8h_html_a1730ffe1e560465665eb47d9264826f9"><div class="ttname"><a href="main_8h.html#a1730ffe1e560465665eb47d9264826f9">Error_Handler</a></div><div class="ttdeci">void Error_Handler(void)</div><div class="ttdoc">This function is executed in case of error occurrence.</div><div class="ttdef"><b>Definition:</b> main.c:242</div></div>
+<div class="ttc" id="amain_8c_html_ad4e07955fadfeb416e9620ddb42f8fe9"><div class="ttname"><a href="main_8c.html#ad4e07955fadfeb416e9620ddb42f8fe9">Error_Handler</a></div><div class="ttdeci">void Error_Handler()</div><div class="ttdoc">This function is executed in case of error occurrence.</div><div class="ttdef"><b>Definition:</b> main.c:250</div></div>
 <div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
 <div class="ttc" id="aflash_8h_html"><div class="ttname"><a href="flash_8h.html">flash.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer flash memory interfacing functions.</div></div>
 <!-- start footer part -->

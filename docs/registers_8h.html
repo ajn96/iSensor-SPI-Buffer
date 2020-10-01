@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iSensor-SPI-Buffer: registers.h File Reference</title>
+<title>iSensor-SPI-Buffer: C:/Users/anolan3/Documents/iSensor-SPI-Buffer/Core/Inc/registers.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.10</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -69,8 +69,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
 <div class="title">registers.h File Reference</div>  </div>
 </div><!--header-->
@@ -78,12 +77,12 @@ $(function() {
 
 <p>Header file for iSensor-SPI-Buffer register interfacing module.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="user__spi_8h_source.html">user_spi.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="imu__spi_8h_source.html">imu_spi.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="imu__spi_8h_source.html">imu_spi.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="main_8h_source.html">main.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="buffer_8h_source.html">buffer.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="flash_8h_source.html">flash.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="data__capture_8h_source.html">data_capture.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="user__spi_8h_source.html">user_spi.h</a>&quot;</code><br />
 </div>
 <p><a href="registers_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -218,7 +217,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_DATA_0_REG</b>&#160;&#160;&#160;0x89</td></tr>
 <tr class="separator:aaef4c67582b679f6f8f187cf51d0bd41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d90879dde0a4ef3e14bcfbe31ec442b"><td class="memItemLeft" align="right" valign="top"><a id="a1d90879dde0a4ef3e14bcfbe31ec442b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FW_REV_DEFAULT</b>&#160;&#160;&#160;0x0108</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FW_REV_DEFAULT</b>&#160;&#160;&#160;0x0110</td></tr>
 <tr class="separator:a1d90879dde0a4ef3e14bcfbe31ec442b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1099031991c0f1d500a6f162e899265e"><td class="memItemLeft" align="right" valign="top"><a id="a1099031991c0f1d500a6f162e899265e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BUF_CONFIG_DEFAULT</b>&#160;&#160;&#160;0x0000</td></tr>
@@ -271,6 +270,9 @@ Macros</h2></td></tr>
 <tr class="memitem:a702f6183cbebe47668fe33f9d7e3277e"><td class="memItemLeft" align="right" valign="top"><a id="a702f6183cbebe47668fe33f9d7e3277e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>DEQUEUE_BUF_FLAG</b>&#160;&#160;&#160;(1 &lt;&lt; 6)</td></tr>
 <tr class="separator:a702f6183cbebe47668fe33f9d7e3277e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5f31a74ad3ef1253f8caf2b49f2cec9"><td class="memItemLeft" align="right" valign="top"><a id="ac5f31a74ad3ef1253f8caf2b49f2cec9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DISABLE_CAPTURE_FLAG</b>&#160;&#160;&#160;(1 &lt;&lt; 7)</td></tr>
+<tr class="separator:ac5f31a74ad3ef1253f8caf2b49f2cec9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42aa524c977d6effa0aeb0e146107700"><td class="memItemLeft" align="right" valign="top"><a id="a42aa524c977d6effa0aeb0e146107700"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>CMD_CLEAR_BUFFER</b>&#160;&#160;&#160;(1 &lt;&lt; 0)</td></tr>
 <tr class="separator:a42aa524c977d6effa0aeb0e146107700"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -406,30 +408,6 @@ Macros</h2></td></tr>
 <tr class="memitem:a6de0a25cc4008c77ad1421241959b058"><td class="memItemLeft" align="right" valign="top"><a id="a6de0a25cc4008c77ad1421241959b058"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>CLI_CONFIG_CLEAR_MASK</b>&#160;&#160;&#160;0xFF0C</td></tr>
 <tr class="separator:a6de0a25cc4008c77ad1421241959b058"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:aeee7c6312a09dcb27a9d0b68fe37afcf"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8h.html#aeee7c6312a09dcb27a9d0b68fe37afcf">ReadReg</a> (uint8_t regAddr)</td></tr>
-<tr class="memdesc:aeee7c6312a09dcb27a9d0b68fe37afcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process a register read request (from master)  <a href="registers_8h.html#aeee7c6312a09dcb27a9d0b68fe37afcf">More...</a><br /></td></tr>
-<tr class="separator:aeee7c6312a09dcb27a9d0b68fe37afcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14e4e9f1315bb4941574076d9a824d4a"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8h.html#a14e4e9f1315bb4941574076d9a824d4a">WriteReg</a> (uint8_t regAddr, uint8_t regValue)</td></tr>
-<tr class="memdesc:a14e4e9f1315bb4941574076d9a824d4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process a register write request (from master)  <a href="registers_8h.html#a14e4e9f1315bb4941574076d9a824d4a">More...</a><br /></td></tr>
-<tr class="separator:a14e4e9f1315bb4941574076d9a824d4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b32151b1c6c1f3adcf8c1b2d245d191"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8h.html#a7b32151b1c6c1f3adcf8c1b2d245d191">GetSN</a> ()</td></tr>
-<tr class="memdesc:a7b32151b1c6c1f3adcf8c1b2d245d191"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates the six SN registers automatically.  <a href="registers_8h.html#a7b32151b1c6c1f3adcf8c1b2d245d191">More...</a><br /></td></tr>
-<tr class="separator:a7b32151b1c6c1f3adcf8c1b2d245d191"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a042bb33891e7dcafa8dcf3a696eaa451"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8h.html#a042bb33891e7dcafa8dcf3a696eaa451">GetBuildDate</a> ()</td></tr>
-<tr class="memdesc:a042bb33891e7dcafa8dcf3a696eaa451"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates the firmware date registers automatically.  <a href="registers_8h.html#a042bb33891e7dcafa8dcf3a696eaa451">More...</a><br /></td></tr>
-<tr class="separator:a042bb33891e7dcafa8dcf3a696eaa451"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ca885362e30b509afa7d4138c686ba3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8h.html#a9ca885362e30b509afa7d4138c686ba3">ProcessCommand</a> ()</td></tr>
-<tr class="memdesc:a9ca885362e30b509afa7d4138c686ba3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes a command register write. This function is called from main loop.  <a href="registers_8h.html#a9ca885362e30b509afa7d4138c686ba3">More...</a><br /></td></tr>
-<tr class="separator:a9ca885362e30b509afa7d4138c686ba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e4cc4aaf47e349fdaedc1df90274cab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8h.html#a1e4cc4aaf47e349fdaedc1df90274cab">FactoryReset</a> ()</td></tr>
-<tr class="memdesc:a1e4cc4aaf47e349fdaedc1df90274cab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load factory default values for all registers, and applies any settings changes.  <a href="registers_8h.html#a1e4cc4aaf47e349fdaedc1df90274cab">More...</a><br /></td></tr>
-<tr class="separator:a1e4cc4aaf47e349fdaedc1df90274cab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5686c12b7d57a9c338252e749e2b2ef5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8h.html#a5686c12b7d57a9c338252e749e2b2ef5">BufDequeueToOutputRegs</a> ()</td></tr>
-<tr class="memdesc:a5686c12b7d57a9c338252e749e2b2ef5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dequeues an entry from the buffer and loads it to the primary output registers.  <a href="registers_8h.html#a5686c12b7d57a9c338252e749e2b2ef5">More...</a><br /></td></tr>
-<tr class="separator:a5686c12b7d57a9c338252e749e2b2ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header file for iSensor-SPI-Buffer register interfacing module. </p>
@@ -494,179 +472,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Page register (0 for all pages) </p>
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a5686c12b7d57a9c338252e749e2b2ef5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5686c12b7d57a9c338252e749e2b2ef5">&#9670;&nbsp;</a></span>BufDequeueToOutputRegs()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void BufDequeueToOutputRegs </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Dequeues an entry from the buffer and loads it to the primary output registers. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function is called from the main loop to preserve SPI responsiveness while a buffer entry is being dequeued into the output registers. This allows a user to read the buffer contents while the values are being moved (if they start reading at buffer entry 0). After moving all values to the correct location in the output register array, the function sets up the burst read DMA (if enabled in user SPI config). </p>
-
-</div>
-</div>
-<a id="a1e4cc4aaf47e349fdaedc1df90274cab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e4cc4aaf47e349fdaedc1df90274cab">&#9670;&nbsp;</a></span>FactoryReset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void FactoryReset </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Load factory default values for all registers, and applies any settings changes. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This is accomplished in "lazy" manner via #define for each register default value (defaults are stored in program memory, storage is managed by compiler). This function only changes values in SRAM, does not change flash contents (registers will reset on next re-boot). </p>
-
-</div>
-</div>
-<a id="a042bb33891e7dcafa8dcf3a696eaa451"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a042bb33891e7dcafa8dcf3a696eaa451">&#9670;&nbsp;</a></span>GetBuildDate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void GetBuildDate </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Populates the firmware date registers automatically. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>Registers are populated by parsing the <b>DATE</b> macro result, which is set at compile time </p>
-
-</div>
-</div>
-<a id="a7b32151b1c6c1f3adcf8c1b2d245d191"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b32151b1c6c1f3adcf8c1b2d245d191">&#9670;&nbsp;</a></span>GetSN()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void GetSN </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Populates the six SN registers automatically. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>The SN registers are populated from the 96-bit unique ID (UID) </p>
-
-</div>
-</div>
-<a id="a9ca885362e30b509afa7d4138c686ba3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ca885362e30b509afa7d4138c686ba3">&#9670;&nbsp;</a></span>ProcessCommand()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ProcessCommand </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Processes a command register write. This function is called from main loop. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>Only one command can be executed per write to the USER_COMMAND register. Command execution priority is determined by the order in which the command flags are checked. </p>
-
-</div>
-</div>
-<a id="aeee7c6312a09dcb27a9d0b68fe37afcf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeee7c6312a09dcb27a9d0b68fe37afcf">&#9670;&nbsp;</a></span>ReadReg()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t ReadReg </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>regAddr</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Process a register read request (from master) </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">regAddr</td><td>The byte address of the register to read</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Value of register requested</dd></dl>
-<p>For selected pages not addressed by iSensor-SPI-Buffer, the read is passed through to the connected IMU, using the spi_passthrough module. If the selected page is [253 - 255] this read request is processed directly. </p>
-
-</div>
-</div>
-<a id="a14e4e9f1315bb4941574076d9a824d4a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14e4e9f1315bb4941574076d9a824d4a">&#9670;&nbsp;</a></span>WriteReg()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t WriteReg </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>regAddr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>regValue</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Process a register write request (from master) </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">regAddr</td><td>The address of the register to write to</td></tr>
-    <tr><td class="paramname">regValue</td><td>The value to write to the register</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The contents of the register being written, after write is processed</dd></dl>
-<p>For selected pages not addressed by iSensor-SPI-Buffer, the write is passed through to the connected IMU, using the spi_passthrough module. If the selected page is [253 - 255] this write request is processed directly. The firmware echoes back the processed write value so that the master can verify the write contents on the next SPI transaction. </p>
 
 </div>
 </div>
