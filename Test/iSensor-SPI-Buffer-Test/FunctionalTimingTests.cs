@@ -15,7 +15,7 @@ namespace iSensor_SPI_Buffer_Test
     class FunctionalTimingTests : TestBase
     {
         /* Number of timing trials */
-        const int numTrials = 5;
+        const int numTrials = 10;
 
         [Test]
         public void GenerateTimingReport()
@@ -242,7 +242,7 @@ namespace iSensor_SPI_Buffer_Test
 
             for (int i = 0; i < numTrials; i++)
             {
-                timer.Start();
+                timer.Restart();
                 WriteUnsigned("USER_COMMAND", 1u << COMMAND_FACTORY_RESET, false);
                 while (ReadUnsigned("WATERMARK_INT_CONFIG") != RegMap["WATERMARK_INT_CONFIG"].DefaultValue) ;
                 timer.Stop();
