@@ -19,15 +19,15 @@ static uint8_t PowerFlag = 0;				/* Power flag */
 /* slave select */
 static void SELECT(void)
 {
-	HAL_GPIO_WritePin(SD_CS_PORT, SD_CS_PIN, GPIO_PIN_RESET);
-	HAL_Delay(1);
+	/* Drive low */
+	SD_CS_PORT->BRR = SD_CS_PIN;
 }
 
 /* slave deselect */
 static void DESELECT(void)
 {
-	HAL_GPIO_WritePin(SD_CS_PORT, SD_CS_PIN, GPIO_PIN_SET);
-	HAL_Delay(1);
+	/* Drive high */
+	SD_CS_PORT->BSRR = SD_CS_PIN;
 }
 
 /* SPI transmit a byte */
