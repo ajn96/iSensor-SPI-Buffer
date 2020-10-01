@@ -14,9 +14,9 @@
 #include "sd_card.h"
 
 /* Private function prototypes */
-static void SystemClock_Config(void);
-static void MX_GPIO_Init(void);
-static void MX_SPI1_Init(void);
+static void SystemClock_Config();
+static void MX_GPIO_Init();
+static void MX_SPI1_Init();
 static void DMA_Init();
 static void DWT_Init();
 
@@ -46,7 +46,7 @@ static uint32_t state;
   *
   * @return main status code. Should not return.
   */
-int main(void)
+int main()
 {
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
@@ -247,7 +247,7 @@ int main(void)
   *
   * Errors will force a system reset
   */
-void Error_Handler(void)
+void Error_Handler()
 {
 	/* Log error for future retrieval */
 	FlashLogError(ERROR_INIT);
@@ -262,7 +262,7 @@ void Error_Handler(void)
   * DMA2/3 - IMU SPI port, used for burst reads from IMU
   * DMA5 - User SPI port, Used for buffer burst outputs. Rx not used
   */
-static void DMA_Init(void)
+static void DMA_Init()
 {
 	/* DMA controller clock enable */
 	__HAL_RCC_DMA1_CLK_ENABLE();
@@ -334,7 +334,7 @@ static void DMA_Init(void)
   *
   * @return void
   */
-static void SystemClock_Config(void)
+static void SystemClock_Config()
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
@@ -381,11 +381,9 @@ static void SystemClock_Config(void)
 /**
   * @brief SPI1 Initialization Function (master SPI port to IMU)
   *
-  * @param None
-  *
   * @return void
   */
-static void MX_SPI1_Init(void)
+static void MX_SPI1_Init()
 {
 	/* SPI1 parameter configuration*/
 	g_spi1.Instance = SPI1;
@@ -421,11 +419,9 @@ static void MX_SPI1_Init(void)
 /**
   * @brief GPIO Initialization Function
   *
-  * @param None
-  *
   * @return void
   */
-static void MX_GPIO_Init(void)
+static void MX_GPIO_Init()
 {
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
 

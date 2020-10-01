@@ -117,6 +117,19 @@ void USBRxHandler()
 	}
 }
 
+/**
+  * @brief USB write handler
+  *
+  * @param buf Buffer containing data to write
+  *
+  * @param count Number of bytes to write
+  *
+  * @return void
+  *
+  * This function is called by the script execution
+  * routines, when a script object is executed
+  * from a USB CLI context.
+  */
 void USBTxHandler(const uint8_t* buf, uint32_t count)
 {
 	BlockingUSBTransmit(buf, count, 20);

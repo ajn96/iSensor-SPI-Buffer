@@ -30,10 +30,10 @@ static TIM_HandleTypeDef htim2;
 /** TIM8 handle for init */
 static TIM_HandleTypeDef htim8;
 
-/* Track number of "PPS" ticks which have occurred in last second */
+/** Track number of "PPS" ticks which have occurred in last second */
 static uint32_t PPS_TickCount;
 
-/* Number of PPS ticks per sec */
+/** Number of PPS ticks per sec */
 static uint32_t PPS_MaxTickCount;
 
 /**
@@ -87,6 +87,11 @@ uint32_t GetMicrosecondTimestamp()
 	return TIM2->CNT;
 }
 
+/**
+  * @brief Gets the current 32-bit value from PPS timestamp registers
+  *
+  * @return The PPS counter value
+  */
 uint32_t GetPPSTimestamp()
 {
 	return (g_regs[UTC_TIMESTAMP_LWR_REG] | (g_regs[UTC_TIMESTAMP_UPR_REG] << 16));

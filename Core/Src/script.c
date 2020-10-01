@@ -24,16 +24,16 @@ static uint32_t StringEquals(const uint8_t* string0, const uint8_t* string1, uin
 /** Global register array. (from registers.c) */
 extern volatile uint16_t g_regs[];
 
-/* Buffer A for stream data (USB or SD card) */
+/** Buffer A for stream data (USB or SD card) ping/pong */
 static uint8_t StreamBuf_A[STREAM_BUF_SIZE];
 
-/* Buffer B for stream data (USB or SD card) */
+/** Buffer B for stream data (USB or SD card) ping/pong */
 static uint8_t StreamBuf_B[STREAM_BUF_SIZE];
 
 /** Track which buffer is in use */
 static bool BufA;
 
-/* Current index within command buffer */
+/** Current index within command buffer */
 static uint32_t cmdIndex;
 
 /** Flag to track if current command arguments are valid */

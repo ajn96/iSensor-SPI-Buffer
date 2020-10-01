@@ -22,11 +22,17 @@ extern volatile uint16_t* g_CurrentBufEntry;
 /** Global register array (from registers.c) */
 extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
 
+/**
+  * @brief Reset user SPI port
+  *
+  * @return void
+  *
+  * Disable and re-enable SPI using RCC. Kind of hacky, not a clean way to do this.
+  * This is required because there is no way to clear Tx FIFO in the SPI
+  * peripheral otherwise
+  */
 void UserSpiReset()
 {
-	/* Disable and re-enable SPI using RCC. Kind of hacky, not a clean way to do this.
-	 * This is required because there is no way to clear Tx FIFO in the SPI
-	 * peripheral otherwise */
 	RCC->APB1RSTR |= RCC_APB1RSTR_SPI2RST;
 	RCC->APB1RSTR &= ~RCC_APB1RSTR_SPI2RST;
 	HAL_SPI_Init(&g_spi2);

@@ -63,6 +63,7 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB);
 /** Buffer output data base address (on page 255) */
 #define BUF_DATA_BASE_ADDR		16
 
+/** Stream buffer size */
 #define STREAM_BUF_SIZE			512
 
 #endif /* INC_SCRIPT_H_ */

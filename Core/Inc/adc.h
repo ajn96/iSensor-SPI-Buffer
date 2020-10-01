@@ -30,9 +30,16 @@ void UpdateADC();
 /** VREFINT calibration value */
 #define VREFINT_CAL		((uint16_t*) ((uint32_t) 0x1FFFF7BA))
 
+/** VDD start measurement state */
 #define ADC_VDD_START		0
+
+/** Wait for VDD measurement EoC state */
 #define ADC_VDD_READ		1
+
+/** Temp sensor start measurement state */
 #define ADC_TEMP_START		2
+
+/** Wait for temp measurement EoC state */
 #define ADC_TEMP_READ		3
 
 #endif /* INC_ADC_H_ */
