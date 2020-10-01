@@ -377,7 +377,8 @@ DRESULT SD_disk_read(BYTE pdrv, BYTE* buff, DWORD sector, UINT count)
 			do {
 				if (!SD_RxDataBlock(buff, 512)) break;
 				buff += 512;
-			} while (--count);
+				count--;
+			} while(count > 0);
 
 			/* STOP_TRANSMISSION */
 			SD_SendCmd(CMD12, 0);
@@ -429,7 +430,8 @@ DRESULT SD_disk_write(BYTE pdrv, const BYTE* buff, DWORD sector, UINT count)
 			do {
 				if(!SD_TxDataBlock(buff, 0xFC)) break;
 				buff += 512;
-			} while (--count);
+				count--;
+			} while (count > 0);
 
 			/* STOP_TRAN token */
 			if(!SD_TxDataBlock(0, 0xFD))

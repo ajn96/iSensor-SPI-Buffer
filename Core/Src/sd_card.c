@@ -341,12 +341,16 @@ static bool OpenScriptFiles()
 		/* Save error */
 		g_regs[SCR_ERROR_REG] |= SCR_MOUNT_ERROR;
 
+		/* Retry once */
+		if((g_regs[SCR_ERROR_REG] & SCR_MOUNT_ERROR) == 0)
+			return OpenScriptFiles();
+
 		/* Return error */
 		return false;
 	}
 
 	/* Open script.txt in read only mode */
-	if(f_open(&cmdFile, "script.txt", FA_READ) != FR_OK)
+	if(f_open(&cmdFile, "SCRIPT.TXT", FA_READ) != FR_OK)
 	{
 		/* Attempt file close */
 		f_close(&cmdFile);
@@ -362,7 +366,7 @@ static bool OpenScriptFiles()
 	}
 
 	/* Open result.txt in write mode */
-	if(f_open(&outFile, "result.txt", (FA_CREATE_ALWAYS|FA_WRITE)) != FR_OK)
+	if(f_open(&outFile, "RESULT.TXT", (FA_CREATE_ALWAYS|FA_WRITE)) != FR_OK)
 	{
 		/* Attempt file close on script and result */
 		f_close(&outFile);
