@@ -27,6 +27,7 @@ Commands are sent to the CLI over the virtual COM port. Each command starts with
 | stream | start/stop | N/A | N/A | Start (1) / stop (0) a buffer read stream. When running, a stream is equivalent to calling readbuf every time a watermark interrupt is generated. WATERMARK_INT_CONFIG can be modified to set the data latency. Stream status is stored in USB_CONFIG |
 | write | Register address | Write Value | N/A | Write a byte to the specified register |
 | delim | Delimiter character | N/A | N/A | Set the delimiter character which is placed between register values for read operations (comma, space, etc) This value is stored in USB_CONFIG |
+| echo | Enable/Disable | N/A | N/A | Enables or disable the command line echo. If the echo is disabled, the characters sent to the CLI will not be sent back (useful for scripting) |
 
 Help Command
 ![Help](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_help.JPG)
@@ -49,3 +50,7 @@ Read Buffer Command
 Stream Command (WATERMARK_INT_CONFIG set to 60)
 
 ![Stream](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_stream.JPG)
+
+Echo Command
+
+![Echo](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_echo.JPG)
