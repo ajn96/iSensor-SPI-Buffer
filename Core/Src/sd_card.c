@@ -48,6 +48,9 @@ static FIL outFile = {0};
 /** File system object */
 static FATFS fs;
 
+/** String literal script start message */
+static const uint8_t ScriptStart[] = "Script Starting...\r\n";
+
 /**
   * @brief SD card write handler function
   *
@@ -64,7 +67,8 @@ static FATFS fs;
 void SDTxHandler(const uint8_t* buf, uint32_t count)
 {
 	UINT writeCount = 0;
-	FRESULT result = f_write(&outFile, sd_buf, count, &writeCount);
+	FRESULT result = f_write(&outFile, buf, count, &writeCount);
+	f_sync(&outFile);
 
 	/* Flag error if write was not processed correctly */
 	if((result != FR_OK) || (writeCount < count))
@@ -159,6 +163,9 @@ void StartScript()
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 		return;
 	}
+
+	/* Write start message */
+	SDTxHandler(ScriptStart, sizeof(ScriptStart));
 
 	/* If we reach here, script is loaded and good. Can start execution
 	 * process. First set script running status bit
@@ -276,6 +283,10 @@ void ScriptStep()
 	else
 	{
 		/* Generic script entry (no program execution control) */
+		for(int i = 0; i < sizeof(sd_buf); i++)
+		{
+			sd_buf[i] = 0;
+		}
 		RunScriptElement(&cmdList[cmdIndex], sd_buf, false);
 		cmdIndex++;
 	}
@@ -366,7 +377,7 @@ static bool OpenScriptFiles()
 	}
 
 	/* Open result.txt in write mode */
-	if(f_open(&outFile, "RESULT.TXT", (FA_CREATE_ALWAYS|FA_WRITE)) != FR_OK)
+	if(f_open(&outFile, "RESULT.TXT", (FA_OPEN_ALWAYS|FA_WRITE)) != FR_OK)
 	{
 		/* Attempt file close on script and result */
 		f_close(&outFile);
@@ -381,6 +392,9 @@ static bool OpenScriptFiles()
 		/* Return error */
 		return false;
 	}
+
+	/* Seek to end of file */
+	f_lseek(&outFile, outFile.fsize);
 
 	return true;
 }
