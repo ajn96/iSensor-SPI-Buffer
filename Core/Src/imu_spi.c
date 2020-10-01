@@ -154,8 +154,6 @@ void StartImuBurst(uint8_t* bufEntry)
  **/
 uint16_t ImuSpiTransfer(uint32_t MOSI)
 {
-	uint32_t timeout;
-
 	/* Drop CS */
 	TIM3->CR1 = 0;
 	TIM3->CNT = 0xFFFF;
@@ -164,10 +162,9 @@ uint16_t ImuSpiTransfer(uint32_t MOSI)
 	/* Load data to SPI1 tx */
 	SPI1->DR = MOSI;
 
-	/* Wait for rx done, or timeout (2ms via systick) */
-	timeout = HAL_GetTick();
-	timeout += 2;
-	while(((SPI1->SR & SPI_SR_RXNE) == 0) && (HAL_GetTick() < timeout));
+	/* Wait for rx done, or timeout (120us) */
+	TIM8->CNT = 0;
+	while(((SPI1->SR & SPI_SR_RXNE) == 0) && (TIM8->CNT < 120));
 
 	/* Bring CS high */
 	TIM3->CR1 = 0;

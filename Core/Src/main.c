@@ -366,11 +366,12 @@ static void SystemClock_Config(void)
     Error_Handler();
   }
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB|RCC_PERIPHCLK_TIM2
-                              |RCC_PERIPHCLK_TIM34|RCC_PERIPHCLK_ADC12;
+                              |RCC_PERIPHCLK_TIM34|RCC_PERIPHCLK_ADC12|RCC_PERIPHCLK_TIM8;
   PeriphClkInit.USBClockSelection = RCC_USBCLKSOURCE_PLL_DIV1_5;
   PeriphClkInit.Tim2ClockSelection = RCC_TIM2CLK_HCLK;
   PeriphClkInit.Tim34ClockSelection = RCC_TIM34CLK_HCLK;
   PeriphClkInit.Adc12ClockSelection = RCC_ADC12PLLCLK_DIV16;
+  PeriphClkInit.Tim8ClockSelection = RCC_TIM8CLK_HCLK;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();

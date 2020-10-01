@@ -12,6 +12,7 @@
 
 /* Private function prototypes */
 static void InitTIM2(uint32_t timerfreq);
+static void InitTIM8();
 static void ConfigurePPSPins(uint32_t enable);
 
 /** Global register array (from registers.c) */
@@ -25,6 +26,9 @@ uint32_t g_PPSInterruptMask = 0;
 
 /** TIM2 handle */
 static TIM_HandleTypeDef htim2;
+
+/** TIM8 handle for init */
+static TIM_HandleTypeDef htim8;
 
 /* Track number of "PPS" ticks which have occurred in last second */
 static uint32_t PPS_TickCount;
@@ -62,18 +66,15 @@ void CheckPPSUnlock()
   *
   * @return void
   *
-  * This function uses DWT peripheral (data watchpoint and trace) cycle counter to perform delay.
+  * This function uses TIM6 to perform delay.
  **/
 void SleepMicroseconds(uint32_t microseconds)
 {
 	/* Reset timer */
-	DWT->CYCCNT = 0;
-
-	/* Go to number of cycles for system */
-	microseconds *= (HAL_RCC_GetHCLKFreq() / 1000000);
+	TIM8->CNT = 0;
 
 	/* Delay till end */
-	while (DWT->CYCCNT < microseconds);
+	while (TIM8->CNT < microseconds);
 }
 
 /**
@@ -100,6 +101,9 @@ uint32_t GetPPSTimestamp()
   */
 void InitMicrosecondTimer()
 {
+	InitTIM8();
+
+	/* Init TIM2 at 1MHz also */
 	InitTIM2(1000000);
 }
 
@@ -211,6 +215,31 @@ static void InitTIM2(uint32_t timerfreq)
 
 	/* Enable timer */
 	TIM2->CR1 = 0x1;
+}
+
+/**
+  * @brief Enables TIM8 as general 1MHz timer
+  *
+  */
+static void InitTIM8()
+{
+	/* Init TIM8 as basic 16-bit timeout timer */
+	TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+
+	htim8.Instance = TIM8;
+	/* Set prescaler to give desired timer freq of 1MHz */
+	htim8.Init.Prescaler = 71;
+	htim8.Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim8.Init.Period = 0xFFFF;
+	htim8.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim8.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+	HAL_TIM_Base_Init(&htim8);
+
+	sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+	HAL_TIM_ConfigClockSource(&htim8, &sClockSourceConfig);
+
+	/* Enable timer */
+	TIM8->CR1 = 0x1;
 }
 
 /**
