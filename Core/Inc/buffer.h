@@ -16,10 +16,13 @@
 #include "registers.h"
 
 /* Public function prototypes */
+
+/* @cond DOXYGEN_IGNORE */
 void BufReset();
 uint8_t* BufTakeElement();
 uint8_t* BufAddElement();
 uint32_t BufCanAddElement();
+/* @endcond */
 
 /** Buffer memory allocation */
 #define BUF_SIZE	0xA000

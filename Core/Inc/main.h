@@ -26,7 +26,10 @@
 #include "adc.h"
 
 /* Public function prototypes */
+
+/* @cond DOXYGEN_IGNORE */
 void Error_Handler(void);
+/* @endcond */
 
 /** Bool data type */
 typedef enum

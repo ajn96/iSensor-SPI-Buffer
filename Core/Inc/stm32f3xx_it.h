@@ -47,11 +47,15 @@
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
+
+ /* @cond DOXYGEN_IGNORE */
 void NMI_Handler(void);
 void SVC_Handler(void);
 void DebugMon_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
+/* @endcond */
+
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */

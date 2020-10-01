@@ -17,12 +17,15 @@
 #include "timer.h"
 
 /* Public functions */
+
+/* @cond DOXYGEN_IGNORE */
 void SDCardInit();
 void ScriptAutorun();
 void ScriptStep();
 void StartScript();
 void StopScript();
 void SDTxHandler(const uint8_t* buf, uint32_t count);
+/* @endcond */
 
 /** Maximum script file size supported */
 #define SCRIPT_MAX_ENTRIES	64

@@ -14,6 +14,8 @@
 #include "main.h"
 
 /* Public function prototypes */
+
+/* @cond DOXYGEN_IGNORE */
 void InitMicrosecondTimer();
 void ClearMicrosecondTimer();
 uint32_t GetMicrosecondTimestamp();
@@ -23,6 +25,7 @@ void IncrementPPSTime();
 uint32_t GetPPSTimestamp();
 void SleepMicroseconds(uint32_t microseconds);
 void CheckPPSUnlock();
+/* @endcond */
 
 /** EXTI interrupt mask for possible PPS inputs */
 #define PPS_INT_MASK	 		GPIO_PIN_8|GPIO_PIN_7|GPIO_PIN_4

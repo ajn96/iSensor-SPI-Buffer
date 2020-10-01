@@ -15,9 +15,12 @@
 #include "registers.h"
 
 /* Public function prototypes */
+
+/* @cond DOXYGEN_IGNORE */
 void CheckWatchDogStatus();
 void FeedWatchDog();
 void EnableWatchDog(uint32_t timeout_ms);
+/* @endcond */
 
 /** Watchdog base freq (40KHz) */
 #define WATCHDOG_BASE_FREQ		40000

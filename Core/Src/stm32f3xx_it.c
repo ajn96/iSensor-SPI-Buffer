@@ -23,10 +23,14 @@
 #include "stm32f3xx_it.h"
 #include "stm32f3xx_hal_pcd.h"
 
+/** USB handle (Used in USB ISR) */
 extern PCD_HandleTypeDef hpcd_USB_FS;
 
-/* 1ms Timer Counter for FATFs */
-extern uint16_t Timer1, Timer2;
+/** 1ms Timer1 Counter for FATFs */
+extern uint16_t Timer1;
+
+/** 1ms Timer2 Counter for FATFs */
+extern uint16_t Timer2;
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */

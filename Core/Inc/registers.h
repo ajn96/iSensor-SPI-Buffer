@@ -20,6 +20,8 @@
 #include "user_spi.h"
 
 /* Public function prototypes */
+
+/* @cond DOXYGEN_IGNORE */
 uint16_t ReadReg(uint8_t regAddr);
 uint16_t WriteReg(uint8_t regAddr, uint8_t regValue);
 void GetSN();
@@ -27,6 +29,7 @@ void GetBuildDate();
 void ProcessCommand();
 void FactoryReset();
 void BufDequeueToOutputRegs();
+/* @endcond */
 
 /* Number of registers per page */
 #define REG_PER_PAGE				64

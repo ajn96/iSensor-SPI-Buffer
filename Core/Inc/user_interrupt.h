@@ -15,10 +15,16 @@
 #include "registers.h"
 
 /* Public function prototypes */
+
+/* @cond DOXYGEN_IGNORE */
 void UpdateUserInterrupt();
 void UpdateOutputPins(uint32_t interrupt, uint32_t overflow, uint32_t error);
+/* @endcond */
 
+/** Watermark interrupt toggle freq (Hz) when in toggle mode */
 #define WATERMARK_FREQ					10000
+
+/** Number of CPU ticks per watermark toggle */
 #define WATERMARK_HALF_PERIOD_TICKS		(uint32_t) (72000000 / (WATERMARK_FREQ * 2))
 
 #endif /* INC_USER_INTERRUPT_H_ */

@@ -33,6 +33,7 @@ typedef enum
 	invalid
 }command;
 
+/** Script entry data structure. Used for CLI and SD card logging */
 typedef struct
 {
 	/** The command type associated with the script */
@@ -48,9 +49,13 @@ typedef struct
 	uint32_t invalidArgs;
 }script;
 
+/* Public function prototypes */
+
+/* @cond DOXYGEN_IGNORE */
 void CheckStream();
 void ParseScriptElement(const uint8_t* commandBuf, script * scr);
 void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB);
+/* @endcond */
 
 /** Buffer output base address (on page 255) */
 #define BUF_BASE_ADDR			8

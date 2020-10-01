@@ -27,13 +27,13 @@ SPI_HandleTypeDef g_spi3;
 /** Buffer for SD card read/writes */
 static uint8_t sd_buf[STREAM_BUF_SIZE];
 
-/* Command list. Loaded from cmd.txt on the SD card */
+/** Command list. Loaded from cmd.txt on the SD card */
 static script cmdList[SCRIPT_MAX_ENTRIES];
 
 /** Track index within the command list currently being executed */
 static uint32_t cmdIndex;
 
-/* Number of commands within the current script */
+/** Number of commands within the current script */
 static uint32_t numCmds;
 
 /** Track if a script is actively running */

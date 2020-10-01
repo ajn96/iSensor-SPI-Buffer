@@ -17,7 +17,10 @@
 #include "script.h"
 
 /* Public function prototypes */
+
+/* @cond DOXYGEN_IGNORE */
 void USBRxHandler();
 void USBTxHandler(const uint8_t* buf, uint32_t count);
+/* @endcond */
 
 #endif /* INC_USB_CLI_H_ */

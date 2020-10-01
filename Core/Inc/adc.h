@@ -14,8 +14,12 @@
 #include "registers.h"
 #include "stm32f3xx_hal_conf.h"
 
+/* Public function prototypes */
+
+/* @cond DOXYGEN_IGNORE */
 void ADCInit();
 void UpdateADC();
+/* @endcond */
 
 /** Temp sensor value at 30C (for two point calibration) */
 #define TS_CAL1 		((uint16_t*) ((uint32_t) 0x1FFFF7B8))

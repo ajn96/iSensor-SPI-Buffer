@@ -17,12 +17,15 @@
 #include "stm32f3xx_hal.h"
 
 /* Public function prototypes */
+
+/* @cond DOXYGEN_IGNORE */
 void FlashUpdate();
 void LoadRegsFlash();
 void FlashCheckLoggedError();
 void FlashLogError(uint32_t faultCode);
 void FlashInitErrorLog();
 uint16_t CalcRegSig(uint16_t * regs, uint32_t count);
+/* @endcond */
 
 /** Address for flash register storage (starts 256KB down in flash, program starts at 0) */
 #define FLASH_REG_ADDR			0x08040000

@@ -15,9 +15,12 @@
 #include "main.h"
 
 /* Public function prototypes */
+
+/* @cond DOXYGEN_IGNORE */
 void BurstReadSetup();
 void BurstReadDisable();
 void UpdateUserSpiConfig(uint32_t CheckUnlock);
 void UserSpiReset();
+/* @endcond */
 
 #endif /* INC_USER_SPI_H_ */

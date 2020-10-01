@@ -18,21 +18,20 @@
 #include "stm32f3xx_hal.h"
 
 /* Public function prototypes */
+
+/* @cond DOXYGEN_IGNORE */
 uint16_t ImuSpiTransfer(uint32_t MOSI);
 uint16_t ImuReadReg(uint8_t RegAddr);
 uint16_t ImuWriteReg(uint8_t RegAddr, uint8_t RegValue);
 void UpdateImuSpiConfig();
-
 void EnableImuSpiDMA();
 void DisableImuSpiDMA();
 void StartImuBurst(uint8_t * bufEntry);
-
 void ResetImu();
-
-/* Timer config */
 void InitImuCsTimer();
 void ConfigureImuCsTimer(uint32_t period);
 void InitImuSpiTimer();
 void ConfigureImuSpiTimer(uint32_t period);
+/* @endcond */
 
 #endif

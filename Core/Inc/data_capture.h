@@ -17,7 +17,10 @@
 #include "stm32f3xx_hal.h"
 
 /* Public function prototypes */
+
+/* @cond DOXYGEN_IGNORE */
 void EnableDataCapture();
 void DisableDataCapture();
+/* @endcond */
 
 #endif /* INC_DATA_CAPTURE_H_ */
