@@ -18,6 +18,8 @@ In order to run an SD card script, the SD card must be formatted FAT32, with a s
 
 The script file must be saved as "script.txt" in the top level directory of the SD card volume. The output from the script running will be appended to "result.txt" in the top level directory. If "result.txt" does not exist, it will be created by the iSensor-SPI-Buffer firmware.
 
+At the start of each script run, "Script Starting..." will be printed to the result file, to delineate different script runs
+
 ## Starting a Script
 
 If the iSensor-SPI-Buffer is connected to a host processor, a script can be started by setting the SCRIPT_START bit of the COMMAND register once a correctly formatted SD card is inserted.
