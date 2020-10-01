@@ -40,10 +40,10 @@ static uint32_t numCmds;
 static uint32_t scriptRunning;
 
 /** Handle for command file (cmd.txt in top level directory) */
-static FIL cmdFile;
+static FIL cmdFile = {0};
 
 /** Handle for output file (result.txt in top level directory) */
-static FIL outFile;
+static FIL outFile = {0};
 
 /** File system object */
 static FATFS fs;
@@ -377,9 +377,6 @@ static bool OpenScriptFiles()
 		/* Return error */
 		return false;
 	}
-
-	/* Seek to end of result.txt to append */
-	f_lseek(&outFile, outFile.fsize);
 
 	return true;
 }
