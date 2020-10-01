@@ -19,7 +19,7 @@ static void StreamCmdHandler(script * scr, bool isUSB);
 static void FactoryResetHandler();
 static void UShortToHex(uint8_t* outBuf, uint16_t val);
 static uint32_t HexToUInt(const uint8_t* commandBuf);
-static uint32_t StringEquals(const uint8_t* string0, const uint8_t* compStr, uint32_t count);
+static uint32_t StringEquals(const uint8_t* string0, const uint8_t* string1, uint32_t count);
 
 /** Global register array. (from registers.c) */
 extern volatile uint16_t g_regs[];
@@ -63,6 +63,9 @@ static const uint8_t StreamCmd[] = "stream ";
 /** String literal for delim set command. Must be followed by a space */
 static const uint8_t DelimCmd[] = "delim ";
 
+/** String literal for echo enable/disable command. Must be followed by a space */
+static const uint8_t EchoCmd[] = "echo ";
+
 /** String literal for sleep command. Must be followed by a space */
 static const uint8_t SleepCmd[] = "sleep ";
 
@@ -73,24 +76,35 @@ static const uint8_t LoopCmd[] = "loop ";
 static const uint8_t InvalidCmdStr[] = "Error: Invalid command!\r\n";
 
 /** Print string for not allowed command */
-static const uint8_t NotAllowedStr[] = "Error: Not allowed!\r\n";
+static const uint8_t NotAllowedStr[] = "Error: Command not allowed!\r\n";
 
 /** Print string for invalid argument */
 static const uint8_t InvalidArgStr[] = "Error: Invalid argument!\r\n";
 
 /** Print string for unexpected processing */
-static const uint8_t UnknownErrorStr[] = "Unknown error has occurred!\r\n";
+static const uint8_t UnknownErrorStr[] = "An unknown error has occurred!\r\n";
 
 /** Print string for help command */
-static const uint8_t HelpStr[] = "All numeric values are in hex. [] arguments are optional\r\n"
+static const uint8_t HelpStr[] = "All numeric argument values must be provided in hex. [] arguments are optional\r\n\r\n"
 		"help: Print available commands\r\n"
-		"freset: Performs a factory reset, followed by flash update\r\n"
-		"read startAddr [endAddr = addr] [numReads = 1]: Read registers starting at startAddr and ending at endAddr numReads times\r\n"
+		"freset: Performs a factory reset, followed by flash update. This restores the firmware to a known good state\r\n"
+		"read startAddr [endAddr = addr] [numReads = 1]: Read registers starting at startAddr and ending at endAddr, numReads times\r\n"
 		"write addr value: Write the 8-bit value in value to register at address addr\r\n"
-		"readbuf: Read all buffer entries. Values for each entry are placed on a newline\r\n"
-		"stream startStop: Start (startStop != 0) or stop (startStop = 0) a read stream\r\n"
-		"delim char: Set the read output delimiter character to char\r\n";
+		"readbuf: Read all stored buffer entries. Values for each entry are placed on a newline\r\n"
+		"stream startStop: Start (argument != 0) or stop (argument == 0) a read stream\r\n"
+		"delim delimChar: Set the read output delimiter character (between register values) to delimChar\r\n"
+		"echo enableDisable: Enable (argument != 0) or disable (argument == 0) USB command line echo\r\n";
 
+/**
+  * @brief Check the stream status
+  *
+  * This function checks if a watermark interrupt is
+  * asserted, based on a minimum watermark level of
+  * 1. If a watermark is asserted, and a stream is running,
+  * then ReadBufHandler() is called, with isUSB set to match
+  * the stream source. SD card streams have priority over
+  * USB streams, and will cancel a running USB stream.
+  */
 void CheckStream()
 {
 	uint16_t watermarkLevel = g_regs[WATERMARK_INT_CONFIG_REG] & ~WATERMARK_PULSE_MASK;
@@ -119,6 +133,20 @@ void CheckStream()
 	}
 }
 
+/**
+  * @brief Parse a command string into a script element
+  *
+  * @returns void
+  *
+  * @param commandBuf Script command string (from CLI or SD card)
+  *
+  * @param scr Script element to populate
+  *
+  * This function parses the script command type from
+  * the available list of script commands, by comparison
+  * to a pre-defined string literal. Then, the arguments for each
+  * particular command type are parsed and validated.
+  */
 void ParseScriptElement(const uint8_t* commandBuf, script * scr)
 {
 	scr->numArgs = 0;
@@ -193,6 +221,17 @@ void ParseScriptElement(const uint8_t* commandBuf, script * scr)
 		return;
 	}
 
+	if(StringEquals(commandBuf, EchoCmd, sizeof(EchoCmd) - 1))
+	{
+		scr->scrCommand = echo;
+		/* 1 arg (echo enable/disable) */
+		scr->numArgs = ParseCommandArgs(commandBuf, scr->args);
+		/* Check that we got at least 1 argument */
+		if(scr->numArgs == 0)
+			scr->invalidArgs = 1;
+		return;
+	}
+
 	if(StringEquals(commandBuf, SleepCmd, sizeof(SleepCmd) - 1))
 	{
 		scr->scrCommand = sleep;
@@ -249,6 +288,24 @@ void ParseScriptElement(const uint8_t* commandBuf, script * scr)
 	return;
 }
 
+/**
+  * @brief Executes a script element
+  *
+  * @return void
+  *
+  * @param scr The script element to execute
+  *
+  * @param outBuf Output buffer to write script result to
+  *
+  * @param isUSB Flag indicating if output data should be transmitted to USB CLI or SD card
+  *
+  * This function handles all non-control based script elements. It also
+  * performs input validation on the script object, and will print an
+  * error message for an invalid command or invalid arguments. If the command
+  * and arguments are good, this function calls the lower level handler corresponding
+  * to the script item. Currently is just a switch statement, could do some neat stuff
+  * with a function pointer table in the future.
+  */
 void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 {
 	/* Check that command is valid */
@@ -299,6 +356,14 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 			/* Set new value */
 			g_regs[CLI_CONFIG_REG] |= ((scr->args[0] & 0xFF) << CLI_DELIM_BITP);
 			break;
+		case echo:
+			g_regs[CLI_CONFIG_REG] &= ~USB_ECHO_BITM;
+			if(scr-> args[0] == 0)
+			{
+				/* Echo disable (set the bit) */
+				g_regs[CLI_CONFIG_REG] |= USB_ECHO_BITM;
+			}
+			break;
 		case readbuf:
 			ReadBufHandler(isUSB);
 			break;
@@ -325,6 +390,19 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 	}
 }
 
+/**
+  * @brief Handler for stream start/stop command
+  *
+  * @return void
+  *
+  * @param scr Script element being executed
+  *
+  * @param isUSB flag indicating if command came from SD script or USB CLI
+  *
+  * This function manages stream priorities. If a stream is already running
+  * for the SD card script, a USB stream will not be started. The system currently
+  * only supports streaming data to one destination at a time.
+  */
 static void StreamCmdHandler(script * scr, bool isUSB)
 {
 	/* Set/clear stream interrupt enable flag */
@@ -347,6 +425,14 @@ static void StreamCmdHandler(script * scr, bool isUSB)
 	}
 }
 
+/**
+  * @brief Executes a factory reset + flash update
+  *
+  * @return void
+  *
+  * This function is called when the USB CLI executes a
+  * freset command.
+  */
 static void FactoryResetHandler()
 {
 	/* Perform factory reset */
@@ -361,6 +447,17 @@ static void FactoryResetHandler()
   * @brief Read command handler
   *
   * @return void
+  *
+  * @param scr Script element being executed. Contains read arguments
+  *
+  * @param outBuf Buffer to write data to. Must be at least STREAM_BUF_SIZE bytes
+  *
+  * @param isUSB Flag indicating if output data should be sent to USB or SD card
+  *
+  * This function handles all read commands from SD scripts or the
+  * USB CLI. Output data is filled to STREAM_BUF_SIZE, then transmitted.
+  * The arguments provided in scr are assumed to be valid prior to this
+  * function being called, so no additional input validation is performed.
   */
 static void ReadHandler(script* scr, uint8_t* outBuf, bool isUSB)
 {
@@ -408,7 +505,7 @@ static void ReadHandler(script* scr, uint8_t* outBuf, bool isUSB)
 		/* Only one new char added */
 		count += 1;
 	}
-	/* transmit any remaineder data */
+	/* transmit any remainder data */
 	if(isUSB)
 		USBTxHandler(outBuf, count);
 	else
@@ -437,6 +534,16 @@ static void WriteHandler(script* scr)
 	WriteReg(scr->args[0], scr->args[1]);
 }
 
+/**
+  * @brief Handler for ReadBuf command
+  *
+  * @return void
+  *
+  * @param isUSB Flag indicating if output data should be sent to USB or SD card
+  *
+  * This function uses a ping-pong architecture for the buffer transmit
+  * data. This avoids potential data corruption issues (USB transmit is non-blocking)
+  */
 static void ReadBufHandler(bool isUSB)
 {
 	uint32_t numBufs = g_regs[BUF_CNT_0_REG];
@@ -620,7 +727,7 @@ static uint32_t HexToUInt(const uint8_t* commandBuf)
 }
 
 /**
-  * @brief Convert a 16 bit value to the corresponding hex string
+  * @brief Convert a 16 bit value to the corresponding hex string (4 chars)
   *
   * @param outBuf Buffer to place the string result in
   *
@@ -652,11 +759,22 @@ static void UShortToHex(uint8_t * outBuf, uint16_t val)
 		outBuf[3] += ('A' - 10);
 }
 
-static uint32_t StringEquals(const uint8_t* string0, const uint8_t* compStr, uint32_t count)
+/**
+  * @brief Check equality between two strings
+  *
+  * @param string0 First string to compare
+  *
+  * @param string1 Second string to compare
+  *
+  * @param count Number of chars to compare (from start)
+  *
+  * @return 1 for equal strings, 0 for not equal
+  */
+static uint32_t StringEquals(const uint8_t* string0, const uint8_t* string1, uint32_t count)
 {
 	for(int i = 0; i < count; i++)
 	{
-		if(string0[i] != compStr[i])
+		if(string0[i] != string1[i])
 		{
 			return 0;
 		}

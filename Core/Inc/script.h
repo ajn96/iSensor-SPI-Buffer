@@ -22,6 +22,7 @@ typedef enum
 	read,
 	write,
 	delim,
+	echo,
 	readbuf,
 	stream,
 	freset,

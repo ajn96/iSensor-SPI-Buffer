@@ -46,7 +46,7 @@ static FIL cmdFile = {0};
 static FIL outFile = {0};
 
 /** File system object */
-static FATFS fs;
+static FATFS fs = {0};
 
 /** String literal script start message */
 static const uint8_t ScriptStart[] = "Script Starting...\r\n";
@@ -400,15 +400,17 @@ static bool OpenScriptFiles()
 }
 
 /**
-  * @brief Parse script.txt into script element array
+  * @brief Parse script.txt into script element array (cmdList)
   *
   * @return true if good script, false otherwise
   *
-  * This function loops through script.txt line by line. For
-  * each line, ParseScriptElement is called to find the command
+  * This function loops through script.txt one read buffer at a time.
+  * Each read buffer is then parsed to find the command
   * type and arguments. Any error flags set by ParseScriptElement
   * will cause this function to return false. These flags can be
-  * set for invalid commands or arguments
+  * set for invalid commands or arguments. In addition, any error
+  * found in command load post-process (which links all control
+  * flow related commands) will result in the script being cancelled.
   */
 static bool ParseScriptFile()
 {
@@ -441,6 +443,16 @@ static bool ParseScriptFile()
 	return CommandPostLoadProcess();
 }
 
+/**
+  * @brief Parse a script buffer read from the SD card
+  *
+  * @return void
+  *
+  * The script read data to be parsed must be stored in
+  * sd_buf. This function iterates through the read array
+  * and calls the lower level ParseScriptElement() routine
+  * whenever a newline character is encountered.
+  */
 static void ParseReadBuffer(UINT bytesRead)
 {
 	/* Buffer to read command into. Static allows for state persistence across multiple calls */
@@ -557,7 +569,7 @@ static bool CommandPostLoadProcess()
   *
   * @return void
   *
-  * Configures SPI 3 as master SPI port.
+  * Configures SPI 3 as master SPI port for SD card
   * SPI mode: 0
   * SCLK Freq: 4.25MHz
   * SPI word size: 8 bits
@@ -572,7 +584,7 @@ static void SPI3_Init(void)
 	g_spi3.Init.CLKPolarity = SPI_POLARITY_LOW;
 	g_spi3.Init.CLKPhase = SPI_PHASE_1EDGE;
 	g_spi3.Init.NSS = SPI_NSS_HARD_OUTPUT;
-	/* 18MHz / 8 -> 2.125MHz SCLK */
+	/* 36MHz / 8 -> 4.25MHz SCLK */
 	g_spi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
 	g_spi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
 	g_spi3.Init.TIMode = SPI_TIMODE_DISABLE;
