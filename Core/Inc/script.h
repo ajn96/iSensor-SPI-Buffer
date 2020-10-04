@@ -26,6 +26,8 @@ typedef enum
 	readbuf,
 	stream,
 	freset,
+	cmd,
+	status,
 	help,
 	sleep,
 	loop,

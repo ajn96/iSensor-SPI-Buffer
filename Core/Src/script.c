@@ -14,6 +14,7 @@
 static uint32_t ParseCommandArgs(const uint8_t* commandBuf, uint32_t* args);
 static void ReadHandler(script* scr, uint8_t* outBuf, bool isUSB);
 static void ReadBufHandler(bool isUSB);
+static void ReadStatusHandler(uint8_t* outBuf, bool isUSB);
 static void WriteHandler(script* scr);
 static void StreamCmdHandler(script * scr, bool isUSB);
 static void FactoryResetHandler();
@@ -23,6 +24,9 @@ static uint32_t StringEquals(const uint8_t* string0, const uint8_t* string1, uin
 
 /** Global register array. (from registers.c) */
 extern volatile uint16_t g_regs[];
+
+/** Register update flags (from registers.c) */
+extern volatile uint16_t g_update_flags;
 
 /** Buffer A for stream data (USB or SD card) ping/pong */
 static uint8_t StreamBuf_A[STREAM_BUF_SIZE];
@@ -57,6 +61,9 @@ static const uint8_t ReadBufCmd[] = "readbuf";
 /** String literal for endloop command. */
 static const uint8_t EndloopCmd[] = "endloop";
 
+/** String literal for status command. */
+static const uint8_t StatusCmd[] = "status";
+
 /** String literal for stream command. Must be followed by a space */
 static const uint8_t StreamCmd[] = "stream ";
 
@@ -71,6 +78,9 @@ static const uint8_t SleepCmd[] = "sleep ";
 
 /** String literal for loop command. Must be followed by a space */
 static const uint8_t LoopCmd[] = "loop ";
+
+/** String literal for command run command. Must be followed by a space */
+static const uint8_t CommandCmd[] = "cmd ";
 
 /** Print string for invalid command */
 static const uint8_t InvalidCmdStr[] = "Error: Invalid command!\r\n";
@@ -87,13 +97,15 @@ static const uint8_t UnknownErrorStr[] = "An unknown error has occurred!\r\n";
 /** Print string for help command */
 static const uint8_t HelpStr[] = "All numeric argument values must be provided in hex. [] arguments are optional\r\n\r\n"
 		"help: Print available commands\r\n"
-		"freset: Performs a factory reset, followed by flash update. This restores the firmware to a known good state\r\n"
 		"read startAddr [endAddr = addr] [numReads = 1]: Read registers starting at startAddr and ending at endAddr, numReads times\r\n"
 		"write addr value: Write the 8-bit value in value to register at address addr\r\n"
 		"readbuf: Read all stored buffer entries. Values for each entry are placed on a newline\r\n"
 		"stream startStop: Start (argument != 0) or stop (argument == 0) a read stream\r\n"
+		"status: Read STATUS register value. Does not change selected page\r\n"
+		"cmd CmdValue: Write a 16-bit value to the COMMAND register in a single command. Does not change selected page\r\n"
 		"delim delimChar: Set the read output delimiter character (between register values) to delimChar\r\n"
-		"echo enableDisable: Enable (argument != 0) or disable (argument == 0) USB command line echo\r\n";
+		"echo enableDisable: Enable (argument != 0) or disable (argument == 0) USB command line echo\r\n"
+		"freset: Performs a factory reset, followed by flash update. This restores the firmware to a known good state\r\n";
 
 /**
   * @brief Check the stream status
@@ -201,6 +213,13 @@ void ParseScriptElement(const uint8_t* commandBuf, script * scr)
 		return;
 	}
 
+	if(StringEquals(commandBuf, ReadBufCmd, sizeof(ReadBufCmd) - 1))
+	{
+		scr->scrCommand = readbuf;
+		/* No args */
+		return;
+	}
+
 	if(StringEquals(commandBuf, StreamCmd, sizeof(StreamCmd) - 1))
 	{
 		scr->scrCommand = stream;
@@ -209,6 +228,20 @@ void ParseScriptElement(const uint8_t* commandBuf, script * scr)
 		/* Check that we got at least 1 argument */
 		if(scr->numArgs == 0)
 			scr->invalidArgs = 1;
+		return;
+	}
+
+	if(StringEquals(commandBuf, FactoryResetCmd, sizeof(FactoryResetCmd) - 1))
+	{
+		scr->scrCommand = freset;
+		/* No args */
+		return;
+	}
+
+	if(StringEquals(commandBuf, HelpCmd, sizeof(HelpCmd) - 1))
+	{
+		scr->scrCommand = help;
+		/* No args */
 		return;
 	}
 
@@ -229,6 +262,24 @@ void ParseScriptElement(const uint8_t* commandBuf, script * scr)
 		/* Check that we got at least 1 argument */
 		if(scr->numArgs == 0)
 			scr->invalidArgs = 1;
+		return;
+	}
+
+	if(StringEquals(commandBuf, CommandCmd, sizeof(CommandCmd) - 1))
+	{
+		scr->scrCommand = cmd;
+		/* 1 arg (command value) */
+		scr->numArgs = ParseCommandArgs(commandBuf, scr->args);
+		/* Check that we got at least 1 argument */
+		if(scr->numArgs == 0)
+			scr->invalidArgs = 1;
+		return;
+	}
+
+	if(StringEquals(commandBuf, StatusCmd, sizeof(StatusCmd) - 1))
+	{
+		scr->scrCommand = status;
+		/* No args */
 		return;
 	}
 
@@ -257,27 +308,6 @@ void ParseScriptElement(const uint8_t* commandBuf, script * scr)
 	if(StringEquals(commandBuf, EndloopCmd, sizeof(EndloopCmd) - 1))
 	{
 		scr->scrCommand = endloop;
-		/* No args */
-		return;
-	}
-
-	if(StringEquals(commandBuf, FactoryResetCmd, sizeof(FactoryResetCmd) - 1))
-	{
-		scr->scrCommand = freset;
-		/* No args */
-		return;
-	}
-
-	if(StringEquals(commandBuf, HelpCmd, sizeof(HelpCmd) - 1))
-	{
-		scr->scrCommand = help;
-		/* No args */
-		return;
-	}
-
-	if(StringEquals(commandBuf, ReadBufCmd, sizeof(ReadBufCmd) - 1))
-	{
-		scr->scrCommand = readbuf;
 		/* No args */
 		return;
 	}
@@ -372,6 +402,14 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 			break;
 		case freset:
 			FactoryResetHandler();
+			break;
+		case cmd:
+			/* Set command value and flag for processing */
+			g_regs[USER_COMMAND_REG] = scr->args[0] & 0xFFFF;
+			g_update_flags |= USER_COMMAND_FLAG;
+			break;
+		case status:
+			ReadStatusHandler(outBuf, isUSB);
 			break;
 		case help:
 			/* Transmit help message */
@@ -620,6 +658,21 @@ static void ReadBufHandler(bool isUSB)
 		USBTxHandler(activeBuf, count);
 	else
 		SDTxHandler(activeBuf, count);
+}
+
+static void ReadStatusHandler(uint8_t* outBuf, bool isUSB)
+{
+	/* Get status value and covert to string */
+	UShortToHex(outBuf, g_regs[STATUS_0_REG]);
+	outBuf[4] = '\r';
+	outBuf[5] = '\n';
+	/* Clear */
+	g_regs[STATUS_0_REG] &= STATUS_CLEAR_MASK;
+	g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+	if(isUSB)
+		USBTxHandler(outBuf, 6);
+	else
+		SDTxHandler(outBuf, 6);
 }
 
 /**
