@@ -29,6 +29,7 @@ typedef enum
 	cmd,
 	status,
 	about,
+	uptime,
 	help,
 	sleep,
 	loop,

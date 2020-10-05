@@ -33,6 +33,7 @@ Commands are sent to the CLI over the virtual COM port. Each command starts with
 | delim | Delimiter Character | N/A | N/A | Set the delimiter character which is placed between register values for read operations (comma, space, etc) This value is stored in USB_CONFIG |
 | echo | Enable/Disable | N/A | N/A | Enables or disable the command line echo. If the echo is disabled, the characters sent to the CLI will not be sent back (useful for scripting) |
 | about | N/A | N/A | N/A | Print identifier information for the running iSensor-SPI-Buffer firmware |
+| uptime | N/A | N/A | N/A | Print firmware uptime (in ms) |
 
 Help Command
 ![Help](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_help.JPG)
@@ -67,3 +68,7 @@ Stream Command (WATERMARK_INT_CONFIG set to 60)
 Echo Command
 
 ![Echo](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_echo.JPG)
+
+Uptime Command
+
+![Uptime](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_uptime.JPG)

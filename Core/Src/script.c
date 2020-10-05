@@ -18,6 +18,7 @@ static void ReadStatusHandler(uint8_t* outBuf, bool isUSB);
 static void WriteHandler(script* scr);
 static void StreamCmdHandler(script * scr, bool isUSB);
 static void AboutHandler(uint8_t* outBuf, bool isUSB);
+static void UptimeHandler(uint8_t* outBuf, bool isUSB);
 static void FactoryResetHandler();
 static void UShortToHex(uint8_t* outBuf, uint16_t val);
 static uint32_t HexToUInt(const uint8_t* commandBuf);
@@ -68,6 +69,9 @@ static const uint8_t StatusCmd[] = "status";
 /** String literal for about command. */
 static const uint8_t AboutCmd[] = "about";
 
+/** String literal for uptime command. */
+static const uint8_t UptimeCmd[] = "uptime";
+
 /** String literal for stream command. Must be followed by a space */
 static const uint8_t StreamCmd[] = "stream ";
 
@@ -103,6 +107,7 @@ static const uint8_t HelpStr[] = "All numeric argument values must be provided i
 		"help: Print available commands\r\n"
 		"about: Print firmware identification info\r\n"
 		"status: Read STATUS register value. Does not change selected page\r\n"
+		"uptime: Get the system uptime, in ms\r\n"
 		"\r\n"
 		"read startAddr [endAddr = addr] [numReads = 1]: Read registers starting at startAddr and ending at endAddr, numReads times\r\n"
 		"write addr value: Write the 8-bit value in value to register at address addr\r\n"
@@ -290,6 +295,13 @@ void ParseScriptElement(const uint8_t* commandBuf, script * scr)
 		return;
 	}
 
+	if(StringEquals(commandBuf, UptimeCmd, sizeof(UptimeCmd) - 1))
+	{
+		scr->scrCommand = uptime;
+		/* No args */
+		return;
+	}
+
 	if(StringEquals(commandBuf, AboutCmd, sizeof(AboutCmd) - 1))
 	{
 		scr->scrCommand = about;
@@ -434,6 +446,9 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 			break;
 		case about:
 			AboutHandler(outBuf, isUSB);
+			break;
+		case uptime:
+			UptimeHandler(outBuf, isUSB);
 			break;
 		default:
 			/* Should not get here. Transmit error and return */
@@ -704,6 +719,21 @@ static void AboutHandler(uint8_t* outBuf, bool isUSB)
 			g_regs[FW_YEAR_REG],
 			g_regs[FW_DAY_MONTH_REG] & 0xFF,
 			g_regs[FW_DAY_MONTH_REG] >> 8);
+
+	if(isUSB)
+		USBTxHandler(outBuf, len);
+	else
+		SDTxHandler(outBuf, len);
+}
+
+static void UptimeHandler(uint8_t* outBuf, bool isUSB)
+{
+	uint32_t len = 0;
+
+	/* Print uptime */
+	len = sprintf((char *) outBuf,
+			"%lums\r\n",
+			HAL_GetTick());
 
 	if(isUSB)
 		USBTxHandler(outBuf, len);
