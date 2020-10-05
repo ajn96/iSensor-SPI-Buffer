@@ -104,17 +104,17 @@ static const uint8_t UnknownErrorStr[] = "An unknown error has occurred!\r\n";
 
 /** Print string for help command */
 static const uint8_t HelpStr[] = "All numeric argument values must be provided in hex. [] arguments are optional\r\n\r\n"
-		"help: Print available commands\r\n"
-		"about: Print firmware identification info\r\n"
-		"status: Read STATUS register value. Does not change selected page\r\n"
-		"uptime: Get the system uptime, in ms\r\n"
+		"help: List all available CLI commands\r\n"
+		"about: Print iSensor-SPI-Buffer firmware identification info\r\n"
+		"status: Read iSensor-SPI-Buffer STATUS register value. Does not change selected page\r\n"
+		"uptime: Print the system uptime, in ms. Value is decimal formatted\r\n"
 		"\r\n"
 		"read startAddr [endAddr = addr] [numReads = 1]: Read registers starting at startAddr and ending at endAddr, numReads times\r\n"
 		"write addr value: Write the 8-bit value in value to register at address addr\r\n"
 		"readbuf: Read all stored buffer entries. Values for each entry are placed on a newline\r\n"
 		"stream startStop: Start (argument != 0) or stop (argument == 0) a read stream\r\n"
 		"\r\n"
-		"cmd cmdValue: Write a 16-bit value to the COMMAND register in a single command. Does not change selected page\r\n"
+		"cmd cmdValue: Write a 16-bit value to the iSensor-SPI-Buffer COMMAND register. Does not change selected page\r\n"
 		"delim delimChar: Set the read output delimiter character (between register values) to delimChar\r\n"
 		"echo enableDisable: Enable (argument != 0) or disable (argument == 0) USB command line echo\r\n"
 		"freset: Performs a factory reset, followed by flash update. This restores the firmware to a known good state\r\n";
