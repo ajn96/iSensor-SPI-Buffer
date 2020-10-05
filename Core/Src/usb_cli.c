@@ -10,9 +10,6 @@
 
 #include "usb_cli.h"
 
-/* Private function prototypes */
-static void BlockingUSBTransmit(const uint8_t * buf, uint32_t Len, uint32_t TimeoutMs);
-
 /** USB handle */
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
@@ -75,7 +72,7 @@ void USBRxHandler()
 					EchoBuf[0] = '\b';
 					EchoBuf[1] = ' ';
 					EchoBuf[2] = '\b';
-					BlockingUSBTransmit(EchoBuf, 3, 20);
+					USBTxHandler(EchoBuf, 3);
 				}
 			}
 			/* carriage return char (end of command) */
@@ -84,7 +81,7 @@ void USBRxHandler()
 				/* Send newline char if CLI echo is enabled */
 				if(!(g_regs[CLI_CONFIG_REG] & USB_ECHO_BITM))
 				{
-					BlockingUSBTransmit(NewLineStr, sizeof(NewLineStr), 20);
+					USBTxHandler(NewLineStr, sizeof(NewLineStr));
 				}
 				/* Place a string terminator */
 				CurrentCommand[commandIndex] = 0;
@@ -110,7 +107,7 @@ void USBRxHandler()
 				if(!(g_regs[CLI_CONFIG_REG] & USB_ECHO_BITM))
 				{
 					EchoBuf[0] = UserRxBufferFS[bufIndex];
-					BlockingUSBTransmit(EchoBuf, 1, 20);
+					USBTxHandler(EchoBuf, 1);
 				}
 			}
 		}
@@ -132,30 +129,26 @@ void USBRxHandler()
   */
 void USBTxHandler(const uint8_t* buf, uint32_t count)
 {
-	BlockingUSBTransmit(buf, count, 20);
+	if(USBWaitForTxDone(20))
+	{
+		USBD_CDC_SetTxBuffer(&hUsbDeviceFS, (uint8_t *) buf, count);
+		USBD_CDC_TransmitPacket(&hUsbDeviceFS);
+	}
 }
 
 /**
-  * @brief Wrapper around CDC_Transmit_FS which retries until the USB transmit is successful
-  *
-  * @param buf The data buffer to transmit
-  *
-  * @param Len The number of bytes to transmit
+  * @brief Helper function to wait for the USB Tx to be free
   *
   * @param TimeoutMs Operation timeout (in ms). Must keep under watchdog reset period
   *
-  * @return void
+  * @return true if Tx is free, false is timeout elapses
   */
-static void BlockingUSBTransmit(const uint8_t * buf, uint32_t Len, uint32_t TimeoutMs)
+bool USBWaitForTxDone(uint32_t TimeoutMs)
 {
 	uint32_t endTime = HAL_GetTick() + TimeoutMs;
 	/* Check for tx busy */
 	USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef*)hUsbDeviceFS.pClassData;
 	while((hcdc->TxState != 0) && (HAL_GetTick() < endTime));
-
-	if(hcdc->TxState == 0)
-	{
-		USBD_CDC_SetTxBuffer(&hUsbDeviceFS, (uint8_t *) buf, Len);
-		USBD_CDC_TransmitPacket(&hUsbDeviceFS);
-	}
+	/* Return true if Tx is free, false otherwise */
+	return (hcdc->TxState == 0);
 }

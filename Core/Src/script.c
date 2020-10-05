@@ -438,6 +438,8 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 			ReadStatusHandler(outBuf, isUSB);
 			break;
 		case help:
+			/* Transmit about message */
+			AboutHandler(outBuf, isUSB);
 			/* Transmit help message */
 			if(isUSB)
 				USBTxHandler(HelpStr, sizeof(HelpStr));
@@ -557,8 +559,23 @@ static void ReadHandler(script* scr, uint8_t* outBuf, bool isUSB)
 			/* Check if transmit needed (not enough space for next loop) */
 			if((STREAM_BUF_SIZE - count) < 6)
 			{
+				/* Check if at last read. If so, insert newline */
+				if((addr == scr->args[1])||(addr == (scr->args[1] - 1)))
+				{
+					/* Move write pointer back one to last delim */
+					writeBufPtr -= 1;
+					/* Add newline */
+					writeBufPtr[0] = '\r';
+					writeBufPtr[1] = '\n';
+					writeBufPtr += 2;
+					/* Only one new char added */
+					count += 1;
+				}
 				if(isUSB)
+				{
 					USBTxHandler(outBuf, count);
+					USBWaitForTxDone(20);
+				}
 				else
 					SDTxHandler(outBuf, count);
 				/* Reset pointers */
@@ -577,7 +594,10 @@ static void ReadHandler(script* scr, uint8_t* outBuf, bool isUSB)
 	}
 	/* transmit any remainder data */
 	if(isUSB)
+	{
 		USBTxHandler(outBuf, count);
+		USBWaitForTxDone(20);
+	}
 	else
 		SDTxHandler(outBuf, count);
 }
@@ -655,11 +675,25 @@ static void ReadBufHandler(bool isUSB)
 			count += 5;
 			if((STREAM_BUF_SIZE - count) < 6)
 			{
+				/* Check if at last read. If so, insert newline */
+				if((addr == bufLastAddr)||(addr == (bufLastAddr - 1)))
+				{
+					/* Move write pointer back one to last delim */
+					writeBufPtr -= 1;
+					/* Add newline */
+					writeBufPtr[0] = '\r';
+					writeBufPtr[1] = '\n';
+					writeBufPtr += 2;
+					/* Only one new char added */
+					count += 1;
+				}
+
 				/* Perform transmit */
 				if(isUSB)
 					USBTxHandler(activeBuf, count);
 				else
 					SDTxHandler(activeBuf, count);
+
 				/* Reset pointers (ping/pong for stream) */
 				if(BufA)
 				{
