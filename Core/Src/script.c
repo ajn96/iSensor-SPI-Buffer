@@ -583,14 +583,17 @@ static void ReadHandler(script* scr, uint8_t* outBuf, bool isUSB)
 				count = 0;
 			}
 		}
-		/* Move write pointer back one to last delim */
-		writeBufPtr -= 1;
-		/* Add newline */
-		writeBufPtr[0] = '\r';
-		writeBufPtr[1] = '\n';
-		writeBufPtr += 2;
-		/* Only one new char added */
-		count += 1;
+		if(count != 0)
+		{
+			/* Move write pointer back one to last delim */
+			writeBufPtr -= 1;
+			/* Add newline */
+			writeBufPtr[0] = '\r';
+			writeBufPtr[1] = '\n';
+			writeBufPtr += 2;
+			/* Only one new char added */
+			count += 1;
+		}
 	}
 	/* transmit any remainder data */
 	if(isUSB)
@@ -710,14 +713,17 @@ static void ReadBufHandler(bool isUSB)
 				count = 0;
 			}
 		}
-		/* Move write pointer back one to last delim */
-		writeBufPtr -= 1;
-		/* Add newline */
-		writeBufPtr[0] = '\r';
-		writeBufPtr[1] = '\n';
-		writeBufPtr += 2;
-		/* Only one new char added */
-		count += 1;
+		if(count != 0)
+		{
+			/* Move write pointer back one to last delim */
+			writeBufPtr -= 1;
+			/* Add newline */
+			writeBufPtr[0] = '\r';
+			writeBufPtr[1] = '\n';
+			writeBufPtr += 2;
+			/* Only one new char added */
+			count += 1;
+		}
 	}
 	/* Transmit any residual data */
 	if(isUSB)

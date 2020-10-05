@@ -129,6 +129,8 @@ void USBRxHandler()
   */
 void USBTxHandler(const uint8_t* buf, uint32_t count)
 {
+	if(count == 0)
+		return;
 	if(USBWaitForTxDone(20))
 	{
 		USBD_CDC_SetTxBuffer(&hUsbDeviceFS, (uint8_t *) buf, count);

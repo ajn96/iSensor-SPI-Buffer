@@ -66,6 +66,8 @@ static const uint8_t ScriptStart[] = "Script Starting...\r\n";
   */
 void SDTxHandler(const uint8_t* buf, uint32_t count)
 {
+	if(count == 0)
+		return;
 	UINT writeCount = 0;
 	FRESULT result = f_write(&outFile, buf, count, &writeCount);
 	f_sync(&outFile);
