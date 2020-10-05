@@ -28,6 +28,7 @@ typedef enum
 	freset,
 	cmd,
 	status,
+	about,
 	help,
 	sleep,
 	loop,

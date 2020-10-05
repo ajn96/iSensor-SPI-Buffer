@@ -17,6 +17,7 @@ static void ReadBufHandler(bool isUSB);
 static void ReadStatusHandler(uint8_t* outBuf, bool isUSB);
 static void WriteHandler(script* scr);
 static void StreamCmdHandler(script * scr, bool isUSB);
+static void AboutHandler(uint8_t* outBuf, bool isUSB);
 static void FactoryResetHandler();
 static void UShortToHex(uint8_t* outBuf, uint16_t val);
 static uint32_t HexToUInt(const uint8_t* commandBuf);
@@ -63,6 +64,9 @@ static const uint8_t EndloopCmd[] = "endloop";
 
 /** String literal for status command. */
 static const uint8_t StatusCmd[] = "status";
+
+/** String literal for about command. */
+static const uint8_t AboutCmd[] = "about";
 
 /** String literal for stream command. Must be followed by a space */
 static const uint8_t StreamCmd[] = "stream ";
@@ -283,6 +287,13 @@ void ParseScriptElement(const uint8_t* commandBuf, script * scr)
 		return;
 	}
 
+	if(StringEquals(commandBuf, AboutCmd, sizeof(AboutCmd) - 1))
+	{
+		scr->scrCommand = about;
+		/* No args */
+		return;
+	}
+
 	if(StringEquals(commandBuf, SleepCmd, sizeof(SleepCmd) - 1))
 	{
 		scr->scrCommand = sleep;
@@ -417,6 +428,9 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 				USBTxHandler(HelpStr, sizeof(HelpStr));
 			else
 				SDTxHandler(HelpStr, sizeof(HelpStr));
+			break;
+		case about:
+			AboutHandler(outBuf, isUSB);
 			break;
 		default:
 			/* Should not get here. Transmit error and return */
@@ -673,6 +687,25 @@ static void ReadStatusHandler(uint8_t* outBuf, bool isUSB)
 		USBTxHandler(outBuf, 6);
 	else
 		SDTxHandler(outBuf, 6);
+}
+
+static void AboutHandler(uint8_t* outBuf, bool isUSB)
+{
+	uint32_t len = 0;
+
+	/* Print firmware info */
+	len = sprintf((char *) outBuf,
+			"iSensor-SPI-Buffer, v%X.%02X (%04X-%02X-%02X). See https://github.com/ajn96/iSensor-SPI-Buffer for more info\r\n",
+			(g_regs[FW_REV_REG] >> 8) & 0x7F,
+			g_regs[FW_REV_REG] & 0xFF,
+			g_regs[FW_YEAR_REG],
+			g_regs[FW_DAY_MONTH_REG] & 0xFF,
+			g_regs[FW_DAY_MONTH_REG] >> 8);
+
+	if(isUSB)
+		USBTxHandler(outBuf, len);
+	else
+		SDTxHandler(outBuf, len);
 }
 
 /**
