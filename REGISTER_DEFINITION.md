@@ -226,7 +226,8 @@ For more details on the iSensor-SPI-Buffer SD Card data logging CLI, see the [SD
 | 5 | PPS_DISABLE | Disable PPS timestamp synchronization. The microsecond timestamp register will continue free running |
 | 6 | SCRIPT_START | Start executing a script from a connected SD card. The script will be loaded from the script.txt file in an attached FAT32 formatted SD card. If no SD card or script file is present, nothing will be executed, and a script error will be flagged in the STATUS register |
 | 7 | SCRIPT_CANCEL | Cancel a running script, and close any open SD card files |
-| 13:6 | RESERVED | Currently unused |
+| 12:8 | RESERVED | Currently unused |
+| 13 | DFU_REBOOT | Reboot the iSensor-SPI-Buffer into DFU mode. The DFU bootloader stored to ROM will enumerate as an ST USB DFU device which supports firmware updates through the standard ST DFU utility, allowing firmware changes without any external debugger hardware |
 | 14 | IMU_RESET | Drive the IMU reset pin low for 1ms, then back high. This feature is only implemented on hardware revision C or newer |
 | 15 | RESET | Software reset the iSensor-SPI-Buffer firmware |
 
