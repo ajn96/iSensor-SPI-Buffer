@@ -28,6 +28,7 @@ typedef enum
 	freset,
 	cmd,
 	status,
+	cnt,
 	about,
 	uptime,
 	help,

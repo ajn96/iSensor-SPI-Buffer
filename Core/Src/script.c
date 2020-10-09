@@ -66,6 +66,9 @@ static const uint8_t EndloopCmd[] = "endloop";
 /** String literal for status command. */
 static const uint8_t StatusCmd[] = "status";
 
+/** String literal for cnt command. */
+static const uint8_t CntCmd[] = "cnt";
+
 /** String literal for about command. */
 static const uint8_t AboutCmd[] = "about";
 
@@ -123,6 +126,8 @@ static const uint8_t HelpStr[] = "\r\n"
 		"   Reads all stored buffer entries. Values for each buffer entry are each placed on a new line\r\n"
 		"stream <startStop>\r\n"
 		"   Stops the buffered read stream if <startStop> is zero, otherwise the stream is enabled\r\n"
+		"cnt\r\n"
+		"   Read the number of IMU samples currently stored in the buffer\r\n"
 		"\r\n"
 		"cmd <cmdValue>\r\n"
 		"   Writes the 16-bit <cmdValue> to the iSensor-SPI-Buffer COMMAND register. Does not change the selected register page\r\n"
@@ -309,6 +314,13 @@ void ParseScriptElement(const uint8_t* commandBuf, script * scr)
 		return;
 	}
 
+	if(StringEquals(commandBuf, CntCmd, sizeof(CntCmd) - 1))
+	{
+		scr->scrCommand = cnt;
+		/* No args */
+		return;
+	}
+
 	if(StringEquals(commandBuf, UptimeCmd, sizeof(UptimeCmd) - 1))
 	{
 		scr->scrCommand = uptime;
@@ -453,6 +465,9 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 			/* Clear status */
 			g_regs[STATUS_0_REG] &= STATUS_CLEAR_MASK;
 			g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+			break;
+		case cnt:
+			RegAliasReadHandler(outBuf, isUSB, BUF_CNT_0_REG);
 			break;
 		case help:
 			/* Transmit about message */
@@ -799,7 +814,8 @@ static void AboutHandler(uint8_t* outBuf, bool isUSB)
 
 	/* Print firmware info */
 	len = sprintf((char *) outBuf,
-			"iSensor-SPI-Buffer, v%X.%02X (%04X-%02X-%02X). See https://github.com/ajn96/iSensor-SPI-Buffer for more info\r\n",
+			"Analog Devices iSensor-SPI-Buffer, v%X.%02X (%04X-%02X-%02X)."
+			"See https://github.com/ajn96/iSensor-SPI-Buffer for more info\r\n",
 			(g_regs[FW_REV_REG] >> 8) & 0x7F,
 			g_regs[FW_REV_REG] & 0xFF,
 			g_regs[FW_YEAR_REG],
