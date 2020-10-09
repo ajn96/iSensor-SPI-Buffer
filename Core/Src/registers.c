@@ -299,6 +299,10 @@ void ProcessCommand()
 	{
 		ResetImu();
 	}
+	else if(command & CMD_BOOTLOADER)
+	{
+		PrepareDFUBoot();
+	}
 
 	/* Re-enable SPI */
 	SPI2->CR1 |= SPI_CR1_SPE;

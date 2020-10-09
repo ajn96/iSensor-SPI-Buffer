@@ -18,6 +18,7 @@
 #include "flash.h"
 #include "data_capture.h"
 #include "user_spi.h"
+#include "dfu.h"
 
 /* Public function prototypes */
 
@@ -134,6 +135,7 @@ void BufDequeueToOutputRegs();
 #define CMD_PPS_DISABLE				(1 << 5)
 #define CMD_START_SCRIPT			(1 << 6)
 #define CMD_STOP_SCRIPT				(1 << 7)
+#define CMD_BOOTLOADER				(1 << 13)
 #define CMD_IMU_RESET				(1 << 14)
 #define CMD_SOFTWARE_RESET			(1 << 15)
 

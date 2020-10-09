@@ -24,6 +24,7 @@
 #include "dio.h"
 #include "usb_device.h"
 #include "adc.h"
+#include "dfu.h"
 
 /* Public function prototypes */
 

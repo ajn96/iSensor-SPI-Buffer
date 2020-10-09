@@ -48,6 +48,9 @@ static uint32_t state;
   */
 int main()
 {
+  /* Check if application needs to reboot into DFU mode prior to any config */
+  CheckDFUFlags();
+
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
 
