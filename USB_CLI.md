@@ -16,24 +16,32 @@ Putty or TeraTerm work well on Windows.
 
 ## CLI Definition
 
-Commands are sent to the CLI over the virtual COM port. Each command starts with a command word, followed by a number of arguments. Each command ends with a new line character. All values are in hex.
+Commands are sent to the CLI over the virtual serial port. Interfacing with the SPI Buffer Board and ADI IMU follow the following structure:
 
-| Command | arg0 | arg1 | arg2 | Description |
+```
+COMMAND [ARG0] [ARG1] [ARG2]
+```
+
+Commands are case-sensitive and must include spaces between arguments. Command validation and execution is triggered by sending a new-line character (pressing ENTER). Some commands may have option arguments. The table below shows the possible commands and a brief description of their operation.
+
+**All values should be written in <u>hexadecimal</u> without the leading "0x"**
+
+help
+
+| COMMAND | ARG0 | ARG1 | ARG2 | DESCRIPTION |
 | --- | --- | --- | --- | --- |
-| help | N/A | N/A | N/A | List available CLI options |
-| freset | N/A | N/A | N/A | Trigger a factory reset and flash update. This command restores all registers to their default values and then issues a flash update command to save registers to non-volatile memory  |
-| read | Register Address | N/A | N/A | Read a single register, at the address provided |
-| read | Start Address | End Address | N/A | Read multiple registers, accross the address range provided. Each register value is seperated by the USB delimiter character |
-| read | Start Address | End Address | Number of Reads | Read multiple registers, accross the address range provided, number of reads times. Each set of reads is terminated by a new line |
-| readbuf | N/A | N/A | N/A | Read all buffer entries. This call will set the active page to the buffer data page |
-| stream | Start/Stop | N/A | N/A | Start (1) / stop (0) a buffer read stream. When running, a stream is equivalent to calling readbuf every time a watermark interrupt is generated. WATERMARK_INT_CONFIG can be modified to set the data latency. Stream status is stored in USB_CONFIG |
-| write | Register Address | Write Value | N/A | Write a byte to the specified register |
-| status | N/A | N/A | N/A | Read the current STATUS diagnostics register value. This will clear all non-sticky command bits. This does not change the currently selected page |
-| cmd | COMMAND Value | N/A | N/A | Write a 16-bit value to the COMMAND register in a single CLI operation. This does not change the currently selected page |
-| delim | Delimiter Character | N/A | N/A | Set the delimiter character which is placed between register values for read operations (comma, space, etc) This value is stored in USB_CONFIG |
-| echo | Enable/Disable | N/A | N/A | Enables or disable the command line echo. If the echo is disabled, the characters sent to the CLI will not be sent back (useful for scripting) |
-| about | N/A | N/A | N/A | Print identifier information for the running iSensor-SPI-Buffer firmware |
-| uptime | N/A | N/A | N/A | Print firmware uptime (in ms) |
+| help | -                                  | - | - | List available CLI options |
+| freset | - | - | - | Execute the factory reset and flash update routines. Restores all SPI Buffer Board registers to their default values and commits them to NVM. |
+| read | Start Address                      | End Address | Number of Reads | Reads the value of a user-specified register or range of registers and prints their contents to the terminal. <br />**ARG0:** Start address or register location to be read<br />**ARG1:** Optional. End address of the register block to be read<br />**ARG2:** Optional. Number of times to read the register block |
+| write | Register Address                   | Byte to Write | - | Writes a byte (8-bits) to a user-specified register. <br />**ARG0:** The register address to be written to<br />**ARG1:** The byte (8-bits) to be written |
+| stream | 0 or 1                             | - | - | Continuously streams the contents of the SPI buffer (page 255) to the terminal. This command is equivalent to calling `readbuf` every time a watermark interrupt is generated. The length of each packet is determined by the BUF_LEN register.<br />**ARG0:** [0] = stop the stream, [1] = start the stream |
+| readbuf | -                                  | -             | -               | Reads the entire contents of the buffer and prints it to the terminal. Each buffer entry is divided using a new-line character (\n). Issuing this command will set the active page to 255. |
+| status | - | - | - | Print the contents of the <u>SPI Buffer Board</u> STATUS register to the terminal. Issuing this command will clear all non-sticky command bits and will not change the currently selected page. |
+| cmd | 16-bit USER_COMMAND Register Value | - | - | Writes a 16-bit value to the <u>SPI Buffer Board</u> USER_COMMAND register in a single CLI operation. The USER_COMMAND [register description](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/REGISTER_DEFINITION.md#USER_COMMAND) contains more information on the function of each bit. Issuing this command will not change the currently selected page.<br />**ARG0:** 16-bit USER_COMMAND register value. |
+| delim | Delimiter Character | - | - | Sets the delimiter character inserted between register contents for all read operations. Any ASCII character can be used. The default delimiter used is a space. <br />**ARG0:** Delimiter character |
+| echo | 0 or 1 | - | - | Controls the terminal echo configuration. When echo is disabled, characters sent to the SPI Buffer Board through the CLI will not be "echoed" back to the terminal. This setting is useful when interacting with the CLI using scripts.<br />**ARG0:** [0] = disable terminal echo, [1] = enable terminal echo (default) |
+| about | - | - | - | Prints information about the SPI Buffer Board firmware. |
+| uptime | - | - | - | Prints the firmware uptime in milliseconds. |
 
 Help Command
 ![Help](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_help.JPG)
