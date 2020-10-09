@@ -34,6 +34,9 @@ void BufDequeueToOutputRegs();
 /* Number of registers per page */
 #define REG_PER_PAGE				64
 
+/** Number of pages */
+#define NUM_REG_PAGES				3
+
 /** Page register (0 for all pages) */
 #define PAGE_ID						0
 

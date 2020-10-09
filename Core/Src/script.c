@@ -14,7 +14,7 @@
 static uint32_t ParseCommandArgs(const uint8_t* commandBuf, uint32_t* args);
 static void ReadHandler(script* scr, uint8_t* outBuf, bool isUSB);
 static void ReadBufHandler(bool isUSB);
-static void ReadStatusHandler(uint8_t* outBuf, bool isUSB);
+static void RegAliasReadHandler(uint8_t* outBuf, bool isUSB, uint16_t regIndex);
 static void WriteHandler(script* scr);
 static void StreamCmdHandler(script * scr, bool isUSB);
 static void AboutHandler(uint8_t* outBuf, bool isUSB);
@@ -449,7 +449,10 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 			g_update_flags |= USER_COMMAND_FLAG;
 			break;
 		case status:
-			ReadStatusHandler(outBuf, isUSB);
+			RegAliasReadHandler(outBuf, isUSB, STATUS_0_REG);
+			/* Clear status */
+			g_regs[STATUS_0_REG] &= STATUS_CLEAR_MASK;
+			g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 			break;
 		case help:
 			/* Transmit about message */
@@ -746,21 +749,50 @@ static void ReadBufHandler(bool isUSB)
 		SDTxHandler(activeBuf, count);
 }
 
-static void ReadStatusHandler(uint8_t* outBuf, bool isUSB)
+/**
+  * @brief Read a register without changing page, and print to CLI
+  *
+  * @return void
+  *
+  * @param outBuf Buffer to write data to. Must be at least 6 bytes
+  *
+  * @param isUSB Flag indicating if output data should be sent to USB or SD card
+  *
+  * The function is used to implement register read alias commands.
+  */
+static void RegAliasReadHandler(uint8_t* outBuf, bool isUSB, uint16_t regIndex)
 {
-	/* Get status value and covert to string */
-	UShortToHex(outBuf, g_regs[STATUS_0_REG]);
-	outBuf[4] = '\r';
-	outBuf[5] = '\n';
-	/* Clear */
-	g_regs[STATUS_0_REG] &= STATUS_CLEAR_MASK;
-	g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+	/* Get reg value and covert to string */
+	if(regIndex >= (NUM_REG_PAGES * REG_PER_PAGE))
+	{
+		outBuf[0] = 'B';
+		outBuf[1] = 'a';
+		outBuf[2] = 'd';
+		outBuf[3] = ' ';
+	}
+	else
+	{
+		UShortToHex(outBuf, g_regs[regIndex]);
+		outBuf[4] = '\r';
+		outBuf[5] = '\n';
+	}
 	if(isUSB)
 		USBTxHandler(outBuf, 6);
 	else
 		SDTxHandler(outBuf, 6);
 }
 
+/**
+  * @brief Print about message to CLI
+  *
+  * @return void
+  *
+  * @param outBuf Buffer to write data to
+  *
+  * @param isUSB Flag indicating if output data should be sent to USB or SD card
+  *
+  * The function prints firmware version and date info, as well as a link to detailed docs on GitHub
+  */
 static void AboutHandler(uint8_t* outBuf, bool isUSB)
 {
 	uint32_t len = 0;
@@ -780,6 +812,17 @@ static void AboutHandler(uint8_t* outBuf, bool isUSB)
 		SDTxHandler(outBuf, len);
 }
 
+/**
+  * @brief Print system uptime CLI
+  *
+  * @return void
+  *
+  * @param outBuf Buffer to write data to
+  *
+  * @param isUSB Flag indicating if output data should be sent to USB or SD card
+  *
+  * The system uptime is based on the HAL systick counter
+  */
 static void UptimeHandler(uint8_t* outBuf, bool isUSB)
 {
 	uint32_t len = 0;
