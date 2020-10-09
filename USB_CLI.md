@@ -10,9 +10,15 @@ The default windows virtual COM port driver should allow for communications.
 
 The iSensor-SPI-Buffer virtual COM port exposes the same iSensor-SPI-Buffer register interface which can be accessed over SPI. In general, the functionality of each register should be the same, regardless of if the register is accessed over USB or SPI. The registers are accessed via a simple command line interface (CLI). This CLI allows a PC to interface with an IMU without the need for a SPI <-> USB board (like EVAL-ADIS-FX3).
 
-The firmware can interface with a terminal emulator at a baud rate up to 500000 bits/sec. 
+The firmware can interface with a terminal emulator at a baud rate up to 500000 bps. 
 
 Putty or TeraTerm work well on Windows.
+
+## Examples
+
+Several examples demonstrating typical use-cases for the CLI are linked below.
+
+[CLI Stream Tutorial for ADIS1649x IMUs](tutorials/cli_stream_tutorial.md)
 
 ## CLI Definition
 
