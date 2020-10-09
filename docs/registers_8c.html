@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.10</span>
+   &#160;<span id="projectnumber">1.11</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -86,8 +86,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a2ea4f0af5f4a2eb7d525810686c24c06"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8c.html#a2ea4f0af5f4a2eb7d525810686c24c06">ProcessRegWrite</a> (uint8_t regAddr, uint8_t regValue)</td></tr>
 <tr class="memdesc:a2ea4f0af5f4a2eb7d525810686c24c06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process a write to the iSensor-SPI-Buffer registers.  <a href="registers_8c.html#a2ea4f0af5f4a2eb7d525810686c24c06">More...</a><br /></td></tr>
 <tr class="separator:a2ea4f0af5f4a2eb7d525810686c24c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab657ab42f5acc7060a8150181ac2ad2c"><td class="memItemLeft" align="right" valign="top">uint16_t <a class="el" href="watchdog_8c.html#ad9abdec236745828926dbed3d25cfad5">g_regs</a>[3 *REG_PER_PAGE]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8c.html#ab657ab42f5acc7060a8150181ac2ad2c">__attribute__</a> ((aligned(32)))</td></tr>
-<tr class="separator:ab657ab42f5acc7060a8150181ac2ad2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b0caff464ee7e529b211093a39ab395"><td class="memItemLeft" align="right" valign="top">uint16_t <a class="el" href="watchdog_8c.html#ad9abdec236745828926dbed3d25cfad5">g_regs</a>[<a class="el" href="registers_8h.html#a807211953b57b1a3f715e8a4496f3d2d">NUM_REG_PAGES</a> *REG_PER_PAGE]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8c.html#a9b0caff464ee7e529b211093a39ab395">__attribute__</a> ((aligned(32)))</td></tr>
+<tr class="separator:a9b0caff464ee7e529b211093a39ab395"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5686c12b7d57a9c338252e749e2b2ef5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8c.html#a5686c12b7d57a9c338252e749e2b2ef5">BufDequeueToOutputRegs</a> ()</td></tr>
 <tr class="memdesc:a5686c12b7d57a9c338252e749e2b2ef5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dequeues an entry from the buffer and loads it to the primary output registers.  <a href="registers_8c.html#a5686c12b7d57a9c338252e749e2b2ef5">More...</a><br /></td></tr>
 <tr class="separator:a5686c12b7d57a9c338252e749e2b2ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,14 +129,14 @@ Variables</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>3/18/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="ab657ab42f5acc7060a8150181ac2ad2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab657ab42f5acc7060a8150181ac2ad2c">&#9670;&nbsp;</a></span>__attribute__()</h2>
+<a id="a9b0caff464ee7e529b211093a39ab395"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b0caff464ee7e529b211093a39ab395">&#9670;&nbsp;</a></span>__attribute__()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint16_t <a class="el" href="watchdog_8c.html#ad9abdec236745828926dbed3d25cfad5">g_regs</a> [3 * REG_PER_PAGE] __attribute__ </td>
+          <td class="memname">uint16_t <a class="el" href="watchdog_8c.html#ad9abdec236745828926dbed3d25cfad5">g_regs</a> [<a class="el" href="registers_8h.html#a807211953b57b1a3f715e8a4496f3d2d">NUM_REG_PAGES</a> * REG_PER_PAGE] __attribute__ </td>
           <td>(</td>
           <td class="paramtype">(aligned(32))&#160;</td>
           <td class="paramname"></td><td>)</td>

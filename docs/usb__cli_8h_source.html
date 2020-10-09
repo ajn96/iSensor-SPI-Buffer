@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.10</span>
+   &#160;<span id="projectnumber">1.11</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -84,15 +84,17 @@ $(function() {
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> <a class="code" href="usb__cli_8c.html#af3dfc46e9419ce7b06e35ccf57b57e88">USBRxHandler</a>();</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">void</span> <a class="code" href="usb__cli_8c.html#a084d43d822ed3a12e013d5d39d9209ff">USBTxHandler</a>(<span class="keyword">const</span> uint8_t* buf, uint32_t count);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">/* @endcond */</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_USB_CLI_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="usb__cli_8c.html#a9ae6c338a543471c7253669913b991bd">USBWaitForTxDone</a>(uint32_t TimeoutMs);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">void</span> <a class="code" href="usb__cli_8c.html#af3dfc46e9419ce7b06e35ccf57b57e88">USBRxHandler</a>();</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">void</span> <a class="code" href="usb__cli_8c.html#a084d43d822ed3a12e013d5d39d9209ff">USBTxHandler</a>(<span class="keyword">const</span> uint8_t* buf, uint32_t count);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">/* @endcond */</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_USB_CLI_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="ausb__cli_8c_html_af3dfc46e9419ce7b06e35ccf57b57e88"><div class="ttname"><a href="usb__cli_8c.html#af3dfc46e9419ce7b06e35ccf57b57e88">USBRxHandler</a></div><div class="ttdeci">void USBRxHandler()</div><div class="ttdoc">Handler for received USB data.</div><div class="ttdef"><b>Definition:</b> usb_cli.c:51</div></div>
+<div class="ttc" id="ausb__cli_8c_html_a9ae6c338a543471c7253669913b991bd"><div class="ttname"><a href="usb__cli_8c.html#a9ae6c338a543471c7253669913b991bd">USBWaitForTxDone</a></div><div class="ttdeci">bool USBWaitForTxDone(uint32_t TimeoutMs)</div><div class="ttdoc">Helper function to wait for the USB Tx to be free.</div><div class="ttdef"><b>Definition:</b> usb_cli.c:148</div></div>
+<div class="ttc" id="ausb__cli_8c_html_af3dfc46e9419ce7b06e35ccf57b57e88"><div class="ttname"><a href="usb__cli_8c.html#af3dfc46e9419ce7b06e35ccf57b57e88">USBRxHandler</a></div><div class="ttdeci">void USBRxHandler()</div><div class="ttdoc">Handler for received USB data.</div><div class="ttdef"><b>Definition:</b> usb_cli.c:48</div></div>
 <div class="ttc" id="amain_8h_html"><div class="ttname"><a href="main_8h.html">main.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer main.</div></div>
-<div class="ttc" id="ausb__cli_8c_html_a084d43d822ed3a12e013d5d39d9209ff"><div class="ttname"><a href="usb__cli_8c.html#a084d43d822ed3a12e013d5d39d9209ff">USBTxHandler</a></div><div class="ttdeci">void USBTxHandler(const uint8_t *buf, uint32_t count)</div><div class="ttdoc">USB write handler.</div><div class="ttdef"><b>Definition:</b> usb_cli.c:133</div></div>
+<div class="ttc" id="ausb__cli_8c_html_a084d43d822ed3a12e013d5d39d9209ff"><div class="ttname"><a href="usb__cli_8c.html#a084d43d822ed3a12e013d5d39d9209ff">USBTxHandler</a></div><div class="ttdeci">void USBTxHandler(const uint8_t *buf, uint32_t count)</div><div class="ttdoc">USB write handler.</div><div class="ttdef"><b>Definition:</b> usb_cli.c:130</div></div>
 <div class="ttc" id="ascript_8h_html"><div class="ttname"><a href="script_8h.html">script.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer script module (loaded from SD card)</div></div>
 <div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
 <!-- start footer part -->
