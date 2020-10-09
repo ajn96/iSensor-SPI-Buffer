@@ -26,20 +26,18 @@ Commands are case-sensitive and must include spaces between arguments. Command v
 
 **All values should be written in <u>hexadecimal</u> without the leading "0x"**
 
-help
-
 | COMMAND | ARG0 | ARG1 | ARG2 | DESCRIPTION |
 | --- | --- | --- | --- | --- |
 | help | -                                  | - | - | List available CLI options |
-| freset | - | - | - | Execute the factory reset and flash update routines. Restores all SPI Buffer Board registers to their default values and commits them to NVM. |
 | read | Start Address                      | End Address | Number of Reads | Reads the value of a user-specified register or range of registers and prints their contents to the terminal. <br />**ARG0:** Start address or register location to be read<br />**ARG1:** Optional. End address of the register block to be read<br />**ARG2:** Optional. Number of times to read the register block |
 | write | Register Address                   | Byte to Write | - | Writes a byte (8-bits) to a user-specified register. <br />**ARG0:** The register address to be written to<br />**ARG1:** The byte (8-bits) to be written |
 | stream | 0 or 1                             | - | - | Continuously streams the contents of the SPI buffer (page 255) to the terminal. This command is equivalent to calling `readbuf` every time a watermark interrupt is generated. The length of each packet is determined by the BUF_LEN register.<br />**ARG0:** [0] = stop the stream, [1] = start the stream |
 | readbuf | -                                  | -             | -               | Reads the entire contents of the buffer and prints it to the terminal. Each buffer entry is divided using a new-line character (\n). Issuing this command will set the active page to 255. |
 | status | - | - | - | Print the contents of the <u>SPI Buffer Board</u> STATUS register to the terminal. Issuing this command will clear all non-sticky command bits and will not change the currently selected page. |
-| cmd | 16-bit USER_COMMAND Register Value | - | - | Writes a 16-bit value to the <u>SPI Buffer Board</u> USER_COMMAND register in a single CLI operation. The USER_COMMAND [register description](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/REGISTER_DEFINITION.md#USER_COMMAND) contains more information on the function of each bit. Issuing this command will not change the currently selected page.<br />**ARG0:** 16-bit USER_COMMAND register value. |
 | delim | Delimiter Character | - | - | Sets the delimiter character inserted between register contents for all read operations. Any ASCII character can be used. The default delimiter used is a space. <br />**ARG0:** Delimiter character |
 | echo | 0 or 1 | - | - | Controls the terminal echo configuration. When echo is disabled, characters sent to the SPI Buffer Board through the CLI will not be "echoed" back to the terminal. This setting is useful when interacting with the CLI using scripts.<br />**ARG0:** [0] = disable terminal echo, [1] = enable terminal echo (default) |
+| cmd | 16-bit USER_COMMAND Register Value | - | - | Writes a 16-bit value to the <u>SPI Buffer Board</u> USER_COMMAND register in a single CLI operation. The USER_COMMAND [register description](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/REGISTER_DEFINITION.md#USER_COMMAND) contains more information on the function of each bit. Issuing this command will not change the currently selected page.<br />**ARG0:** 16-bit USER_COMMAND register value. |
+| freset | - | - | - | Execute the factory reset and flash update routines. Restores all SPI Buffer Board registers to their default values and commits them to NVM. |
 | about | - | - | - | Prints information about the SPI Buffer Board firmware. |
 | uptime | - | - | - | Prints the firmware uptime in milliseconds. |
 
