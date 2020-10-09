@@ -12,6 +12,7 @@ write 2 2	//Write to the BUFF_CONFIG register - stop sampling when sensor data o
 write 4 28	//Write the desired buffer size (correct value for ADIS1649x IMUs)
 write 8 12	//Set buffer board data ready polarity to rising edge, set buffer board data ready to DIO2
 write A 2	//Pass DIO2 through to the host SPI connector
+write C 4	//Set the buffer board watermark
 write 10 5	//Set the IMU SPI to a 5us stall
 write 11 8	//Set the IMU SPI SCLK to 2.25MHz
 
