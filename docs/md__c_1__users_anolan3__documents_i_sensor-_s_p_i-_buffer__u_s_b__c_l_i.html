@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.10</span>
+   &#160;<span id="projectnumber">1.11</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -73,7 +73,8 @@ $(function() {
 <p>The default windows virtual COM port driver should allow for communications.</p>
 <h1>Functionality</h1>
 <p>The iSensor-SPI-Buffer virtual COM port exposes the same iSensor-SPI-Buffer register interface which can be accessed over SPI. In general, the functionality of each register should be the same, regardless of if the register is accessed over USB or SPI. The registers are accessed via a simple command line interface (CLI). This CLI allows a PC to interface with an IMU without the need for a SPI &lt;-&gt; USB board (like EVAL-ADIS-FX3).</p>
-<p>The firmware can interface with a terminal emulator at a baud rate up to 230400 bits/sec. Putty or TeraTerm work well on Windows.</p>
+<p>The firmware can interface with a terminal emulator at a baud rate up to 500000 bits/sec.</p>
+<p>Putty or TeraTerm work well on Windows.</p>
 <h1>CLI Definition</h1>
 <p>Commands are sent to the CLI over the virtual COM port. Each command starts with a command word, followed by a number of arguments. Each command ends with a new line character. All values are in hex.</p>
 <table class="markdownTable">
@@ -84,32 +85,46 @@ $(function() {
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">freset </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Trigger a factory reset and flash update. This command restores all registers to their default values and then issues a flash update command to save registers to non-volatile memory  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">read </td><td class="markdownTableBodyNone">Register address </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Read a single register, at the address provided  </td></tr>
+<td class="markdownTableBodyNone">read </td><td class="markdownTableBodyNone">Register Address </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Read a single register, at the address provided  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">read </td><td class="markdownTableBodyNone">Start address </td><td class="markdownTableBodyNone">End address </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Read multiple registers, accross the address range provided. Each register value is seperated by the USB delimiter character  </td></tr>
+<td class="markdownTableBodyNone">read </td><td class="markdownTableBodyNone">Start Address </td><td class="markdownTableBodyNone">End Address </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Read multiple registers, accross the address range provided. Each register value is seperated by the USB delimiter character  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">read </td><td class="markdownTableBodyNone">Start address </td><td class="markdownTableBodyNone">End address </td><td class="markdownTableBodyNone">Number of reads </td><td class="markdownTableBodyNone">Read multiple registers, accross the address range provided, number of reads times. Each set of reads is terminated by a new line  </td></tr>
+<td class="markdownTableBodyNone">read </td><td class="markdownTableBodyNone">Start Address </td><td class="markdownTableBodyNone">End Address </td><td class="markdownTableBodyNone">Number of Reads </td><td class="markdownTableBodyNone">Read multiple registers, accross the address range provided, number of reads times. Each set of reads is terminated by a new line  </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">readbuf </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Read all buffer entries. This call will set the active page to the buffer data page  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">stream </td><td class="markdownTableBodyNone">start/stop </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Start (1) / stop (0) a buffer read stream. When running, a stream is equivalent to calling readbuf every time a watermark interrupt is generated. WATERMARK_INT_CONFIG can be modified to set the data latency. Stream status is stored in USB_CONFIG  </td></tr>
+<td class="markdownTableBodyNone">stream </td><td class="markdownTableBodyNone">Start/Stop </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Start (1) / stop (0) a buffer read stream. When running, a stream is equivalent to calling readbuf every time a watermark interrupt is generated. WATERMARK_INT_CONFIG can be modified to set the data latency. Stream status is stored in USB_CONFIG  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">write </td><td class="markdownTableBodyNone">Register address </td><td class="markdownTableBodyNone">Write Value </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Write a byte to the specified register  </td></tr>
+<td class="markdownTableBodyNone">write </td><td class="markdownTableBodyNone">Register Address </td><td class="markdownTableBodyNone">Write Value </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Write a byte to the specified register  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">delim </td><td class="markdownTableBodyNone">Delimiter character </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Set the delimiter character which is placed between register values for read operations (comma, space, etc) This value is stored in USB_CONFIG  </td></tr>
+<td class="markdownTableBodyNone">status </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Read the current STATUS diagnostics register value. This will clear all non-sticky command bits. This does not change the currently selected page  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">cmd </td><td class="markdownTableBodyNone">COMMAND Value </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Write a 16-bit value to the COMMAND register in a single CLI operation. This does not change the currently selected page  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">delim </td><td class="markdownTableBodyNone">Delimiter Character </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Set the delimiter character which is placed between register values for read operations (comma, space, etc) This value is stored in USB_CONFIG  </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">echo </td><td class="markdownTableBodyNone">Enable/Disable </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Enables or disable the command line echo. If the echo is disabled, the characters sent to the CLI will not be sent back (useful for scripting)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">about </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Print identifier information for the running iSensor-SPI-Buffer firmware  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">uptime </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">N/A </td><td class="markdownTableBodyNone">Print firmware uptime (in ms)  </td></tr>
 </table>
 <p>Help Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_help.JPG" alt="Help" class="inline"/></p>
+<p>About Command</p>
+<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_about.JPG" alt="About" class="inline"/></p>
 <p>Factory Reset Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_reset.JPG" alt="Factory Reset" class="inline"/></p>
 <p>Register Read Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_read.JPG" alt="Read" class="inline"/></p>
 <p>Register Write Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_write.JPG" alt="Write" class="inline"/></p>
+<p>Cmd/Status Commands</p>
+<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_status_cmd.JPG" alt="Cmd_Status" class="inline"/></p>
 <p>Delim Set Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_delim.JPG" alt="Delim" class="inline"/></p>
 <p>Read Buffer Command <img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_readbuf.JPG" alt="ReadBuf" class="inline"/></p>
 <p>Stream Command (WATERMARK_INT_CONFIG set to 60)</p>
 <p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_stream.JPG" alt="Stream" class="inline"/></p>
 <p>Echo Command</p>
-<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_echo.JPG" alt="Echo" class="inline"/> </p>
+<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_echo.JPG" alt="Echo" class="inline"/></p>
+<p>Uptime Command</p>
+<p><img src="https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_uptime.JPG" alt="Uptime" class="inline"/> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

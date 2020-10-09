@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.10</span>
+   &#160;<span id="projectnumber">1.11</span>
    </div>
    <div id="projectbrief">Firmware for the STM32F303 to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -82,15 +82,15 @@ $(function() {
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:acf72acd18f3746ad119ce59694797a54"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usb__cli_8c.html#acf72acd18f3746ad119ce59694797a54">BlockingUSBTransmit</a> (const uint8_t *buf, uint32_t Len, uint32_t TimeoutMs)</td></tr>
-<tr class="memdesc:acf72acd18f3746ad119ce59694797a54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper around CDC_Transmit_FS which retries until the USB transmit is successful.  <a href="usb__cli_8c.html#acf72acd18f3746ad119ce59694797a54">More...</a><br /></td></tr>
-<tr class="separator:acf72acd18f3746ad119ce59694797a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3dfc46e9419ce7b06e35ccf57b57e88"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usb__cli_8c.html#af3dfc46e9419ce7b06e35ccf57b57e88">USBRxHandler</a> ()</td></tr>
 <tr class="memdesc:af3dfc46e9419ce7b06e35ccf57b57e88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handler for received USB data.  <a href="usb__cli_8c.html#af3dfc46e9419ce7b06e35ccf57b57e88">More...</a><br /></td></tr>
 <tr class="separator:af3dfc46e9419ce7b06e35ccf57b57e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a084d43d822ed3a12e013d5d39d9209ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usb__cli_8c.html#a084d43d822ed3a12e013d5d39d9209ff">USBTxHandler</a> (const uint8_t *buf, uint32_t count)</td></tr>
 <tr class="memdesc:a084d43d822ed3a12e013d5d39d9209ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">USB write handler.  <a href="usb__cli_8c.html#a084d43d822ed3a12e013d5d39d9209ff">More...</a><br /></td></tr>
 <tr class="separator:a084d43d822ed3a12e013d5d39d9209ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ae6c338a543471c7253669913b991bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usb__cli_8c.html#a9ae6c338a543471c7253669913b991bd">USBWaitForTxDone</a> (uint32_t TimeoutMs)</td></tr>
+<tr class="memdesc:a9ae6c338a543471c7253669913b991bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to wait for the USB Tx to be free.  <a href="usb__cli_8c.html#a9ae6c338a543471c7253669913b991bd">More...</a><br /></td></tr>
+<tr class="separator:a9ae6c338a543471c7253669913b991bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -119,59 +119,6 @@ Variables</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>6/26/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="acf72acd18f3746ad119ce59694797a54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acf72acd18f3746ad119ce59694797a54">&#9670;&nbsp;</a></span>BlockingUSBTransmit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void BlockingUSBTransmit </td>
-          <td>(</td>
-          <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>buf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>Len</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>TimeoutMs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Wrapper around CDC_Transmit_FS which retries until the USB transmit is successful. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">buf</td><td>The data buffer to transmit</td></tr>
-    <tr><td class="paramname">Len</td><td>The number of bytes to transmit</td></tr>
-    <tr><td class="paramname">TimeoutMs</td><td>Operation timeout (in ms). Must keep under watchdog reset period</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-
-</div>
-</div>
 <a id="af3dfc46e9419ce7b06e35ccf57b57e88"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af3dfc46e9419ce7b06e35ccf57b57e88">&#9670;&nbsp;</a></span>USBRxHandler()</h2>
 
@@ -229,6 +176,33 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
 <p>This function is called by the script execution routines, when a script object is executed from a USB CLI context. </p>
+
+</div>
+</div>
+<a id="a9ae6c338a543471c7253669913b991bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ae6c338a543471c7253669913b991bd">&#9670;&nbsp;</a></span>USBWaitForTxDone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> USBWaitForTxDone </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>TimeoutMs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Helper function to wait for the USB Tx to be free. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">TimeoutMs</td><td>Operation timeout (in ms). Must keep under watchdog reset period</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if Tx is free, false is timeout elapses </dd></dl>
 
 </div>
 </div>

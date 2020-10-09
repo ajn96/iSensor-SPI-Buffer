@@ -97,7 +97,7 @@ static const uint8_t CommandCmd[] = "cmd ";
 static const uint8_t InvalidCmdStr[] = "Error: Invalid command! Type help for list of valid commands\r\n";
 
 /** Print string for not allowed command */
-static const uint8_t NotAllowedStr[] = "Error: Command not allowed! Type help for list of valid commands\r\n";
+static const uint8_t NotAllowedStr[] = "Error: Command not allowed from USB! Type help for list of valid commands\r\n";
 
 /** Print string for invalid argument */
 static const uint8_t InvalidArgStr[] = "Error: Invalid argument!\r\n";
@@ -107,7 +107,7 @@ static const uint8_t UnknownErrorStr[] = "An unknown error has occurred!\r\n";
 
 /** Print string for help command */
 static const uint8_t HelpStr[] = "\r\n"
-		"All numeric argument values must be provided in hex. [] arguments are optional\r\n"
+		"All numeric command argument values must be provided in hex. [] arguments are optional\r\n"
 		"\r\n"
 		"help\r\n"
 		"   Lists all available CLI commands\r\n"
