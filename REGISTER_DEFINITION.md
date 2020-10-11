@@ -220,13 +220,14 @@ For more details on the iSensor-SPI-Buffer SD Card data logging CLI, see the [SD
 | --- | --- | --- |
 | 0 | CLEAR_BUF | Clears buffer contents |
 | 1 | CLEAR_FAULT | Clears any fault data logged in flash memory. Until this command is run, status FAULT bit will never clear |
-| 2 | FACTORY_RESET | Restores firmware to a factory default state |
-| 3 | FLASH_UPDATE | Save all non-volatile registers to flash memory |
+| 2 | FACTORY_RESET | Restores firmware to a factory default state. This command only changes register values in SRAM - to permanently save settings a flash update command must also be issued |
+| 3 | FLASH_UPDATE | Save all non-volatile registers to flash memory. The saved values will be persistent through reset events until another flash update command is issued |
 | 4 | PPS_ENABLE | Enable PPS timestamp synchronization. Must have PPS_SELECT defined before enabling PPS. The UTC timestamp will start counting up on the next PPS signal |
 | 5 | PPS_DISABLE | Disable PPS timestamp synchronization. The microsecond timestamp register will continue free running |
 | 6 | SCRIPT_START | Start executing a script from a connected SD card. The script will be loaded from the script.txt file in an attached FAT32 formatted SD card. If no SD card or script file is present, nothing will be executed, and a script error will be flagged in the STATUS register |
 | 7 | SCRIPT_CANCEL | Cancel a running script, and close any open SD card files |
-| 12:8 | RESERVED | Currently unused |
+| 8 | WATERMARK_SET | Automatically set the watermark interrupt level for ideal stream operation over the USB command line interface. |
+| 12:9 | RESERVED | Currently unused |
 | 13 | DFU_REBOOT | Reboot the iSensor-SPI-Buffer into DFU mode. The DFU bootloader stored to ROM will enumerate as an ST USB DFU device which supports firmware updates through the standard ST DFU utility, allowing firmware changes without any external debugger hardware |
 | 14 | IMU_RESET | Drive the IMU reset pin low for 1ms, then back high. This feature is only implemented on hardware revision C or newer |
 | 15 | RESET | Software reset the iSensor-SPI-Buffer firmware |

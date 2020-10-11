@@ -154,3 +154,36 @@ bool USBWaitForTxDone(uint32_t TimeoutMs)
 	/* Return true if Tx is free, false otherwise */
 	return (hcdc->TxState == 0);
 }
+
+/**
+  * @brief Helper function to set the watermark interrupt level for optimal USB streams
+  *
+  * @return void
+  *
+  * This function can be called to configure the watermark interrupt level
+  * for ideal operation using a USB CLI stream. To get maximum throughput
+  * over the USB CLI stream, while maintaining minimal latency, the watermark
+  * interrupt level should be set such that each USB transmission occupies a
+  * single full buffer (512 bytes).
+  *
+  * After calling this function, WATERMARK_INT_CONFIG will be set based on the
+  * current buffer length setting.
+  */
+void WatermarkLevelAutoset()
+{
+	uint16_t bufNumRegs, bufCliLen, waterMarkLevel;
+
+	/* Get the number of regs in a buffer */
+	bufNumRegs = g_regs[BUF_LEN_REG];
+	bufNumRegs = bufNumRegs >> 1;
+
+	/* Each CLI buffer entry has five extra regs, and \r\n at end of line
+	 * Each reg is 5 bytes (4 hex chars + delim), except last reg, which
+	 * does not have delim */
+	bufCliLen = ((bufNumRegs + 5) * 5) + 1;
+
+	/* Save to reg (preserving pulse bit) */
+	waterMarkLevel = STREAM_BUF_SIZE / bufCliLen;
+	g_regs[WATERMARK_INT_CONFIG_REG] &= WATERMARK_PULSE_MASK;
+	g_regs[WATERMARK_INT_CONFIG_REG] |= waterMarkLevel;
+}

@@ -295,6 +295,10 @@ void ProcessCommand()
 	{
 		StopScript();
 	}
+	else if(command & CMD_WATERMARK_SET)
+	{
+		WatermarkLevelAutoset();
+	}
 	else if(command & CMD_IMU_RESET)
 	{
 		ResetImu();

@@ -22,6 +22,7 @@
 bool USBWaitForTxDone(uint32_t TimeoutMs);
 void USBRxHandler();
 void USBTxHandler(const uint8_t* buf, uint32_t count);
+void WatermarkLevelAutoset();
 /* @endcond */
 
 #endif /* INC_USB_CLI_H_ */
