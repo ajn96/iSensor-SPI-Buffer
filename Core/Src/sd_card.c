@@ -15,6 +15,7 @@ static bool OpenScriptFiles();
 static bool SDCardAttached();
 static bool ParseScriptFile();
 static bool CommandPostLoadProcess();
+static bool CreateResultFile();
 static void SPI3_Init(void);
 static void ParseReadBuffer(UINT bytesRead);
 
@@ -379,7 +380,7 @@ static bool OpenScriptFiles()
 	}
 
 	/* Open result.txt in write mode */
-	if(f_open(&outFile, "RESULT.TXT", (FA_OPEN_ALWAYS|FA_WRITE)) != FR_OK)
+	if(!CreateResultFile())
 	{
 		/* Attempt file close on script and result */
 		f_close(&outFile);
@@ -394,9 +395,42 @@ static bool OpenScriptFiles()
 		/* Return error */
 		return false;
 	}
+	return true;
+}
 
-	/* Seek to end of file */
-	f_lseek(&outFile, outFile.fsize);
+/**
+  * @brief Create new result file
+  *
+  * @return true if file created, false otherwise
+  *
+  * This function creates a unique result file for each
+  * script run. The result file number increments from 0 to
+  * 999.
+  */
+static bool CreateResultFile()
+{
+	bool fileFound;
+	FRESULT res;
+	/* Result file name */
+	char fileName[13];
+
+	fileFound = false;
+	for(uint16_t fileNum = 0; fileNum < 10000; fileNum++)
+	{
+		sprintf(fileName, "RES_%03d.TXT", fileNum);
+		res = f_stat(fileName, 0);
+		if(res != FR_OK)
+		{
+			fileFound = true;
+			break;
+		}
+	}
+	if(!fileFound)
+		return false;
+
+	res = f_open(&outFile, fileName, (FA_CREATE_ALWAYS|FA_WRITE));
+	if(res != FR_OK)
+		return false;
 
 	return true;
 }
