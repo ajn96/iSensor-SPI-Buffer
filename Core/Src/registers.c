@@ -487,6 +487,28 @@ void GetBuildDate()
 }
 
 /**
+  * @brief Handler for when a button is pressed
+  *
+  * @return void
+  *
+  * This function executes commands based on the button
+  * configuration set in BTN_CONFIG
+  */
+void ButtonPressHandler()
+{
+	uint16_t setting = g_regs[BTN_CONFIG_REG];
+
+	for(int bitPos = 0; bitPos < 16; bitPos++)
+	{
+		if(setting & (1 << bitPos))
+		{
+			g_regs[USER_COMMAND_REG] = (1 << bitPos);
+			ProcessCommand();
+		}
+	}
+}
+
+/**
   * @brief Process a write to the iSensor-SPI-Buffer registers
   *
   * @return The index to the register within the global register array

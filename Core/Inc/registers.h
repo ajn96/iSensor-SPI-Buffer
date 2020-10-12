@@ -30,6 +30,7 @@ void GetBuildDate();
 void ProcessCommand();
 void FactoryReset();
 void BufDequeueToOutputRegs();
+void ButtonPressHandler();
 /* @endcond */
 
 /* Number of registers per page */
