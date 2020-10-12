@@ -41,7 +41,9 @@ ERROR_INT_CONFIG_DEFAULT, /* 0x7 */
 IMU_SPI_CONFIG_DEFAULT, /* 0x8 */
 USER_SPI_CONFIG_DEFAULT, /* 0x9 */
 CLI_CONFIG_DEFAULT, /* 0xA */
-0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xB - 0xF */
+0x0000, /* 0xB (command) */
+BTN_CONFIG_DEFAULT, /* 0xC */
+0x0000, 0x0000, 0x0000, /* 0xD - 0xF */
 0x0000, 0x0000, 0x0000, 0x0000, /* 0x10 - 0x13 */
 FW_REV_DEFAULT, /* 0x14 */
 0x0000, 0x0000, 0x0000, /* 0x15 - 0x17 */
@@ -360,6 +362,7 @@ void FactoryReset()
 	g_regs[USER_SPI_CONFIG_REG] = USER_SPI_CONFIG_DEFAULT;
 	g_regs[FW_REV_REG] = FW_REV_DEFAULT;
 	g_regs[CLI_CONFIG_REG] = CLI_CONFIG_DEFAULT;
+	g_regs[BTN_CONFIG_REG] = BTN_CONFIG_DEFAULT;
 
 	/* Apply endurance and flash sig back */
 	g_regs[ENDURANCE_REG] = endurance;
@@ -524,7 +527,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 			return regIndex;
 
 		/* Last writable reg on config page */
-		if(regIndex > USER_SCR_7_REG)
+		if(regIndex > USER_SCR_6_REG)
 		{
 			/* Allow writes to the UTC timestamp regs */
 			if((regIndex != UTC_TIMESTAMP_LWR_REG)&&(regIndex != UTC_TIMESTAMP_UPR_REG))

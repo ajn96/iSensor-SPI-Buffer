@@ -56,8 +56,9 @@ void BufDequeueToOutputRegs();
 #define USER_SPI_CONFIG_REG			0x09
 #define CLI_CONFIG_REG				0x0A
 #define USER_COMMAND_REG			0x0B /* Clears automatically */
-#define USER_SCR_0_REG				0x0C
-#define USER_SCR_7_REG				0x13
+#define BTN_CONFIG_REG				0x0C
+#define USER_SCR_0_REG				0x0D
+#define USER_SCR_6_REG				0x13
 
 /* Non-volatile read only regs */
 #define FW_REV_REG					0x14
@@ -114,6 +115,7 @@ void BufDequeueToOutputRegs();
 #define IMU_SPI_CONFIG_DEFAULT		0x100F
 #define USER_SPI_CONFIG_DEFAULT		0x0007
 #define CLI_CONFIG_DEFAULT			0x2000
+#define BTN_CONFIG_DEFAULT			0x8000
 #define FLASH_SIG_DEFAULT			0x9D2A
 
 /* Update flags definitions */

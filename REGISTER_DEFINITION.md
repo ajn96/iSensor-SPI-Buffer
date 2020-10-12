@@ -21,9 +21,10 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 | 0x12 | [USER_SPI_CONFIG](#USER_SPI_CONFIG) | 0x0007 | R/W | T | User SPI configuration (SPI mode, etc.) |
 | 0x14 | [CLI_CONFIG](#CLI_CONFIG) | 0x2000 | R/W | T | Command line interface (CLI) configuration. Configure both USB CLI and SD card data logging CLI. |
 | 0x16 | [USER_COMMAND](#USER_COMMAND) | N/A | W | F | Command register (flash update, factory reset, clear buffer, software reset, etc) |
-| 0x18 | [USER_SCR_0](#USER_SCR_N) | 0x0000 | R/W | T | User scratch 0 register |
+| 0x18 | [BTN_CONFIG](#BTN_CONFIG)                     | 0x8000 | R/W | T | Button configuration register, which maps a button press to bits in the command register |
+| 0x1A | [USER_SCR_0](#USER_SCR_N)                     | 0x0000  | R/W | T | User scratch 0 register |
 | ... | ... | ... | ... | ... | ... |
-| 0x26 | [USER_SCR_7](#USER_SCR_N) | 0x0000 | R/W | T | User scratch 7 register |
+| 0x26 | [USER_SCR_6](#USER_SCR_N) | 0x0000 | R/W | T | User scratch 6 register |
 | 0x28 | [FW_REV](#FW_REV) | N/A | R | T | Firmware revision |
 | 0x2A | [ENDURANCE](#ENDURANCE) | N/A | R | T | Flash update counter |
 | 0x40 | [STATUS](#STATUS) | N/A | R | F | Device status register. Clears on read |
@@ -233,6 +234,16 @@ For more details on the iSensor-SPI-Buffer SD Card data logging CLI, see the [SD
 | 15 | RESET | Software reset the iSensor-SPI-Buffer firmware |
 
 While commands are being executed, the iSensor-SPI-Buffer slave SPI port is disabled, and all interrupt signals are brought low.
+
+## BTN_CONFIG
+
+| Bit  | Name     | Description                                                  |
+| ---- | -------- | ------------------------------------------------------------ |
+| 15:0 | CMD_MASK | When the user button is pressed, the commands corresponding to the bits set in this register are executed. The bits are executed in priority order from LSB to MSB. |
+
+For example, setting this register to 0x800C will trigger a factory reset (0x4), followed by a flash update (0x8) and lastly a software reset (0x8000) when the user button is pressed. 
+
+The primary use case for the button is reset and script management (start/stop)
 
 ## USER_SCR_N
 
