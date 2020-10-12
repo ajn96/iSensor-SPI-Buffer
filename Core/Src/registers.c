@@ -492,7 +492,13 @@ void GetBuildDate()
   * @return void
   *
   * This function executes commands based on the button
-  * configuration set in BTN_CONFIG
+  * configuration set in BTN_CONFIG. This function can
+  * be called from an interrupt context (EXTI rising
+  * edge interrupt for button). The EXTI pending interrupt
+  * register for the button line should be cleared before and
+  * after executing this function to add some implicit
+  * debouncing (interrupt won't trigger, then immediately
+  * trigger again).
   */
 void ButtonPressHandler()
 {
