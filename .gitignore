@@ -10,10 +10,7 @@ Test/iSensor-SPI-Buffer-Test/obj/
 *.user
 
 *.vs/
-Utilities/iSensorSPIBuffer/bin/
-Utilities/iSensorSPIBuffer/obj/
-Utilities/ExampleApp/bin/
-Utilities/ExampleApp/obj/
+Utilities/__pycache__/
 
 *.suo
 
