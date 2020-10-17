@@ -3,7 +3,7 @@
 Data and control interfacing to the iSensor SPI Buffer firmware from a master device is done via a set of 16-bit user accessible registers. These registers can be accessed over SPI, using the standard iSensor SPI format (see ADIS16xxx datasheet), or over a USB virtual serial port command line interface (see USB CLI documentation). The register address space is split into three pages, each comprised of 128 addresses. On each page, the PAGE ID register is stored at address 0. Writing to the PAGE ID register will select a different register page for access. 
 * Registers which are marked with a "Default Value" will have the specified value loaded when a Factory Reset command is executed
 * Registers with a R/W field marked "R" can be read. Registers marked "W" can be written. Any registers in the address space not enumerated in the register map are read only and will always read 0
-* Registers which are marked "Flash Backup" are loaded from non-volatile memory on initialization. Issuing a Flash Update command will save the current register contents to non-volatile memory
+* Registers which are marked "Flash Backup" are loaded from non-volatile memory on initialization. Issuing a Flash Update command will save the current register contents to non-volatile memory.  These values will then be loaded by default the next time the firmware loads.
 
 ## Page 253 - iSensor-SPI-Buffer configuration
 
@@ -18,7 +18,7 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 | 0x0C | [WATERMARK_INT_CONFIG](#WATERMARK_INT_CONFIG) | 0x0020 | R/W | T | Watermark interrupt configuration register. Number of samples which must be enqueued in the buffer to trigger a watermark interrupt |
 | 0x0E | [ERROR_INT_CONFIG](#ERROR_INT_CONFIG) | 0x03FF | R/W | T | Error interrupt configuration register. Bitmask for STATUS register to determine which bits should trigger an error interrupt |
 | 0x10 | [IMU_SPI_CONFIG](#IMU_SPI_CONFIG) | 0x100F | R/W | T | IMU SPI configuration. Set SCLK frequency to the IMU and stall time between IMU SPI words |
-| 0x12 | [USER_SPI_CONFIG](#USER_SPI_CONFIG) | 0x0007 | R/W | T | User SPI configuration (SPI mode, etc.) |
+| 0x12 | [USER_SPI_CONFIG](#USER_SPI_CONFIG) | 0x0007 | R/W | T | User SPI configuration (SPI mode, etc.). Requires KEY write to unlock |
 | 0x14 | [CLI_CONFIG](#CLI_CONFIG) | 0x2000 | R/W | T | Command line interface (CLI) configuration. Configure both USB CLI and SD card data logging CLI. |
 | 0x16 | [USER_COMMAND](#USER_COMMAND) | N/A | W | F | Command register (flash update, factory reset, clear buffer, software reset, etc) |
 | 0x18 | [BTN_CONFIG](#BTN_CONFIG)                     | 0x8000 | R/W | T | Button configuration register, which maps a button press to bits in the command register |
@@ -109,6 +109,8 @@ When the BUF_BURST bit is set and the buffer retrieve register is read, the user
 | --- | --- | --- |
 | 15:0 | LEN | Length (in bytes) of each buffer entry. Valid range 2 - 64. Must be a multiple of 2 (16 bit word size) |
 
+If the IMU_BURST bit of the BUF_CONFIG register is set, the IMU burst word length will be determined by the contents of this register.
+
 ## BUF_MAX_CNT
 
 | Name | Bits | Description |
@@ -118,12 +120,12 @@ When the BUF_BURST bit is set and the buffer retrieve register is read, the user
 ## DIO_INPUT_CONFIG
 | Bit | Name | Description |
 | --- | --- | --- |
-| 3:0 | DR_SELECT | Select which IMU DIO ouput pin is treated as data ready. Can only select one pin |
+| 3:0 | DR_SELECT | Select which IMU DIO output pin is treated as data ready. Can only select one pin |
 | 4 | DR_POLARITY | Data ready trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge |
 | 6:5 | RESERVED | Currently unused |
 | 7 | PPS_POLARITY | PPS trigger polarity. 1 triggers on rising edge, 0 triggers on falling edge |
-| 11:8 | PPS_SELECT | Select which host processor DIO output pin acts as a Pulse Per Second (PPS) input, for timebase synchronization |
-| 13:12 | PPS_FREQ     | Select the PPS input frequency (10 ^ (PPS_FREQ) Hz). A value of 0 corresponds to a real PPS signal (one pulse per second), which is the recommended way to use the PPS input. A value of 1 -> 10Hz, 2 -> 100Hz and 3 -> 1000Hz for the PPS input signal. The UTC_TIMESTAMP will be scaled based on the frequency value provided here. |
+| 11:8 | PPS_SELECT | Select which host processor DIO output pin acts as a Pulse Per Second (PPS) input, for time base synchronization |
+| 13:12 | PPS_FREQ     | Select the PPS input frequency (10 ^ (PPS_FREQ) Hz). A value of 0 corresponds to a real PPS signal (one pulse per second), which is the recommended mode to use the PPS input. A value of 1 -> 10Hz, 2 -> 100Hz and 3 -> 1000Hz for the PPS input signal. The UTC_TIMESTAMP will be scaled based on the frequency value provided here, to ensure it increments once per second |
 | 15:14 | RESERVED | Currently unused |
 
 For each field in DIO_INPUT_CONFIG, the following pin mapping is made:
@@ -137,6 +139,7 @@ The following default values will be used for DIO_INPUT_CONFIG:
 * DR_POLARITY: 0x1. Data ready is posedge triggered
 * PPS_SELECT: 0x0. PPS input is disabled by default
 * PPS_POLARITY: 0x0. PPS triggers on falling edge
+* PPS_FREQ: 0x0. PPS module is configured for 1Hz sync signal
 
 ## DIO_OUTPUT_CONFIG
 
@@ -166,6 +169,8 @@ The following default values will be used for DIO_OUTPUT_CONFIG:
 | 14:0 | LEVEL | Number of elements stored in buffer before asserting the iSensor-SPI-Buffer data ready interrupt. Range 0 - BUF_MAX_CNT |
 | 15 | TOGGLE | When set, the watermark interrupt output will act as a ~10KHz, 50% duty cycle clock output when the watermark interrupt is triggered. If this bit is cleared, the watermark interrupt output is simply pulled high when triggered. |
 
+The watermark interrupt signal is unique in that it can be configured to act as a static active high interrupt signal, or as a "clock" interrupt signal. The clock mode can be useful for devices which trigger reads from an edge. 
+
 The following capture shows the interrupt behavior with WATERMARK_INT_CONFIG set to 0x8001 (TOGGLE enabled, 1 sample threshold). The attached EVAL-ADIS-FX3 master board is configured to trigger a buffer burst read on the rising edge of DIO2. The iSensor-SPI-Buffer board keeps giving the FX3 master clocks until the buffer is empty, then goes low. Once a new sample has been enqueued from the IMU, another pulse is generated, and clears when the master retrieves the sample.
 
  ![Watermark strobe](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/watermark_strobe_mode.JPG)
@@ -185,10 +190,12 @@ The following capture shows the interrupt behavior with WATERMARK_INT_CONFIG set
 | 9 | SCLK_SCALE_4 | Sets SCLK prescaler to 4 (9MHz) |
 | 10 | SCLK_SCALE_8 | Sets SCLK prescaler to 8 (4.5MHz) |
 | 11 | SCLK_SCALE_16 | Sets SCLK prescaler to 16 (2.25MHz) |
-| 12 | SCLK_SCALE_32 | Sets SCLK prescaler to 32 (1.125MHz). Default option selected which will work with all iSensor IMU products |
+| 12 | SCLK_SCALE_32 | Sets SCLK prescaler to 32 (1.125MHz) |
 | 13 | SCLK_SCALE_64 | Sets SCLK prescaler to 64 (562.5KHz) |
 | 14 | SCLK_SCALE_128 | Sets SCLK prescaler to 128 (281.25KHz) |
 | 15 | SCLK_SCALE_256 | Sets SCLK prescaler to 256 (140.625KHz) |
+
+The default IMU_SPI_CONFIG value provides an SCLK of 1.125MHz with a stall of 15us. This configuration limits SPI throughput, but should work with all iSensor IMU products. The SPI settings should generally be adjusted to ensure best throughput based on the device in use.
 
 ## USER_SPI_CONFIG
 
@@ -219,18 +226,18 @@ For more details on the iSensor-SPI-Buffer SD Card data logging CLI, see the [SD
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 0 | CLEAR_BUF | Clears buffer contents |
+| 0 | CLEAR_BUF | Clears any stored buffer contents |
 | 1 | CLEAR_FAULT | Clears any fault data logged in flash memory. Until this command is run, status FAULT bit will never clear |
 | 2 | FACTORY_RESET | Restores firmware to a factory default state. This command only changes register values in SRAM - to permanently save settings a flash update command must also be issued |
 | 3 | FLASH_UPDATE | Save all non-volatile registers to flash memory. The saved values will be persistent through reset events until another flash update command is issued |
 | 4 | PPS_ENABLE | Enable PPS timestamp synchronization. Must have PPS_SELECT defined before enabling PPS. The UTC timestamp will start counting up on the next PPS signal |
 | 5 | PPS_DISABLE | Disable PPS timestamp synchronization. The microsecond timestamp register will continue free running |
-| 6 | SCRIPT_START | Start executing a script from a connected SD card. The script will be loaded from the script.txt file in an attached FAT32 formatted SD card. If no SD card or script file is present, nothing will be executed, and a script error will be flagged in the STATUS register |
-| 7 | SCRIPT_CANCEL | Cancel a running script, and close any open SD card files |
+| 6 | SCRIPT_START | Start executing a script from a connected SD card. The script will be loaded from the script.txt file in an attached FAT32 formatted SD card. If any error occurs nothing will be executed, and a script error will be flagged in the STATUS register. In addition, a detailed error will be reported to SCRIPT_ERROR |
+| 7 | SCRIPT_CANCEL | Cancel a running script, close any open SD card files, and unmount the SD card file system |
 | 8 | WATERMARK_SET | Automatically set the watermark interrupt level for ideal stream operation over the USB command line interface. |
 | 12:9 | RESERVED | Currently unused |
 | 13 | DFU_REBOOT | Reboot the iSensor-SPI-Buffer into DFU mode. The DFU bootloader stored to ROM will enumerate as an ST USB DFU device which supports firmware updates through the standard ST DFU utility, allowing firmware changes without any external debugger hardware |
-| 14 | IMU_RESET | Drive the IMU reset pin low for 1ms, then back high. This feature is only implemented on hardware revision C or newer |
+| 14 | IMU_RESET | Drive the IMU reset pin low for 1ms, then back high. The user application will have to wait for the reset time of the IMU before reading IMU registers via passthrough. This feature is only implemented on hardware revision C or newer |
 | 15 | RESET | Software reset the iSensor-SPI-Buffer firmware |
 
 While commands are being executed, the iSensor-SPI-Buffer slave SPI port is disabled, and all interrupt signals are brought low.
@@ -431,13 +438,13 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 15:0 | SIGNATURE | Derived signature for all registers stored to flash memory. This value is determined at initialization and compared to "FLASH_SIG" to determine if flash memory contents are valid |
+| 15:0 | CHKSUM | Derived signature for all registers stored to flash memory. This value is determined at initialization and compared to "FLASH_SIG" to determine if flash memory contents are valid |
 
 ## FLASH_SIG
 
 | Bit | Name | Description |
 | --- | --- | --- |
-| 15:0 | SIGNATURE | Signature for all registers stored to flash memory. This value is stored in flash, and is updated when a flash update command is executed |
+| 15:0 | CHKSUM | Signature for all registers stored to flash memory. This value is stored in flash, and is updated when a flash update command is executed |
 
 ## BUF_CNT
 
