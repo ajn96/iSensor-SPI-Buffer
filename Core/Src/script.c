@@ -814,7 +814,7 @@ static void AboutHandler(uint8_t* outBuf, bool isUSB)
 
 	/* Print firmware info */
 	len = sprintf((char *) outBuf,
-			"Analog Devices iSensor-SPI-Buffer, v%X.%02X (%04X-%02X-%02X)."
+			"Analog Devices iSensor-SPI-Buffer, v%X.%02X (%04X-%02X-%02X). "
 			"See https://github.com/ajn96/iSensor-SPI-Buffer for more info\r\n",
 			(g_regs[FW_REV_REG] >> 8) & 0x7F,
 			g_regs[FW_REV_REG] & 0xFF,
