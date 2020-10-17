@@ -3,7 +3,7 @@ import time
 from threading import Thread
 from queue import SimpleQueue
 
-class ISensorSpiBuffer():
+class ISensorSPIBuffer():
 
 #Constructor
     
@@ -11,7 +11,7 @@ class ISensorSpiBuffer():
         #Flag to track if stream is in progress
         self.StreamRunning = False
         #Queue for storing data read during stream
-        self.StreamQueue = SimpleQueue()
+        self.StreamData = SimpleQueue()
         self.Ser = serial.Serial(str(portName), 1000000)
         self.Ser.timeout = 0.5
         #Init buffer board
@@ -145,7 +145,7 @@ class StreamWork(Thread):
         while self.ThreadActive:
             bufEntry = self.buf._ParseLine(self.buf._ReadLine())
             if len(bufEntry) > 0:
-                self.buf.StreamQueue.put(bufEntry)
+                self.buf.StreamData.put(bufEntry)
 
         #stream stop has been signaled. Cancel in firmware and flag
         self.buf.StreamRunning = False
@@ -158,7 +158,4 @@ class StreamWork(Thread):
         time.sleep(0.1)
         #read page
         self.buf.read_reg(0)
-               
-buf = ISensorSpiBuffer("COM11")
-print(buf.version())
         
