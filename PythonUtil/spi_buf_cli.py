@@ -51,21 +51,9 @@ class ISensorSPIBuffer():
         self._SendLine("about")
         return self.__ReadLine().replace("\r\n", "")
 
-    def status(self):
-        "Get the iSensor-SPI-Buffer status register value"
-        self.__FlushSerialInput()
-        self._SendLine("status")
-        return self._ParseLine(self._ReadLine())
-
     def run_command(self, cmdValue):
         "Execute iSensor-SPI-Buffer command"
         self._SendLine("cmd " + format(cmdValue, "x"))
-
-    def uptime(self):
-        "Get iSensor-SPI-Buffer uptime (ms)"
-        self.__FlushSerialInput()
-        self._SendLine("uptime")
-        return int(self._ReadLine().replace("ms\r\n", ""))
 
     def check_connection(self):
         "Check CLI connection to the iSensor-SPI-Buffer"
@@ -95,6 +83,28 @@ class ISensorSPIBuffer():
     def stop_stream(self):
         "Signal stream thread to stop"
         self.StreamThread.ThreadActive = False
+        #block until done
+        self.StreamThread.join()
+
+    def get_status(self):
+        "Get the iSensor-SPI-Buffer status register value"
+        self.__FlushSerialInput()
+        self._SendLine("status")
+        return self._ParseLine(self._ReadLine())
+
+    def get_uptime(self):
+        "Get iSensor-SPI-Buffer uptime (ms)"
+        self.__FlushSerialInput()
+        self._SendLine("uptime")
+        return int(self.__ReadLine().replace("ms\r\n", ""))
+
+    def get_temp(self):
+        "Get the iSensor-SPI-Buffer processor temperature (degrees C)"
+        return self.__ReadRegNoPageChange(0x4E, 253) / 10.0
+
+    def get_vdd(self):
+        "Get the current VDD measurement for the iSensor-SPI-Buffer (volts)"
+        return self.__ReadRegNoPageChange(0x50, 253) / 100.0
 
 #private helper functions (not all actually private, but not recommended for end user use)
 
@@ -115,6 +125,13 @@ class ISensorSPIBuffer():
         for val in splitLine:
             if val != '':
                 retVal.append(int(val, 16))
+        return retVal
+
+    def __ReadRegNoPageChange(self, addr, page):
+        startPage = self.read_reg(0)
+        self.select_page(page)
+        retVal = self.read_reg(addr)
+        self.select_page(startPage)
         return retVal
 
     def __FlushSerialInput(self):

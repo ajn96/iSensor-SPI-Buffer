@@ -1,16 +1,25 @@
 from spi_buf_cli import ISensorSPIBuffer
 import time
 
+#port name for iSensor-SPI-Buffer
+spi_buf_port = "COM11"
+
 #set the capture time (in seconds) for example app
-capture_time_sec = 10
+capture_time_sec = 5
 
 #set the data rate for the IMU
 data_rate_hz = 1000
 
-#board conneted to COM11
-buf = ISensorSPIBuffer("COM11")
+#create ISensorSPIBuffer object
+buf = ISensorSPIBuffer(spi_buf_port)
+
+#print version and check functionality
 print(buf.version())
-print(buf.check_connection())
+print("Board connected: " + str(buf.check_connection()))
+
+print("Buffer board uptime: " + str(buf.get_uptime()) + "ms")
+print("Buffer board temperature: " + str(buf.get_temp()) + "C")
+print("Buffer board Vdd: " + str(buf.get_vdd()) + "V")
 
 #select buf config page
 buf.select_page(253)
@@ -68,4 +77,4 @@ print("Starting buffer timestamp: " + str(startTime) + " sec")
 print("Ending buffer timestamp: " + str(timeStamp) + " sec")
 print("Max timestamp delta: " + str(maxDelta) + " ms")
 
-buf.check_connection()
+print("Board connected: " + str(buf.check_connection()))
