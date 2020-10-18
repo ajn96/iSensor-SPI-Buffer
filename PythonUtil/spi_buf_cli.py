@@ -43,7 +43,6 @@ class ISensorSPIBuffer():
         lower = value & 0xFF
         upper = (value & 0xFF00) >> 8
         self._SendLine("write " + format(addr, "x") + " " + format(lower, "x"))
-        time.sleep(0.1)
         self._SendLine("write " + format(addr + 1, "x") + " " + format(upper, "x"))
 
     def version(self):
@@ -103,6 +102,8 @@ class ISensorSPIBuffer():
         #transmit line to iSensor SPI buffer CLI
         if self.StreamRunning:
             raise Exception("Please stop stream before interfacing with CLI")
+        #20ms (ish) delay before transmitting another line
+        time.sleep(0.02)
         self.Ser.write((line + "\r\n").encode('utf_8'))
 
     def _ParseLine(self, line):
@@ -125,18 +126,11 @@ class ISensorSPIBuffer():
         return self.Ser.readline().decode('utf_8')
 
     def __Connect(self):
-        #set echo off
         self._SendLine("echo 0")
-        time.sleep(0.1)
-        #set , delim
         self._SendLine("delim ,")
-        time.sleep(0.1)
         self.select_page(253)
-        time.sleep(0.1)
-        #make sure stream is not running
+        #make sure stream is not running and flush firmare FIFO
         self._SendLine("stream 0")
-        time.sleep(0.1)
-        #flush firmware FIFO at start
         self.run_command(1)
         time.sleep(0.1)
         #flush serial port input buffer
