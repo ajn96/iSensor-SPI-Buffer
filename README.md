@@ -11,13 +11,15 @@ Additional hardware and software resources are linked below.
 
 [USB CLI Definition](USB_CLI.md)
 
-[SD Card Scripts](SD_SCRIPTS.md)
+[Python USB Interfacing Library](PythonUtil/)
 
-[Timing Characterization](TIMING.MD)
-
-[STM32 Processor Pin Map](PIN_MAP.md)
+[SD Card Data Logging Scripts](SD_SCRIPTS.md)
 
 [Firmware Documentation (Doxygen)](https://ajn96.github.io/iSensor-SPI-Buffer/files.html)
+
+[Software Timing Characterization](TIMING.MD)
+
+[STM32 Processor Pin Map](PIN_MAP.md)
 
 A video walkthrough and tutorial of the SPI Buffer Board's features is hosted on YouTube. Click on the image below to check it out!
 

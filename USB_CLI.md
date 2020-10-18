@@ -26,7 +26,7 @@ The Python API exposes the following functionality:
 
 The library also handles setting up the serial port (through PySerial) and configuration the buffer board - all the user application has to do is provide the portName.
 
-The full documentation for the python library, source code, and Linux/Windows examples, are [here](Utilities/)
+The full documentation for the python library, source code, and Linux/Windows examples, are [here](PythonUtil/)
 
 ## Examples
 
