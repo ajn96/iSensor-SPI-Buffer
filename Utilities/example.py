@@ -1,6 +1,12 @@
 from spi_buf_cli import ISensorSPIBuffer
 import time
 
+#set the capture time (in seconds) for example app
+capture_time_sec = 10
+
+#set the data rate for the IMU
+data_rate_hz = 1000
+
 #board conneted to COM11
 buf = ISensorSPIBuffer("COM11")
 print(buf.version())
@@ -23,9 +29,12 @@ buf.write_reg(0x12, 0x7C00)
 
 #move to page 3 (ADIS1649x config page)
 buf.select_page(3)
-print("Decimate: " + str(buf.read_reg(0xC)))
-#set decimate for 400Hz data production
-buf.write_reg(0xC, 9)
+print("Configuring IMU for " + str(data_rate_hz) + "Hz ODR")
+#set decimate based on user setting
+dec = int(4000 / data_rate_hz) - 1
+if dec < 0 :
+    dec = 0
+buf.write_reg(0xC, dec)
 print("Decimate: " + str(buf.read_reg(0xC)))
 
 #set IMU to page 0
@@ -35,8 +44,8 @@ print("IMU Page 0: " + str(buf.read_regs(0x0, 0x26)))
 #start a stream (buffer captures data and automatically sends over USB)
 print("Start data count: " + str(buf.StreamData.qsize()))
 buf.start_stream()
-#get 2 sec of data
-time.sleep(2)
+print("Sleeping for " + str(capture_time_sec) + " seconds...")
+time.sleep(capture_time_sec)
 buf.stop_stream()
 print("End data count: " + str(buf.StreamData.qsize()))
 
@@ -54,6 +63,9 @@ while buf.StreamData.empty() == False:
     if delta > maxDelta:
         maxDelta = delta
 
-print("Starting buffer timestamp: " + str(startTime))
-print("Ending buffer timestamp: " + str(timeStamp))
-print("Max timestamp delta: " + str(maxDelta))
+maxDelta *= 1000
+print("Starting buffer timestamp: " + str(startTime) + " sec")
+print("Ending buffer timestamp: " + str(timeStamp) + " sec")
+print("Max timestamp delta: " + str(maxDelta) + " ms")
+
+buf.check_connection()

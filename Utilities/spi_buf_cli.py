@@ -132,6 +132,7 @@ class ISensorSPIBuffer():
         time.sleep(0.1)
         self._FlushSerialInput()
 
+#Stream worker class
 class StreamWork(Thread):
     
     def __init__(self, buf):
@@ -139,6 +140,7 @@ class StreamWork(Thread):
         self.buf = buf
         self.ThreadActive = False
         self._StreamStartPage = 253
+        self._lineReader = ReadLine(self.buf.Ser)
         
     def run(self):
         #read starting page
@@ -155,7 +157,7 @@ class StreamWork(Thread):
         #receive data until stop stream set
         bufEntry = []
         while self.ThreadActive:
-            bufEntry = self.buf._ParseLine(self.buf._ReadLine())
+            bufEntry = self.buf._ParseLine((self._lineReader.readline()).decode('utf_8'))
             if len(bufEntry) > 0:
                 self.buf.StreamData.put(bufEntry)
 
@@ -167,4 +169,27 @@ class StreamWork(Thread):
         self.buf.select_page(self._StreamStartPage)
         #read page
         self.buf.read_reg(0)
+
+#readline class from pyserial github
+class ReadLine:
+    def __init__(self, s):
+        self.buf = bytearray()
+        self.s = s
+    
+    def readline(self):
+        i = self.buf.find(b"\n")
+        if i >= 0:
+            r = self.buf[:i+1]
+            self.buf = self.buf[i+1:]
+            return r
+        while True:
+            i = max(1, min(2048, self.s.in_waiting))
+            data = self.s.read(i)
+            i = data.find(b"\n")
+            if i >= 0:
+                r = self.buf + data[:i+1]
+                self.buf[0:] = data[i+1:]
+                return r
+            else:
+                self.buf.extend(data)
         
