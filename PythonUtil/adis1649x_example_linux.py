@@ -2,13 +2,13 @@ from spi_buf_cli import ISensorSPIBuffer
 import time
 
 #port name for iSensor-SPI-Buffer
-spi_buf_port = "COM11"
+spi_buf_port = '/dev/ttyACM0'
 
 #set the capture time (in seconds) for example app
 capture_time_sec = 5
 
 #set the data rate for the IMU
-data_rate_hz = 1000
+data_rate_hz = 400
 
 #create ISensorSPIBuffer object
 buf = ISensorSPIBuffer(spi_buf_port)
