@@ -5,8 +5,8 @@ This library allows easy programmatic interfacing to the iSensor-SPI-Buffer USB 
 ### Prerequisites 
 
 * Python 3.7 or newer
-
-* PySerial
+* PySerial (pip install pyserial)
+* iSensor-SPI-Buffer firmware v1.11 or newer
 
 ### Hardware Setup
 
