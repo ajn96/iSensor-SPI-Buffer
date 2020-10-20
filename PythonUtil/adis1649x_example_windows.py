@@ -14,10 +14,14 @@ data_rate_hz = 1000
 buf = ISensorSPIBuffer(spi_buf_port)
 
 #print version and check functionality
-print(buf.version())
 print("Board connected: " + str(buf.check_connection()))
 
-print("Buffer board uptime: " + str(buf.get_uptime()) + "ms")
+try:
+    print(buf.version())
+    print("Buffer board uptime: " + str(buf.get_uptime()) + "ms")
+except:
+    print("Unsupported command on this firmware revision!")
+
 print("Buffer board temperature: " + str(buf.get_temp()) + "C")
 print("Buffer board Vdd: " + str(buf.get_vdd()) + "V")
 

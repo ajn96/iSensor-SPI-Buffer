@@ -53,7 +53,8 @@ class ISensorSPIBuffer():
 
     def run_command(self, cmdValue):
         "Execute iSensor-SPI-Buffer command"
-        self._SendLine("cmd " + format(cmdValue, "x"))
+        self.select_page(253)
+        self.write_reg(0x16, cmdValue)
 
     def check_connection(self):
         "Check CLI connection to the iSensor-SPI-Buffer"
@@ -143,15 +144,16 @@ class ISensorSPIBuffer():
         return self.Ser.readline().decode('utf_8')
 
     def __Connect(self):
-        self._SendLine("echo 0")
-        self._SendLine("delim ,")
+        #disable echo via reg write rather than command to kinda allow older versions to be used
         self.select_page(253)
-        #make sure stream is not running and flush firmare FIFO
-        self._SendLine("stream 0")
+        self.__FlushSerialInput()
+        #disable streams, disable echo, set comma delim
+        self.write_reg(0x14, 0x2C04)
+        time.sleep(0.1)
+        self.__FlushSerialInput()
+        #flush firmare FIFO
         self.run_command(1)
         time.sleep(0.1)
-        #flush serial port input buffer
-        self.__FlushSerialInput()
 
 #Stream worker class
 class StreamWork(Thread):
@@ -161,7 +163,7 @@ class StreamWork(Thread):
         self.buf = buf
         self.ThreadActive = False
         self._StreamStartPage = 253
-        self._lineReader = ReadLine(self.buf.Ser)
+        self._lineReader = ReadLine(self)
         
     def run(self):
         #read starting page
@@ -193,9 +195,10 @@ class StreamWork(Thread):
 
 #readline class from pyserial github
 class ReadLine:
-    def __init__(self, s):
+    def __init__(self, StreamWorker):
         self.buf = bytearray()
-        self.s = s
+        self.StreamWorker = StreamWorker
+        self.s = self.StreamWorker.buf.Ser
     
     def readline(self):
         i = self.buf.find(b"\n")
@@ -203,7 +206,7 @@ class ReadLine:
             r = self.buf[:i+1]
             self.buf = self.buf[i+1:]
             return r
-        while True:
+        while self.StreamWorker.ThreadActive:
             i = max(1, min(2048, self.s.in_waiting))
             data = self.s.read(i)
             i = data.find(b"\n")
@@ -213,4 +216,7 @@ class ReadLine:
                 return r
             else:
                 self.buf.extend(data)
+
+        #cancelled with no data
+        return self.buf
         
