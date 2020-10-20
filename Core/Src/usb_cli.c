@@ -38,6 +38,32 @@ static uint8_t EchoBuf[4];
 static const uint8_t NewLineStr[] = "\r\n";
 
 /**
+  * @brief HDisconnect USB device from the host
+  *
+  * @return void
+  *
+  * This function should be called just prior to
+  * resetting, to ensure that after reset the
+  * USB enumerates correctly.
+  */
+void USBDisconnect()
+{
+	USBD_DeInit(&hUsbDeviceFS);
+	/* Configure USB data lines as GPIO floating */
+	HAL_GPIO_DeInit(GPIOA, GPIO_PIN_11);
+	HAL_GPIO_DeInit(GPIOA, GPIO_PIN_12);
+
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+	GPIO_InitStruct.Pin = GPIO_PIN_11 | GPIO_PIN_12;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+	/* Wait 10ms for host to detect */
+	SleepMicroseconds(10000);
+}
+
+/**
   * @brief Handler for received USB data
   *
   * @return void

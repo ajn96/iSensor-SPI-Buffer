@@ -9,6 +9,7 @@
  **/
 
 #include "dfu.h"
+#include "usb_cli.h"
 
 /* Private function prototypes */
 static void ExecuteDFUBoot();
@@ -52,6 +53,7 @@ void CheckDFUFlags()
 void PrepareDFUBoot()
 {
 	*DFU_FLAG_ADDR = ENABLE_DFU_KEY;
+	USBDisconnect();
 	NVIC_SystemReset();
 }
 
