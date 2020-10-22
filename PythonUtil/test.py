@@ -30,7 +30,33 @@ class SpiBufTestMethods(unittest.TestCase):
     def test_stream(self):
         #set up buffer to trigger itself
         buf.select_page(253)
+        #set DIO1 as data ready
+        buf.write_reg(0x8, 0x11)
+        #watermark toggle mode, 0 samples
+        buf.write_reg(0xC, 0x8000)
+        #output watermark interrupt on DIO1 and pass DIO1 back to buffer
+        buf.write_reg(0xA, 0x11)
+        buf.flush_streamdata()
+        self.assertEqual(0, buf.StreamData.qsize())
+        buf.start_stream()
+        lastCount = 0
+        dataCount = 0
+        for trial in range(10):
+            time.sleep(0.2)
+            dataCount = buf.StreamData.qsize()
+            self.assertGreater(dataCount, lastCount, "ERROR: Count failed to increase")
+            lastCount = dataCount
+        buf.stop_stream()
+        dataCount = buf.StreamData.qsize()
+        time.sleep(0.1)
+        self.assertEqual(dataCount, buf.StreamData.qsize())
+        self.assertTrue(buf.check_connection(), "ERROR: Connection check failed")
 
+    def test_streamstop(self):
+        self.assertTrue(buf.check_connection(), "ERROR: Connection check failed")
+
+    def test_stream_nodata(self):
+        self.assertTrue(buf.check_connection(), "ERROR: Connection check failed")
 
 if __name__ == '__main__':
     unittest.main()

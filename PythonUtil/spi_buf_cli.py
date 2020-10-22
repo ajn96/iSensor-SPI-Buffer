@@ -89,6 +89,13 @@ class ISensorSPIBuffer():
         #block until done
         self.StreamThread.join()
 
+    def flush_streamdata(self):
+        "Flush python stream data queue as well as firmware data queue"
+        while self.StreamData.empty() == False:
+            self.StreamData.get()
+        self.run_command(1)
+        time.sleep(0.1)
+
     def get_status(self):
         "Get the iSensor-SPI-Buffer status register value"
         self.__FlushSerialInput()
