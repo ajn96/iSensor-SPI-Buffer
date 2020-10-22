@@ -209,7 +209,7 @@ void WatermarkLevelAutoset()
 	bufCliLen = ((bufNumRegs + 5) * 5) + 1;
 
 	/* Save to reg (preserving pulse bit) */
-	waterMarkLevel = STREAM_BUF_SIZE / bufCliLen;
+	waterMarkLevel = (2 * STREAM_BUF_SIZE) / bufCliLen;
 	g_regs[WATERMARK_INT_CONFIG_REG] &= WATERMARK_PULSE_MASK;
 	g_regs[WATERMARK_INT_CONFIG_REG] |= waterMarkLevel;
 }
