@@ -1,3 +1,5 @@
+#Author: Alex Nolan (alex.nolan@analog.com)
+
 import serial
 import time
 import random

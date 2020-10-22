@@ -1,3 +1,5 @@
+#Author: Alex Nolan (alex.nolan@analog.com)
+
 from spi_buf_cli import ISensorSPIBuffer
 import time
 
