@@ -168,6 +168,12 @@ class StreamWork(Thread):
     def run(self):
         #read starting page
         self._StreamStartPage = self.buf.read_reg(0)
+        #move to page zero and read the buf len
+        self.buf.select_page(253)
+        bufLen = self.buf.read_reg(4)
+        #buffer len should be bufLen / 2 + 5
+        bufLen = int(bufLen/2)
+        bufLen = bufLen + 5
         #flush firmware buffer contents prior to stream
         self.buf.run_command(1)
         time.sleep(0.1)
@@ -181,7 +187,7 @@ class StreamWork(Thread):
         bufEntry = []
         while self.ThreadActive:
             bufEntry = self.buf._ParseLine((self._lineReader.readline()).decode('utf_8'))
-            if len(bufEntry) > 0:
+            if len(bufEntry) == bufLen:
                 self.buf.StreamData.put(bufEntry)
 
         #stream stop has been signaled. Cancel in firmware and flag
