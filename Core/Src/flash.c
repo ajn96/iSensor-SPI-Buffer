@@ -14,7 +14,7 @@
 static void PrepareRegsForFlash();
 
 /** Global register array (from registers.c) */
-extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
+extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
 
 /**
   * @brief Flash update command handler
@@ -116,11 +116,9 @@ void LoadRegsFlash()
 	/* Read flash sig value which was stored at last flash update */
 	storedSig = g_regs[FLASH_SIG_REG];
 
-	/* Perform factory reset + flash update and alert user of flash error in case of sig mis-match */
+	/* Alert user of flash error in case of sig mis-match */
 	if(storedSig != expectedSig)
 	{
-		FactoryReset();
-		FlashUpdate();
 		g_regs[STATUS_0_REG] |= STATUS_FLASH_ERROR;
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 	}

@@ -11,7 +11,7 @@
 #include "dio.h"
 
 /** Global register array (from registers.c) */
-extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
+extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
 
 /** Struct storing current DIO output config. Global scope */
 volatile DIOConfig g_pinConfig = {};

@@ -13,8 +13,8 @@
 /** USB handle */
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
-/** Global register array. (from registers.c) */
-extern volatile uint16_t g_regs[];
+/** Global register array (from registers.c) */
+extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
 
 /** USB Rx buffer (from usbd_cdc_if.c) */
 extern uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];

@@ -96,19 +96,19 @@ void ButtonPressHandler();
 #define BUF_WRITE_PAGE				254
 
 #define BUF_WRITE_0_REG				0x89
-#define FLASH_SIG_DRV_REG			0xAE
-#define FLASH_SIG_REG				0xAF
+#define FLASH_SIG_DRV_REG			0xBE
+#define FLASH_SIG_REG				0xBF
 
 /** iSensor-SPI-Buffer buffer Rx data page */
 #define BUF_READ_PAGE				255
 
-#define STATUS_1_REG				0xB1
-#define BUF_CNT_1_REG				0xB2
-#define BUF_RETRIEVE_REG			0xB3
-#define BUF_UTC_TIMESTAMP_REG		0xB4
-#define BUF_US_TIMESTAMP_REG		0xB6
-#define BUF_SIG_REG					0xB8
-#define BUF_DATA_0_REG				0xB9
+#define STATUS_1_REG				0xC1
+#define BUF_CNT_1_REG				0xC2
+#define BUF_RETRIEVE_REG			0xC3
+#define BUF_UTC_TIMESTAMP_REG		0xC4
+#define BUF_US_TIMESTAMP_REG		0xC6
+#define BUF_SIG_REG					0xC8
+#define BUF_DATA_0_REG				0xC9
 
 /* Register (non-zero) default values */
 #define FW_REV_DEFAULT				0x0112

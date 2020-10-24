@@ -10,8 +10,8 @@
 
 #include "buffer.h"
 
-/** Global register array. From registers.c */
-extern volatile uint16_t g_regs[];
+/** Global register array (from registers.c) */
+extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
 
 /** Index for the last buffer output register. This is based on buffer size. Global scope */
 uint32_t g_bufLastRegIndex;

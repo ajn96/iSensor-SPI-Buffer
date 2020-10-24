@@ -24,8 +24,8 @@ static void UShortToHex(uint8_t* outBuf, uint16_t val);
 static uint32_t HexToUInt(const uint8_t* commandBuf);
 static uint32_t StringEquals(const uint8_t* string0, const uint8_t* string1, uint32_t count);
 
-/** Global register array. (from registers.c) */
-extern volatile uint16_t g_regs[];
+/** Global register array (from registers.c) */
+extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
 
 /** Register update flags (from registers.c) */
 extern volatile uint16_t g_update_flags;

@@ -11,7 +11,7 @@
 #include "data_capture.h"
 
 /** Global register array (from registers.c) */
-extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
+extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
 
 /* Words per buffer (from isr.c) */
 extern volatile uint32_t g_wordsPerCapture;

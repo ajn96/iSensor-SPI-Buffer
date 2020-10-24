@@ -20,7 +20,7 @@ static void SPI3_Init(void);
 static void ParseReadBuffer(UINT bytesRead);
 
 /** Global register array (from registers.c) */
-extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
+extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
 
 /** SPI handle for SD card master port (global scope) */
 SPI_HandleTypeDef g_spi3;
