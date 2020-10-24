@@ -173,6 +173,8 @@ class BufferSample():
         self.ValidChecksum = True
         self.Timestamp = 0
         self.UTC_Timestamp = 0
+        self.ReceivedChecksum = 0
+        self.ExpectedChecksum = 0
 
         if (len(rawData) < 7):
             #bad buffer entry
@@ -185,14 +187,14 @@ class BufferSample():
         self.Data = rawData[5:]
 
         #compare expected checksum with received
-        expectedChecksum = rawData[4]
-        sum = 0
-        for i in range(3):
-            sum = sum + rawData[i]
+        self.ReceivedChecksum = rawData[4]
+        self.ExpectedChecksum = 0
+        for i in range(0,4):
+            self.ExpectedChecksum += rawData[i]
         for val in self.Data:
-            sum = sum + val
-        sum = sum & 0xFFFF
-        if sum != expectedChecksum:
+            self.ExpectedChecksum += val
+        self.ExpectedChecksum = self.ExpectedChecksum & 0xFFFF
+        if self.ExpectedChecksum != self.ReceivedChecksum:
             self.ValidChecksum = False
 
 #Stream worker class
