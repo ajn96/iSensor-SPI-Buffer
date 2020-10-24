@@ -69,16 +69,18 @@ maxDelta = 0.0
 while buf.StreamData.empty() == False:
     lastTimestamp = bufEntry.Timestamp
     bufEntry = buf.StreamData.get()
+    if bufEntry.ValidChecksum == False:
+        print("Invalid checksum!")
     timeStamp = bufEntry.Timestamp
     delta = timeStamp - lastTimestamp
     if delta > maxDelta:
         maxDelta = delta
 
-bufEntry.Timestamp /= 1000
+startTime /= 1000
 lastTimestamp /= 1000
 maxDelta /= 1000
 print("Starting buffer timestamp: " + str(startTime) + " ms")
-print("Ending buffer timestamp: " + str(timeStamp) + " ms")
+print("Ending buffer timestamp: " + str(lastTimestamp) + " ms")
 print("Max timestamp delta: " + str(maxDelta) + " ms")
 
 print("Board connected: " + str(buf.check_connection()))
