@@ -37,75 +37,78 @@ void ButtonPressHandler();
 #define REG_PER_PAGE				64
 
 /** Number of pages */
-#define NUM_REG_PAGES				3
+#define NUM_REG_PAGES				4
 
 /** Page register (0 for all pages) */
 #define PAGE_ID						0
+
+/** Output page used for storing volatile data */
+#define OUTPUT_PAGE					252
 
 /** iSensor-SPI-Buffer config settings page */
 #define BUF_CONFIG_PAGE				253
 
 /* Non-volatile R/W regs */
-#define BUF_CONFIG_REG				0x01
-#define BUF_LEN_REG					0x02
-#define BTN_CONFIG_REG				0x03
-#define DIO_INPUT_CONFIG_REG		0x04
-#define DIO_OUTPUT_CONFIG_REG		0x05
-#define WATERMARK_INT_CONFIG_REG	0x06
-#define ERROR_INT_CONFIG_REG		0x07
-#define IMU_SPI_CONFIG_REG			0x08
-#define USER_SPI_CONFIG_REG			0x09
-#define CLI_CONFIG_REG				0x0A
-#define USER_COMMAND_REG			0x0B /* Clears automatically */
-#define SYNC_FREQ_REG				0x0C
+#define BUF_CONFIG_REG				0x41
+#define BUF_LEN_REG					0x42
+#define BTN_CONFIG_REG				0x43
+#define DIO_INPUT_CONFIG_REG		0x44
+#define DIO_OUTPUT_CONFIG_REG		0x45
+#define WATERMARK_INT_CONFIG_REG	0x46
+#define ERROR_INT_CONFIG_REG		0x47
+#define IMU_SPI_CONFIG_REG			0x48
+#define USER_SPI_CONFIG_REG			0x49
+#define CLI_CONFIG_REG				0x4A
+#define USER_COMMAND_REG			0x4B /* Clears automatically */
+#define SYNC_FREQ_REG				0x4C
 /* Space for 12 more regs here */
-#define USER_SCR_0_REG				0x1A
-#define USER_SCR_3_REG				0x1D
-#define UTC_TIMESTAMP_LWR_REG		0x1E
-#define UTC_TIMESTAMP_UPR_REG		0x1F
+#define USER_SCR_0_REG				0x5A
+#define USER_SCR_3_REG				0x5D
+#define UTC_TIMESTAMP_LWR_REG		0x5E
+#define UTC_TIMESTAMP_UPR_REG		0x5F
 
 /* All page 253 regs after this are read only */
 
 /* Volatile general info regs */
-#define STATUS_0_REG				0x20
-#define FAULT_CODE_REG				0x21
-#define BUF_CNT_0_REG				0x22
-#define BUF_MAX_CNT_REG				0x23
+#define STATUS_0_REG				0x60
+#define FAULT_CODE_REG				0x61
+#define BUF_CNT_0_REG				0x62
+#define BUF_MAX_CNT_REG				0x63
 
 /* Volatile time stamp and output data regs */
-#define TIMESTAMP_LWR_REG			0x25
-#define TIMESTAMP_UPR_REG			0x26
-#define TEMP_REG					0x27
-#define VDD_REG						0x28
+#define TIMESTAMP_LWR_REG			0x65
+#define TIMESTAMP_UPR_REG			0x66
+#define TEMP_REG					0x67
+#define VDD_REG						0x68
 
 /* Volatile script info regs */
-#define SCR_LINE_REG				0x32
-#define SCR_ERROR_REG				0x33
+#define SCR_LINE_REG				0x72
+#define SCR_ERROR_REG				0x73
 
 /* Non-volatile device info regs */
-#define ENDURANCE_REG				0x36
-#define FW_REV_REG					0x37
-#define FW_DAY_MONTH_REG			0x38
-#define FW_YEAR_REG					0x39
-#define DEV_SN_REG					0x3A
+#define ENDURANCE_REG				0x76
+#define FW_REV_REG					0x77
+#define FW_DAY_MONTH_REG			0x78
+#define FW_YEAR_REG					0x79
+#define DEV_SN_REG					0x7A
 
 /** iSensor-SPI-Buffer buffer Tx data page */
 #define BUF_WRITE_PAGE				254
 
-#define BUF_WRITE_0_REG				0x49
-#define FLASH_SIG_DRV_REG			0x7E
-#define FLASH_SIG_REG				0x7F
+#define BUF_WRITE_0_REG				0x89
+#define FLASH_SIG_DRV_REG			0xAE
+#define FLASH_SIG_REG				0xAF
 
 /** iSensor-SPI-Buffer buffer Rx data page */
 #define BUF_READ_PAGE				255
 
-#define STATUS_1_REG				0x81
-#define BUF_CNT_1_REG				0x82
-#define BUF_RETRIEVE_REG			0x83
-#define BUF_UTC_TIMESTAMP_REG		0x84
-#define BUF_US_TIMESTAMP_REG		0x86
-#define BUF_SIG_REG					0x88
-#define BUF_DATA_0_REG				0x89
+#define STATUS_1_REG				0xB1
+#define BUF_CNT_1_REG				0xB2
+#define BUF_RETRIEVE_REG			0xB3
+#define BUF_UTC_TIMESTAMP_REG		0xB4
+#define BUF_US_TIMESTAMP_REG		0xB6
+#define BUF_SIG_REG					0xB8
+#define BUF_DATA_0_REG				0xB9
 
 /* Register (non-zero) default values */
 #define FW_REV_DEFAULT				0x0112

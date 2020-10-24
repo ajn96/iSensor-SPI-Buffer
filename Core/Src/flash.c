@@ -63,7 +63,7 @@ void FlashUpdate()
 
 	/* Write all values */
 	flashAddr = FLASH_REG_ADDR;
-	for(int regAddr = 0; regAddr <= FLASH_SIG_REG; regAddr++)
+	for(int regAddr = (1 * REG_PER_PAGE); regAddr <= FLASH_SIG_REG; regAddr++)
 	{
 		HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, flashAddr, g_regs[regAddr]);
 		flashAddr += 2;
@@ -101,14 +101,14 @@ void LoadRegsFlash()
 
 	/* Load regs to SRAM */
 	uint16_t* flashAddr = (uint16_t *) FLASH_REG_ADDR;
-	for(int regAddr = 0; regAddr <= FLASH_SIG_REG; regAddr++)
+	for(int regAddr = (1 * REG_PER_PAGE); regAddr <= FLASH_SIG_REG; regAddr++)
 	{
 		g_regs[regAddr] = (*flashAddr) & 0xFFFF;
 		flashAddr++;
 	}
 
 	/* Calc expected sig (stop before flash signature register) */
-	expectedSig = CalcRegSig((uint16_t*)g_regs, FLASH_SIG_REG - 1);
+	expectedSig = CalcRegSig((uint16_t *)&g_regs[1 * REG_PER_PAGE], (2 * REG_PER_PAGE) - 2);
 
 	/* Store sig */
 	g_regs[FLASH_SIG_DRV_REG] = expectedSig;
@@ -275,6 +275,6 @@ static void PrepareRegsForFlash()
 	/* Restore max count */
 	g_regs[BUF_MAX_CNT_REG] = maxCount;
 
-	/* Calc sig and store back to SRAM */
-	g_regs[FLASH_SIG_REG] = CalcRegSig((uint16_t*)g_regs, FLASH_SIG_REG - 1);
+	/* Calc sig for pages 253 and 254 and store back to SRAM */
+	g_regs[FLASH_SIG_REG] = CalcRegSig((uint16_t *)&g_regs[1 * REG_PER_PAGE], (2 * REG_PER_PAGE) - 2);
 }

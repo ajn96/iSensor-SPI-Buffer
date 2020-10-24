@@ -29,47 +29,57 @@ volatile uint16_t* g_CurrentBufEntry;
 /** iSensor-SPI-Buffer global register array (read-able via SPI). Global scope */
 uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE] __attribute__((aligned (32))) = {
 
-/* Page 253 */
-BUF_CONFIG_PAGE, /* 0x0 */
-BUF_CONFIG_DEFAULT, /* 0x1 */
-BUF_LEN_DEFAULT, /* 0x2 */
-BTN_CONFIG_DEFAULT, /* 0x3 */
-DIO_INPUT_CONFIG_DEFAULT, /* 0x4 */
-DIO_OUTPUT_CONFIG_DEFAULT, /* 0x5 */
-WATER_INT_CONFIG_DEFAULT, /* 0x6 */
-ERROR_INT_CONFIG_DEFAULT, /* 0x7 */
-IMU_SPI_CONFIG_DEFAULT, /* 0x8 */
-USER_SPI_CONFIG_DEFAULT, /* 0x9 */
-CLI_CONFIG_DEFAULT, /* 0xA */
-0x0000, /* 0xB (command) */
-SYNC_FREQ_DEFAULT, /* 0xC */
-0x0000, 0x0000, 0x0000, /* 0xD - 0xF */
+/* Page 252 (volatile, currently unusued) */
+OUTPUT_PAGE, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x00 - 0x07 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x08 - 0x1F */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x10 - 0x17 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x18 - 0x1F */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x20 - 0x27 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x28 - 0x2F */
-0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, FW_REV_DEFAULT, /* 0x30 - 0x37 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x30 - 0x37 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x38 - 0x3F */
 
-/* Page 254 */
-BUF_WRITE_PAGE, 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, /* 0x40 - 0x47 */
-0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x48 - 0x4F */
+/* Page 253 */
+BUF_CONFIG_PAGE, /* 0x40 */
+BUF_CONFIG_DEFAULT, /* 0x41 */
+BUF_LEN_DEFAULT, /* 0x42 */
+BTN_CONFIG_DEFAULT, /* 0x43 */
+DIO_INPUT_CONFIG_DEFAULT, /* 0x44 */
+DIO_OUTPUT_CONFIG_DEFAULT, /* 0x45 */
+WATER_INT_CONFIG_DEFAULT, /* 0x46 */
+ERROR_INT_CONFIG_DEFAULT, /* 0x47 */
+IMU_SPI_CONFIG_DEFAULT, /* 0x48 */
+USER_SPI_CONFIG_DEFAULT, /* 0x49 */
+CLI_CONFIG_DEFAULT, /* 0x4A */
+0x0000, /* 0x4B (command) */
+SYNC_FREQ_DEFAULT, /* 0x4C */
+0x0000, 0x0000, 0x0000, /* 0x4D - 0x4F */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x50 - 0x57 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x58 - 0x5F */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x60 - 0x67 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x68 - 0x6F */
-0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x70 - 0x77 */
-0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, FLASH_SIG_DEFAULT, /* 0x78 - 0x7F */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, FW_REV_DEFAULT, /* 0x70 - 0x77 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x78 - 0x7F */
 
-/* Page 255 */
-BUF_READ_PAGE, 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, /* 0x80 - 0x87 */
+/* Page 254 */
+BUF_WRITE_PAGE, 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, /* 0x80 - 0x87 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x88 - 0x8F */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x90 - 0x97 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x98 - 0x9F */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xA0 - 0xA7 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xA8 - 0xAF */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xB0 - 0xB7 */
-0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xB8 - 0xBF */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, FLASH_SIG_DEFAULT, /* 0xB8 - 0xBF */
+
+/* Page 255 */
+BUF_READ_PAGE, 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, /* 0xC0 - 0xC7 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xC8 - 0xCF */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xD0 - 0xD7 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xD8 - 0xDF */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xE0 - 0xE7 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xE8 - 0xEF */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xF0 - 0xF7 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xF8 - 0xFF */
 };
 
 /** Selected page. Starts on 253 (config page) */
@@ -131,14 +141,14 @@ uint16_t ReadReg(uint8_t regAddr)
 	uint16_t regIndex;
 	uint16_t status;
 
-	if(selected_page < BUF_CONFIG_PAGE)
+	if(selected_page < OUTPUT_PAGE)
 	{
 		return ImuReadReg(regAddr);
 	}
 	else
 	{
 		/* Find offset from page */
-		regIndex = (selected_page - BUF_CONFIG_PAGE) * REG_PER_PAGE;
+		regIndex = (selected_page - OUTPUT_PAGE) * REG_PER_PAGE;
 		/* The regAddr will be in range 0 - 127 for register index in range 0 - 63*/
 		regIndex += (regAddr >> 1);
 
@@ -222,7 +232,7 @@ uint16_t WriteReg(uint8_t regAddr, uint8_t regValue)
 		lastPage = selected_page;
 	}
 
-	if(selected_page < BUF_CONFIG_PAGE)
+	if(selected_page < OUTPUT_PAGE)
 	{
 		/* Pass to IMU */
 		return ImuWriteReg(regAddr, regValue);
@@ -344,15 +354,16 @@ void FactoryReset()
 	flash_sig_drv = g_regs[FLASH_SIG_DRV_REG];
 
 	/* Reset all registers to 0 */
-	for(int i = 0; i < (3 * REG_PER_PAGE); i++)
+	for(int i = 0; i < (NUM_REG_PAGES * REG_PER_PAGE); i++)
 	{
 		g_regs[i] = 0;
 	}
 
 	/* Restore page number registers (addr 0 on each page) */
-	g_regs[0 * REG_PER_PAGE] = BUF_CONFIG_PAGE;
-	g_regs[1 * REG_PER_PAGE] = BUF_WRITE_PAGE;
-	g_regs[2 * REG_PER_PAGE] = BUF_READ_PAGE;
+	g_regs[0 * REG_PER_PAGE] = OUTPUT_PAGE;
+	g_regs[1 * REG_PER_PAGE] = BUF_CONFIG_PAGE;
+	g_regs[2 * REG_PER_PAGE] = BUF_WRITE_PAGE;
+	g_regs[3 * REG_PER_PAGE] = BUF_READ_PAGE;
 
 	/* Restore all non-zero default values */
 	g_regs[BUF_CONFIG_REG] = BUF_CONFIG_DEFAULT;
@@ -536,10 +547,10 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	uint16_t regWriteVal;
 
 	/* Track if write is to the upper word of register */
-	uint32_t isUpper;
+	uint32_t isUpper = regAddr & 0x1;
 
 	/* Find offset from page */
-	regIndex = (selected_page - BUF_CONFIG_PAGE) * REG_PER_PAGE;
+	regIndex = (selected_page - OUTPUT_PAGE) * REG_PER_PAGE;
 
 	/* The regAddr will be in range 0 - 127 for register index in range 0 - 63*/
 	regIndex += (regAddr >> 1);
@@ -558,6 +569,48 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 		if(regIndex > UTC_TIMESTAMP_UPR_REG)
 		{
 			return regIndex;
+		}
+
+		/* Any registers which require filtering or special actions in main loop */
+		if(regIndex == IMU_SPI_CONFIG_REG)
+		{
+			if(isUpper)
+			{
+				/* Need to set a flag to update IMU spi config */
+				g_update_flags |= IMU_SPI_CONFIG_FLAG;
+			}
+		}
+		else if(regIndex == USER_SPI_CONFIG_REG)
+		{
+			if(isUpper)
+			{
+				/* Need to set a flag to update user spi config */
+				g_update_flags |= USER_SPI_CONFIG_FLAG;
+			}
+		}
+		else if(regIndex == DIO_OUTPUT_CONFIG_REG)
+		{
+			if(isUpper)
+			{
+				/* Need to set a flag to update DIO output config */
+				g_update_flags |= DIO_OUTPUT_CONFIG_FLAG;
+			}
+		}
+		else if(regIndex == DIO_INPUT_CONFIG_REG)
+		{
+			if(isUpper)
+			{
+				/* Need to set a flag to update DIO input config */
+				g_update_flags |= DIO_INPUT_CONFIG_FLAG;
+			}
+		}
+		else if(regIndex == USER_COMMAND_REG)
+		{
+			if(isUpper)
+			{
+				/* Need to set a flag to process command */
+				g_update_flags |= USER_COMMAND_FLAG;
+			}
 		}
 	}
 	else if(selected_page == BUF_WRITE_PAGE)
@@ -593,55 +646,14 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 			return regIndex;
 		}
 	}
+	else if(selected_page == OUTPUT_PAGE)
+	{
+		/* Don't currently have any special actions here, all writes allowed */
+	}
 	else
 	{
 		/* Block all other pages */
 		return regIndex;
-	}
-
-	/* Find if writing to upper or lower */
-	isUpper = regAddr & 0x1;
-
-	/* Any registers which require filtering or special actions in main loop */
-	if(regIndex == IMU_SPI_CONFIG_REG)
-	{
-		if(isUpper)
-		{
-			/* Need to set a flag to update IMU spi config */
-			g_update_flags |= IMU_SPI_CONFIG_FLAG;
-		}
-	}
-	else if(regIndex == USER_SPI_CONFIG_REG)
-	{
-		if(isUpper)
-		{
-			/* Need to set a flag to update user spi config */
-			g_update_flags |= USER_SPI_CONFIG_FLAG;
-		}
-	}
-	else if(regIndex == DIO_OUTPUT_CONFIG_REG)
-	{
-		if(isUpper)
-		{
-			/* Need to set a flag to update DIO output config */
-			g_update_flags |= DIO_OUTPUT_CONFIG_FLAG;
-		}
-	}
-	else if(regIndex == DIO_INPUT_CONFIG_REG)
-	{
-		if(isUpper)
-		{
-			/* Need to set a flag to update DIO input config */
-			g_update_flags |= DIO_INPUT_CONFIG_FLAG;
-		}
-	}
-	else if(regIndex == USER_COMMAND_REG)
-	{
-		if(isUpper)
-		{
-			/* Need to set a flag to process command */
-			g_update_flags |= USER_COMMAND_FLAG;
-		}
 	}
 
 	/* Get initial register value */
@@ -660,6 +672,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 		regWriteVal &= 0xFF00;
 		regWriteVal |= regValue;
 	}
+	/* Apply to reg array */
 	g_regs[regIndex] = regWriteVal;
 
 	/* Check for buffer reset actions which should be performed in ISR */
@@ -671,5 +684,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 			BufReset();
 		}
 	}
+
+	/* return index for readback after write */
 	return regIndex;
 }
