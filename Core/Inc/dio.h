@@ -13,6 +13,7 @@
 
 #include "registers.h"
 #include "data_capture.h"
+#include "math.h"
 
 /** Struct representing DIO configuration settings */
 typedef struct DIOConfig
@@ -39,6 +40,7 @@ typedef struct DIOConfig
 /* @cond DOXYGEN_IGNORE */
 void UpdateDIOInputConfig();
 void UpdateDIOOutputConfig();
+void StartSyncGen();
 uint32_t GetHardwareID();
 /* @endcond */
 

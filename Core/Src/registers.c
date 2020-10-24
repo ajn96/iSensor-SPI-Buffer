@@ -33,7 +33,7 @@ uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE] __attribute__((aligned (32))) = {
 BUF_CONFIG_PAGE, /* 0x0 */
 BUF_CONFIG_DEFAULT, /* 0x1 */
 BUF_LEN_DEFAULT, /* 0x2 */
-0x0000, /* 0x3 */
+BTN_CONFIG_DEFAULT, /* 0x3 */
 DIO_INPUT_CONFIG_DEFAULT, /* 0x4 */
 DIO_OUTPUT_CONFIG_DEFAULT, /* 0x5 */
 WATER_INT_CONFIG_DEFAULT, /* 0x6 */
@@ -42,15 +42,13 @@ IMU_SPI_CONFIG_DEFAULT, /* 0x8 */
 USER_SPI_CONFIG_DEFAULT, /* 0x9 */
 CLI_CONFIG_DEFAULT, /* 0xA */
 0x0000, /* 0xB (command) */
-BTN_CONFIG_DEFAULT, /* 0xC */
+SYNC_FREQ_DEFAULT, /* 0xC */
 0x0000, 0x0000, 0x0000, /* 0xD - 0xF */
-0x0000, 0x0000, 0x0000, 0x0000, /* 0x10 - 0x13 */
-FW_REV_DEFAULT, /* 0x14 */
-0x0000, 0x0000, 0x0000, /* 0x15 - 0x17 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x10 - 0x17 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x18 - 0x1F */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x20 - 0x27 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x28 - 0x2F */
-0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x30 - 0x37 */
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, FW_REV_DEFAULT, /* 0x30 - 0x37 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x38 - 0x3F */
 
 /* Page 254 */
@@ -302,6 +300,10 @@ void ProcessCommand()
 	{
 		WatermarkLevelAutoset();
 	}
+	else if(command & CMD_SYNC_GEN)
+	{
+		StartSyncGen();
+	}
 	else if(command & CMD_IMU_RESET)
 	{
 		ResetImu();
@@ -364,6 +366,7 @@ void FactoryReset()
 	g_regs[FW_REV_REG] = FW_REV_DEFAULT;
 	g_regs[CLI_CONFIG_REG] = CLI_CONFIG_DEFAULT;
 	g_regs[BTN_CONFIG_REG] = BTN_CONFIG_DEFAULT;
+	g_regs[SYNC_FREQ_REG] = SYNC_FREQ_DEFAULT;
 
 	/* Apply endurance and flash sig back */
 	g_regs[ENDURANCE_REG] = endurance;
@@ -551,18 +554,10 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	/* Ignore writes to out of bound or read only registers */
 	if(selected_page == BUF_CONFIG_PAGE)
 	{
-		/* Max count is read-only */
-		if(regIndex == BUF_MAX_CNT_REG)
-			return regIndex;
-
-		/* Last writable reg on config page */
-		if(regIndex > USER_SCR_6_REG)
+		/* Last writable reg on config page is UTC_TIMESTAMP_UPR_REG */
+		if(regIndex > UTC_TIMESTAMP_UPR_REG)
 		{
-			/* Allow writes to the UTC timestamp regs */
-			if((regIndex != UTC_TIMESTAMP_LWR_REG)&&(regIndex != UTC_TIMESTAMP_UPR_REG))
-			{
-				return regIndex;
-			}
+			return regIndex;
 		}
 	}
 	else if(selected_page == BUF_WRITE_PAGE)

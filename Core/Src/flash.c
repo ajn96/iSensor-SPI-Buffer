@@ -45,7 +45,7 @@ void FlashUpdate()
 		return;
 	}
 
-	/* Prepare registers for write */
+	/* Prepare registers for write (clears status on 253) */
 	PrepareRegsForFlash();
 
 	/* Erase page */
@@ -58,8 +58,7 @@ void FlashUpdate()
 	if(error != 0xFFFFFFFF)
 	{
 		/* Flag error and try to finish flash write */
-		g_regs[STATUS_0_REG] |= STATUS_FLASH_UPDATE;
-		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+		g_regs[STATUS_1_REG] |= STATUS_FLASH_UPDATE;
 	}
 
 	/* Write all values */
@@ -257,8 +256,12 @@ uint16_t CalcRegSig(uint16_t * regs, uint32_t count)
   */
 static void PrepareRegsForFlash()
 {
-	/* Clear all volatile regs (STATUS, BUF_CNT, day/year, dev SN regs) */
-	for(int addr = STATUS_0_REG; addr < (DEV_SN_REG + 6); addr++)
+	/* Save endurance and buf max count value */
+	uint16_t endur = g_regs[ENDURANCE_REG];
+	uint16_t maxCount = g_regs[BUF_MAX_CNT_REG];
+
+	/* Clear all volatile regs (Everything after UTC time) */
+	for(int addr = UTC_TIMESTAMP_LWR_REG; addr < (DEV_SN_REG + 6); addr++)
 	{
 		g_regs[addr] = 0;
 	}
@@ -266,8 +269,11 @@ static void PrepareRegsForFlash()
 	/* Clear volatile bits in CLI_CONFIG */
 	g_regs[CLI_CONFIG_REG] &= CLI_CONFIG_CLEAR_MASK;
 
-	/* Increment endurance counter */
-	g_regs[ENDURANCE_REG]++;
+	/* Store new endurance back to reg array */
+	g_regs[ENDURANCE_REG] = endur + 1;
+
+	/* Restore max count */
+	g_regs[BUF_MAX_CNT_REG] = maxCount;
 
 	/* Calc sig and store back to SRAM */
 	g_regs[FLASH_SIG_REG] = CalcRegSig((uint16_t*)g_regs, FLASH_SIG_REG - 1);

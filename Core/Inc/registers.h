@@ -48,7 +48,7 @@ void ButtonPressHandler();
 /* Non-volatile R/W regs */
 #define BUF_CONFIG_REG				0x01
 #define BUF_LEN_REG					0x02
-#define BUF_MAX_CNT_REG				0x03
+#define BTN_CONFIG_REG				0x03
 #define DIO_INPUT_CONFIG_REG		0x04
 #define DIO_OUTPUT_CONFIG_REG		0x05
 #define WATERMARK_INT_CONFIG_REG	0x06
@@ -57,22 +57,22 @@ void ButtonPressHandler();
 #define USER_SPI_CONFIG_REG			0x09
 #define CLI_CONFIG_REG				0x0A
 #define USER_COMMAND_REG			0x0B /* Clears automatically */
-#define BTN_CONFIG_REG				0x0C
-#define USER_SCR_0_REG				0x0D
-#define USER_SCR_6_REG				0x13
+#define SYNC_FREQ_REG				0x0C
+/* Space for 12 more regs here */
+#define USER_SCR_0_REG				0x1A
+#define USER_SCR_3_REG				0x1D
+#define UTC_TIMESTAMP_LWR_REG		0x1E
+#define UTC_TIMESTAMP_UPR_REG		0x1F
 
-/* Non-volatile read only regs */
-#define FW_REV_REG					0x14
-#define ENDURANCE_REG				0x15
+/* All page 253 regs after this are read only */
 
 /* Volatile general info regs */
 #define STATUS_0_REG				0x20
-#define BUF_CNT_0_REG				0x21
-#define FAULT_CODE_REG				0x22
+#define FAULT_CODE_REG				0x21
+#define BUF_CNT_0_REG				0x22
+#define BUF_MAX_CNT_REG				0x23
 
 /* Volatile time stamp and output data regs */
-#define UTC_TIMESTAMP_LWR_REG		0x23
-#define UTC_TIMESTAMP_UPR_REG		0x24
 #define TIMESTAMP_LWR_REG			0x25
 #define TIMESTAMP_UPR_REG			0x26
 #define TEMP_REG					0x27
@@ -83,6 +83,8 @@ void ButtonPressHandler();
 #define SCR_ERROR_REG				0x33
 
 /* Non-volatile device info regs */
+#define ENDURANCE_REG				0x36
+#define FW_REV_REG					0x37
 #define FW_DAY_MONTH_REG			0x38
 #define FW_YEAR_REG					0x39
 #define DEV_SN_REG					0x3A
@@ -117,6 +119,7 @@ void ButtonPressHandler();
 #define USER_SPI_CONFIG_DEFAULT		0x0007
 #define CLI_CONFIG_DEFAULT			0x2000
 #define BTN_CONFIG_DEFAULT			0x8000
+#define SYNC_FREQ_DEFAULT			2000
 #define FLASH_SIG_DEFAULT			0x9D2A
 
 /* Update flags definitions */
@@ -139,6 +142,7 @@ void ButtonPressHandler();
 #define CMD_START_SCRIPT			(1 << 6)
 #define CMD_STOP_SCRIPT				(1 << 7)
 #define CMD_WATERMARK_SET			(1 << 8)
+#define CMD_SYNC_GEN				(1 << 9)
 #define CMD_BOOTLOADER				(1 << 13)
 #define CMD_IMU_RESET				(1 << 14)
 #define CMD_SOFTWARE_RESET			(1 << 15)

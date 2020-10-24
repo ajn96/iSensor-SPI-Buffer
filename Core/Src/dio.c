@@ -16,10 +16,111 @@ extern volatile uint16_t g_regs[3 * REG_PER_PAGE];
 /** Struct storing current DIO output config. Global scope */
 volatile DIOConfig g_pinConfig = {};
 
+/** TIM16 handle */
+static TIM_HandleTypeDef htim16;
+
 /* Private function prototypes */
 static void ValidateDIOOutputConfig();
 static uint16_t BuildDIOOutputConfigReg();
 static void ParseDIOOutputConfig();
+
+/**
+  * @brief Generates a clock on DIO2_Slave based on frequency in SYNC_FREQ
+  *
+  * This can be disabled by restoring DIO2_Slave to input/output mode
+  * through a write to DIO_OUTPUT_CONFIG.
+  *
+  * The target freq can be in the range 1Hz - 65535Hz. This function adaptively
+  * sets the timer16 prescaler value to allow the most precise frequency.
+  *
+  * The timer16 is clocked off the system clock of 72MHz. For a given target
+  * freq, the output freq can be calculated as:
+  *
+  *        72MHz / preScale
+  * freq = -----------------
+  *           period
+  *
+  * Where period and preScale are limited to 16-bits. The total cycles can
+  * then be calculated as:
+  *
+  * cycles = 72000000 / freq
+  *
+  * This value may be more than 0xFFFF, so
+  *
+  * preScale = (cycles / 0xFFFF) + 1
+  *
+  * Then:
+  *
+  * period = 72000000 / (preScale * freq)
+  *
+  */
+void StartSyncGen()
+{
+	uint32_t period, preScale, cycles;
+
+	/* Timer/GPIO init HAL structs */
+	TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+	TIM_MasterConfigTypeDef sMasterConfig = {0};
+	TIM_OC_InitTypeDef sConfigOC = {0};
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+	/* Get freq. Don't allow 0 */
+	if(g_regs[SYNC_FREQ_REG] == 0)
+	{
+		g_regs[SYNC_FREQ_REG] = 1;
+	}
+
+	/* Pin in question is PB8. Can mux to timer16, CH1. */
+
+	/**TIM16 GPIO Configuration PB8 */
+	GPIO_InitStruct.Pin = GPIO_PIN_8;
+	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	GPIO_InitStruct.Alternate = GPIO_AF1_TIM16;
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+	/* Initially disable */
+    TIM16->CR1 &= ~0x1;
+
+    /* Calculate prescale */
+    cycles = 72000000 / g_regs[SYNC_FREQ_REG];
+    preScale = (uint16_t)(cycles / 0xFFFF);
+
+    /* Find period now based on prescaled clock freq */
+    period = (uint32_t)(72000000 / ((preScale + 1) * g_regs[SYNC_FREQ_REG]));
+
+	htim16.Instance = TIM16;
+	htim16.Init.Prescaler = preScale;
+	htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim16.Init.Period = period;
+	htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+	HAL_TIM_Base_Init(&htim16);
+
+	sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+	HAL_TIM_ConfigClockSource(&htim16, &sClockSourceConfig);
+	HAL_TIM_PWM_Init(&htim16);
+
+	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+	HAL_TIMEx_MasterConfigSynchronization(&htim16, &sMasterConfig);
+
+	sConfigOC.OCMode = TIM_OCMODE_PWM1;
+	/* 50% duty cycle */
+	sConfigOC.Pulse = period >> 1;
+	sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
+	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+	HAL_TIM_PWM_ConfigChannel(&htim16, &sConfigOC, TIM_CHANNEL_1);
+
+	/* Clear OC2PE bit to make compare values apply immediately */
+	TIM16->CCMR1 &= ~(TIM_CCMR1_OC2PE);
+
+    /* Enable PWM */
+	HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
+	/* Enable timer */
+    TIM16->CR1 |= 0x1;
+}
 
 /**
   * @brief Gets two bit hardware identification code from identifier pins
