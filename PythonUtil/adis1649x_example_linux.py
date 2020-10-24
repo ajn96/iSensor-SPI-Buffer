@@ -1,6 +1,7 @@
 #Author: Alex Nolan (alex.nolan@analog.com)
 
 from spi_buf_cli import ISensorSPIBuffer
+from spi_buf_cli import BufferSample
 import time
 
 #port name for iSensor-SPI-Buffer
@@ -61,22 +62,23 @@ buf.stop_stream()
 print("End data count: " + str(buf.StreamData.qsize()))
 
 bufEntry = buf.StreamData.get()
-timeStamp = (bufEntry[2] + (65536 * bufEntry[3])) / 1000000.0
-lastTimestamp = timeStamp
-startTime = timeStamp
+lastTimestamp = bufEntry.Timestamp
+startTime = bufEntry.Timestamp
 delta = 0.0
 maxDelta = 0.0
 while buf.StreamData.empty() == False:
+    lastTimestamp = bufEntry.Timestamp
     bufEntry = buf.StreamData.get()
-    lastTimestamp = timeStamp
-    timeStamp = (bufEntry[2] + (65536 * bufEntry[3])) / 1000000.0
+    timeStamp = bufEntry.Timestamp
     delta = timeStamp - lastTimestamp
     if delta > maxDelta:
         maxDelta = delta
 
-maxDelta *= 1000
-print("Starting buffer timestamp: " + str(startTime) + " sec")
-print("Ending buffer timestamp: " + str(timeStamp) + " sec")
+bufEntry.Timestamp /= 1000
+lastTimestamp /= 1000
+maxDelta /= 1000
+print("Starting buffer timestamp: " + str(startTime) + " ms")
+print("Ending buffer timestamp: " + str(timeStamp) + " ms")
 print("Max timestamp delta: " + str(maxDelta) + " ms")
 
 print("Board connected: " + str(buf.check_connection()))

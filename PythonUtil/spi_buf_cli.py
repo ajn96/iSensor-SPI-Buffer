@@ -164,6 +164,37 @@ class ISensorSPIBuffer():
         self.run_command(1)
         time.sleep(0.1)
 
+
+class BufferSample():
+    "One sample from the buffer. Contains a data field, microsecond timestamp, UTC timestamp, and checksum validity flag"
+
+    def __init__(self, rawData):
+        self.Data = []
+        self.ValidChecksum = True
+        self.Timestamp = 0
+        self.UTC_Timestamp = 0
+
+        if (len(rawData) < 7):
+            #bad buffer entry
+            self.ValidChecksum = False
+            return
+
+        #parse out timestamps + data
+        self.UTC_Timestamp = rawData[0] + 63356 * rawData[1]
+        self.Timestamp = rawData[2] + 63356 * rawData[3]
+        self.Data = rawData[5:]
+
+        #compare expected checksum with received
+        expectedChecksum = rawData[4]
+        sum = 0
+        for i in range(3):
+            sum = sum + rawData[i]
+        for val in self.Data:
+            sum = sum + val
+        sum = sum & 0xFFFF
+        if sum != expectedChecksum:
+            self.ValidChecksum = False
+
 #Stream worker class
 class StreamWork(Thread):
     
@@ -197,7 +228,7 @@ class StreamWork(Thread):
         while self.ThreadActive:
             bufEntry = self.buf._ParseLine((self._lineReader.readline()).decode('utf_8'))
             if len(bufEntry) == bufLen:
-                self.buf.StreamData.put(bufEntry)
+                self.buf.StreamData.put(BufferSample(bufEntry))
 
         #stream stop has been signaled. Cancel in firmware and flag
         self.buf.StreamRunning = False
