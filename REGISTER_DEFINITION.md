@@ -5,6 +5,10 @@ Data and control interfacing to the iSensor SPI Buffer firmware from a master de
 * Registers with a R/W field marked "R" can be read. Registers marked "W" can be written. Any registers in the address space not enumerated in the register map are read only and will always read 0
 * Registers which are marked "Flash Backup" are loaded from non-volatile memory on initialization. Issuing a Flash Update command will save the current register contents to non-volatile memory.  These values will then be loaded by default the next time the firmware loads.
 
+## Page 252 - Volatile Scratch
+
+This entire page is currently available for read/write by a user application. None of the registers on page 252 are backed up to flash - they will always initialize with a value of 0. These registers are intended as output data registers for future firmware functionality expansion.
+
 ## Page 253 - iSensor-SPI-Buffer configuration
 
 | Address | Register Name | Default | R/W | Flash Backup | Description |
