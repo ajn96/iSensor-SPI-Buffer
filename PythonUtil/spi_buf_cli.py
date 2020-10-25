@@ -97,10 +97,10 @@ class ISensorSPIBuffer():
         time.sleep(0.1)
 
     def get_status(self):
-        "Get the iSensor-SPI-Buffer status register value"
+        "Get the iSensor-SPI-Buffer status flags (Status object)"
         self.__FlushSerialInput()
         self._SendLine("status")
-        return self._ParseLine(self._ReadLine())
+        return Status(self._ParseLine(self.__ReadLine())[0])
 
     def get_uptime(self):
         "Get iSensor-SPI-Buffer uptime (ms)"
@@ -196,6 +196,29 @@ class BufferSample():
         self.ExpectedChecksum = self.ExpectedChecksum & 0xFFFF
         if self.ExpectedChecksum != self.ReceivedChecksum:
             self.ValidChecksum = False
+
+class Status():
+    "iSensor-SPI-Buffer device status flags"
+
+    def __init__(self, statusRegVal):
+        self.BUF_WATERMARK = bool(statusRegVal & (1 << 0))
+        self.BUF_FULL = bool(statusRegVal & (1 << 1))
+        self.SPI_ERROR = bool(statusRegVal & (1 << 2))
+        self.SPI_OVERFLOW = bool(statusRegVal & (1 << 3))
+        self.OVERRUN = bool(statusRegVal & (1 << 4))
+        self.DMA_ERROR = bool(statusRegVal & (1 << 5))
+        self.PPS_UNLOCK = bool(statusRegVal & (1 << 6))
+        self.TEMP_WARNING = bool(statusRegVal & (1 << 7))
+        self.SCRIPT_ERROR = bool(statusRegVal & (1 << 10))
+        self.SCRIPT_ACTIVE = bool(statusRegVal & (1 << 11))
+        self.FLASH_ERROR = bool(statusRegVal & (1 << 12))
+        self.FLASH_UPDATE_ERROR = bool(statusRegVal & (1 << 13))
+        self.FAULT = bool(statusRegVal & (1 << 14))
+        self.WATCHDOG = bool(statusRegVal & (1 << 15))
+
+    def __str__(self):
+        attrs = vars(self)
+        return (''.join("%s: %s\n" % item for item in attrs.items()))
 
 #Stream worker class
 class StreamWork(Thread):
