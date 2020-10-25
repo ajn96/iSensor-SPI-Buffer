@@ -157,7 +157,7 @@ void USBTxHandler(const uint8_t* buf, uint32_t count)
 {
 	if(count == 0)
 		return;
-	if(USBWaitForTxDone(20))
+	if(USBWaitForTxDone(50))
 	{
 		USBD_CDC_SetTxBuffer(&hUsbDeviceFS, (uint8_t *) buf, count);
 		USBD_CDC_TransmitPacket(&hUsbDeviceFS);
@@ -209,7 +209,7 @@ void WatermarkLevelAutoset()
 	bufCliLen = ((bufNumRegs + 5) * 5) + 1;
 
 	/* Save to reg (preserving pulse bit) */
-	waterMarkLevel = (2 * STREAM_BUF_SIZE) / bufCliLen;
+	waterMarkLevel = STREAM_BUF_SIZE / bufCliLen;
 	g_regs[WATERMARK_INT_CONFIG_REG] &= WATERMARK_PULSE_MASK;
 	g_regs[WATERMARK_INT_CONFIG_REG] |= waterMarkLevel;
 }

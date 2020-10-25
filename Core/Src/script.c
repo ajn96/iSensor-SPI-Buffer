@@ -671,12 +671,13 @@ static void WriteHandler(script* scr)
   */
 static void ReadBufHandler(bool isUSB)
 {
-	uint32_t numBufs = g_regs[BUF_CNT_0_REG];
-	uint32_t bufLastAddr = g_regs[BUF_LEN_REG] + BUF_DATA_BASE_ADDR;
-	uint8_t* writeBufPtr;
-	uint8_t* activeBuf;
+	uint8_t* activeBuf, writeBufPtr;
 	uint16_t readVal;
-	uint32_t count;
+	uint32_t addr, buf, numBufs, bufLastAddr, count;
+
+	numBufs = g_regs[BUF_CNT_0_REG];
+	bufLastAddr = g_regs[BUF_LEN_REG] + BUF_DATA_BASE_ADDR;
+	count = 0;
 
 	/* Set page to 255 (if not already) */
 	if(ReadReg(0) != BUF_READ_PAGE)
@@ -696,12 +697,11 @@ static void ReadBufHandler(bool isUSB)
 		activeBuf = StreamBuf_A;
 		BufA = true;
 	}
-	count = 0;
 
-	for(uint32_t buf = 0; buf < numBufs; buf++)
+	for(buf = 0; buf < numBufs; buf++)
 	{
 		BufDequeueToOutputRegs();
-		for(uint32_t addr = BUF_BASE_ADDR; addr <= bufLastAddr; addr += 2)
+		for(addr = BUF_BASE_ADDR; addr <= bufLastAddr; addr += 2)
 		{
 			readVal = ReadReg(addr);
 			UShortToHex(writeBufPtr, readVal);
@@ -728,6 +728,7 @@ static void ReadBufHandler(bool isUSB)
 					USBTxHandler(activeBuf, count);
 				else
 					SDTxHandler(activeBuf, count);
+				count = 0;
 
 				/* Reset pointers (ping/pong for stream) */
 				if(BufA)
@@ -742,7 +743,6 @@ static void ReadBufHandler(bool isUSB)
 					activeBuf = StreamBuf_A;
 					BufA = true;
 				}
-				count = 0;
 			}
 		}
 		if(count != 0)
@@ -759,7 +759,9 @@ static void ReadBufHandler(bool isUSB)
 	}
 	/* Transmit any residual data */
 	if(isUSB)
+	{
 		USBTxHandler(activeBuf, count);
+	}
 	else
 		SDTxHandler(activeBuf, count);
 }

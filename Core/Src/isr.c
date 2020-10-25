@@ -119,8 +119,8 @@ void EXTI9_5_IRQHandler()
 		return;
 
 	/* Get the sample timestamp */
-	SampleTimestampS = GetPPSTimestamp();
 	SampleTimestampUs = GetMicrosecondTimestamp();
+	SampleTimestampS = GetPPSTimestamp();
 
 	/* Get element handle */
 	BufferElementHandle = BufAddElement();
