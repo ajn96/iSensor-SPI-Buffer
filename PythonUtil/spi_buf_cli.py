@@ -17,12 +17,12 @@ class ISensorSPIBuffer():
         self.StreamRunning = False
         #Queue for storing data read during stream
         self.StreamData = SimpleQueue()
-        self.Ser = serial.Serial(str(portName), 1000000)
+        self.Ser = serial.Serial(str(portName), 2000000)
         self.Ser.timeout = 0.5
         #Init buffer board
         self.__Connect()
-        #create stream worker thread
-        self.StreamThread = StreamWork(self)
+        #create stream worker thread list
+        self.StreamThreads = []
 
 #API to the buffer board
 
@@ -80,15 +80,16 @@ class ISensorSPIBuffer():
 
     def start_stream(self):
         "Start stream. When a stream is running, data should be read from the StreamQueue"
-        self.StreamThread.ThreadActive = True
-        self.StreamThread.start()
+        self.StreamThreads.append(StreamWork(self))
+        self.StreamThreads[-1].ThreadActive = True
+        self.StreamThreads[-1].start()
 
     def stop_stream(self):
         "Signal stream thread to stop"
-        self.StreamThread.ThreadActive = False
+        self.StreamThreads[-1].ThreadActive = False
         #block until done
-        if self.StreamThread.is_alive():
-            self.StreamThread.join()
+        if self.StreamThreads[-1].is_alive():
+            self.StreamThreads[-1].join()
 
     def flush_streamdata(self):
         "Flush python stream data queue as well as firmware data queue"

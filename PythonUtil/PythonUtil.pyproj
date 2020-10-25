@@ -24,6 +24,7 @@
     <Compile Include="adis1649x_example_linux.py" />
     <Compile Include="adis1649x_example_windows.py" />
     <Compile Include="spi_buf_cli.py" />
+    <Compile Include="steam_benchmark.py" />
     <Compile Include="test.py" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />

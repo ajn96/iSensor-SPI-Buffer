@@ -75,7 +75,7 @@ while buf.StreamData.empty() == False:
     if bufEntry.ValidChecksum == False:
         print("Invalid checksum!")
     timeStamp = bufEntry.Timestamp
-    delta = timeStamp - lastTimestamp
+    delta = abs(timeStamp - lastTimestamp)
     if delta > maxDelta:
         maxDelta = delta
 
