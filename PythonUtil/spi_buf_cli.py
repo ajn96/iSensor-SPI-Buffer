@@ -87,7 +87,8 @@ class ISensorSPIBuffer():
         "Signal stream thread to stop"
         self.StreamThread.ThreadActive = False
         #block until done
-        self.StreamThread.join()
+        if self.StreamThread.is_alive():
+            self.StreamThread.join()
 
     def flush_streamdata(self):
         "Flush python stream data queue as well as firmware data queue"

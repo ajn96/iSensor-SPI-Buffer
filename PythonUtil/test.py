@@ -10,15 +10,21 @@ buf = ISensorSPIBuffer("COM11")
 
 class SpiBufTestMethods(unittest.TestCase):
 
+    def setUp(self):
+        #make sure board is in a good state
+        buf.stop_stream()
+        buf.select_page(253)
+        self.assertTrue(buf.check_connection(), "ERROR: Connection check failed")
+
     def test_buf_pageselect(self):
         for trial in range(10):
-            for page in range(253, 255):
+            for page in range(252, 255):
                 buf.select_page(page)
                 self.assertEqual(page, buf.read_reg(0), "ERROR: Invalid page")
 
     def test_imu_pageselect(self):
         buf.select_page(253)
-        for page in range(0, 252):
+        for page in range(0, 251):
             buf.select_page(page)
             self.assertEqual(0, buf.read_reg(0), "ERROR: Invalid IMU page")
             
@@ -42,7 +48,7 @@ class SpiBufTestMethods(unittest.TestCase):
         buf.start_stream()
         lastCount = 0
         dataCount = 0
-        for trial in range(4):
+        for trial in range(5):
             time.sleep(0.5)
             dataCount = buf.StreamData.qsize()
             self.assertGreater(dataCount, lastCount, "ERROR: Count failed to increase " + str(trial))
@@ -54,10 +60,14 @@ class SpiBufTestMethods(unittest.TestCase):
         self.assertTrue(buf.check_connection(), "ERROR: Connection check failed")
 
     def test_streamstop(self):
-        self.assertTrue(buf.check_connection(), "ERROR: Connection check failed")
+        for trial in range(5):
+            buf.stop_stream()
+            self.assertTrue(buf.check_connection(), "ERROR: Connection check failed")
 
     def test_stream_nodata(self):
-        self.assertTrue(buf.check_connection(), "ERROR: Connection check failed")
+        #write to dio_output to stop sync gen
+        buf.write_reg(0xA, 0x2)
+        
 
 if __name__ == '__main__':
     unittest.main()
