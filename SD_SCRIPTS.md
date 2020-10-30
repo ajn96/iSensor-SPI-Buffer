@@ -20,9 +20,9 @@ This set of commands gives the user significant flexibility, without making the 
 
 In order to run an SD card script, the SD card must be formatted FAT32, with a single volume. 
 
-The script file must be saved as "script.txt" in the top level directory of the SD card volume. The output from the script running will be appended to "result.txt" in the top level directory. If "result.txt" does not exist, it will be created by the iSensor-SPI-Buffer firmware.
+The script file must be saved as "script.txt" in the top level directory of the SD card volume. The output from the script running will be placed in a numbered result file (RES_nnn.TXT, where nnn is the run number, starting at 0) in the top level directory. Each script run will result in a new output file creation by the iSensor-SPI-Buffer firmware, allowing for easy identification of different runs.
 
-At the start of each script run, "Script Starting..." will be printed to the result file, to delineate different script runs
+At the start of each script run, "Script Starting..." will be printed to the result file.
 
 ## Starting a Script
 
