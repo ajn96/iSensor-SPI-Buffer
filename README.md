@@ -139,7 +139,7 @@ There will be an ISR to handle user-initiated SPI transactions (slave interface)
 
 SPI transactions will be classified as "read" or "write" by the SPI buffer board the same as the iSensor IMU SPI protocol. A write operation is signaled by setting the MSB of each 16-bit word. The upper 8 bits of the 16-bit transaction contain the register address to be written to as well as the read/write bit. The lower 8 bits of the 16-bit transaction contain the data to be written. 
 
-A single read request transmitted to the SPI buffer on the slave interface will result in *two* SPI transactions sent to the IMU on the master interface. The first transaction sends the register read request to the IMU and the second reads the requested register contents data back from the IMU. The requested IMU register is then loaded into the SPI buffer user SPI transmit buffer so that it is available to the user on the next user SPI transaction.  For write transactions, a single write command will be sent to the IMU. The data resulting from the write transaction is then loaded into the SPI buffer user SPI transmit buffer. Unlike the read operation, a write operation will not automatically generate an additional SPI transaction. The diagram below shows the IMU SPI passthrough process for a register read operation.
+A single read request transmitted to the SPI buffer on the slave interface will result in *two* SPI transactions sent to the IMU on the master interface. The first transaction sends the register read request to the IMU and the second reads the requested register contents data back from the IMU. The requested IMU register is then loaded into the SPI buffer user SPI transmit buffer so that it is available to the user on the next user SPI transaction.  For write transactions, a single write command will be sent to the IMU. The data resulting from the write transaction is then loaded into the SPI buffer user SPI transmit buffer. Unlike the read operation, a write operation will not automatically generate an additional SPI transaction. The diagram below shows the IMU SPI pass-through process for a register read operation.
 
 ![SPI Passthrough](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/spi_passthrough.JPG)
 
@@ -157,7 +157,7 @@ Each of the four DIO lines from the iSensor-SPI-Buffer to the master device can 
 * Watermark Interrupt Mode: The selected DIO will go high when a specified number of samples are available to be dequeued. This allows a master device to simply monitor the data ready interrupt signal for a positive edge, and then dequeue a large number of IMU data samples
 * Buffer Full Interrupt Mode: The selected DIO will go high when the buffer is full
 * Error Interrupt Mode: The selected DIO will go high when an error is detected and flagged in the STATUS register
-* Pin Pass-Through Mode: The DIO output from the IMU (e.g. a data ready signal or sync signal) will be directly connected to the master device, using an ADG1611 switch. When a DIO is configured in pin pass-through mode it cannot be used for interrupt signalling
+* Pin Pass-Through Mode: The DIO output from the IMU (e.g. a data ready signal or sync signal) will be directly connected to the master device, using an ADG1611 switch. When a DIO is configured in pin pass-through mode it cannot be used for interrupt signaling
 
 The state of each interrupt signal is checked and updated on each iteration of the main cyclic executive loop. This ensures quick response time to changes in the buffer state while maintaining a simple program flow.
 
@@ -171,3 +171,5 @@ The state of each interrupt signal is checked and updated on each iteration of t
 * Configuration registers for iSensor SPI buffer will be available on page 253
 * The data acquisition write data registers (data to transmit per data ready) will be on page 254
 * Buffer output data registers will be on page 255
+
+"The SPI who loved me" - PK
