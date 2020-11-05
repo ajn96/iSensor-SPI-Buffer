@@ -21,8 +21,8 @@ buf = ISensorSPIBuffer(spi_buf_port)
 #print version and check functionality
 print("Board connected: " + str(buf.check_connection()))
 
-buf.write_reg(0x8, 0x12)
-buf.write_reg(0xA, 0x2)
+buf.write_reg(0x8, 0x11)
+buf.write_reg(0xA, 0)
 buf.write_reg(0x4, 38)
 buf.write_reg(0x2, 0x2)
 buf.write_reg(0x10, 0x105)
@@ -53,11 +53,10 @@ while goodFreq:
             goodFreq = False
         timeStamp = bufEntry.Timestamp
         measuredFreq = 1000000.0 / (timeStamp - lastTimestamp)
-        #print(measuredFreq)
+        print(timeStamp)
         if abs(measuredFreq - freq) > (0.1 * freq):
             print("Invalid timestamp freq " + str(measuredFreq))
             #goodFreq = False;
-            
     if goodFreq:
         goodFreq = buf.check_connection()
 

@@ -17,7 +17,7 @@ class ISensorSPIBuffer():
         self.StreamRunning = False
         #Queue for storing data read during stream
         self.StreamData = SimpleQueue()
-        self.Ser = serial.Serial(str(portName), 2000000)
+        self.Ser = serial.Serial(str(portName), 1500000)
         self.Ser.timeout = 0.5
         #Init buffer board
         self.__Connect()
@@ -244,6 +244,8 @@ class StreamWork(Thread):
         #flush firmware buffer contents prior to stream
         self.buf.run_command(1)
         time.sleep(0.1)
+        #run watermark autoset
+        self.buf.run_command(0x100)
         #start stream on buffer board firmware
         self.buf._SendLine("stream 1")
         self.buf.select_page(255)
