@@ -8,19 +8,23 @@ import time
 spi_buf_port = '/dev/ttyACM0'
 
 #set the capture time (in seconds) for example app
-capture_time_sec = 5
+capture_time_sec = 2
 
 #set the data rate for the IMU
-data_rate_hz = 400
+data_rate_hz = 1000
 
 #create ISensorSPIBuffer object
 buf = ISensorSPIBuffer(spi_buf_port)
 
 #print version and check functionality
-print(buf.version())
 print("Board connected: " + str(buf.check_connection()))
 
-print("Buffer board uptime: " + str(buf.get_uptime()) + "ms")
+try:
+    print(buf.version())
+    print("Buffer board uptime: " + str(buf.get_uptime()) + "ms")
+except:
+    print("Unsupported command on this firmware revision!")
+
 print("Buffer board temperature: " + str(buf.get_temp()) + "C")
 print("Buffer board Vdd: " + str(buf.get_vdd()) + "V")
 
@@ -60,27 +64,32 @@ print("Sleeping for " + str(capture_time_sec) + " seconds...")
 time.sleep(capture_time_sec)
 buf.stop_stream()
 print("End data count: " + str(buf.StreamData.qsize()))
-
-bufEntry = buf.StreamData.get()
-lastTimestamp = bufEntry.Timestamp
-startTime = bufEntry.Timestamp
-delta = 0.0
-maxDelta = 0.0
-while buf.StreamData.empty() == False:
-    lastTimestamp = bufEntry.Timestamp
-    bufEntry = buf.StreamData.get()
-    if bufEntry.ValidChecksum == False:
-        print("Invalid checksum!")
-    timeStamp = bufEntry.Timestamp
-    delta = timeStamp - lastTimestamp
-    if delta > maxDelta:
-        maxDelta = delta
-
-startTime /= 1000
-lastTimestamp /= 1000
-maxDelta /= 1000
-print("Starting buffer timestamp: " + str(startTime) + " ms")
-print("Ending buffer timestamp: " + str(lastTimestamp) + " ms")
-print("Max timestamp delta: " + str(maxDelta) + " ms")
-
 print("Board connected: " + str(buf.check_connection()))
+
+if buf.StreamData.empty() == True:
+    print("No data read!")
+else:
+    bufEntry = buf.StreamData.get()
+    lastTimestamp = bufEntry.Timestamp
+    startTime = bufEntry.Timestamp
+    delta = 0.0
+    maxDelta = 0.0
+    while buf.StreamData.empty() == False:
+        lastTimestamp = bufEntry.Timestamp
+        bufEntry = buf.StreamData.get()
+        if bufEntry.ValidChecksum == False:
+            print("Invalid checksum!")
+        timeStamp = bufEntry.Timestamp
+        print(str(bufEntry.Data[-2]) + " " + str(timeStamp))
+        delta = timeStamp - lastTimestamp
+        if delta > maxDelta:
+            maxDelta = delta
+        if(delta < 0):
+            print("Invalid delta!")
+
+    startTime /= 1000
+    lastTimestamp /= 1000
+    maxDelta /= 1000
+    print("Starting buffer timestamp: " + str(startTime) + " ms")
+    print("Ending buffer timestamp: " + str(lastTimestamp) + " ms")
+    print("Max timestamp delta: " + str(maxDelta) + " ms")
