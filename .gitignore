@@ -11,6 +11,7 @@ Test/iSensor-SPI-Buffer-Test/obj/
 
 *.vs/
 PythonUtil/__pycache__/
+PythonUtil/Backup/
 
 *.suo
 
@@ -22,3 +23,4 @@ Release/
 Doxygen/
 
 iSensor-SPI-Buffer (1).launch
+/.settings/
