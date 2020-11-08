@@ -7,12 +7,26 @@ from threading import Thread
 from queue import SimpleQueue
 
 class ISensorSPIBuffer():
+    """
+    Python interface library to the iSensor-SPI-Buffer CLI
+
+    Member Variables
+    ---------------------------------------------------------------------------
+    StreamRunning: Track if a buffered stream is actively running
+    StreamData: Simple queue (of BufferSample) containing stream data
+    Ser: Serial port iSensor-SPI-Buffer board is connected to
+    """
 
 #Constructor
     
     def __init__(self, portName):
-        "Initializer. Sets up serial port then connects to iSensor-SPI-Buffer on provided port"
-        
+        """
+        Initializer. Sets up serial port then connects to iSensor-SPI-Buffer on provided port
+
+        Parameters
+        ---------------------------------------------------------------------------
+        portName: Name of serial port iSensor-SPI-Buffer is connected to (e.g. COM1, /dev/ttyACM0, etc)
+        """
         #Flag to track if stream is in progress
         self.StreamRunning = False
         #Queue for storing data read during stream
@@ -27,39 +41,93 @@ class ISensorSPIBuffer():
 #API to the buffer board
 
     def select_page(self, page):
-        "Set the active iSensor-SPI-Buffer page. Pages less than 253 will pass to IMU"
+        """
+        Set the active iSensor-SPI-Buffer page. Pages less than 253 will pass to IMU
+
+        Parameters
+        ---------------------------------------------------------------------------
+        page: Page to select for read/writes. Valid range 0 - 255
+        """
+        if page > 255:
+            raise ValueError("Maximum allowed page value is 255")
         self._SendLine("write 0 " + format(page, "x"))
 
     def read_regs(self, startAddr, endAddr):
-        "Read multiple registers on current page, from startAddr to endAddr"
+        """
+        Read multiple registers on current page, from startAddr to endAddr
+
+        Parameters
+        ---------------------------------------------------------------------------
+        startAddr: Register starting address to read
+        endAddr: End address for the register read operation
+
+        Returns
+        ---------------------------------------------------------------------------
+        Register read data (as list of int)
+        """
         self.__FlushSerialInput()
         self._SendLine("read " + format(startAddr, "x") + " " + format(endAddr, "x"))
         return self._ParseLine(self.__ReadLine())
 
     def read_reg(self, addr):
-        "Read a single register on current page, at address addr"
+        """
+        Read a single register on current page, at address addr
+
+        Parameters
+        ---------------------------------------------------------------------------
+        addr: Address of register to read
+
+        Returns
+        ---------------------------------------------------------------------------
+        Register value (as int)
+        """
         return self.read_regs(addr, addr)[0]
 
     def write_reg(self, addr, value):
-        "Write a full 16 bit value to a register, lower then upper"
+        """
+        Write a full 16 bit value to a register, lower then upper
+
+        Parameters
+        ---------------------------------------------------------------------------
+        addr: Least significant byte address of register to write to
+        value: 16-bit value to write to the selected register
+        """
         lower = value & 0xFF
         upper = (value & 0xFF00) >> 8
         self._SendLine("write " + format(addr, "x") + " " + format(lower, "x"))
         self._SendLine("write " + format(addr + 1, "x") + " " + format(upper, "x"))
 
     def version(self):
-        "Get iSensor-SPI-Buffer firmware version info"
+        """
+        Get iSensor-SPI-Buffer firmware version info
+
+        Returns
+        ---------------------------------------------------------------------------
+        Firmware version info, as a string
+        """
         self.__FlushSerialInput()
         self._SendLine("about")
         return self.__ReadLine().replace("\r\n", "")
 
     def run_command(self, cmdValue):
-        "Execute iSensor-SPI-Buffer command"
+        """
+        Execute an iSensor-SPI-Buffer command
+
+        Parameters
+        ---------------------------------------------------------------------------
+        cmdValue: 16-bit value to write to the USER_COMMAND register
+        """
         self.select_page(253)
         self.write_reg(0x16, cmdValue)
 
     def check_connection(self):
-        "Check CLI connection to the iSensor-SPI-Buffer"
+        """
+        Check CLI connection to the iSensor-SPI-Buffer
+
+        Returns
+        ---------------------------------------------------------------------------
+        True if connection is good, false otherwise (as bool)
+        """
         startPage = self.read_reg(0)
         self.select_page(253)
         origScrVal = self.read_reg(0x26)
@@ -78,44 +146,120 @@ class ISensorSPIBuffer():
         #all checks pass
         return True
 
+    def set_stream_regs(self, streamRegs):
+        """
+        Set the IMU registers to be captured during the buffered data stream process
+
+        The provided stream registers are entered into the page 254 write data in the iSensor-SPI-Buffer
+        firmware. The provided register list must be less than 32 elements and more than 0 elements, 
+        otherwise a ValueError exception will be raised. The buffered capture length register in
+        firmware is then set based on the requested number of registers.
+
+        Parameters
+        ---------------------------------------------------------------------------
+        streamRegs: List of register addresses to read during stream when IMU data ready is triggered
+        """
+        if (len(streamRegs) > 31) or (len(streamRegs) == 0):
+            raise ValueError("Invalid register list length!")
+        txLen = 2 * (len(streamRegs) + 1)
+        self.select_page(253)
+        self.__WriteRegAssert(4, txLen)
+        self.select_page(254)
+        addr = 0x12
+        for reg in streamRegs:
+            self.__WriteRegAssert(addr, (reg << 8))
+            addr += 2
+        self.select_page(253)
+
     def start_stream(self):
-        "Start stream. When a stream is running, data should be read from the StreamQueue"
+        """
+        Start a buffered data capture stream to read data ready synchronous data from the connected IMU
+
+        While a stream is running, data should be read from the StreamData object. Any attempts to directly
+        interface with the buffer board during the stream (other than a stream cancel) will result in an 
+        exception being raised. The stream start process consists of the following steps:
+
+        1. A new StreamWork thread object is created
+        2. The iSensor-SPI-Buffer starting page is read and stored (for restoration after stream)
+        3. The expected buffer length is read and stored (to validate buffer data size received during stream)
+        4. The firmware FIFO is flushed to ensure only fresh data is present
+        5. The firmware watermark auto-set command is executed to ensure optimal USB throughput
+        6. The firmware stream start command is issued
+        7. The firmware active page is changed to 255 to start the data capture process
+        """
         self.StreamThreads.append(StreamWork(self))
         self.StreamThreads[-1].ThreadActive = True
         self.StreamThreads[-1].start()
 
     def stop_stream(self):
-        "Signal stream thread to stop"
+        """
+        Signal stream thread to stop
+
+        This function blocks until the active stream thread (if any) exits. At the end of the capture 
+        loop, the stream thread object will perform the following steps:
+        1. Cancel the stream operation in the firmware
+        2. Restore the page selected prior to the stream operation
+        """
         self.StreamThreads[-1].ThreadActive = False
         #block until done
         if self.StreamThreads[-1].is_alive():
             self.StreamThreads[-1].join()
 
     def flush_streamdata(self):
-        "Flush python stream data queue as well as firmware data queue"
+        """
+        Flush the StreamData Python queue then issue a FIFO reset command to the firmware
+
+        This function can be used to flush all buffered data within the system. Because of the
+        double buffered architecture, this should be called any time you wish to start with all 
+        fresh data.
+        """
         while self.StreamData.empty() == False:
             self.StreamData.get()
         self.run_command(1)
         time.sleep(0.1)
 
     def get_status(self):
-        "Get the iSensor-SPI-Buffer status flags (Status object)"
+        """
+        Get the iSensor-SPI-Buffer status flags
+
+        Returns
+        ---------------------------------------------------------------------------
+        Error flags parsed from the STATUS register (as Status object)
+        """
         self.__FlushSerialInput()
         self._SendLine("status")
         return Status(self._ParseLine(self.__ReadLine())[0])
 
     def get_uptime(self):
-        "Get iSensor-SPI-Buffer uptime (ms)"
+        """
+        Get iSensor-SPI-Buffer uptime (ms)
+
+        Returns
+        ---------------------------------------------------------------------------
+        Uptime, in ms (as int)
+        """
         self.__FlushSerialInput()
         self._SendLine("uptime")
         return int(self.__ReadLine().replace("ms\r\n", ""))
 
     def get_temp(self):
-        "Get the iSensor-SPI-Buffer processor temperature (degrees C)"
+        """
+        Get the iSensor-SPI-Buffer processor temperature (degrees C)
+
+        Returns
+        ---------------------------------------------------------------------------
+        Processor temperature (as float)
+        """
         return self.__ReadRegNoPageChange(0x4E, 253) / 10.0
 
     def get_vdd(self):
-        "Get the current VDD measurement for the iSensor-SPI-Buffer (volts)"
+        """
+        Get the current VDD measurement for the iSensor-SPI-Buffer (volts)
+
+        Returns
+        ---------------------------------------------------------------------------
+        Processor supply voltage (as float)
+        """
         return self.__ReadRegNoPageChange(0x50, 253) / 100.0
 
 #private helper functions (not all actually private, but not recommended for end user use)
@@ -145,6 +289,11 @@ class ISensorSPIBuffer():
         retVal = self.read_reg(addr)
         self.select_page(startPage)
         return retVal
+
+    def __WriteRegAssert(self, addr, value):
+        self.write_reg(addr, value)
+        if self.read_reg(addr) != value:
+            raise Exception("Read back after write of " + str(value) + " to register at address " + str(addr) + " failed")
 
     def __FlushSerialInput(self):
         #flush all data on serial input
@@ -276,7 +425,7 @@ class ReadLine:
         self.s = self.StreamWorker.buf.Ser
     
     def readline(self):
-        i = self.buf.find(b"\n")
+        i = self.buf.find(ord('\n'))
         if i >= 0:
             r = self.buf[:i+1]
             self.buf = self.buf[i+1:]
@@ -284,7 +433,7 @@ class ReadLine:
         while self.StreamWorker.ThreadActive:
             i = max(1, min(2048, self.s.in_waiting))
             data = self.s.read(i)
-            i = data.find(b"\n")
+            i = data.find(ord('\n'))
             if i >= 0:
                 r = self.buf + data[:i+1]
                 self.buf[0:] = data[i+1:]
