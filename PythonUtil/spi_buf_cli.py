@@ -120,6 +120,54 @@ class ISensorSPIBuffer():
         self.select_page(253)
         self.write_reg(0x16, cmdValue)
 
+    def set_imu_sclk(self, sclkFreq):
+        """
+        Configure the SPI clock frequency used to read data from the IMU
+
+        The STM32 processor utilized by the iSensor-SPI-Buffer has a configurable
+        2^n divider to set the SPI clock master frequency. This function sets the
+        divider to achieve the maximum SPI clock which is lower than the selected
+        target frequency. For example, a target frequency of 15MHz would result in
+        a real SPI clock frequency of 9MHz (next highest is 18MHz, which exceeds
+        the 15MHz limit)
+
+        Parameters
+        ---------------------------------------------------------------------------
+        sclkFreq: Target SPI clock frequency (Hz)
+        """
+        baseFreq = 36000000.0
+        realFreq = 0.0
+        finalBitPos = 0
+        for bitPos in range(1, 8):
+            realFreq = baseFreq / (2 ^ bitPos)
+            if(realFreq <= baseFreq):
+                finalBitPos = bitPos
+                break
+        
+        #apply to reg
+        self.select_page(253)
+        val = self.read_reg(0x10)
+        val &= 0x00FF
+        val |= (1 << (finalBitPos + 7))
+        self.write_reg(0x10, val)
+
+    def set_imu_stall(self, stallUs):
+        """
+        Configure the stall time between IMU SPI words
+
+        Parameters
+        ---------------------------------------------------------------------------
+        stallUs: Stall time in microseconds. Valid range 2us - 255us
+        """
+        if (stallUs < 2) or (stallUs > 255):
+            raise ValueError("Invalid stall time!")
+
+        self.select_page(253)
+        val = self.read_reg(0x10) #imu spi config
+        val &= 0xFF00
+        val |= stallUs
+        self.__WriteRegAssert(0x10, val)
+
     def check_connection(self):
         """
         Check CLI connection to the iSensor-SPI-Buffer
@@ -145,6 +193,25 @@ class ISensorSPIBuffer():
 
         #all checks pass
         return True
+
+    def enable_imu_burst(self, burstRegAddr, burstLen):
+        """
+        Configure the buffer board firmware to read burst data from the connected IMU
+
+        Parameters
+        ---------------------------------------------------------------------------
+        burstRegAddr: Address of the burst trigger register
+        burstLen: Length of the burst read operation (bytes)
+        """
+        if (burstLen < 2) or (burstLen > 64):
+            raise ValueError("Invalid burst length!")
+        self.select_page(254)
+        self.__WriteRegAssert(0x12, (burstRegAddr << 8) & 0xFFFF)
+        for addr in range (0x14, 0x52, 2):
+            self.write_reg(addr, 0)
+        self.select_page(253)
+        self.__WriteRegAssert(0x2, 2) #buf_config
+        self.__WriteRegAssert(0x4, burstLen) #buf_len
 
     def set_stream_regs(self, streamRegs):
         """
