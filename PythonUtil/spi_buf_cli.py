@@ -200,10 +200,13 @@ class ISensorSPIBuffer():
         1. Cancel the stream operation in the firmware
         2. Restore the page selected prior to the stream operation
         """
-        self.StreamThreads[-1].ThreadActive = False
-        #block until done
-        if self.StreamThreads[-1].is_alive():
-            self.StreamThreads[-1].join()
+        if len(self.StreamThreads) > 0:
+            self.StreamThreads[-1].ThreadActive = False
+            #block until done
+            if self.StreamThreads[-1].is_alive():
+                self.StreamThreads[-1].join()
+        #clear thread list (none active)
+        self.StreamThreads.clear()
 
     def flush_streamdata(self):
         """
