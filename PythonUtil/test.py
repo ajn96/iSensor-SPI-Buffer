@@ -3,10 +3,11 @@
 
 import unittest
 import time
+import random
 from spi_buf_cli import ISensorSPIBuffer
 
 #iSensor-SPI-Buffer object under test
-buf = ISensorSPIBuffer("COM11")
+buf = ISensorSPIBuffer("COM5")
 
 class SpiBufTestMethods(unittest.TestCase):
 
@@ -15,6 +16,22 @@ class SpiBufTestMethods(unittest.TestCase):
         buf.stop_stream()
         buf.select_page(253)
         self.assertTrue(buf.check_connection(), "ERROR: Connection check failed")
+
+    def test_set_stream_regs(self):
+        for i in range(1, 32):
+            regs = []
+            buf.select_page(253)
+            for j in range(0, i):
+                regs.append(random.randint(0, 127))
+            buf.set_stream_regs(regs)
+            #check that values were placed correctly
+            self.assertEqual(253, buf.read_reg(0), "ERROR: page not restored")
+            self.assertEqual(2 * (i + 1), buf.read_reg(4), "ERROR: Invalid buffer length")
+            buf.select_page(254)
+            index = 0
+            for addr in range(0x12, 0x12 + (2 * i), 2):
+                self.assertEqual(buf.read_reg(addr), regs[index] << 8, "ERROR: Invalid write data")
+                index += 1
 
     def test_buf_pageselect(self):
         for trial in range(10):
