@@ -31,7 +31,7 @@ class ISensorSPIBuffer():
         self.StreamRunning = False
         #Queue for storing data read during stream
         self.StreamData = SimpleQueue()
-        self.Ser = serial.Serial(str(portName), 1500000)
+        self.Ser = serial.Serial(str(portName), 2000000)
         self.Ser.timeout = 0.5
         #Init buffer board
         self.__Connect()
@@ -271,8 +271,8 @@ class ISensorSPIBuffer():
         #transmit line to iSensor SPI buffer CLI
         if self.StreamRunning:
             raise Exception("Please stop stream before interfacing with CLI")
-        #20ms (ish) delay before transmitting another line
-        time.sleep(0.02)
+        #10ms (ish) delay before transmitting another line
+        time.sleep(0.01)
         self.Ser.write((line + "\r\n").encode('utf_8'))
 
     def _ParseLine(self, line):
