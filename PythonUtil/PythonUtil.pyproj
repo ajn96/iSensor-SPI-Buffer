@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{194a40d5-a949-4d20-903b-904e53219aeb}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>steam_benchmark.py</StartupFile>
+    <StartupFile>Examples\steam_benchmark.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -22,11 +22,14 @@
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="adis1649x_example_linux.py" />
-    <Compile Include="adis1649x_example_windows.py" />
+    <Compile Include="Examples\adis1649x_example_linux.py" />
+    <Compile Include="Examples\adis1649x_example_windows.py" />
+    <Compile Include="Examples\steam_benchmark.py" />
     <Compile Include="spi_buf_cli.py" />
-    <Compile Include="steam_benchmark.py" />
     <Compile Include="test.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Examples\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>
