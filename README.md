@@ -7,19 +7,19 @@ A custom PCB was designed to fit the profile and form factor of an ADIS1649x IMU
 
 Additional hardware and software resources are linked below.
 
-[Detailed Register Map](REGISTER_DEFINITION.md)
+[Detailed Register Map](markdown/REGISTER_DEFINITION.md)
 
-[USB CLI Definition](USB_CLI.md)
+[USB CLI Definition](markdown/USB_CLI.md)
 
 [Python USB Interfacing Library](PythonUtil/)
 
-[SD Card Data Logging Scripts](SD_SCRIPTS.md)
+[SD Card Data Logging Scripts](markdown/SD_SCRIPTS.md)
 
 [Firmware Documentation (Doxygen)](https://ajn96.github.io/iSensor-SPI-Buffer/files.html)
 
-[Software Timing Characterization](TIMING.MD)
+[Software Timing Characterization](markdown/TIMING.MD)
 
-[STM32 Processor Pin Map](PIN_MAP.md)
+[STM32 Processor Pin Map](markdown/PIN_MAP.md)
 
 A video walkthrough and tutorial of the SPI Buffer Board's features is hosted on YouTube. Click on the image below to check it out!
 

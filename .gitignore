@@ -18,9 +18,9 @@ PythonUtil/Backup/
 *.o
 .mxproject
 
-Debug/
-Release/
-Doxygen/
+firmware/Debug/
+firmware/Release/
+firmware/Doxygen/
+firmware/.settings/
 
 iSensor-SPI-Buffer (1).launch
-/.settings/
