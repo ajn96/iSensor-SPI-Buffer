@@ -403,8 +403,8 @@ class BufferSample():
             return
 
         #parse out timestamps + data
-        self.UTC_Timestamp = rawData[0] + 63356 * rawData[1]
-        self.Timestamp = rawData[2] + 63356 * rawData[3]
+        self.UTC_Timestamp = rawData[0] + 65535 * rawData[1]
+        self.Timestamp = rawData[2] + 65535 * rawData[3]
         self.Data = rawData[5:]
 
         #compare expected checksum with received
