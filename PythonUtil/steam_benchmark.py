@@ -4,7 +4,7 @@ from spi_buf_cli import *
 import time
 
 #port name for iSensor-SPI-Buffer
-spi_buf_port = "COM11"
+spi_buf_port = "COM5"
 
 #stream time per step
 stream_time = 3
@@ -33,6 +33,8 @@ freq = start_freq
 while goodFreq:
     print("Testing data ready of " + str(freq) + "Hz")
 
+    buf.write_reg(0xA, 0x2)
+    buf.write_reg(0x8, 0x12)
     buf.write_reg(0x18, freq)
     buf.run_command(0x200)
     time.sleep(0.2)
@@ -50,13 +52,14 @@ while goodFreq:
         bufEntry = buf.StreamData.get()
         if bufEntry.ValidChecksum == False:
             print("Invalid checksum!")
+            print(timeStamp)
             goodFreq = False
         timeStamp = bufEntry.Timestamp
         measuredFreq = 1000000.0 / (timeStamp - lastTimestamp)
-        print(timeStamp)
         if abs(measuredFreq - freq) > (0.1 * freq):
             print("Invalid timestamp freq " + str(measuredFreq))
-            #goodFreq = False;
+            print(timeStamp)
+            goodFreq = False;
     if goodFreq:
         goodFreq = buf.check_connection()
 
