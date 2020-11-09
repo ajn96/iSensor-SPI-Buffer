@@ -155,9 +155,9 @@ namespace iSensor_SPI_Buffer_Test
 
         public void CheckDUTConnection()
         {
-            uint initialVal =  Dut.ReadUnsigned(RegMap["USER_SCR_1"]);
-            WriteUnsigned("USER_SCR_1", initialVal ^ 0xFFFFU, true);
-            WriteUnsigned("USER_SCR_1", initialVal, true);
+            uint initialVal =  Dut.ReadUnsigned(RegMap["USER_SCR0"]);
+            WriteUnsigned("USER_SCR0", initialVal ^ 0xFFFFU, true);
+            WriteUnsigned("USER_SCR0", initialVal, true);
         }
 
         public void RestoreDefaultValues()
@@ -275,12 +275,12 @@ namespace iSensor_SPI_Buffer_Test
             double stall = 10;
             bool goodStall = true;
 
-            WriteUnsigned("USER_SCR_1", 0x55AA, true);
+            WriteUnsigned("USER_SCR0", 0x55AA, true);
 
             List<byte> MOSI = new List<byte>();
             for (int i = 0; i < 128; i++)
             {
-                MOSI.Add((byte)RegMap["USER_SCR_1"].Address);
+                MOSI.Add((byte)RegMap["USER_SCR0"].Address);
                 MOSI.Add(0);
             }
 
@@ -317,24 +317,24 @@ namespace iSensor_SPI_Buffer_Test
             double stall = 10;
             bool goodStall = true;
 
-            WriteUnsigned("USER_SCR_1", 0, true);
+            WriteUnsigned("USER_SCR0", 0, true);
 
             List<byte> MOSI = new List<byte>();
-            MOSI.Add((byte)(RegMap["USER_SCR_1"].Address | 0x80));
+            MOSI.Add((byte)(RegMap["USER_SCR0"].Address | 0x80));
             MOSI.Add(0x55);
-            MOSI.Add((byte)(RegMap["USER_SCR_1"].Address + 1 | 0x80));
+            MOSI.Add((byte)(RegMap["USER_SCR0"].Address + 1 | 0x80));
             MOSI.Add(0xAA);
 
             List<byte> MOSIRead = new List<byte>();
-            MOSIRead.Add((byte)RegMap["USER_SCR_1"].Address);
+            MOSIRead.Add((byte)RegMap["USER_SCR0"].Address);
             MOSIRead.Add(0);
             MOSIRead.Add(0);
             MOSIRead.Add(0);
 
             List<byte> MOSIClear = new List<byte>();
-            MOSIClear.Add((byte)(RegMap["USER_SCR_1"].Address | 0x80));
+            MOSIClear.Add((byte)(RegMap["USER_SCR0"].Address | 0x80));
             MOSIClear.Add(0);
-            MOSIClear.Add((byte)(RegMap["USER_SCR_1"].Address + 1 | 0x80));
+            MOSIClear.Add((byte)(RegMap["USER_SCR0"].Address + 1 | 0x80));
             MOSIClear.Add(0);
 
             byte[] MISO;

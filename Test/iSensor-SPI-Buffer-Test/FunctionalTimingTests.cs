@@ -15,7 +15,7 @@ namespace iSensor_SPI_Buffer_Test
     class FunctionalTimingTests : TestBase
     {
         /* Number of timing trials */
-        const int numTrials = 10;
+        const int numTrials = 16;
 
         [Test]
         public void GenerateTimingReport()
@@ -25,7 +25,7 @@ namespace iSensor_SPI_Buffer_Test
             StreamWriter writer;
 
             string outPath = Path.GetFullPath(Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\"));
-            outPath = Path.Combine(outPath, "TIMING.MD");
+            outPath = Path.Combine(outPath, @"markdown\TIMING.MD");
             writer = new StreamWriter(outPath, false);
             FX3.SetPinResistorSetting(FX3.DIO1, FX3PinResistorSetting.PullDown);
 
@@ -46,7 +46,7 @@ namespace iSensor_SPI_Buffer_Test
             writer.WriteLine("");
             writer.WriteLine("Trials per timing measurement: " + numTrials.ToString());
             writer.WriteLine("");
-            writer.WriteLine("Firmware Revision: " + ReadUnsigned("FW_REV").ToString("X4"));
+            writer.WriteLine("Firmware Revision: " + (ReadUnsigned("FW_REV") >> 8).ToString("X2") + "." + (ReadUnsigned("FW_REV") & 0xFF).ToString("X2"));
             writer.WriteLine("");
             writer.WriteLine("Firmware Date (YYYY/MM/DD): " + ReadUnsigned("FW_YEAR").ToString("X4") + "/" + (ReadUnsigned("FW_DAY_MONTH") & 0xFF).ToString("X2") + "/" + (ReadUnsigned("FW_DAY_MONTH") >> 8).ToString("X2"));
             writer.WriteLine("");
@@ -354,8 +354,8 @@ namespace iSensor_SPI_Buffer_Test
                 Console.WriteLine("Testing SCLK freq of " + freq.ToString() + "Hz");
                 FX3.SclkFrequency = freq;
                 expectedVal = (uint)(freq & 0xFFFF);
-                WriteUnsigned("USER_SCR_1", expectedVal, false);
-                readVal = ReadUnsigned("USER_SCR_1");
+                WriteUnsigned("USER_SCR0", expectedVal, false);
+                readVal = ReadUnsigned("USER_SCR0");
                 if (readVal != expectedVal)
                 {
                     goodFreq = false;
