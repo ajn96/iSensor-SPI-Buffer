@@ -671,7 +671,8 @@ static void WriteHandler(script* scr)
   */
 static void ReadBufHandler(bool isUSB)
 {
-	uint8_t* activeBuf, writeBufPtr;
+	uint8_t *activeBuf;
+	uint8_t *writeBufPtr;
 	uint16_t readVal;
 	uint32_t addr, buf, numBufs, bufLastAddr, count;
 

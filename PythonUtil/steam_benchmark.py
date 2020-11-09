@@ -7,13 +7,13 @@ import time
 spi_buf_port = "COM5"
 
 #stream time per step
-stream_time = 3
+stream_time = 5
 
 #step size (Hz)
 step_size_hz = 100
 
 #starting freq
-start_freq = 1000
+start_freq = 2000
 
 #create ISensorSPIBuffer object
 buf = ISensorSPIBuffer(spi_buf_port)
@@ -40,6 +40,7 @@ while goodFreq:
     time.sleep(0.2)
     buf.flush_streamdata()
     buf.start_stream()
+    print("Sleeping for " + str(stream_time) + " seconds")
     time.sleep(stream_time)
     buf.stop_stream()
     
