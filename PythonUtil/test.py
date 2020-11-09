@@ -4,6 +4,7 @@
 import unittest
 import time
 import random
+import math
 from spi_buf_cli import ISensorSPIBuffer
 
 #iSensor-SPI-Buffer object under test
@@ -16,6 +17,26 @@ class SpiBufTestMethods(unittest.TestCase):
         buf.stop_stream()
         buf.select_page(253)
         self.assertTrue(buf.check_connection(), "ERROR: Connection check failed")
+
+    def test_fac_restore(self):
+        endur = 0
+        buf.select_page(253)
+        for i in range(4):
+            endur = buf.read_reg(0x6C)
+            buf.factory_reset()
+            self.assertEqual(buf.check_connection(), True, "ERROR: Connection check failed after factory restore")
+            self.assertEqual(buf.read_reg(0x44), 0, "ERROR: Expected buffer count of 0")
+            self.assertEqual(buf.read_reg(0x6C), endur + 1, "ERROR: Expected endurance to increment")
+
+    def test_bux_max_cnt(self):
+        expectedMax = 0
+        byteSize = 0
+        buf.select_page(253)
+        for cnt in range(2, 64, 2):
+            buf.write_reg(4, cnt)
+            byteSize = 4 * math.ceil((cnt + 10) / 4)
+            expectedMax = math.floor(0xA000 / byteSize) - 1
+            self.assertEqual(expectedMax, buf.read_reg(0x46), "ERROR: Invalid max buffer size")
 
     def test_set_stream_regs(self):
         for i in range(1, 32):
@@ -77,7 +98,9 @@ class SpiBufTestMethods(unittest.TestCase):
         self.assertTrue(buf.check_connection(), "ERROR: Connection check failed")
 
     def test_streamstop(self):
-        for trial in range(5):
+        for trial in range(10):
+            buf.start_stream()
+            time.sleep(0.1)
             buf.stop_stream()
             self.assertTrue(buf.check_connection(), "ERROR: Connection check failed")
 

@@ -194,6 +194,28 @@ class ISensorSPIBuffer():
         #all checks pass
         return True
 
+    def factory_reset(self):
+        """
+        Restore the iSensor-SPI-Buffer board settings to factory default and commit settings to flash.
+
+        The restore sequence is as follows:
+        
+        1. Issue factory reset command to restore default settings in firmware
+        2. Call "Connect" function to configure board for CLI usage
+        3. Issue flash update command to save settings
+        4. Issue clear fault command to clear any fault codes saved to NVM
+        5. Call flush_streamdata to clear Python queue and firmware FIFO
+        """
+
+        self.run_command(0x4)
+        time.sleep(0.1)
+        self.__Connect()
+        self.run_command(0x8)
+        time.sleep(0.1)
+        self.run_command(0x2)
+        time.sleep(0.1)
+        self.flush_streamdata()
+
     def enable_imu_burst(self, burstRegAddr, burstLen):
         """
         Configure the buffer board firmware to read burst data from the connected IMU
@@ -381,13 +403,25 @@ class ISensorSPIBuffer():
         self.write_reg(0x14, 0x2C04)
         time.sleep(0.1)
         self.__FlushSerialInput()
-        #flush firmare FIFO
+        #flush firmware FIFO
         self.run_command(1)
         time.sleep(0.1)
 
 
 class BufferSample():
-    "One sample from the buffer. Contains a data field, microsecond timestamp, UTC timestamp, and checksum validity flag"
+    """
+    This class stores one single sample from the buffer (read during stream)
+
+    Fields
+    ---------------------------------------------------------------------------
+    Data: The raw data read from the IMU for the buffer entry (list of int)
+    Timestamp: The buffer microsecond time stamp of when the IMU data ready edge occurred
+    UTC_Timestamp: The PPS counter value when the IMU data ready edge occurred
+    RecievedChecksum: Checksum value for the buffer sent by the iSensor-SPI-Buffer
+    ExpectedChecksum: Expected buffer checksum based on the buffer contents
+    ValidChecksum: Flag indicating if the buffer entry checksum matches the expected checksum
+    """
+    ". Contains a data field, microsecond timestamp, UTC timestamp, and checksum validity flag"
 
     def __init__(self, rawData):
         self.Data = []
@@ -403,8 +437,8 @@ class BufferSample():
             return
 
         #parse out timestamps + data
-        self.UTC_Timestamp = rawData[0] + 65535 * rawData[1]
-        self.Timestamp = rawData[2] + 65535 * rawData[3]
+        self.UTC_Timestamp = rawData[0] + (rawData[1] << 16)
+        self.Timestamp = rawData[2] + (rawData[3] << 16)
         self.Data = rawData[5:]
 
         #compare expected checksum with received
