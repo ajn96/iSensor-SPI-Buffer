@@ -2,7 +2,7 @@
 
 This library allows easy programmatic interfacing to the iSensor-SPI-Buffer USB command line interface through a Python API. The API allows for configuration of the iSensor-SPI-Buffer board, as well as double buffered high-throughput data capture from a connected IMU. The image below shows the general flow for IMU data capture using this library.
 
-![python_data_flow](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/SpiBuffDoubleBuffer.png)
+![python_data_flow](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/SpiBuffDoubleBuffer.jpg)
 
 ### Prerequisites 
 
