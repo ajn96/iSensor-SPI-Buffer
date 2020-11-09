@@ -49,3 +49,10 @@ Note, the IMU output data rate was limited to 400Hz because the program is runni
 ![python_example_windows](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/python_example_windows.png)
 
 In this example, the IMU output data rate was set to 1KHz, and each buffer was a burst output from the IMU. Using burst IMU outputs, data rates up to 2KHz seem to work consistently
+
+## Debugging Common Setup Issues
+
+There are a few problems which can cause difficulties using this library with the iSensor-SPI-Buffer board.
+
+1. iSensor-SPI-Buffer firmware version not up to date. This Python library was not designed with backwards compatibility in mind, due to the relatively large number of changes in the firmware CLI behavior over the last few versions. It is intended to be used with the latest version of the iSensor-SPI-Buffer firmware for best operation. If this causes problems and you do not have the ability to update your buffer board firmware, you can download the python library version at the time of the release tag for your older version of firmware. There may be missing features / bug fixes in the older revision.
+2. A "halted" stream (on PC side) can cause a watchdog reset event. This occurs when the PC does not request data back from the buffer board fast enough during a stream (mostly see this if you are debugging the Python library execution). After the watchdog reset, the board will show up as "Non-responding" in the Python library. This behavior should be resolved in future revisions of firmware.
