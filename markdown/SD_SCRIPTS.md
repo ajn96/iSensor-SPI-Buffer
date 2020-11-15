@@ -16,6 +16,8 @@ iSensor-SPI-Buffer SD card scripts use the same command format as the USB CLI, w
 
 This set of commands gives the user significant flexibility, without making the implementation or script writing process overly complicated. Keeping all loops fixed count, and not including conditional operations ensures that all scripts should finish in a deterministic amount of time. Consistent timing behavior is important, since improperly terminating a script (by power loss, reset, etc) can result in data loss on the SD card.
 
+![CLI Execution Format](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/ScriptExecution.jpg)
+
 ## SD Card Configuration
 
 In order to run an SD card script, the SD card must be formatted FAT32, with a single volume. 

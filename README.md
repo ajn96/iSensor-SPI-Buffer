@@ -1,7 +1,7 @@
 # iSensor SPI Buffer
-The iSensor SPI Buffer is a hardware and software solution designed to buffer iSensor IMU data, enabling asynchronous sampling systems (specifically embedded Linux systems) such as the Raspberry Pi, BeagleBone, Nvidia Jetson, etc. to capture IMU data at high sampling rates **with accurate timestamps and** **without data loss**. 
+The iSensor SPI Buffer is a hardware and software solution designed to buffer iSensor IMU data, enabling asynchronous sampling systems (specifically embedded Linux systems) such as the Raspberry Pi, BeagleBone, Nvidia Jetson, etc. to capture IMU data at high sampling rates **with accurate timestamps and** **without data loss**. Output data is provided through a USB Virtual COM port and/or a user SPI port allowing transparent augmentation of an existing IMU interface system.
 
-The firmware is architected around an STM32F303 to enable full-throughput, buffered data captures as well as an ADG1611 analog switch IC to enable routing SYNC and DATA READY signals from a host processor directly to the IMU. The SPI buffer board is designed to be compatible with all current and future iSensor IMU products. 
+The firmware runs on an STM32F303 microprocessor to enable full-throughput, buffered IMU data capture with a variety of output data formats. An ADG1611 analog switch IC to enable routing SYNC and DATA READY signals from the host system directly to the IMU. The SPI buffer board is designed to be compatible with all current and future iSensor IMU products. 
 
 A custom PCB was designed to fit the profile and form factor of an ADIS1649x IMU. This profile allows the iSensor SPI Buffer to act as a drop-in solution for existing, high-performance solutions. The buffer interface is designed to mimic the iSensor page convention and SPI settings out-of-the box. 
 
@@ -37,8 +37,8 @@ Revision B of the PCB design includes the following features:
 - ADG1611 analog switch - used for mapping SYNC and DATA READY signals from the IMU to the buffer board or SPI host
 - ADP1706 high-transient linear regulator - used to regulate USB 5V and power both the IMU and buffer board
   - Power supply selection jumper for powering the buffer board & IMU from the 24-pin IMU connector or USB
-- USB C expansion port - currently unused, but will eventually be used for pushing inertial data to a PC
-- SD card slot - currently unused, but will enable IMU data to be captured without the use of a PC or SPI host
+- USB C expansion port - Provides a USB virtual COM port command line interface to read/write registers and stream IMU data
+- SD card slot - Allows IMU data to be captured "headless" without the use of a PC or SPI host
 - LEDs - used to indicate buffer state and SPI buffer errors
 - 24-pin IMU connectors - used to interface with and pass through IMU and SPI Buffer data to and from a host using SPI
 - ADIS1650x footprint - used to enable the evaluation and use of compact iSensor IMUs
@@ -57,33 +57,9 @@ The code contained in this repository was developed using the freely available [
 
 A [TC2030-IDC cable](https://www.tag-connect.com/product/tc2030-idc-6-pin-tag-connect-plug-of-nails-spring-pin-cable-with-legs) must be used to interface with the SWD pads on the Rev B PCB. Development was originally done on an [NUCLEO-F303RE](https://www.st.com/en/evaluation-tools/nucleo-f303re.html) development board. When programming a buffer board, we've continued to use the NUCLEO as the SWD programmer. 
 
-## Recovering From a Bad SPI Configuration
-
-This buffer firmware includes a feature that allows the host SPI peripheral on the buffer board to be reconfigured to suit the host's needs. Because of this, it's possible to lock yourself out of the buffer board. A bad SPI configuration will usually look like the buffer board is returning the same value repeatedly for all registers. Note that the buffer board returning 0xFFFF or 0x0000 could be caused by other issues (no power to the buffer board, bad connection to the IMU, etc.) A bad SPI configuration will look similar to the image below.
-
-![SPI Misconfigured](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/spi_misconfigured.JPG)
-
-Recovering from a bad configuration requires using the USB CLI to communicate with the buffer board's firmware. While not mandatory, we recommend changing the jumper on the buffer board to USB power mode. The jumper just needs to be repositioned as shown below. 
-
-![USB Jumper Setting](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/jumper_usb.jpg)
-
-Using a terminal program such as [TeraTerm](https://ttssh2.osdn.jp/index.html.en) or [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/) in Windows, connect to the board using the enumerated COM port. The virtual USB port will automatically detect the host serial settings, so additional configuration is usually unnecessary. 
-
-![PuTTY Connection](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/putty_connection.JPG)
-
-Once connected to the CLI, you can verify that the board is communicating correctly by typing `help` into the console. You should see a message like the one shown below.
-
-![CLI Help Print](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_help_unbrick.JPG)
-
-After you've verified that the CLI is working correctly, type the following command, followed by a carriage return.
-
-`freset`
-
-This will execute a factory reset command followed by a flash update command. The board should now be reset to SPI Mode 3 with CS active low. The default register settings will have also been committed to flash, so they should persist throughout reboots. 
-
 ## Linux Driver Support
 
-Support for the SPI Buffer Board in Linux was developed by [spalani7](https://github.com/spalani7). His repository is located  [here](https://github.com/spalani7/adi_imu_driver). 
+Support for the SPI Buffer Board in Linux (over SPI) was developed by [spalani7](https://github.com/spalani7). His repository is located  [here](https://github.com/spalani7/adi_imu_driver). For USB interfacing, the included Python library can be utilized for easy integration with any USB capable system.
 
 
 ## Design Requirements and Features
@@ -131,7 +107,9 @@ The iSensor-SPI-Buffer firmware will utilize two hardware SPI ports. One operati
 
 ### Program Flow
 
-The iSensor-SPI-Buffer communications handling will be interrupt-driven to remove as much influence from the ST processor as possible. A main cyclic executive loop handles command execution, interrupt generation, and diagnostics.
+The iSensor-SPI-Buffer communications interfaces (SPI, SD card logging, USB CLI) are interrupt driven. A main cyclic executive loop handles command execution, interrupt generation, and diagnostics. The cyclic executive flow is shown below:
+
+![Cyclic Executive](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/SpiBufferCyclicExecutive.jpg)
 
 **User SPI Interrupt**
 
@@ -168,8 +146,33 @@ The state of each interrupt signal is checked and updated on each iteration of t
 
 ### Register Interface
 
-* Configuration registers for iSensor SPI buffer will be available on page 253
-* The data acquisition write data registers (data to transmit per data ready) will be on page 254
-* Buffer output data registers will be on page 255
+* Configuration registers for iSensor SPI buffer available on page 253
+* The data acquisition write data registers (data to transmit per data ready) available on page 254
+* Buffer output data registers on page 255
+* Volatile output registers available on page 252
+
+## Recovering From a Bad SPI Configuration
+
+This buffer firmware includes a feature that allows the host SPI peripheral on the buffer board to be reconfigured to suit the host's needs. Because of this, it's possible to lock yourself out of the buffer board. A bad SPI configuration will usually look like the buffer board is returning the same value repeatedly for all registers. Note that the buffer board returning 0xFFFF or 0x0000 could be caused by other issues (no power to the buffer board, bad connection to the IMU, etc.) A bad SPI configuration will look similar to the image below.
+
+![SPI Misconfigured](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/spi_misconfigured.JPG)
+
+Recovering from a bad configuration requires using the USB CLI to communicate with the buffer board's firmware. While not mandatory, we recommend changing the jumper on the buffer board to USB power mode. The jumper just needs to be repositioned as shown below. 
+
+![USB Jumper Setting](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/jumper_usb.jpg)
+
+Using a terminal program such as [TeraTerm](https://ttssh2.osdn.jp/index.html.en) or [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/) in Windows, connect to the board using the enumerated COM port. The virtual USB port will automatically detect the host serial settings, so additional configuration is usually unnecessary. 
+
+![PuTTY Connection](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/putty_connection.JPG)
+
+Once connected to the CLI, you can verify that the board is communicating correctly by typing `help` into the console. You should see a message like the one shown below.
+
+![CLI Help Print](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/cli_help_unbrick.JPG)
+
+After you've verified that the CLI is working correctly, type the following command, followed by a carriage return.
+
+`freset`
+
+This will execute a factory reset command followed by a flash update command. The board should now be reset to SPI Mode 3 with CS active low. The default register settings will have also been committed to flash, so they should persist throughout reboots. 
 
 "The SPI who loved me" - PK
