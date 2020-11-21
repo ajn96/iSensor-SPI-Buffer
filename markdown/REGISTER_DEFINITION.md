@@ -227,9 +227,9 @@ The default IMU_SPI_CONFIG value provides an SCLK of 1.125MHz with a stall of 15
 | 7:4 | RESERVED | Currently unused |
 | 15:8 | DELIM | Register read value delimiter character, in ASCII, for the CLI. Defaults to space character |
 
-For more details on the iSensor-SPI-Buffer USB CLI, see the [USB_CLI](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/USB_CLI.md) document
+For more details on the iSensor-SPI-Buffer USB CLI, see the [USB_CLI](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/markdown/USB_CLI.md) document
 
-For more details on the iSensor-SPI-Buffer SD Card data logging CLI, see the [SD Scripts](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/SD_SCRIPTS.md) document
+For more details on the iSensor-SPI-Buffer SD Card data logging CLI, see the [SD Scripts](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/markdown/SD_SCRIPTS.md) document
 
 ## USER_COMMAND
 
@@ -288,7 +288,7 @@ Sync generation must be started using the SYNC_GEN command. Sync generation can 
 | 12 | FLASH_ERROR | Set when the register signature stored in flash (stored during flash update) does not match signature calculated from SRAM register contents at initialization. Sticky |
 | 13 | FLASH_UPDATE_ERROR | Set when the flash update routine fails. Sticky |
 | 14 | FAULT | Set when the processor core generates a fault exception (bus fault, memory fault, hard fault, initialization error). Fault exceptions will force a system reset. Sticky |
-| 15 | WATCHDOG | Set when the processor has reset due to a watchdog timeout. Sticky |
+| 15 | WATCHDOG | Set when the processor has reset due to a watchdog timeout (2s period). Sticky |
 
 Excluding bits identified as sticky, this register clears on read. The values in this register are used to generate an error interrupt, if error interrupts are enabled.
 
