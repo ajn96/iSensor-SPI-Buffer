@@ -354,6 +354,21 @@ class ISensorSPIBuffer():
         """
         return self.__ReadRegNoPageChange(0x50, 253) / 100.0
 
+    def get_sn(self):
+        """
+        Get the serial number of the connected iSensor SPI Buffer board
+
+        Returns
+        ---------------------------------------------------------------------------
+        96-bit unique serial number (as a hex string)
+        """
+        self.select_page(253)
+        sn = self.read_regs(0x74, 0x7E)
+        snStr = ""
+        for val in sn:
+            snStr = snStr + format(val, 'x')
+        return snStr
+
 #private helper functions (not all actually private, but not recommended for end user use)
 
     def _SendLine(self, line):
