@@ -315,6 +315,10 @@ The FAULT_CODE register is stored on a different flash page from the register ar
 
 The UTC timestamp is a 32-bit value which represents the number of seconds since Jan 01 1970. This register must be set by a master device (no RTC). When a PPS input is enabled using the command register PPS_ENABLE bit, and a PPS pin assigned in DIO_INPUT_CONFIG, this register will count up once per PPS interrupt.
 
+Writing to any byte of the 32-bit UTC timestamp will clear the current 32-bit microsecond timestamp (TIMESTAMP).
+
+![Timestamp Clear](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/timestamp_clear.png)
+
 ## TIMESTAMP_LWR
 
 | Bit | Name | Description |
