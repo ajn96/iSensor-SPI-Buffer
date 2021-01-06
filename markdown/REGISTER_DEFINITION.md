@@ -81,11 +81,15 @@ This entire page is currently available for read/write by a user application. No
 
 ## PAGE_ID
 
+Page: N/A, Address: 0x00 (0)
+
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | PAGE | Selected page. Setting the page to a value outside [253-255] will result in SPI traffic being passed to the IMU. Setting the page to 255 will start the buffered data capture process. |
 
 ## BUF_CONFIG
+
+Page: 0xFD (253), Address: 0x02 (2)
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -110,6 +114,8 @@ When the BUF_BURST bit is set and the buffer retrieve register is read, the user
 
 ## BUF_LEN
 
+Page: 0xFD (253), Address: 0x04 (4)
+
 | Name | Bits | Description |
 | --- | --- | --- |
 | 15:0 | LEN | Length (in bytes) of each buffer entry. Valid range 2 - 64. Must be a multiple of 2 (16 bit word size) |
@@ -118,15 +124,20 @@ If the IMU_BURST bit of the BUF_CONFIG register is set, the IMU burst word lengt
 
 ## BTN_CONFIG
 
+Page: 0xFD (253), Address: 0x06 (6)
+
 | Bit  | Name     | Description                                                  |
 | ---- | -------- | ------------------------------------------------------------ |
-| 15:0 | CMD_MASK | When the user button is pressed, the commands corresponding to the bits set in this register are executed. The bits are executed in priority order from LSB to MSB. |
+| 15:0 | CMD_MASK | When the user button is pressed, the USER_COMMAND commands corresponding to the bits set in this register are executed. The bits are executed in priority order from LSB to MSB. |
 
 For example, setting this register to 0x800C will trigger a factory reset (0x4), followed by a flash update (0x8) and lastly a software reset (0x8000) when the user button is pressed. 
 
 The primary use case for the button is reset and script management (start/stop)
 
 ## DIO_INPUT_CONFIG
+
+Page: 0xFD (253), Address: 0x08 (8)
+
 | Bit | Name | Description |
 | --- | --- | --- |
 | 3:0 | DR_SELECT | Select which IMU DIO output pin is treated as data ready. Can only select one pin |
@@ -152,6 +163,8 @@ The following default values will be used for DIO_INPUT_CONFIG:
 
 ## DIO_OUTPUT_CONFIG
 
+Page: 0xFD (253), Address: 0x0A (10)
+
 | Bit | Name | Description |
 | --- | --- | --- |
 | 3:0 | PIN_PASS | Select which pins are directly connected from the host processor to the IMU using an ADG1611 analog switch |
@@ -173,6 +186,8 @@ The following default values will be used for DIO_OUTPUT_CONFIG:
 
 ## WATERMARK_INT_CONFIG
 
+Page: 0xFD (253), Address: 0x0C (12)
+
 | Name | Bits | Description |
 | --- | --- | --- |
 | 14:0 | LEVEL | Number of elements stored in buffer before asserting the iSensor-SPI-Buffer data ready interrupt. Range 0 - BUF_MAX_CNT |
@@ -186,11 +201,15 @@ The following capture shows the interrupt behavior with WATERMARK_INT_CONFIG set
 
 ## ERROR_INT_CONFIG
 
+Page: 0xFD (253), Address: 0x0E (14)
+
 | Name | Bits | Description |
 | --- | --- | --- |
 | 15:0 | STATUS_MASK | Bitmask to set which bits in the iSensor-SPI-Buffer status register error bits will generate an interrupt when set. Set to 0xFFFF to enable all error interrupts, 0x0000 to disable all. This mask also applies to the error LED on the iSensor-SPI-Buffer, allowing for error detection without reading STATUS. |
 
 ## IMU_SPI_CONFIG
+
+Page: 0xFD (253), Address: 0x10 (16)
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -208,6 +227,8 @@ The default IMU_SPI_CONFIG value provides an SCLK of 1.125MHz with a stall of 15
 
 ## USER_SPI_CONFIG
 
+Page: 0xFD (253), Address: 0x12 (18)
+
 | Bit | Name | Description |
 | --- | --- | --- |
 | 0 | CPHA | SPI clock phase |
@@ -217,6 +238,8 @@ The default IMU_SPI_CONFIG value provides an SCLK of 1.125MHz with a stall of 15
 | 15:8 | KEY | The KEY field must be set to 0xA5 for a write to USER_SPI_CONFIG to be processed. Any other value will result in the write being rejected, and no change made to the user SPI port functionality. This prevents inadvertent changing of the SPI mode |
 
 ## CLI_CONFIG
+
+Page: 0xFD (253), Address: 0x14 (20)
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -232,6 +255,8 @@ For more details on the iSensor-SPI-Buffer USB CLI, see the [USB_CLI](https://gi
 For more details on the iSensor-SPI-Buffer SD Card data logging CLI, see the [SD Scripts](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/markdown/SD_SCRIPTS.md) document
 
 ## USER_COMMAND
+
+Page: 0xFD (253), Address 0x16 (22)
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -254,6 +279,8 @@ While commands are being executed, the iSensor-SPI-Buffer slave SPI port is disa
 
 ## SYNC_FREQ
 
+Page: 0xFD (253), Address 0x18 (22)
+
 | Bit  | Name | Description                                                  |
 | ---- | ---- | ------------------------------------------------------------ |
 | 15:0 | FREQ | The frequency (in Hz) for the sync signal which can be applied to DIO2_Slave |
@@ -266,11 +293,39 @@ Sync generation must be started using the SYNC_GEN command. Sync generation can 
 
 ## USER_SCR_N
 
+Page: 0xFD (253), Address 0x34 - 0x3A (52 - 58)
+
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | SCR | User scratch register. Available for end user use |
 
+## UTC_TIME_LWR
+
+Page: 0xFD (253), Address 0x3C (60)
+
+| Bit  | Name     | Description                               |
+| ---- | -------- | ----------------------------------------- |
+| 15:0 | UTC_TIME | Lower 16 bits of the 32-bit UTC timestamp |
+
+## UTC_TIME_UPR
+
+Page: 0xFD (253), Address 0x3E (62)
+
+| Bit  | Name     | Description                               |
+| ---- | -------- | ----------------------------------------- |
+| 15:0 | UTC_TIME | Upper 16 bits of the 32-bit UTC timestamp |
+
+The UTC timestamp is a 32-bit value which represents the number of seconds since Jan 01 1970. This register must be set by a master device (no RTC). When a PPS input is enabled using the command register PPS_ENABLE bit, and a PPS pin assigned in DIO_INPUT_CONFIG, this register will count up once per PPS interrupt.
+
+Writing to any byte of the 32-bit UTC timestamp will clear the current 32-bit microsecond timestamp (TIMESTAMP).
+
+![Timestamp Clear](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/timestamp_clear.png)
+
 ## STATUS
+
+Page: 0xFD (253), Address 0x40 (64)
+
+Page: 0xFF (255), Address 0x02 (2)
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -294,6 +349,8 @@ Excluding bits identified as sticky, this register clears on read. The values in
 
 ## FAULT_CODE
 
+Page: 0xFD (253), Address 0x42 (66)
+
 | Bit | Name | Description |
 | --- | --- | --- |
 | 4:0 | FAULT_SRC | Fault source value. Fault types are defined in flash module https://ajn96.github.io/iSensor-SPI-Buffer/flash_8h.html  |
@@ -301,31 +358,35 @@ Excluding bits identified as sticky, this register clears on read. The values in
 
 The FAULT_CODE register is stored on a different flash page from the register array. It can only be cleared with a CLEAR_FAULT command.
 
-## UTC_TIME_LWR
+## BUF_CNT
 
-| Bit | Name | Description |
-| --- | --- | --- |
-| 15:0 | UTC_TIME | Lower 16 bits of the 32-bit UTC timestamp |
+Page: 0xFD (253), Address 0x44 (68)
 
-## UTC_TIME_UPR
+Page: 0xFF (255), Address 0x04 (4)
 
-| Bit | Name | Description |
-| --- | --- | --- |
-| 15:0 | UTC_TIME | Upper 16 bits of the 32-bit UTC timestamp |
+| Bit  | Name | Description                                                  |
+| ---- | ---- | ------------------------------------------------------------ |
+| 15:0 | CNT  | Number of entries currently stored in the buffer. Write 0 to clear buffer while on page 255. All other writes ignored |
 
-The UTC timestamp is a 32-bit value which represents the number of seconds since Jan 01 1970. This register must be set by a master device (no RTC). When a PPS input is enabled using the command register PPS_ENABLE bit, and a PPS pin assigned in DIO_INPUT_CONFIG, this register will count up once per PPS interrupt.
+## BUF_MAX_CNT
 
-Writing to any byte of the 32-bit UTC timestamp will clear the current 32-bit microsecond timestamp (TIMESTAMP).
+Page: 0xFD (253), Address 0x44 (70)
 
-![Timestamp Clear](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/timestamp_clear.png)
+| Name | Bits | Description                                                  |
+| ---- | ---- | ------------------------------------------------------------ |
+| 15:0 | MAX  | Total number of entries which can be stored in the buffer. Updates automatically when BUF_LEN is changed |
 
 ## TIMESTAMP_LWR
+
+Page: 0xFD (253), Address 0x4A (74)
 
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | TIMESTAMP | Lower 16 bits of the 32-bit microsecond timestamp |
 
 ## TIMESTAMP_UPR
+
+Page: 0xFD (253), Address 0x4C (76)
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -345,6 +406,8 @@ If the PPS signal is lost, the internal microsecond timer will continue counting
 
 ## TEMP_OUT
 
+Page: 0xFD (253), Address 0x4E (78)
+
 | Bit  | Name | Description                                                 |
 | ---- | ---- | ----------------------------------------------------------- |
 | 15:0 | TEMP | Temp sensor output. 1 degree C = 10LSB. Value of 0LSB -> 0C |
@@ -357,15 +420,17 @@ The measured value of VDD is used to normalize the TEMP_OUT register value to a 
 
 ## VDD_OUT
 
+Page: 0xFD (253), Address 0x50 (80)
+
 | Bit  | Name | Description                                     |
 | ---- | ---- | ----------------------------------------------- |
 | 15:0 | VDD  | Measured Vdd output. 1V = 100LSBs (3.3V -> 330) |
 
 The value of Vdd is calculated by measuring the value of VREFINT (internal regulated voltage reference) using the ADC and comparing against the expected measurement, with Vdd = 3.3V. Changes in Vdd (VREF) will cause an apparent change in the VREFINT measurement, which can be used to calculate Vdd. 
 
-
-
 ## SCRIPT_LINE
+
+Page: 0xFD (253), Address 0x64 (100)
 
 | Bit  | Name | Description                                                  |
 | ---- | ---- | ------------------------------------------------------------ |
@@ -395,6 +460,8 @@ The image below shows the script line number value as a simple script executes:
 
 ## SCRIPT_ERROR
 
+Page: 0xFD (253), Address 0x66 (102)
+
 | Bit  | Name               | Description                                                  |
 | ---- | ------------------ | ------------------------------------------------------------ |
 | 0    | NO_SD              | Set when a script start command is processed and there is no SD card attached. This is determined using the SD card detect pin. When this condition is detected, the script start process is aborted. |
@@ -409,7 +476,21 @@ The image below shows the script line number value as a simple script executes:
 
 The script error register is set to 0 when a script start or cancel command is received. Any errors which occur during the script load, parse, and execution process are bit or'd into this register.
 
+## FW_REV
+
+Page: 0xFD (253), Address 0x6E (110)
+
+| Bit  | Name  | Description                                                  |
+| ---- | ----- | ------------------------------------------------------------ |
+| 7:0  | MINOR | Minor firmware revision number, in BCD                       |
+| 14:8 | MAJOR | Major firmware revision number, in BCD (second digit limited to 7, giving max possible firmware rev 79.99) |
+| 15   | DEBUG | Set if the running firmware was compiled with debug flags enabled. The recommended way to use the iSensor-SPI-Buffer firmware is in release mode (DEBUG = 0). |
+
+This rev corresponds to the release tag for the firmware. For example, rev 1.15 would be represented by 0x0115 in FW_REV.
+
 ## FW_DAY_MONTH
+
+Page: 0xFD (253), Address 0x70 (112)
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -420,23 +501,17 @@ For example, April 24th would be represented by 0x2404. The DAY/MONTH/YEAR value
 
 ## FW_YEAR
 
+Page: 0xFD (253), Address 0x72 (114)
+
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | YEAR | Firmware program year, in BCD |
 
 For example, the year 2020 would be represented by 0x2020. The DAY/MONTH/YEAR values are generated automatically at compile time using the C DATE preprocessor macro. 
 
-## FW_REV
-
-| Bit | Name | Description |
-| --- | --- | --- |
-| 7:0 | MINOR | Minor firmware revision number, in BCD |
-| 14:8 | MAJOR | Major firmware revision number, in BCD (second digit limited to 7, giving max possible firmware rev 79.99) |
-| 15 | DEBUG | Set if the running firmware was compiled with debug flags enabled. The recommended way to use the iSensor-SPI-Buffer firmware is in release mode (DEBUG = 0). |
-
-This rev corresponds to the release tag for the firmware. For example, rev 1.15 would be represented by 0x0115 in FW_REV.
-
 ## DEV_SN_N
+
+Page: 0xFD (253), Address 0x74 - 0x7E (116 - 126)
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -444,11 +519,15 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 
 ## BUF_WRITE_N
 
+Page: 0xFE (254), Address 0x12 - 0x50 (18 - 80)
+
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | WRITE_N | Write data to transmit on MOSI line while capturing a buffered data entry |
 
 ## FLASH_SIG_DRV
+
+Page: 0xFE (254), Address 0x7C (124)
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -456,23 +535,15 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 
 ## FLASH_SIG
 
+Page: 0xFE (254), Address 0x7E (126)
+
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | CHKSUM | Signature for all registers stored to flash memory. This value is stored in flash, and is updated when a flash update command is executed |
 
-## BUF_CNT
-
-| Bit | Name | Description |
-| --- | --- | --- |
-| 15:0 | CNT | Number of entries currently stored in the buffer. Write 0 to clear buffer (only on page 255). All other writes ignored |
-
-## BUF_MAX_CNT
-
-| Name | Bits | Description                                                  |
-| ---- | ---- | ------------------------------------------------------------ |
-| 15:0 | MAX  | Total number of entries which can be stored in the buffer. Updates automatically when BUF_LEN is changed |
-
 ## BUF_RETRIEVE
+
+Page: 0xFF (255), Address 0x06 (6)
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -480,11 +551,15 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 
 ## BUF_UTC_TIME_LWR
 
+Page: 0xFF (255), Address 0x08 (8)
+
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | TIMESTAMP | Lower 16 bits of the 32-bit buffer entry UTC timestamp value which is stored at the start of each data capture. Resolution: 1LSB = 1 second (driven by PPS input) |
 
 ## BUF_UTC_TIME_UPR
+
+Page: 0xFF (255), Address 0x0A (10)
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -492,11 +567,15 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 
 ## BUF_TIMESTAMP_LWR
 
+Page: 0xFF (255), Address 0x0C (12)
+
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | TIMESTAMP | Lower 16 bits of a 32-bit buffer entry timestamp value which is stored at the start of each data capture. Resolution: 1LSB = 1us |
 
 ## BUF_TIMESTAMP_UPR
+
+Page: 0xFF (255), Address 0x0E (14)
 
 | Bit | Name | Description |
 | --- | --- | --- |
@@ -504,11 +583,15 @@ This rev corresponds to the release tag for the firmware. For example, rev 1.15 
 
 ## BUF_SIG
 
+Page: 0xFF (255), Address 0x10 (16)
+
 | Bit | Name | Description |
 | --- | --- | --- |
 | 15:0 | SIGNATURE | Buffer signature. This is the sum of all 16-bit words stored in the buffer (including timestamp) |
 
 ## BUF_DATA_N
+
+Page: 0xFF (255), Address 0x12 - 0x50 (18 - 80)
 
 | Bit | Name | Description |
 | --- | --- | --- |
