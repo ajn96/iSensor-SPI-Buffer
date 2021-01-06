@@ -612,6 +612,12 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 				g_update_flags |= USER_COMMAND_FLAG;
 			}
 		}
+		else if((regIndex == UTC_TIMESTAMP_UPR_REG) ||
+				(regIndex == UTC_TIMESTAMP_LWR_REG))
+		{
+			/* Clear microsecond timestamp on write to UTC time */
+			TIM2->CNT = 0;
+		}
 	}
 	else if(selected_page == BUF_WRITE_PAGE)
 	{
