@@ -50,7 +50,7 @@ namespace iSensor_SPI_Buffer_Test
             writer.WriteLine("");
             writer.WriteLine("Firmware Date (YYYY/MM/DD): " + ReadUnsigned("FW_YEAR").ToString("X4") + "/" + (ReadUnsigned("FW_DAY_MONTH") & 0xFF).ToString("X2") + "/" + (ReadUnsigned("FW_DAY_MONTH") >> 8).ToString("X2"));
             writer.WriteLine("");
-            writer.WriteLine("Test source code is available [here](Test/iSensor-SPI-Buffer-Test/FunctionalTimingTests.cs)");
+            writer.WriteLine("Test source code is available [here](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/Test/iSensor-SPI-Buffer-Test/FunctionalTimingTests.cs)");
 
             writer.WriteLine("## Reset Times");
             writer.WriteLine();
