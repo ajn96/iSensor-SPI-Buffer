@@ -26,13 +26,13 @@ The Python API exposes the following functionality:
 
 The library also handles setting up the serial port (through PySerial) and configuration the buffer board - all the user application has to do is provide the portName.
 
-The full documentation for the python library, source code, and Linux/Windows examples, are [here](PythonUtil/)
+The full documentation for the python library, source code, and Linux/Windows examples, are [here](https://github.com/ajn96/iSensor-SPI-Buffer/tree/master/PythonUtil/)
 
 ## Examples
 
 Several examples demonstrating typical use-cases for the CLI are linked below.
 
-[CLI Stream Tutorial for ADIS1649x IMUs](tutorials/cli_stream_tutorial.md)
+[CLI Stream Tutorial for ADIS1649x IMUs](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/tutorials/cli_stream_tutorial.md)
 
 ## CLI Definition
 
