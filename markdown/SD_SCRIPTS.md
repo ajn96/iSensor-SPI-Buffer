@@ -1,6 +1,6 @@
 # SD Card Data Logging
 
-The iSensor-SPI-Buffer comes equipped with an microSD card slot to allow for autonomous device configuration and data logging via a simple scripting language. The available SD card script commands are functionally the same as the [USB command line interface](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/USB_CLI.md) commands, with a superset of additional program flow commands added.
+The iSensor-SPI-Buffer comes equipped with an microSD card slot to allow for autonomous device configuration and data logging via a simple scripting language. The available SD card script commands are functionally the same as the [USB command line interface](https://github.com/ajn96/iSensor-SPI-Buffer/blob/master/markdown/USB_CLI.md) commands, with a superset of additional program flow commands added.
 
 This SD card script engine can be used for headless data capture with a USB battery pack. This is useful for systems where connecting the IMU to a PC is not feasible.
 
