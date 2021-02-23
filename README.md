@@ -21,6 +21,8 @@ Additional hardware and software resources are linked below.
 
 [STM32 Processor Pin Map](markdown/PIN_MAP.md)
 
+[Programming Guide](markdown/PROGRAMMING.md)
+
 A video walkthrough and tutorial of the SPI Buffer Board's features is hosted on YouTube. Click on the image below to check it out!
 
 [![](http://img.youtube.com/vi/azpeXvWH4VI/0.jpg)](http://www.youtube.com/watch?v=azpeXvWH4VI "iSensor SPI Buffer Board Walkthrough 07/09/2020")
