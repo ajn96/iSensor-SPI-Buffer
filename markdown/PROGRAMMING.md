@@ -32,5 +32,5 @@ The Tag-Connect pogo-pin adapter should securely clip into the SWD programming p
 
 ## Powering the Buffer Board
 
-The SPI Buffer Board **must be powered externally during programming! ** The SWD port does *not* provide power. Power can be supplied to the SPI Buffer Board using either the USB port or the 24-pin IMU host connector. 
+The SPI Buffer Board **must be powered externally during programming!** The SWD port does *not* provide power. Power can be supplied to the SPI Buffer Board using either the USB port or the 24-pin IMU host connector. 
 
