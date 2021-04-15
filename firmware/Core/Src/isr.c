@@ -416,13 +416,13 @@ void DMA1_Channel5_IRQHandler(void)
 void EXTI15_10_IRQHandler(void)
 {
 	/* SPI status register */
-	static uint32_t spiSr;
+	uint32_t spiSr;
 
 	/* Rx SPI data */
-	static uint32_t rxData;
+	uint32_t rxData;
 
 	/* Tx SPI data */
-	static uint32_t txData;
+	uint32_t txData;
 
 	/* Clear exti PR register (lines 10-15) */
 	EXTI->PR = (0x3F << 10);
@@ -448,61 +448,59 @@ void EXTI15_10_IRQHandler(void)
 			/* Exit burst mode */
 			BurstReadDisable();
 		}
-
-		/* Jump to handler, don't want to check errors/overflow while burst is running */
-		goto handle_transaction;
 	}
-
-	/* If data is not available then re-init and exit */
-	if(!(spiSr & SPI_SR_RXNE))
+	else
 	{
-		g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
-		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
-
-		/* Re-init SPI to make sure we end up in a good state */
-		RCC->APB1RSTR |= RCC_APB1RSTR_SPI2RST;
-		RCC->APB1RSTR &= ~RCC_APB1RSTR_SPI2RST;
-		HAL_SPI_Init(&g_spi2);
-		__HAL_SPI_ENABLE(&g_spi2);
-
-		return;
-	}
-
-	/* Check for SPI overflow (FIFO transmit is half full or greater) */
-	if(spiSr & SPI_FTLVL_HALF_FULL)
-	{
-		/* Clear SPI FIFO */
-		for(int i = 0; i < 4; i++)
+		/* If data is not available then re-init and exit */
+		if(!(spiSr & SPI_SR_RXNE))
 		{
-			(void) SPI2->DR;
+			g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
+			g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+
+			/* Re-init SPI to make sure we end up in a good state */
+			RCC->APB1RSTR |= RCC_APB1RSTR_SPI2RST;
+			RCC->APB1RSTR &= ~RCC_APB1RSTR_SPI2RST;
+			HAL_SPI_Init(&g_spi2);
+			__HAL_SPI_ENABLE(&g_spi2);
+
+			return;
 		}
 
-		/* Set status reg SPI overflow flag */
-		g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
-		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
-
-		/* Don't want to load any new data to the output, just return here */
-		return;
-	}
-
-	/* Error interrupt source */
-	if(spiSr & (SPI_FLAG_OVR | SPI_FLAG_MODF))
-	{
-		/* Set status reg SPI error flag */
-		g_regs[STATUS_0_REG] |= STATUS_SPI_ERROR;
-		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
-
-		/* Overrun error, clear out Rx FIFO by repeatedly reading DR */
-		for(uint32_t i = 0; i < 4; i++)
+		/* Check for SPI overflow (FIFO transmit is half full or greater) */
+		if(spiSr & SPI_FTLVL_HALF_FULL)
 		{
-			(void) SPI2->DR;
-		}
-		/* Read status register */
-		(void) SPI2->SR;
-	}
+			/* Clear SPI FIFO */
+			for(int i = 0; i < 4; i++)
+			{
+				(void) SPI2->DR;
+			}
 
+			/* Set status reg SPI overflow flag */
+			g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
+			g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+
+			/* Don't want to load any new data to the output, just return here */
+			return;
+		}
+
+		/* Error interrupt source */
+		if(spiSr & (SPI_FLAG_OVR | SPI_FLAG_MODF))
+		{
+			/* Set status reg SPI error flag */
+			g_regs[STATUS_0_REG] |= STATUS_SPI_ERROR;
+			g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+
+			/* Overrun error, clear out Rx FIFO by repeatedly reading DR */
+			for(uint32_t i = 0; i < 4; i++)
+			{
+				(void) SPI2->DR;
+			}
+			/* Read status register */
+			(void) SPI2->SR;
+		}
+
+	}
 	/* Handle transaction */
-	handle_transaction:
 	if(rxData & 0x8000)
 	{
 		/* Write */
