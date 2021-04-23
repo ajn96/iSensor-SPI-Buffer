@@ -15,14 +15,11 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void StatusClearTest()
         {
-            InitializeTestCase();
         }
 
         [Test]
         public void StatusBufFullTest()
         {
-            InitializeTestCase();
-
             uint status, buf_capacity;
 
             status = ReadUnsigned("STATUS");

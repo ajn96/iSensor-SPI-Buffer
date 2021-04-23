@@ -15,31 +15,26 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void SoftwareResetTest()
         {
-            InitializeTestCase();
         }
 
         [Test]
         public void FlashUpdateTest()
         {
-            InitializeTestCase();
         }
 
         [Test]
         public void FactoryResetTest()
         {
-            InitializeTestCase();
         }
 
         [Test]
         public void ClearBufferTest()
         {
-            InitializeTestCase();
         }
 
         [Test]
         public void ClearFaultTest()
         {
-            InitializeTestCase();
         }
 
     }

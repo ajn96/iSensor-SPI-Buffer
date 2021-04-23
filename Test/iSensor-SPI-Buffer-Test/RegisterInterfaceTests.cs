@@ -15,31 +15,26 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void ReadOnlyRegsTest()
         {
-            InitializeTestCase();
         }
 
         [Test]
         public void ReservedBitsTest()
         {
-            InitializeTestCase();
         }
 
         [Test]
         public void PageRegisterTest()
         {
-            InitializeTestCase();
         }
 
         [Test]
         public void ScratchRegsTest()
         {
-            InitializeTestCase();
         }
 
         [Test]
         public void SerialNumberRegsTest()
         {
-            InitializeTestCase();
         }
 
     }

@@ -15,13 +15,11 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void DrPinAssignmentTest()
         {
-            InitializeTestCase();
         }
 
         [Test]
         public void DrPolarityTest()
         {
-            InitializeTestCase();
 
             for(int trial = 0; trial < 5; trial++)
             {
@@ -34,19 +32,16 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void DIOConfigTest()
         {
-            InitializeTestCase();
         }
 
         [Test]
         public void OverflowInterruptTest()
         {
-            InitializeTestCase();
         }
 
         [Test]
         public void WatermarkInterruptTest()
         {
-            InitializeTestCase();
         }
 
     }

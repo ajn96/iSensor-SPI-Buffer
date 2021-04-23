@@ -16,8 +16,6 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void BurstTest()
         {
-            InitializeTestCase();
-
             /* Enable user spi burst */
             WriteUnsigned("USER_SPI_CONFIG", 0x8007, true);
 
@@ -26,8 +24,6 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void BufferRetrieveTimeTest()
         {
-            InitializeTestCase();
-
             /* Set writedata regs */
             uint index = 1;
             foreach (RegClass reg in WriteDataRegs)
@@ -112,20 +108,22 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void BufferLenTest()
         {
-            InitializeTestCase();
         }
+
+        [Test]
+        public void BufStartTestTest()
+        {
+        }
+
 
         [Test]
         public void BufferTimestampTest()
         {
-            InitializeTestCase();
         }
 
         [Test]
         public void BufferEnqueueDequeueTest()
         {
-            InitializeTestCase();
-
             double freq;
             bool goodFreq = true;
             uint index;
@@ -180,8 +178,6 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void BufferCountTest()
         {
-            InitializeTestCase();
-
             uint maxCount, count;
 
             /* Flush buffer */
@@ -220,16 +216,12 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void BufferSettingsTest()
         {
-            InitializeTestCase();
-
             /* Mode, overflow behavior, SPI word size */
         }
 
         [Test]
         public void BufferMaxDataRateTest()
         {
-            InitializeTestCase();
-
             uint index;
 
             double freq;

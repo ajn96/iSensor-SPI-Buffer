@@ -14,16 +14,39 @@ namespace iSensor_SPI_Buffer_Test
     class RobustnessTests : TestBase
     {
         [Test]
+        public void PPSEnableTest()
+        {
+            /* Set DIO input config for data ready on DIO1, PPS on DIO2 */
+            WriteUnsigned("DIO_INPUT_CONFIG", 0x201);
+            /* Enable DIO1, DIO2 pass */
+            WriteUnsigned("DIO_OUTPUT_CONFIG", 3);
+            /* Generate sync and DR signals from FX3 */
+            FX3.StartPWM(1000, 0.5, FX3.DIO1);
+            
+            Assert.AreEqual(0, ReadUnsigned("BUF_CNT"), "Expected buffer count of 0");
+            Assert.AreEqual(0, ReadUnsigned("BUF_CNT"), "Expected buffer count of 0");
+            Assert.AreEqual(0, ReadUnsigned("STATUS"), "Expected STATUS of 0");
+            WriteUnsigned("USER_COMMAND", 1u << COMMAND_PPS_START, false);
+            System.Threading.Thread.Sleep(1500);
+            Assert.AreEqual(1u << STATUS_PPS_UNLOCK, ReadUnsigned("STATUS"), "Expected unlock to be flagged");
+            FX3.StartPWM(1, 0.5, FX3.DIO2);
+            ReadUnsigned("STATUS");
+            System.Threading.Thread.Sleep(1500);
+            ReadUnsigned("STATUS");
+            System.Threading.Thread.Sleep(1500);
+            Assert.AreEqual(0, ReadUnsigned("STATUS"), "Expected STATUS of 0");
+            Assert.AreEqual(0, ReadUnsigned("BUF_CNT"), "Expected buffer count of 0");
+        }
+
+        [Test]
         public void InvalidSpiTrafficTest()
         {
-            InitializeTestCase();
 
         }
 
         [Test]
         public void ADIS1649xBufferTest()
         {
-            InitializeTestCase();
 
             uint[] buf;
             uint count;
@@ -83,7 +106,6 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void ADIS1650xBufferTest()
         {
-            InitializeTestCase();
 
             /* Want stall time 15us, sclk freq 2.25MHz */
             WriteUnsigned("IMU_SPI_CONFIG", 0x810, true);
@@ -92,7 +114,6 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void SclkFreqTest()
         {
-            InitializeTestCase();
 
             int freq = 10000;
             bool goodFreq = true;
@@ -119,8 +140,6 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void StallTimeTest()
         {
-            InitializeTestCase();
-
             double readStall, writeStall;
 
             readStall = FindReadStallTime();
@@ -136,8 +155,6 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void PageSwitchTest()
         {
-            InitializeTestCase();
-
             WriteUnsigned("BUF_CONFIG", 6);
             WriteUnsigned("DIO_INPUT_CONFIG", 1);
             WriteUnsigned("DIO_OUTPUT_CONFIG", 1);

@@ -20,8 +20,6 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void GenerateTimingReport()
         {
-            InitializeTestCase();
-
             StreamWriter writer;
 
             string outPath = Path.GetFullPath(Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\"));

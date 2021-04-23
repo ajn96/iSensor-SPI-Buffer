@@ -17,8 +17,10 @@ namespace iSensor_SPI_Buffer_Test
         /* FX3 object */
         public FX3Connection FX3;
 
+        /* IDUTInterface */
         public adbfInterface Dut;
 
+        /* Register map */
         public RegMapCollection RegMap;
 
         public List<RegClass> WriteDataRegs;
@@ -132,6 +134,7 @@ namespace iSensor_SPI_Buffer_Test
             FX3.DrActive = false;
         }
 
+        [SetUp]
         public void InitializeTestCase()
         {
             /* Restore FX3 state */
