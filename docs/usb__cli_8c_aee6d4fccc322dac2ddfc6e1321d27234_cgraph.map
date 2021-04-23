@@ -1,0 +1,4 @@
+<map id="USBDisconnect" name="USBDisconnect">
+<area shape="rect" id="node1" title="HDisconnect USB device from the host." alt="" coords="5,5,120,32"/>
+<area shape="rect" id="node2" href="$timer_8c.html#ad679c296af1e7b89bd58be986d71d985" title="Blocking sleep function call." alt="" coords="168,5,304,32"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="EnableDataCapture" name="EnableDataCapture">
+<area shape="rect" id="node1" title="Enables autonomous data capture by enabling DR ISR in NVIC." alt="" coords="5,5,140,32"/>
+<area shape="rect" id="node2" href="$dio_8c.html#ad38b20e2c54a770ce6af80547abbce43" title="Validates and updates the data ready and PPS input configuration based on DIO_INPUT_CONFIG." alt="" coords="188,5,337,32"/>
+</map>

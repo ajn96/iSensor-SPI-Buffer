@@ -1,0 +1,4 @@
+<map id="USBDisconnect" name="USBDisconnect">
+<area shape="rect" id="node1" title="HDisconnect USB device from the host." alt="" coords="173,5,288,32"/>
+<area shape="rect" id="node2" href="$dfu_8c.html#a74325989ab8f68d7299d0c5ff0072f99" title="Set DFU reboot flag in RAM and reset system." alt="" coords="5,5,125,32"/>
+</map>

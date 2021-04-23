@@ -1,0 +1,4 @@
+<map id="ProcessTempReading" name="ProcessTempReading">
+<area shape="rect" id="node1" title="Handle end of conversion for a temp sensor value." alt="" coords="5,5,155,32"/>
+<area shape="rect" id="node2" href="$adc_8c.html#a57cb7226dfb1ff1a7329f1ac9d4f512d" title="Scale raw ADC temperature data to temp output." alt="" coords="203,5,317,32"/>
+</map>

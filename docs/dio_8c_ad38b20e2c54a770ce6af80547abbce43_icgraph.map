@@ -1,0 +1,5 @@
+<map id="UpdateDIOInputConfig" name="UpdateDIOInputConfig">
+<area shape="rect" id="node1" title="Validates and updates the data ready and PPS input configuration based on DIO_INPUT_CONFIG." alt="" coords="188,31,337,57"/>
+<area shape="rect" id="node2" href="$data__capture_8c.html#ac4b2f76f70859603c0d2ba1957afb21b" title="Enables autonomous data capture by enabling DR ISR in NVIC." alt="" coords="5,5,140,32"/>
+<area shape="rect" id="node3" href="$main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="47,56,98,83"/>
+</map>

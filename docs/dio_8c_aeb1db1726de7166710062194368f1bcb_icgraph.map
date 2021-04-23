@@ -1,0 +1,7 @@
+<map id="ValidateDIOOutputConfig" name="ValidateDIOOutputConfig">
+<area shape="rect" id="node1" title="validates the current DIO config struct settings" alt="" coords="385,56,552,83"/>
+<area shape="rect" id="node2" href="$dio_8c.html#a643b4c5d55edcd285e5440bc1caf17a4" title="Validates DIO_OUTPUT_CONFIG settings and applies to GPIO." alt="" coords="177,56,337,83"/>
+<area shape="rect" id="node3" href="$timer_8c.html#a674d0d6bc8aa368d9b71e03e7a54cd13" title="Disable PPS timer functionality." alt="" coords="5,5,129,32"/>
+<area shape="rect" id="node4" href="$timer_8c.html#a37f8e3e4c93dca1f52d2459e0e915d5e" title="Enable PPS input for time stamp synchronization (improved long term stability over 20ppm crystal)." alt="" coords="7,56,128,83"/>
+<area shape="rect" id="node5" href="$main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="42,107,93,133"/>
+</map>

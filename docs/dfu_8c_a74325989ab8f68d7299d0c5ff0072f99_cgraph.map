@@ -1,0 +1,5 @@
+<map id="PrepareDFUBoot" name="PrepareDFUBoot">
+<area shape="rect" id="node1" title="Set DFU reboot flag in RAM and reset system." alt="" coords="5,5,125,32"/>
+<area shape="rect" id="node2" href="$usb__cli_8c.html#aee6d4fccc322dac2ddfc6e1321d27234" title="HDisconnect USB device from the host." alt="" coords="173,5,288,32"/>
+<area shape="rect" id="node3" href="$timer_8c.html#ad679c296af1e7b89bd58be986d71d985" title="Blocking sleep function call." alt="" coords="336,5,472,32"/>
+</map>

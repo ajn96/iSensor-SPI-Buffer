@@ -1,0 +1,5 @@
+<map id="SystemClock_Config" name="SystemClock_Config">
+<area shape="rect" id="node1" title="System Clock Configuration." alt="" coords="5,5,148,32"/>
+<area shape="rect" id="node2" href="$main_8c.html#ad4e07955fadfeb416e9620ddb42f8fe9" title="This function is executed in case of error occurrence." alt="" coords="196,5,297,32"/>
+<area shape="rect" id="node3" href="$flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773" title="Stores an error code to flash memory." alt="" coords="345,5,448,32"/>
+</map>

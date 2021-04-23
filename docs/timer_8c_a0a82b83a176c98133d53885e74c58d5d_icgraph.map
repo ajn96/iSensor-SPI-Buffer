@@ -1,0 +1,5 @@
+<map id="ConfigurePPSPins" name="ConfigurePPSPins">
+<area shape="rect" id="node1" title="Configure PPS timer based on DIO_INPUT_CONFIG value." alt="" coords="177,31,307,57"/>
+<area shape="rect" id="node2" href="$timer_8c.html#a674d0d6bc8aa368d9b71e03e7a54cd13" title="Disable PPS timer functionality." alt="" coords="5,5,129,32"/>
+<area shape="rect" id="node3" href="$timer_8c.html#a37f8e3e4c93dca1f52d2459e0e915d5e" title="Enable PPS input for time stamp synchronization (improved long term stability over 20ppm crystal)." alt="" coords="7,56,128,83"/>
+</map>

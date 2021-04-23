@@ -1,0 +1,4 @@
+<map id="StringEquals" name="StringEquals">
+<area shape="rect" id="node1" title="Check equality between two strings." alt="" coords="192,5,288,32"/>
+<area shape="rect" id="node2" href="$script_8c.html#a3fcce12d9c19ab8120644cb4a2dd72fc" title="Parse a command string into a script element." alt="" coords="5,5,144,32"/>
+</map>

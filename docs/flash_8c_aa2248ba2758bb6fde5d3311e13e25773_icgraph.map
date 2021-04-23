@@ -1,0 +1,14 @@
+<map id="FlashLogError" name="FlashLogError">
+<area shape="rect" id="node1" title="Stores an error code to flash memory." alt="" coords="491,183,593,209"/>
+<area shape="rect" id="node2" href="$isr_8c.html#a850cefb17a977292ae5eb4cafa9976c3" title="This function handles Pre&#45;fetch fault, memory access fault." alt="" coords="306,56,431,83"/>
+<area shape="rect" id="node3" href="$main_8c.html#ad4e07955fadfeb416e9620ddb42f8fe9" title="This function is executed in case of error occurrence." alt="" coords="318,107,419,133"/>
+<area shape="rect" id="node9" href="$flash_8c.html#a46338bc563a7426b0d9983d549049e87" title="Initialize flash error logging." alt="" coords="115,208,235,235"/>
+<area shape="rect" id="node10" href="$isr_8c.html#a2bffc10d5bd4106753b7c30e86903bea" title="This function handles Hard fault interrupt." alt="" coords="304,208,433,235"/>
+<area shape="rect" id="node11" href="$isr_8c.html#a3150f74512510287a942624aa9b44cc5" title="This function handles Memory management fault." alt="" coords="295,259,443,285"/>
+<area shape="rect" id="node12" href="$isr_8c.html#a1d98923de2ed6b7309b66f9ba2971647" title="This function handles Undefined instruction or illegal state." alt="" coords="299,309,438,336"/>
+<area shape="rect" id="node4" href="$adc_8c.html#adb6cb5368cffd96c7e2cce8c72744ea2" title="ADC1 Initialization Function." alt="" coords="142,5,209,32"/>
+<area shape="rect" id="node6" href="$main_8c.html#a7ad17703ce0e9b527278fb5783adb44d" title="Init and DMA channels in use and configure DMA interrupts." alt="" coords="138,56,213,83"/>
+<area shape="rect" id="node7" href="$main_8c.html#a63fd813fab9e4e1b718f0b89e39fa26e" title="SPI1 Initialization Function (master SPI port to IMU)" alt="" coords="126,107,225,133"/>
+<area shape="rect" id="node8" href="$main_8c.html#adb3d07f85f8bc162c1c66f1ee17ce361" title="System Clock Configuration." alt="" coords="104,157,247,184"/>
+<area shape="rect" id="node5" href="$main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,107,56,133"/>
+</map>

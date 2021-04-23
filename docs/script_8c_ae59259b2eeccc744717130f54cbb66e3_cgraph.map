@@ -1,0 +1,6 @@
+<map id="UptimeHandler" name="UptimeHandler">
+<area shape="rect" id="node1" title="Print system uptime CLI." alt="" coords="5,31,112,57"/>
+<area shape="rect" id="node2" href="$sd__card_8c.html#a3d1f2d063a0389e1db1e31b7cc174a89" title="SD card write handler function." alt="" coords="164,5,263,32"/>
+<area shape="rect" id="node3" href="$usb__cli_8c.html#a084d43d822ed3a12e013d5d39d9209ff" title="USB write handler." alt="" coords="160,56,267,83"/>
+<area shape="rect" id="node4" href="$usb__cli_8c.html#a9ae6c338a543471c7253669913b991bd" title="Helper function to wait for the USB Tx to be free." alt="" coords="315,56,453,83"/>
+</map>

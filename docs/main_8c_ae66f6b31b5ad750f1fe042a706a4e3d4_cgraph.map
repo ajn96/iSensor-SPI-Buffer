@@ -1,0 +1,37 @@
+<map id="main" name="main">
+<area shape="rect" id="node1" title="The application entry point." alt="" coords="5,613,56,640"/>
+<area shape="rect" id="node2" href="$adc_8c.html#adb6cb5368cffd96c7e2cce8c72744ea2" title="ADC1 Initialization Function." alt="" coords="151,715,218,741"/>
+<area shape="rect" id="node5" href="$buffer_8c.html#a608864e62e34b7c269cd79d2c7294a48" title="Clears the buffer data structure." alt="" coords="147,56,222,83"/>
+<area shape="rect" id="node6" href="$dfu_8c.html#a5242e31871f00137a8e05029329fcddd" title="Checks if a reboot into the DFU bootloader is needed." alt="" coords="126,107,243,133"/>
+<area shape="rect" id="node7" href="$watchdog_8c.html#ae1d7795593b89a0508b7d5adb1924f69" title="Check if system reset from independent watch dog timeout and sets the appropriate STATUS flag." alt="" coords="105,157,264,184"/>
+<area shape="rect" id="node8" href="$data__capture_8c.html#ab71775102e1565ca2e8fd384d27204b3" title="disables autonomous data capture by disabling DR ISR." alt="" coords="116,5,253,32"/>
+<area shape="rect" id="node10" href="$main_8c.html#a7ad17703ce0e9b527278fb5783adb44d" title="Init and DMA channels in use and configure DMA interrupts." alt="" coords="147,360,222,387"/>
+<area shape="rect" id="node11" href="$main_8c.html#a41f752b7e6021861e56ecdf56993e9a8" title="Init DWT peripheral." alt="" coords="147,309,222,336"/>
+<area shape="rect" id="node12" href="$watchdog_8c.html#a1e202ecb064c61a96112d66e624272f7" title="Enables watch dog reset functionality." alt="" coords="123,208,246,235"/>
+<area shape="rect" id="node14" href="$flash_8c.html#a0573959b49fb264dd25636a6032ef01c" title="Checks for error codes which may have been logged to flash, and sets the status register bit." alt="" coords="104,411,265,437"/>
+<area shape="rect" id="node15" href="$flash_8c.html#a46338bc563a7426b0d9983d549049e87" title="Initialize flash error logging." alt="" coords="337,689,457,716"/>
+<area shape="rect" id="node16" href="$registers_8c.html#a042bb33891e7dcafa8dcf3a696eaa451" title="Populates the firmware date registers automatically." alt="" coords="135,512,234,539"/>
+<area shape="rect" id="node17" href="$registers_8c.html#a7b32151b1c6c1f3adcf8c1b2d245d191" title="Populates the six SN registers automatically." alt="" coords="154,563,215,589"/>
+<area shape="rect" id="node18" href="$imu__spi_8c.html#a814e8222e8a4eda9663f65501d41580a" title="Inits TIM3 for use in PWM mode to drive CS." alt="" coords="131,613,239,640"/>
+<area shape="rect" id="node19" href="$imu__spi_8c.html#a825031cb5959ebd7d20be9f25c64092a" title="Inits TIM4 for use as a IMU spi period timer." alt="" coords="129,664,240,691"/>
+<area shape="rect" id="node20" href="$timer_8c.html#a69df0b9d0c856817c7e0406ddfd1ae01" title="Init TIM2 to operate in 32&#45;bit mode with a 1MHz timebase." alt="" coords="112,968,257,995"/>
+<area shape="rect" id="node23" href="$flash_8c.html#abdfa63ba6e284d347e454e4ac0af459e" title="Load register values from flash memory to SRAM." alt="" coords="129,765,241,792"/>
+<area shape="rect" id="node24" href="$main_8c.html#ad76308591db32fe4919c7811ccec7cb7" title="GPIO Initialization Function." alt="" coords="133,816,236,843"/>
+<area shape="rect" id="node25" href="$main_8c.html#a63fd813fab9e4e1b718f0b89e39fa26e" title="SPI1 Initialization Function (master SPI port to IMU)" alt="" coords="135,259,234,285"/>
+<area shape="rect" id="node26" href="$sd__card_8c.html#ade0e1d4a61790fd47ec542cbf559af68" title="Run SD card script automatic execution process." alt="" coords="134,917,235,944"/>
+<area shape="rect" id="node27" href="$sd__card_8c.html#a625b0dce0e53a68e74b117c8ced97afe" title="Init SD card hardware interface and FATFs driver." alt="" coords="143,1019,227,1045"/>
+<area shape="rect" id="node29" href="$main_8c.html#adb3d07f85f8bc162c1c66f1ee17ce361" title="System Clock Configuration." alt="" coords="113,461,256,488"/>
+<area shape="rect" id="node30" href="$dio_8c.html#ad38b20e2c54a770ce6af80547abbce43" title="Validates and updates the data ready and PPS input configuration based on DIO_INPUT_CONFIG." alt="" coords="110,1069,259,1096"/>
+<area shape="rect" id="node31" href="$dio_8c.html#a643b4c5d55edcd285e5440bc1caf17a4" title="Validates DIO_OUTPUT_CONFIG settings and applies to GPIO." alt="" coords="105,1120,265,1147"/>
+<area shape="rect" id="node34" href="$imu__spi_8c.html#a2e5c87a639e8ca9a6f61d05052df5fb8" title="Processes any changes to IMU_SPI_CONFIG reg and applies." alt="" coords="115,1171,254,1197"/>
+<area shape="rect" id="node35" href="$user__spi_8c.html#ad15c7b76347823955edf42ec381e9793" title="Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register." alt="" coords="112,1221,257,1248"/>
+<area shape="rect" id="node3" href="$main_8c.html#ad4e07955fadfeb416e9620ddb42f8fe9" title="This function is executed in case of error occurrence." alt="" coords="346,461,447,488"/>
+<area shape="rect" id="node4" href="$flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773" title="Stores an error code to flash memory." alt="" coords="528,576,631,603"/>
+<area shape="rect" id="node9" href="$led_8c.html#a33badabbc4771ff785afaea9dcb90adc" title="Turn off a selected LED." alt="" coords="353,5,441,32"/>
+<area shape="rect" id="node13" href="$watchdog_8c.html#a8ea40194cba4ee3987e74a1ec77091fc" title="Feeds the watchdog timer. Should be called periodically from main loop." alt="" coords="341,208,453,235"/>
+<area shape="rect" id="node21" href="$timer_8c.html#a2728000ef526683ed785c3fbf3387409" title="Enables IMU sample timestamp timer." alt="" coords="363,968,430,995"/>
+<area shape="rect" id="node22" href="$timer_8c.html#a48e16631741f22e5a4165516df4d18f7" title="Enables TIM8 as general 1MHz timer." alt="" coords="363,917,430,944"/>
+<area shape="rect" id="node28" href="$sd__card_8c.html#aa982ad2254de265717f1ad2404cf53ad" title="SPI3 Initialization Function (SD card master SPI port)" alt="" coords="359,1019,434,1045"/>
+<area shape="rect" id="node32" href="$dio_8c.html#a96da6e323e19cd740908ac240c9f76d3" title="Parse DIO_CONFIG reg to local config struct." alt="" coords="320,1145,473,1172"/>
+<area shape="rect" id="node33" href="$dio_8c.html#aeb1db1726de7166710062194368f1bcb" title="validates the current DIO config struct settings" alt="" coords="313,1095,480,1121"/>
+</map>

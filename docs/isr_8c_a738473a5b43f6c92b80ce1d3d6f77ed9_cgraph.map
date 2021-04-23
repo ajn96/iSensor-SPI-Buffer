@@ -1,0 +1,5 @@
+<map id="EXTI15_10_IRQHandler" name="EXTI15_10_IRQHandler">
+<area shape="rect" id="node1" title="This function handles the user SPI (SPI2) chip select rising edge." alt="" coords="5,5,161,32"/>
+<area shape="rect" id="node2" href="$user__spi_8c.html#a3ba4975cc957879494953133d89031a5" title="Restore SPI functionality after a burst read." alt="" coords="209,5,336,32"/>
+<area shape="rect" id="node3" href="$user__spi_8c.html#a0cf0803624b0e83866ea3dd06b23b05a" title="Reset user SPI port." alt="" coords="384,5,487,32"/>
+</map>

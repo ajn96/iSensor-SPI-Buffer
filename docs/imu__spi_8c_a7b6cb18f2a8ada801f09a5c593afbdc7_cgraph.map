@@ -1,0 +1,5 @@
+<map id="ImuReadReg" name="ImuReadReg">
+<area shape="rect" id="node1" title="Reads 16 bit value from the IMU." alt="" coords="5,31,101,57"/>
+<area shape="rect" id="node2" href="$imu__spi_8c.html#a282b6361f14c10a21b150aa10c26e03f" title="Basic IMU SPI data transfer function (protocol agnostic)." alt="" coords="163,5,271,32"/>
+<area shape="rect" id="node3" href="$timer_8c.html#ad679c296af1e7b89bd58be986d71d985" title="Blocking sleep function call." alt="" coords="149,56,285,83"/>
+</map>

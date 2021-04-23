@@ -1,0 +1,5 @@
+<map id="ADCInit" name="ADCInit">
+<area shape="rect" id="node1" title="ADC1 Initialization Function." alt="" coords="5,5,72,32"/>
+<area shape="rect" id="node2" href="$main_8c.html#ad4e07955fadfeb416e9620ddb42f8fe9" title="This function is executed in case of error occurrence." alt="" coords="120,5,221,32"/>
+<area shape="rect" id="node3" href="$flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773" title="Stores an error code to flash memory." alt="" coords="269,5,372,32"/>
+</map>

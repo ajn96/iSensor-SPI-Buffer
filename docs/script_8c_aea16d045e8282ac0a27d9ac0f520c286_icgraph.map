@@ -1,0 +1,4 @@
+<map id="UShortToHex" name="UShortToHex">
+<area shape="rect" id="node1" title="Convert a 16 bit value to the corresponding hex string (4 chars)" alt="" coords="149,5,248,32"/>
+<area shape="rect" id="node2" href="$script_8c.html#ac667819c6a60b19091561cb8a62e0f2b" title="Read command handler." alt="" coords="5,5,101,32"/>
+</map>

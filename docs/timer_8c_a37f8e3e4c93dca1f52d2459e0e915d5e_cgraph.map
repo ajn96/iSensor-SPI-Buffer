@@ -1,0 +1,7 @@
+<map id="EnablePPSTimer" name="EnablePPSTimer">
+<area shape="rect" id="node1" title="Enable PPS input for time stamp synchronization (improved long term stability over 20ppm crystal)." alt="" coords="5,31,127,57"/>
+<area shape="rect" id="node2" href="$timer_8c.html#a0a82b83a176c98133d53885e74c58d5d" title="Configure PPS timer based on DIO_INPUT_CONFIG value." alt="" coords="190,5,319,32"/>
+<area shape="rect" id="node3" href="$dio_8c.html#a643b4c5d55edcd285e5440bc1caf17a4" title="Validates DIO_OUTPUT_CONFIG settings and applies to GPIO." alt="" coords="175,56,335,83"/>
+<area shape="rect" id="node4" href="$dio_8c.html#a96da6e323e19cd740908ac240c9f76d3" title="Parse DIO_CONFIG reg to local config struct." alt="" coords="389,31,543,57"/>
+<area shape="rect" id="node5" href="$dio_8c.html#aeb1db1726de7166710062194368f1bcb" title="validates the current DIO config struct settings" alt="" coords="383,81,549,108"/>
+</map>

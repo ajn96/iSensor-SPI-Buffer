@@ -1,0 +1,4 @@
+<map id="BurstReadDisable" name="BurstReadDisable">
+<area shape="rect" id="node1" title="Restore SPI functionality after a burst read." alt="" coords="5,5,132,32"/>
+<area shape="rect" id="node2" href="$user__spi_8c.html#a0cf0803624b0e83866ea3dd06b23b05a" title="Reset user SPI port." alt="" coords="180,5,283,32"/>
+</map>

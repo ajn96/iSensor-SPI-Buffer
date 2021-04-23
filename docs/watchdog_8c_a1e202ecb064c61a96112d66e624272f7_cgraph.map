@@ -1,0 +1,4 @@
+<map id="EnableWatchDog" name="EnableWatchDog">
+<area shape="rect" id="node1" title="Enables watch dog reset functionality." alt="" coords="5,5,128,32"/>
+<area shape="rect" id="node2" href="$watchdog_8c.html#a8ea40194cba4ee3987e74a1ec77091fc" title="Feeds the watchdog timer. Should be called periodically from main loop." alt="" coords="176,5,288,32"/>
+</map>

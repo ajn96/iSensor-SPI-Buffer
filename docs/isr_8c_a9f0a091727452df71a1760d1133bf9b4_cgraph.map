@@ -1,0 +1,7 @@
+<map id="EXTI9_5_IRQHandler" name="EXTI9_5_IRQHandler">
+<area shape="rect" id="node1" title="IMU data ready ISR. Kicks off data capture process." alt="" coords="5,56,148,83"/>
+<area shape="rect" id="node2" href="$timer_8c.html#aa070c28f17a0f620ec21a681b383769a" title="Increment PPS timestamp by 1." alt="" coords="196,56,331,83"/>
+<area shape="rect" id="node3" href="$timer_8c.html#aee4842c061c047f9938eccfbbecf9d34" title="Reset TIM2 counter to 0." alt="" coords="390,5,549,32"/>
+<area shape="rect" id="node4" href="$timer_8c.html#a42165c313ad966bc655a7b7db5bd0264" title="Gets the current 32&#45;bit value from the IMU sample timestamp timer." alt="" coords="379,56,560,83"/>
+<area shape="rect" id="node5" href="$timer_8c.html#af3a8b8ce4dc5d61599ad5cef8dcd003a" title="Gets the current 32&#45;bit value from PPS timestamp registers." alt="" coords="402,107,537,133"/>
+</map>

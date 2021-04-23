@@ -1,0 +1,4 @@
+<map id="ParseReadBuffer" name="ParseReadBuffer">
+<area shape="rect" id="node1" title="Parse a script buffer read from the SD card." alt="" coords="164,5,283,32"/>
+<area shape="rect" id="node2" href="$sd__card_8c.html#a1689ac486229c2f0a44ee3e69090f3ff" title="Parse script.txt into script element array (cmdList)" alt="" coords="5,5,116,32"/>
+</map>

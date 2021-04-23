@@ -1,0 +1,4 @@
+<map id="ReadReg" name="ReadReg">
+<area shape="rect" id="node1" title="Process a register read request (from master)" alt="" coords="149,5,224,32"/>
+<area shape="rect" id="node2" href="$script_8c.html#ac667819c6a60b19091561cb8a62e0f2b" title="Read command handler." alt="" coords="5,5,101,32"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="Error_Handler" name="Error_Handler">
+<area shape="rect" id="node1" title="This function is executed in case of error occurrence." alt="" coords="295,81,396,108"/>
+<area shape="rect" id="node2" href="$adc_8c.html#adb6cb5368cffd96c7e2cce8c72744ea2" title="ADC1 Initialization Function." alt="" coords="142,5,209,32"/>
+<area shape="rect" id="node4" href="$main_8c.html#a7ad17703ce0e9b527278fb5783adb44d" title="Init and DMA channels in use and configure DMA interrupts." alt="" coords="138,56,213,83"/>
+<area shape="rect" id="node5" href="$main_8c.html#a63fd813fab9e4e1b718f0b89e39fa26e" title="SPI1 Initialization Function (master SPI port to IMU)" alt="" coords="126,107,225,133"/>
+<area shape="rect" id="node6" href="$main_8c.html#adb3d07f85f8bc162c1c66f1ee17ce361" title="System Clock Configuration." alt="" coords="104,157,247,184"/>
+<area shape="rect" id="node3" href="$main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,81,56,108"/>
+</map>

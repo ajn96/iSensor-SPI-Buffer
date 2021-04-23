@@ -1,0 +1,8 @@
+<map id="SleepMicroseconds" name="SleepMicroseconds">
+<area shape="rect" id="node1" title="Blocking sleep function call." alt="" coords="340,81,476,108"/>
+<area shape="rect" id="node2" href="$imu__spi_8c.html#a7b6cb18f2a8ada801f09a5c593afbdc7" title="Reads 16 bit value from the IMU." alt="" coords="185,5,281,32"/>
+<area shape="rect" id="node3" href="$imu__spi_8c.html#a4436256162e4bd2d584ae13d86c7aa9f" title="Hardware reset connected IMU." alt="" coords="194,56,271,83"/>
+<area shape="rect" id="node4" href="$sd__card_8c.html#a091d146cc644caa26078156892f38997" title="Check if SD card is attached." alt="" coords="173,107,292,133"/>
+<area shape="rect" id="node5" href="$usb__cli_8c.html#aee6d4fccc322dac2ddfc6e1321d27234" title="HDisconnect USB device from the host." alt="" coords="175,157,290,184"/>
+<area shape="rect" id="node6" href="$dfu_8c.html#a74325989ab8f68d7299d0c5ff0072f99" title="Set DFU reboot flag in RAM and reset system." alt="" coords="5,157,125,184"/>
+</map>

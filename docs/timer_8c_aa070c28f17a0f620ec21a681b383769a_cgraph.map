@@ -1,0 +1,6 @@
+<map id="IncrementPPSTime" name="IncrementPPSTime">
+<area shape="rect" id="node1" title="Increment PPS timestamp by 1." alt="" coords="5,56,140,83"/>
+<area shape="rect" id="node2" href="$timer_8c.html#aee4842c061c047f9938eccfbbecf9d34" title="Reset TIM2 counter to 0." alt="" coords="199,5,358,32"/>
+<area shape="rect" id="node3" href="$timer_8c.html#a42165c313ad966bc655a7b7db5bd0264" title="Gets the current 32&#45;bit value from the IMU sample timestamp timer." alt="" coords="188,56,369,83"/>
+<area shape="rect" id="node4" href="$timer_8c.html#af3a8b8ce4dc5d61599ad5cef8dcd003a" title="Gets the current 32&#45;bit value from PPS timestamp registers." alt="" coords="211,107,346,133"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="FeedWatchDog" name="FeedWatchDog">
+<area shape="rect" id="node1" title="Feeds the watchdog timer. Should be called periodically from main loop." alt="" coords="275,5,387,32"/>
+<area shape="rect" id="node2" href="$watchdog_8c.html#a1e202ecb064c61a96112d66e624272f7" title="Enables watch dog reset functionality." alt="" coords="104,5,227,32"/>
+<area shape="rect" id="node3" href="$main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
+</map>

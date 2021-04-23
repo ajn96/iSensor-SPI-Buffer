@@ -1,0 +1,11 @@
+<map id="usb_cli.h" name="usb_cli.h">
+<area shape="rect" id="node1" title="Header file for iSensor&#45;SPI&#45;Buffer USB command line register interface." alt="" coords="263,5,337,32"/>
+<area shape="rect" id="node2" href="$script_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer script module (loaded from SD card)" alt="" coords="197,80,262,107"/>
+<area shape="rect" id="node4" href="$main_8c.html" title="iSensor&#45;SPI&#45;Buffer main. Contains STM init functions and application cyclic executive." alt="" coords="252,229,313,256"/>
+<area shape="rect" id="node8" href="$dfu_8c.html" title="Implementation file for iSensor&#45;SPI&#45;Buffer runtime firmware upgrade module." alt="" coords="337,80,388,107"/>
+<area shape="rect" id="node9" href="$usb__cli_8c.html" title="Implementation file for iSensor&#45;SPI&#45;Buffer USB command line register interface." alt="" coords="412,80,487,107"/>
+<area shape="rect" id="node3" href="$sd__card_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer SD card interfacing and script execution module." alt="" coords="94,155,173,181"/>
+<area shape="rect" id="node7" href="$script_8c.html" title="iSensor&#45;SPI&#45;Buffer script module (loaded from SD card or provided via USB CLI)" alt="" coords="197,155,262,181"/>
+<area shape="rect" id="node5" href="$registers_8c.html" title="iSensor&#45;SPI&#45;Buffer register interfacing module. Called by user SPI and USB CLI" alt="" coords="5,229,88,256"/>
+<area shape="rect" id="node6" href="$sd__card_8c.html" title="iSensor&#45;SPI&#45;Buffer SD card interfacing and script execution module" alt="" coords="113,229,191,256"/>
+</map>

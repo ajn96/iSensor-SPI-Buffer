@@ -1,0 +1,4 @@
+<map id="BurstReadDisable" name="BurstReadDisable">
+<area shape="rect" id="node1" title="Restore SPI functionality after a burst read." alt="" coords="209,5,336,32"/>
+<area shape="rect" id="node2" href="$isr_8c.html#a738473a5b43f6c92b80ce1d3d6f77ed9" title="This function handles the user SPI (SPI2) chip select rising edge." alt="" coords="5,5,161,32"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="InitMicrosecondTimer" name="InitMicrosecondTimer">
+<area shape="rect" id="node1" title="Init TIM2 to operate in 32&#45;bit mode with a 1MHz timebase." alt="" coords="5,31,151,57"/>
+<area shape="rect" id="node2" href="$timer_8c.html#a2728000ef526683ed785c3fbf3387409" title="Enables IMU sample timestamp timer." alt="" coords="199,5,265,32"/>
+<area shape="rect" id="node3" href="$timer_8c.html#a48e16631741f22e5a4165516df4d18f7" title="Enables TIM8 as general 1MHz timer." alt="" coords="199,56,265,83"/>
+</map>

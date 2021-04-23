@@ -1,0 +1,4 @@
+<map id="USBTxHandler" name="USBTxHandler">
+<area shape="rect" id="node1" title="USB write handler." alt="" coords="5,5,112,32"/>
+<area shape="rect" id="node2" href="$usb__cli_8c.html#a9ae6c338a543471c7253669913b991bd" title="Helper function to wait for the USB Tx to be free." alt="" coords="160,5,299,32"/>
+</map>

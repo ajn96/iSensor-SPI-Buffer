@@ -1,0 +1,5 @@
+<map id="USBWaitForTxDone" name="USBWaitForTxDone">
+<area shape="rect" id="node1" title="Helper function to wait for the USB Tx to be free." alt="" coords="315,5,453,32"/>
+<area shape="rect" id="node2" href="$usb__cli_8c.html#a084d43d822ed3a12e013d5d39d9209ff" title="USB write handler." alt="" coords="160,5,267,32"/>
+<area shape="rect" id="node3" href="$script_8c.html#ae59259b2eeccc744717130f54cbb66e3" title="Print system uptime CLI." alt="" coords="5,5,112,32"/>
+</map>

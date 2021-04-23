@@ -1,0 +1,4 @@
+<map id="InitMicrosecondTimer" name="InitMicrosecondTimer">
+<area shape="rect" id="node1" title="Init TIM2 to operate in 32&#45;bit mode with a 1MHz timebase." alt="" coords="104,5,249,32"/>
+<area shape="rect" id="node2" href="$main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
+</map>

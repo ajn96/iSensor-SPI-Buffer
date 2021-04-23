@@ -1,0 +1,5 @@
+<map id="ImuSpiTransfer" name="ImuSpiTransfer">
+<area shape="rect" id="node1" title="Basic IMU SPI data transfer function (protocol agnostic)." alt="" coords="151,31,259,57"/>
+<area shape="rect" id="node2" href="$imu__spi_8c.html#a7b6cb18f2a8ada801f09a5c593afbdc7" title="Reads 16 bit value from the IMU." alt="" coords="6,5,102,32"/>
+<area shape="rect" id="node3" href="$imu__spi_8c.html#ae35146a7cc10e15dd1cb67520515c43c" title="Writes an 8 bit value to the IMU." alt="" coords="5,56,103,83"/>
+</map>
