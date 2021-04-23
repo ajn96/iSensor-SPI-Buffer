@@ -39,6 +39,7 @@ typedef struct DIOConfig
 
 /* @cond DOXYGEN_IGNORE */
 void UpdateDIOInputConfig();
+void ValidateDIOInputConfig();
 void UpdateDIOOutputConfig();
 void StartSyncGen();
 uint32_t GetHardwareID();
@@ -46,5 +47,8 @@ uint32_t GetHardwareID();
 
 /** Mask for EXTI interrupt sources which come from the IMU data ready signal */
 #define DATA_READY_INT_MASK 	GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_9
+
+/** Mask to clear reserved bits in DIO_INPUT_CONFIG */
+#define DIO_INPUT_CLEAR_MASK	0x3F9F
 
 #endif /* INC_DIO_H_ */

@@ -300,7 +300,7 @@ static void ConfigurePPSPins(uint32_t enable)
 	PPS_TickCount = 0;
 
 	/* Clear pending PPS EXTI interrupts */
-	EXTI->PR |= PPS_INT_MASK;
+	EXTI->PR = PPS_INT_MASK;
 
 	/* Configure selected pin to trigger interrupt. Disable interrupt initially */
 	GPIO_InitStruct.Pull = GPIO_NOPULL;

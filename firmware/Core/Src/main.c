@@ -166,6 +166,12 @@ int main()
 			  g_update_flags &= ~(ENABLE_CAPTURE_FLAG);
 			  DisableDataCapture();
 		  }
+		  /* Handle change to DIO input config (validate only, no enable) */
+		  else if(g_update_flags & DIO_INPUT_CONFIG_FLAG)
+		  {
+			  g_update_flags &= ~DIO_INPUT_CONFIG_FLAG;
+			  ValidateDIOInputConfig();
+		  }
 		  /* Handle capture enable */
 		  else if(g_update_flags & ENABLE_CAPTURE_FLAG)
 		  {
@@ -177,12 +183,6 @@ int main()
 		  {
 			  g_update_flags &= ~USER_COMMAND_FLAG;
 			  ProcessCommand();
-		  }
-		  /* Handle change to DIO input config */
-		  else if(g_update_flags & DIO_INPUT_CONFIG_FLAG)
-		  {
-			  g_update_flags &= ~DIO_INPUT_CONFIG_FLAG;
-			  UpdateDIOInputConfig();
 		  }
 		  /* Handle capture DIO output config change */
 		  else if(g_update_flags & DIO_OUTPUT_CONFIG_FLAG)

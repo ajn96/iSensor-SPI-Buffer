@@ -138,7 +138,40 @@ uint32_t GetHardwareID()
 }
 
 /**
-  * @brief Validates and updates the data ready and PPS input configuration based on DIO_INPUT_CONFIG
+  * @brief Validates the DIO_INPUT_CONFIG value
+  *
+  * @return void
+  *
+  * This function clears any unused bits in DIO_INPUT_CONFIG and ensures
+  * that only one DIO pin is selected as data ready. If no data ready pin
+  * is selected, it defaults to DIO1.
+  */
+void ValidateDIOInputConfig()
+{
+	/* Get current config value */
+	uint32_t config = g_regs[DIO_INPUT_CONFIG_REG];
+
+	/* Clear unused bits */
+	config &= DIO_INPUT_CLEAR_MASK;
+
+	/* Must be one, and only one bit set in drPins. If none, defaults to DIO1 set */
+	if(config & 0x1)
+		config &= 0xFFF1;
+	else if(config & 0x2)
+		config &= 0xFFF2;
+	else if(config & 0x4)
+		config &= 0xFFF4;
+	else if(config & 0x8)
+		config &= 0xFFF8;
+	else
+		config |= 0x1;
+
+	/* Save back to reg array */
+	g_regs[DIO_INPUT_CONFIG_REG] = config;
+}
+
+/**
+  * @brief Validates and updates the data ready input configuration based on DIO_INPUT_CONFIG
   *
   * @return void
   *
@@ -149,25 +182,14 @@ uint32_t GetHardwareID()
   */
 void UpdateDIOInputConfig()
 {
-	/* Get current config value */
-	uint32_t config = g_regs[DIO_INPUT_CONFIG_REG];
-
+	uint32_t config;
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-	/* Clear unused bits */
-	config &= 0x3F9F;
+	/* Validate DIO input config */
+	ValidateDIOInputConfig();
 
-	/* Must be one, and only one bit set in drPins. If none, defaults to DIO1 set */
-	if(config & 0x1)
-		config &= 0x3F91;
-	else if(config & 0x2)
-		config &= 0x3F92;
-	else if(config & 0x4)
-		config &= 0x3F94;
-	else if(config & 0x8)
-		config &= 0x3F98;
-	else
-		config |= 0x1;
+	/* Get current config value */
+	config = g_regs[DIO_INPUT_CONFIG_REG];
 
 	/* Configure selected pin to trigger interrupt. Disable interrupt initially */
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -409,7 +431,7 @@ static void ParseDIOOutputConfig()
   */
 static uint16_t BuildDIOOutputConfigReg()
 {
-	return g_pinConfig.passPins | (g_pinConfig.watermarkPins << 4) | (g_pinConfig.overflowPins << 8) | (g_pinConfig.errorPins << 12);
+	return (g_pinConfig.passPins | (g_pinConfig.watermarkPins << 4) | (g_pinConfig.overflowPins << 8) | (g_pinConfig.errorPins << 12));
 }
 
 /**
