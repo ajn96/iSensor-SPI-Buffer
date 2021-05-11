@@ -120,6 +120,7 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void BufferTimestampTest()
         {
+            const double DR_FREQ = 2000;
             double timeMs;
             List<RegClass> ReadRegs = new List<RegClass>();
             uint[] data;
@@ -132,11 +133,11 @@ namespace iSensor_SPI_Buffer_Test
             Stopwatch timer = new Stopwatch();
             //Want DR on DIO1, PPS on DIO2
             FX3.StartPWM(1, 0.5, FX3.DIO2);
-            FX3.StartPWM(1000, 0.5, FX3.DIO1);
+            FX3.StartPWM(DR_FREQ, 0.5, FX3.DIO1);
             WriteUnsigned("DIO_INPUT_CONFIG", 0x201);
             WriteUnsigned("DIO_OUTPUT_CONFIG", 0x1);
             WriteUnsigned("IMU_SPI_CONFIG", 0x105);
-            WriteUnsigned("BUF_LEN", 4);
+            WriteUnsigned("BUF_LEN", 8);
             WriteUnsigned("BUF_CONFIG", 0x2);
             WriteUnsigned("USER_COMMAND", 1u << COMMAND_PPS_START, false);
             /* Wait 1 second for alignment */
@@ -153,7 +154,7 @@ namespace iSensor_SPI_Buffer_Test
                 count = ReadUnsigned("BUF_CNT_1");
                 data = Dut.ReadUnsigned(ReadRegs, 1, count);
                 //Console.WriteLine("Retrieved " + count.ToString() + " samples");
-                timeMs = ProcessTimestamps(timeMs, data);
+                timeMs = ProcessTimestamps(timeMs, DR_FREQ, data);
                 if(timeMs > (lastPrintTime + 1000))
                 {
                     Console.WriteLine(timeMs.ToString());
@@ -162,7 +163,7 @@ namespace iSensor_SPI_Buffer_Test
             }
         }
 
-        private double ProcessTimestamps(double lastTime, uint[] regdata)
+        private double ProcessTimestamps(double lastTime, double drFreq, uint[] regdata)
         {
             List<double> times = new List<double>();
             double timeMs;
@@ -178,13 +179,25 @@ namespace iSensor_SPI_Buffer_Test
             /* Handle init condition */
             if(lastTime == 0)
             {
-                lastTime = times[0] - 1;
+                lastTime = times[0] - (1000 / drFreq);
             }
-            double expectedTime = lastTime + 1;
+            double expectedTime = lastTime + (1000 / drFreq);
             for (int i = 0; i < times.Count; i++)
             {
-                Assert.AreEqual(expectedTime, times[i], 0.2, "Invalid timestamp");
-                expectedTime = times[i] + 1;
+                try
+                {
+                    Assert.AreEqual(expectedTime, times[i], 0.2, "Invalid timestamp");
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    foreach(double time in times)
+                    {
+                        Console.WriteLine(time.ToString());
+                    }
+                    Assert.True(false);
+                }
+                expectedTime = times[i] + (1000 / drFreq);
             }
             return times.Last();
         }
