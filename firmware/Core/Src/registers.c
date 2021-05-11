@@ -27,7 +27,7 @@ volatile uint32_t g_update_flags = 0;
 volatile uint16_t* g_CurrentBufEntry;
 
 /** iSensor-SPI-Buffer global register array (read-able via SPI). Global scope */
-uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE] __attribute__((aligned (32))) = {
+volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE] __attribute__((aligned (32))) = {
 
 /* Page 252 (volatile, currently unusued) */
 OUTPUT_PAGE, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0x00 - 0x07 */
