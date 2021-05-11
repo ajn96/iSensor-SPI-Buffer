@@ -204,32 +204,29 @@ uint16_t ReadReg(uint8_t regAddr)
   *
   * For selected pages not addressed by iSensor-SPI-Buffer, the write is
   * passed through to the connected IMU, using the spi_passthrough module.
-  * If the selected page is [253 - 255] this write request is processed
+  * If the selected page is [252 - 255] this write request is processed
   * directly. The firmware echoes back the processed write value so that
   * the master can verify the write contents on the next SPI transaction.
   */
 uint16_t WriteReg(uint8_t regAddr, uint8_t regValue)
 {
-	/* Track last selected page */
-	static uint16_t lastPage = BUF_CONFIG_PAGE;
 	uint16_t regIndex;
 
 	/* Handle page register writes first */
 	if(regAddr == 0)
 	{
-		/* Get new page */
-		selected_page = regValue;
-
-		/* Enable/disable capture as needed */
-		if(selected_page == BUF_READ_PAGE)
+		/* Are we moving to page 255? Enable capture first time */
+		if((regValue == BUF_READ_PAGE) && (selected_page != BUF_READ_PAGE))
 		{
 			g_update_flags |= ENABLE_CAPTURE_FLAG;
 		}
-		else if(lastPage == BUF_READ_PAGE)
+		/* Are we leaving page 255? Then disable capture */
+		if((regValue != BUF_READ_PAGE) && (selected_page == BUF_READ_PAGE))
 		{
 			g_update_flags |= DISABLE_CAPTURE_FLAG;
 		}
-		lastPage = selected_page;
+		/* Save page */
+		selected_page = regValue;
 	}
 
 	if(selected_page < OUTPUT_PAGE)

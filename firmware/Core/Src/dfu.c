@@ -53,6 +53,7 @@ void CheckDFUFlags()
 void PrepareDFUBoot()
 {
 	*DFU_FLAG_ADDR = ENABLE_DFU_KEY;
+	USBReset();
 	NVIC_SystemReset();
 }
 
