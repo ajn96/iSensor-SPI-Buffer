@@ -270,7 +270,6 @@ void ProcessCommand()
 
 	if(command & CMD_SOFTWARE_RESET)
 	{
-		USBDisconnect();
 		NVIC_SystemReset();
 	}
 	else if(command & CMD_CLEAR_BUFFER)

@@ -126,6 +126,9 @@ int main()
   /* Configure and enable user SPI port (based on loaded register values) */
   UpdateUserSpiConfig(false);
 
+  /* Trigger a USB re-enum on host */
+  USBReset();
+
   /* Init and Enable DMA channels */
   DMA_Init();
 

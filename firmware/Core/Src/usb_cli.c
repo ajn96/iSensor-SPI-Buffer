@@ -38,29 +38,30 @@ static uint8_t EchoBuf[4];
 static const uint8_t NewLineStr[] = "\r\n";
 
 /**
-  * @brief HDisconnect USB device from the host
+  * @brief Toggle USB PU to force a re-enumeration on the host side
   *
   * @return void
-  *
-  * This function should be called just prior to
-  * resetting, to ensure that after reset the
-  * USB enumerates correctly.
   */
-void USBDisconnect()
+void USBReset()
 {
-	USBD_DeInit(&hUsbDeviceFS);
-	/* Configure USB data lines as GPIO floating */
-	HAL_GPIO_DeInit(GPIOA, GPIO_PIN_11);
-	HAL_GPIO_DeInit(GPIOA, GPIO_PIN_12);
-
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
-	GPIO_InitStruct.Pin = GPIO_PIN_11 | GPIO_PIN_12;
-	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+
+	/* Toggle USB PU high (PB11) */
+	GPIO_InitStruct.Pin = GPIO_PIN_11;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	GPIOB->BSRR = GPIO_PIN_11;
 
 	/* Wait 10ms for host to detect */
 	SleepMicroseconds(10000);
+
+	/* Bring USB PU low again */
+	GPIOB->BRR = GPIO_PIN_11;
+
+	/* Set as input */
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 }
 
 /**
