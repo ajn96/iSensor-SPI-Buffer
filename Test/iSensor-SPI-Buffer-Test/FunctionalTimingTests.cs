@@ -162,7 +162,7 @@ namespace iSensor_SPI_Buffer_Test
             for (int i = 0; i < numTrials; i++)
             {
                 FX3.DutSupplyMode = DutVoltage.Off;
-                System.Threading.Thread.Sleep(10);
+                System.Threading.Thread.Sleep(250);
                 FX3.DutSupplyMode = DutVoltage.On3_3Volts;
                 time = FX3.PulseWait(FX3.DIO1, 1, 0, 100);
                 Console.WriteLine("Reset time: " + time.ToString() + "ms");
