@@ -130,7 +130,7 @@ namespace iSensor_SPI_Buffer_Test
                 }
             }
             FX3.SclkFrequency = 10000000;
-            FX3.StallTime = 10;
+            FX3.StallTime = 5;
             FX3.DrActive = false;
         }
 

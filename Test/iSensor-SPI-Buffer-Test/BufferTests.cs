@@ -8,6 +8,7 @@ using FX3Api;
 using System.IO;
 using System.Reflection;
 using RegMapClasses;
+using System.Diagnostics;
 
 namespace iSensor_SPI_Buffer_Test
 {
@@ -119,6 +120,73 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void BufferTimestampTest()
         {
+            double timeMs;
+            List<RegClass> ReadRegs = new List<RegClass>();
+            uint[] data;
+            uint count;
+            double lastPrintTime;
+            ReadRegs.Add(RegMap["BUF_RETRIEVE"]);
+            ReadRegs.Add(RegMap["STATUS_1"]);
+            ReadRegs.Add(RegMap["BUF_UTC_TIME_LWR"]);
+            ReadRegs.Add(RegMap["BUF_TIMESTAMP_LWR"]);
+            Stopwatch timer = new Stopwatch();
+            //Want DR on DIO1, PPS on DIO2
+            FX3.StartPWM(1, 0.5, FX3.DIO2);
+            FX3.StartPWM(1000, 0.5, FX3.DIO1);
+            WriteUnsigned("DIO_INPUT_CONFIG", 0x201);
+            WriteUnsigned("DIO_OUTPUT_CONFIG", 0x1);
+            WriteUnsigned("IMU_SPI_CONFIG", 0x105);
+            WriteUnsigned("BUF_LEN", 4);
+            WriteUnsigned("BUF_CONFIG", 0x2);
+            WriteUnsigned("USER_COMMAND", 1u << COMMAND_PPS_START, false);
+            /* Wait 1 second for alignment */
+            System.Threading.Thread.Sleep(1000);
+            timer.Start();
+            timeMs = 0;
+            /* Start capture */
+            WriteUnsigned("BUF_CNT_1", 0, false);
+            /* Run for 1 hour */
+            lastPrintTime = 0;
+            while (timer.ElapsedMilliseconds < (60 * 60 * 1000))
+            {
+                System.Threading.Thread.Sleep(10);
+                count = ReadUnsigned("BUF_CNT_1");
+                data = Dut.ReadUnsigned(ReadRegs, 1, count);
+                //Console.WriteLine("Retrieved " + count.ToString() + " samples");
+                timeMs = ProcessTimestamps(timeMs, data);
+                if(timeMs > (lastPrintTime + 1000))
+                {
+                    Console.WriteLine(timeMs.ToString());
+                    lastPrintTime = timeMs;
+                }
+            }
+        }
+
+        private double ProcessTimestamps(double lastTime, uint[] regdata)
+        {
+            List<double> times = new List<double>();
+            double timeMs;
+            for(int i = 0; i < regdata.Length; i+= 4)
+            {
+                /* Grab second value */
+                timeMs = regdata[i + 2] * 1000.0;
+                /* Add in us */
+                timeMs += (regdata[i + 3] / 1000.0);
+                times.Add(timeMs);
+                //Console.WriteLine(timeMs.ToString());
+            }
+            /* Handle init condition */
+            if(lastTime == 0)
+            {
+                lastTime = times[0] - 1;
+            }
+            double expectedTime = lastTime + 1;
+            for (int i = 0; i < times.Count; i++)
+            {
+                Assert.AreEqual(expectedTime, times[i], 0.2, "Invalid timestamp");
+                expectedTime = times[i] + 1;
+            }
+            return times.Last();
         }
 
         [Test]
