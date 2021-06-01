@@ -21,7 +21,7 @@ Additional hardware and software resources are linked below.
 
 [STM32 Processor Pin Map](markdown/PIN_MAP.md)
 
-[Programming Guide](markdown/PROGRAMMING.md)
+[Programming Guide](markdown/BUILDING.md)
 
 A video walkthrough and tutorial of the SPI Buffer Board's features is hosted on YouTube. Click on the image below to check it out!
 
