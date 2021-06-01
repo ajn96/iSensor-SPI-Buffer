@@ -6,11 +6,11 @@ For hardware setup instructions for debugging or loading new firmware, see [PROG
 
 ## Cloning Repo
 
-First, clone the repo locally using the Git Client of your choice. The clone link can be copied here:
+First, clone the repo locally using the Git client of your choice. The clone link can be found here on the GitHub repo page:
 
 ![Clone Link](https://github.com/ajn96/iSensor-SPI-Buffer/raw/master/img/clone_button.PNG)
 
-Example git clone command through Git Bash:
+Example git clone command through Git bash:
 
 ![Clone Process](https://github.com/ajn96/iSensor-SPI-Buffer/raw/master/img/git_clone.PNG)
 
