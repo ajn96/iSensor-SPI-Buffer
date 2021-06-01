@@ -16,7 +16,7 @@ Example git clone command through Git bash:
 
 ## Importing Project in STM32Cube IDE
 
-Once the repo is cloned locally and STM32CubeIDE is installed, the firmware project can be added to your IDE workspace. First, select "Open Projects from File System":
+Once the repo is cloned locally and STM32CubeIDE is installed, the firmware project can be added to your IDE workspace. Withing STM32CubeIDE, select "File" -> "Open Projects from File System":
 
 ![Add Project](https://github.com/ajn96/iSensor-SPI-Buffer/raw/master/img/open_project_menu.PNG)
 
