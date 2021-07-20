@@ -26,6 +26,10 @@ In Linux the port name (dev/ path for the device) can be determined using the in
 
 ### Python Setup
 
+The PYTHONPATH variable will likely have to be set to include the spi_buf_cli.py file. To do this on Linux, open a terminal and for example type: `EXPORT PYTHONPATH=/home/usr/pi/Desktop/iSensor-SPI-Buffer/PythonUtil:$PYTHONPATH`. The directory should be modified to point to the location of the PythonUtil folder in the cloned repo.
+
+On Windows, the PYTHONPATH can be updated by setting the Environmental Variable PYTHONPATH to include the PythonUtil directory in the cloned repo.
+
 Once you have identified the port "ID" for the buffer board, connecting to the board is as simple as creating and initializing an instance of the ISensorSPIBuffer Python class. The initializer configures the specified serial port for use with the buffer board and performs basic setup on the buffer board itself.
 
 For the Windows example
