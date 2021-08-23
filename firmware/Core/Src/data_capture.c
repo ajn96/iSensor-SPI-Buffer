@@ -9,18 +9,12 @@
  **/
 
 #include "data_capture.h"
-
-/** Global register array (from registers.c) */
-extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
-
-/* Words per buffer (from isr.c) */
-extern volatile uint32_t g_wordsPerCapture;
-
-/* Capture in progress (from isr.c) */
-extern volatile uint32_t g_captureInProgress;
-
-/** PPS input interrupt mask (from timer.c) */
-extern uint32_t g_PPSInterruptMask;
+#include "stm32f3xx_hal.h"
+#include "registers.h"
+#include "isr.h"
+#include "timer.h"
+#include "dio.h"
+#include "led.h"
 
 /**
   * @brief Enables autonomous data capture by enabling DR ISR in NVIC.

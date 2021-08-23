@@ -9,18 +9,12 @@
  **/
 
 #include "user_spi.h"
+#include "registers.h"
+#include "main.h"
+#include "buffer.h"
 
 /** Track if a burst read is enabled. Global scope */
 volatile uint32_t g_userburstRunning;
-
-/** User SPI handle (from main.c) */
-extern SPI_HandleTypeDef g_spi2;
-
-/** Pointer to buffer entry. Will be 0 if no buffer entry "loaded" to output registers (from registers.c) */
-extern volatile uint16_t* g_CurrentBufEntry;
-
-/** Global register array (from registers.c) */
-extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
 
 /**
   * @brief Reset user SPI port

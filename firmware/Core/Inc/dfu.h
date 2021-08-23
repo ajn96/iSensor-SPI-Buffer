@@ -11,7 +11,8 @@
 #ifndef INC_DFU_H_
 #define INC_DFU_H_
 
-#include "stm32f303xe.h"
+/* Header includes require for prototypes */
+#include <stdint.h>
 
 /* Public function prototypes */
 

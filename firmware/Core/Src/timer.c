@@ -9,17 +9,14 @@
  **/
 
 #include "timer.h"
+#include "registers.h"
+#include "dio.h"
+#include "main.h"
 
 /* Private function prototypes */
 static void InitTIM2(uint32_t timerfreq);
 static void InitTIM8();
 static void ConfigurePPSPins(uint32_t enable);
-
-/** Global register array (from registers.c) */
-extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
-
-/** Struct storing current DIO output config. (from dio.c) */
-extern volatile DIOConfig g_pinConfig;
 
 /** PPS interrupt source. Global scope */
 uint32_t g_PPSInterruptMask = 0;

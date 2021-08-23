@@ -6,12 +6,15 @@
   * @date		6/26/2020
   * @author		A. Nolan (alex.nolan@analog.com)
   * @brief		Implementation file for iSensor-SPI-Buffer DIO interfacing module
+  *
+  * This module manages all interrupts (error, watermark) as well as configuring
+  * the pin passthrough and sync generation.
  **/
 
 #include "dio.h"
-
-/** Global register array (from registers.c) */
-extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
+#include "registers.h"
+#include "data_capture.h"
+#include "math.h"
 
 /** Struct storing current DIO output config. Global scope */
 volatile DIOConfig g_pinConfig = {};

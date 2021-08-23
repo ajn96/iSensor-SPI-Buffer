@@ -11,10 +11,9 @@
 #ifndef INC_USB_CLI_H_
 #define INC_USB_CLI_H_
 
+/* Header includes require for prototypes */
+#include <stdint.h>
 #include "main.h"
-#include "usbd_cdc_if.h"
-#include "registers.h"
-#include "script.h"
 
 /* Public function prototypes */
 

@@ -9,12 +9,11 @@
  **/
 
 #include "flash.h"
+#include "registers.h"
+#include "stm32f3xx_hal.h"
 
 /* Local function prototypes */
 static void PrepareRegsForFlash();
-
-/** Global register array (from registers.c) */
-extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
 
 /**
   * @brief Flash update command handler

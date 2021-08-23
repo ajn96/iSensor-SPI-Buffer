@@ -11,8 +11,8 @@
 #ifndef INC_USER_SPI_H_
 #define INC_USER_SPI_H_
 
-#include "registers.h"
-#include "main.h"
+/* Header includes require for prototypes */
+#include "stdint.h"
 
 /* Public function prototypes */
 
@@ -22,5 +22,8 @@ void BurstReadDisable();
 void UpdateUserSpiConfig(uint32_t CheckUnlock);
 void UserSpiReset();
 /* @endcond */
+
+/* Public variables exported from module */
+extern volatile uint32_t g_userburstRunning;
 
 #endif /* INC_USER_SPI_H_ */

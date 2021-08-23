@@ -12,19 +12,8 @@
 #ifndef __MAIN_H
 #define __MAIN_H
 
-/* Includes */
+/* Header includes require for prototypes */
 #include "stm32f3xx_hal.h"
-#include "registers.h"
-#include "buffer.h"
-#include "user_interrupt.h"
-#include "flash.h"
-#include "led.h"
-#include "watchdog.h"
-#include "timer.h"
-#include "dio.h"
-#include "usb_device.h"
-#include "adc.h"
-#include "dfu.h"
 
 /* Public function prototypes */
 
@@ -56,5 +45,12 @@ typedef enum
 
 /** Step running SD script (if any) */
 #define STATE_STEP_SCRIPT		5
+
+/* Public variables exported from module */
+extern DMA_HandleTypeDef g_dma_spi1_rx;
+extern DMA_HandleTypeDef g_dma_spi1_tx;
+extern DMA_HandleTypeDef g_dma_spi2_tx;
+extern SPI_HandleTypeDef g_spi1;
+extern SPI_HandleTypeDef g_spi2;
 
 #endif /* __MAIN_H */

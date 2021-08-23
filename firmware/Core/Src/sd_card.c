@@ -9,6 +9,12 @@
  **/
 
 #include "sd_card.h"
+#include <stdio.h>
+#include "script.h"
+#include "fatfs.h"
+#include "registers.h"
+#include "timer.h"
+
 
 /* Private functions */
 static bool OpenScriptFiles();
@@ -18,9 +24,6 @@ static bool CommandPostLoadProcess();
 static bool CreateResultFile();
 static void SPI3_Init(void);
 static void ParseReadBuffer(UINT bytesRead);
-
-/** Global register array (from registers.c) */
-extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
 
 /** SPI handle for SD card master port (global scope) */
 SPI_HandleTypeDef g_spi3;

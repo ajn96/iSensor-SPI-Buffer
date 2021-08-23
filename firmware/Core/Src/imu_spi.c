@@ -9,15 +9,13 @@
  **/
 
 #include "imu_spi.h"
+#include "main.h"
+#include "registers.h"
+#include "timer.h"
+#include "stm32f3xx_hal.h"
 
 /* Local function prototypes */
 static void ApplySclkDivider(uint32_t preScalerSetting);
-
-/* Get reference to master SPI instance (SPI1) */
-extern SPI_HandleTypeDef g_spi1;
-
-/** Global register array (from registers.c) */
-extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
 
 /** track stall time (microseconds) */
 static uint32_t imuStallTimeUs = 25;

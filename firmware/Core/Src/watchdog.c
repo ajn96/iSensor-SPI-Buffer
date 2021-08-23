@@ -9,9 +9,9 @@
  **/
 
 #include "watchdog.h"
-
-/** Global register array (from registers.c) */
-extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
+#include "registers.h"
+#include "stm32f3xx_hal.h"
+#include "stm32f303xe.h"
 
 /**
   * @brief Feeds the watchdog timer. Should be called periodically from main loop

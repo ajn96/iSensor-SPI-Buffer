@@ -11,11 +11,6 @@
 #ifndef INC_DATA_CAPTURE_H_
 #define INC_DATA_CAPTURE_H_
 
-/* Includes */
-#include "registers.h"
-#include "led.h"
-#include "stm32f3xx_hal.h"
-
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */

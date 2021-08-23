@@ -9,6 +9,10 @@
  **/
 
 #include "adc.h"
+#include "registers.h"
+#include "main.h"
+#include "stm32f3xx_hal.h"
+#include "stm32f3xx_hal_conf.h"
 
 /* Private function prototypes */
 static void ProcessTempReading();
@@ -17,9 +21,6 @@ static uint16_t GetVdd(uint32_t VrefMeasurement);
 
 /** HAL ADC handle */
 static ADC_HandleTypeDef hadc1;
-
-/** Global register array (from registers.c) */
-extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
 
 /**
   * @brief ADC1 Initialization Function

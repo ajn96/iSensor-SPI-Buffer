@@ -11,10 +11,9 @@
 #ifndef INC_SCRIPT_H_
 #define INC_SCRIPT_H_
 
+/* Header includes require for prototypes */
+#include <stdint.h>
 #include "main.h"
-#include "registers.h"
-#include "sd_card.h"
-#include "usb_cli.h"
 
 /** Available script commands */
 typedef enum

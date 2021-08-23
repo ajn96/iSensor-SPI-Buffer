@@ -11,8 +11,8 @@
 #ifndef INC_ADC_H_
 #define INC_ADC_H_
 
-#include "registers.h"
-#include "stm32f3xx_hal_conf.h"
+/* Header includes require for prototypes */
+#include <stdint.h>
 
 /* Public function prototypes */
 

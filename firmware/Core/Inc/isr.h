@@ -11,12 +11,8 @@
 #ifndef INC_ISR_H_
 #define INC_ISR_H_
 
-/* Includes */
-#include "imu_spi.h"
-#include "registers.h"
-#include "buffer.h"
-#include "data_capture.h"
-#include "timer.h"
+/* Header includes require for prototypes */
+#include <stdint.h>
 
 /* Public function prototypes */
 
@@ -41,5 +37,9 @@ void MemManage_Handler(void);
 void BusFault_Handler(void);
 void UsageFault_Handler(void);
 /* @endcond */
+
+/* Public variables exported from module */
+extern volatile uint32_t g_wordsPerCapture;
+extern volatile uint32_t g_captureInProgress;
 
 #endif /* INC_ISR_H_ */

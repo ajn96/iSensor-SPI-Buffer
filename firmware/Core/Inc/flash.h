@@ -11,10 +11,8 @@
 #ifndef INC_FLASH_H_
 #define INC_FLASH_H_
 
-/* Includes */
-#include "stdint.h"
-#include "registers.h"
-#include "stm32f3xx_hal.h"
+/* Header includes require for prototypes */
+#include <stdint.h>
 
 /* Public function prototypes */
 

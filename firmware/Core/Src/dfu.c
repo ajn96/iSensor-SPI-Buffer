@@ -9,6 +9,7 @@
  **/
 
 #include "dfu.h"
+#include "stm32f303xe.h"
 #include "usb_cli.h"
 
 /* Private function prototypes */

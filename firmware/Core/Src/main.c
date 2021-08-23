@@ -10,8 +10,23 @@
 
 #include "main.h"
 #include "usbd_cdc_if.h"
+#include "usb_device.h"
 #include "usb_cli.h"
 #include "sd_card.h"
+#include "registers.h"
+#include "buffer.h"
+#include "user_interrupt.h"
+#include "flash.h"
+#include "led.h"
+#include "watchdog.h"
+#include "timer.h"
+#include "dio.h"
+#include "adc.h"
+#include "dfu.h"
+#include "user_spi.h"
+#include "imu_spi.h"
+#include "data_capture.h"
+#include "script.h"
 
 /* Private function prototypes */
 static void SystemClock_Config();
@@ -19,9 +34,6 @@ static void MX_GPIO_Init();
 static void MX_SPI1_Init();
 static void DMA_Init();
 static void DWT_Init();
-
-/* Update processing required (from registers.c) */
-extern volatile uint32_t g_update_flags;
 
 /** IMU SPI Rx DMA handle. Global scope */
 DMA_HandleTypeDef g_dma_spi1_rx;

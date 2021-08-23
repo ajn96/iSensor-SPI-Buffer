@@ -11,8 +11,8 @@
 #ifndef INC_WATCHDOG_H_
 #define INC_WATCHDOG_H_
 
-#include "stm32f303xe.h"
-#include "registers.h"
+/* Header includes require for prototypes */
+#include <stdint.h>
 
 /* Public function prototypes */
 

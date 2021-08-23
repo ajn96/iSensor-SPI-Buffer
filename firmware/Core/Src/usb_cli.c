@@ -9,12 +9,14 @@
  **/
 
 #include "usb_cli.h"
+#include "main.h"
+#include "usbd_cdc_if.h"
+#include "registers.h"
+#include "script.h"
+#include "timer.h"
 
-/** USB handle */
+/** USB handle (from usb_device.c) */
 extern USBD_HandleTypeDef hUsbDeviceFS;
-
-/** Global register array (from registers.c) */
-extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
 
 /** USB Rx buffer (from usbd_cdc_if.c) */
 extern uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];

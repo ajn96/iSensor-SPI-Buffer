@@ -11,10 +11,9 @@
 #ifndef INC_SD_CARD_H_
 #define INC_SD_CARD_H_
 
-#include "script.h"
-#include "fatfs.h"
-#include "registers.h"
-#include "timer.h"
+/* Header includes require for prototypes */
+#include <stdint.h>
+#include "stm32f3xx_hal.h"
 
 /* Public functions */
 
@@ -58,5 +57,8 @@ void SDTxHandler(const uint8_t* buf, uint32_t count);
 
 /** SD card write failure occurred during script run */
 #define SCR_WRITE_FAIL			(1 << 7)
+
+/* Public variables exported from module */
+extern SPI_HandleTypeDef g_spi3;
 
 #endif /* INC_SD_CARD_H_ */

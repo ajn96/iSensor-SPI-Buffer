@@ -8,17 +8,23 @@
   * @brief		iSensor-SPI-Buffer register interfacing module. Called by user SPI and USB CLI
  **/
 
+/* Includes */
 #include "registers.h"
 #include "sd_card.h"
+#include "imu_spi.h"
+#include "main.h"
+#include "buffer.h"
+#include "flash.h"
+#include "data_capture.h"
+#include "user_spi.h"
+#include "dfu.h"
+#include "dio.h"
+#include "timer.h"
+#include "user_interrupt.h"
+#include "usb_cli.h"
 
 /* Local function prototypes */
 static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue);
-
-/* Index after last buffer output register (from buffer.c) */
-extern uint32_t g_bufLastRegIndex;
-
-/** Number of 32-bit words per buffer (from buffer.c) */
-extern uint32_t g_bufNumWords32;
 
 /** Register update flags for main loop processing. Global scope */
 volatile uint32_t g_update_flags = 0;

@@ -9,9 +9,8 @@
  **/
 
 #include "led.h"
-
-/** Global register array (from registers.c) */
-extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
+#include "stm32f3xx_hal.h"
+#include "registers.h"
 
 /**
   * @brief Turn on a selected LED

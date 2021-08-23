@@ -11,8 +11,8 @@
 #ifndef INC_USER_INTERRUPT_H_
 #define INC_USER_INTERRUPT_H_
 
-/* Includes */
-#include "registers.h"
+/* Header includes require for prototypes */
+#include <stdint.h>
 
 /* Public function prototypes */
 

@@ -9,12 +9,9 @@
  **/
 
 #include "user_interrupt.h"
-
-/** Global register array (from registers.c) */
-extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
-
-/** Struct to track config (from dio.c) */
-extern DIOConfig g_pinConfig;
+#include "dio.h"
+#include "registers.h"
+#include "led.h"
 
 /**
   * @brief Updates the user interrupt (data ready) signal status

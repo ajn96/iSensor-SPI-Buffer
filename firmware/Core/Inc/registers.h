@@ -11,27 +11,8 @@
 #ifndef INC_REGISTERS_H_
 #define INC_REGISTERS_H_
 
-/* Includes */
-#include "imu_spi.h"
-#include "main.h"
-#include "buffer.h"
-#include "flash.h"
-#include "data_capture.h"
-#include "user_spi.h"
-#include "dfu.h"
-
-/* Public function prototypes */
-
-/* @cond DOXYGEN_IGNORE */
-uint16_t ReadReg(uint8_t regAddr);
-uint16_t WriteReg(uint8_t regAddr, uint8_t regValue);
-void GetSN();
-void GetBuildDate();
-void ProcessCommand();
-void FactoryReset();
-void BufDequeueToOutputRegs();
-void ButtonPressHandler();
-/* @endcond */
+/* Header includes require for prototypes */
+#include <stdint.h>
 
 /* Number of registers per page */
 #define REG_PER_PAGE				64
@@ -198,5 +179,23 @@ void ButtonPressHandler();
 #define CLI_DELIM_BITM				(0xFF << CLI_DELIM_BITP)
 
 #define CLI_CONFIG_CLEAR_MASK		0xFF0C
+
+/* Public variables exported from module */
+extern volatile uint32_t g_update_flags;
+extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
+extern volatile uint16_t* g_CurrentBufEntry;
+
+/* Public function prototypes */
+
+/* @cond DOXYGEN_IGNORE */
+uint16_t ReadReg(uint8_t regAddr);
+uint16_t WriteReg(uint8_t regAddr, uint8_t regValue);
+void GetSN();
+void GetBuildDate();
+void ProcessCommand();
+void FactoryReset();
+void BufDequeueToOutputRegs();
+void ButtonPressHandler();
+/* @endcond */
 
 #endif /* INC_REGISTERS_H_ */

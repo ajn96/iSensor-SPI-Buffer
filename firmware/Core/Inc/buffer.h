@@ -11,9 +11,8 @@
 #ifndef INC_BUFFER_H_
 #define INC_BUFFER_H_
 
-/* Includes */
-#include "main.h"
-#include "registers.h"
+/* Header includes require for prototypes */
+#include <stdint.h>
 
 /* Public function prototypes */
 
@@ -32,5 +31,10 @@ uint32_t BufCanAddElement();
 
 /** Largest buffer data entry size. Real size is +10 bytes */
 #define BUF_MAX_ENTRY	64
+
+/* Public variables exported from module */
+extern uint32_t g_bufLastRegIndex;
+extern uint32_t g_bufCount;
+extern uint32_t g_bufNumWords32;
 
 #endif /* INC_BUFFER_H_ */

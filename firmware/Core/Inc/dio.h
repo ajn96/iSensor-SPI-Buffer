@@ -11,9 +11,8 @@
 #ifndef INC_DIO_H_
 #define INC_DIO_H_
 
-#include "registers.h"
-#include "data_capture.h"
-#include "math.h"
+/* Header includes require for prototypes */
+#include "stm32f3xx_hal.h"
 
 /** Struct representing DIO configuration settings */
 typedef struct DIOConfig
@@ -50,5 +49,8 @@ uint32_t GetHardwareID();
 
 /** Mask to clear reserved bits in DIO_INPUT_CONFIG */
 #define DIO_INPUT_CLEAR_MASK	0x3F9F
+
+/* Public variables exported from module */
+extern volatile DIOConfig g_pinConfig;
 
 #endif /* INC_DIO_H_ */

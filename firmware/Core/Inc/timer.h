@@ -11,7 +11,8 @@
 #ifndef INC_TIMER_H_
 #define INC_TIMER_H_
 
-#include "main.h"
+/* Header includes require for prototypes */
+#include <stdint.h>
 
 /* Public function prototypes */
 
@@ -29,5 +30,8 @@ void CheckPPSUnlock();
 
 /** EXTI interrupt mask for possible PPS inputs */
 #define PPS_INT_MASK	 		GPIO_PIN_8|GPIO_PIN_7|GPIO_PIN_4
+
+/* Public variables exported from module */
+extern uint32_t g_PPSInterruptMask;
 
 #endif /* INC_TIMER_H_ */
