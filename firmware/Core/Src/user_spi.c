@@ -10,7 +10,6 @@
 
 #include "user_spi.h"
 #include "registers.h"
-#include "main.h"
 #include "buffer.h"
 
 /** Track if a burst read is enabled. Global scope */
@@ -25,11 +24,20 @@ volatile uint32_t g_userburstRunning;
   * This is required because there is no way to clear Tx FIFO in the SPI
   * peripheral otherwise
   */
-void UserSpiReset()
+void UserSpiReset(bool enable_irq)
 {
 	RCC->APB1RSTR |= RCC_APB1RSTR_SPI2RST;
 	RCC->APB1RSTR &= ~RCC_APB1RSTR_SPI2RST;
 	HAL_SPI_Init(&g_spi2);
+	if (enable_irq)
+	{
+		/* Enable user SPI to generate interrupt on two bytes received (RXNE) */
+		SPI2->CR2 |= SPI_IT_RXNE;
+	}
+	else
+	{
+		__HAL_SPI_DISABLE_IT(&g_spi2, (SPI_IT_ERR|SPI_IT_TXE|SPI_IT_RXNE));
+	}
 	__HAL_SPI_ENABLE(&g_spi2);
 }
 
@@ -43,7 +51,8 @@ void UserSpiReset()
   */
 void BurstReadSetup()
 {
-	UserSpiReset();
+	/* Reset SPI, disabling interrupts */
+	UserSpiReset(false);
 
 	/* Load buffer count to output initially */
 	SPI2->DR = g_regs[BUF_CNT_0_REG];
@@ -75,6 +84,11 @@ void BurstReadSetup()
 	/* Set TX DMA request enable in SPI */
 	SET_BIT(SPI2->CR2, SPI_CR2_TXDMAEN);
 
+	/* Enable CS rising edge interrupt after clearing pending IRQ */
+	EXTI->PR = (0x3F << 10);
+	NVIC_ClearPendingIRQ(EXTI15_10_IRQn);
+	NVIC_EnableIRQ(EXTI15_10_IRQn);
+
 	/* Set the user burst running flag */
 	g_userburstRunning = 1;
 }
@@ -85,12 +99,15 @@ void BurstReadSetup()
   * @return void
   *
   * This function disables SPI2 DMA requests via hard reset, and disables
-  * SPI2 DMA channel
+  * SPI2 DMA channel. It then re-configures the SPI for user mode.
   */
 void BurstReadDisable()
 {
 	g_spi2.hdmatx->Instance->CCR &= ~DMA_CCR_EN;
-	UserSpiReset();
+	/* Disable CS interrupt */
+	NVIC_DisableIRQ(EXTI15_10_IRQn);
+	/* Reset SPI */
+	UserSpiReset(true);
 }
 
 /**
@@ -163,8 +180,9 @@ void UpdateUserSpiConfig(uint32_t CheckUnlock)
 		Error_Handler();
 	}
 
-	/* Disable SPI interrupt processing - handled by CS */
+	/* Enable only RXNE interrupt, others disabled */
 	__HAL_SPI_DISABLE_IT(&g_spi2, (SPI_IT_ERR|SPI_IT_TXE|SPI_IT_RXNE));
+	SPI2->CR2 |= SPI_IT_RXNE;
 
 	/* Set threshold for 16 bit mode */
 	CLEAR_BIT(g_spi2.Instance->CR2, SPI_RXFIFO_THRESHOLD);
@@ -181,9 +199,15 @@ void UpdateUserSpiConfig(uint32_t CheckUnlock)
 
 	/* Set user SPI interrupt priority (highest) */
 	HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+	HAL_NVIC_SetPriority(SPI2_IRQn, 1, 0);
 
-	/* Enable user SPI interrupts, via CS */
-	NVIC_EnableIRQ(EXTI15_10_IRQn);
+	/* Clear pending interrupts for SPI */
+	NVIC_ClearPendingIRQ(EXTI15_10_IRQn);
+	NVIC_ClearPendingIRQ(SPI2_IRQn);
+
+	/* Enable user SPI interrupts, disable CS interrupt */
+	NVIC_DisableIRQ(EXTI15_10_IRQn);
+	NVIC_EnableIRQ(SPI2_IRQn);
 
 	/* Apply config value in use back to register */
 	g_regs[USER_SPI_CONFIG_REG] = config;

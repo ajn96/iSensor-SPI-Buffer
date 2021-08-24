@@ -124,7 +124,7 @@ void BufDequeueToOutputRegs()
 		/* Check if burst read mode is enabled and reset SPI */
 		if(g_regs[BUF_CONFIG_REG] & BUF_CFG_BUF_BURST)
 		{
-			UserSpiReset();
+			UserSpiReset(true);
 			SPI2->DR = 0;
 		}
 	}

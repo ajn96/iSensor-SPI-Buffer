@@ -13,6 +13,7 @@
 
 /* Header includes require for prototypes */
 #include "stdint.h"
+#include "main.h"
 
 /* Public function prototypes */
 
@@ -20,7 +21,7 @@
 void BurstReadSetup();
 void BurstReadDisable();
 void UpdateUserSpiConfig(uint32_t CheckUnlock);
-void UserSpiReset();
+void UserSpiReset(bool enable_irq);
 /* @endcond */
 
 /* Public variables exported from module */

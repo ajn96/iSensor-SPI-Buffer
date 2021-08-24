@@ -402,7 +402,70 @@ void DMA1_Channel5_IRQHandler(void)
   */
 void SPI2_IRQHandler(void)
 {
+	/* Error occured */
+	uint32_t error = 0u;
 
+	/* SPI status register */
+	uint32_t spiSr;
+
+	/* Rx SPI data */
+	uint32_t rxData;
+
+	/* Tx SPI data */
+	uint32_t txData;
+
+	/* Read SPI2 SR */
+	spiSr = SPI2->SR;
+
+	/* Read first SPI data word received */
+	rxData = SPI2->DR;
+
+	/* If data is not available then error occurred */
+	if(!(spiSr & SPI_SR_RXNE))
+	{
+		error |= 1u;
+	}
+
+	/* Check for SPI overflow (FIFO transmit is half full or greater) */
+	if(spiSr & SPI_FTLVL_HALF_FULL)
+	{
+		error |= 2u;
+	}
+
+	/* Error interrupt source */
+	if(spiSr & (SPI_FLAG_OVR | SPI_FLAG_MODF))
+	{
+		error |= 4u;
+	}
+
+	/* Has an error occurred? */
+	if (error != 0u)
+	{
+		/* Flag error */
+		g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+
+		/* Re-init SPI to make sure we end up in a good state */
+		UserSpiReset(true);
+		/* Load single word to transmit */
+		SPI2->DR = 0u;
+		return;
+	}
+
+	/* Handle transaction */
+	if(rxData & 0x8000)
+	{
+		/* Write */
+		txData = WriteReg((rxData & 0x7F00) >> 8, rxData & 0xFF);
+	}
+	else
+	{
+		/* Read */
+		txData = ReadReg(rxData >> 8);
+	}
+
+	/* Transmit data back */
+	SPI2->DR = txData;
 }
 
 /**
@@ -424,9 +487,6 @@ void SPI2_IRQHandler(void)
   */
 void EXTI15_10_IRQHandler(void)
 {
-	/* SPI status register */
-	uint32_t spiSr;
-
 	/* Rx SPI data */
 	uint32_t rxData;
 
@@ -435,9 +495,6 @@ void EXTI15_10_IRQHandler(void)
 
 	/* Clear exti PR register (lines 10-15) */
 	EXTI->PR = (0x3F << 10);
-
-	/* Read SPI2 SR */
-	spiSr = SPI2->SR;
 
 	/* Read first SPI data word received */
 	rxData = SPI2->DR;
@@ -457,72 +514,29 @@ void EXTI15_10_IRQHandler(void)
 			/* Exit burst mode */
 			BurstReadDisable();
 		}
+
+		/* Handle transaction */
+		if(rxData & 0x8000)
+		{
+			/* Write */
+			txData = WriteReg((rxData & 0x7F00) >> 8, rxData & 0xFF);
+		}
+		else
+		{
+			/* Read. This will trigger another burst if staying in burst read mode */
+			txData = ReadReg(rxData >> 8);
+		}
+
+		/* Transmit data back */
+		SPI2->DR = txData;
 	}
 	else
 	{
-		/* If data is not available then re-init and exit */
-		if(!(spiSr & SPI_SR_RXNE))
-		{
-			g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
-			g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
-
-			/* Re-init SPI to make sure we end up in a good state */
-			RCC->APB1RSTR |= RCC_APB1RSTR_SPI2RST;
-			RCC->APB1RSTR &= ~RCC_APB1RSTR_SPI2RST;
-			HAL_SPI_Init(&g_spi2);
-			__HAL_SPI_ENABLE(&g_spi2);
-
-			return;
-		}
-
-		/* Check for SPI overflow (FIFO transmit is half full or greater) */
-		if(spiSr & SPI_FTLVL_HALF_FULL)
-		{
-			/* Clear SPI FIFO */
-			for(int i = 0; i < 4; i++)
-			{
-				(void) SPI2->DR;
-			}
-
-			/* Set status reg SPI overflow flag */
-			g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
-			g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
-
-			/* Don't want to load any new data to the output, just return here */
-			return;
-		}
-
-		/* Error interrupt source */
-		if(spiSr & (SPI_FLAG_OVR | SPI_FLAG_MODF))
-		{
-			/* Set status reg SPI error flag */
-			g_regs[STATUS_0_REG] |= STATUS_SPI_ERROR;
-			g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
-
-			/* Overrun error, clear out Rx FIFO by repeatedly reading DR */
-			for(uint32_t i = 0; i < 4; i++)
-			{
-				(void) SPI2->DR;
-			}
-			/* Read status register */
-			(void) SPI2->SR;
-		}
-
+		/* This should not happen, flag error */
+		g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
+		/* Get SPI back to good state */
+		UserSpiReset(true);
 	}
-	/* Handle transaction */
-	if(rxData & 0x8000)
-	{
-		/* Write */
-		txData = WriteReg((rxData & 0x7F00) >> 8, rxData & 0xFF);
-	}
-	else
-	{
-		/* Read */
-		txData = ReadReg(rxData >> 8);
-	}
-
-	/* Transmit data back */
-	SPI2->DR = txData;
 }
 
 /**
