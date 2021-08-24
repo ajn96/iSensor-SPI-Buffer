@@ -27,6 +27,44 @@ static TIM_HandleTypeDef htim3;
 static TIM_HandleTypeDef htim4;
 
 /**
+  * @brief SPI1 Initialization Function (master SPI port to IMU)
+  *
+  * @return void
+  */
+void IMU_SPI_Init()
+{
+	/* SPI1 parameter configuration*/
+	g_spi1.Instance = SPI1;
+	g_spi1.Init.Mode = SPI_MODE_MASTER;
+	g_spi1.Init.Direction = SPI_DIRECTION_2LINES;
+	g_spi1.Init.DataSize = SPI_DATASIZE_16BIT;
+	g_spi1.Init.CLKPolarity = SPI_POLARITY_HIGH;
+	g_spi1.Init.CLKPhase = SPI_PHASE_2EDGE;
+	g_spi1.Init.NSS = SPI_NSS_SOFT;
+	g_spi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
+	g_spi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
+	g_spi1.Init.TIMode = SPI_TIMODE_DISABLE;
+	g_spi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+	g_spi1.Init.CRCPolynomial = 7;
+	g_spi1.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+	g_spi1.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
+	if (HAL_SPI_Init(&g_spi1) != HAL_OK)
+	{
+		Error_Handler();
+	}
+
+	/* Set fifo rx threshold according the reception data length: 16bit */
+	CLEAR_BIT(SPI1->CR2, SPI_RXFIFO_THRESHOLD);
+
+	/* Check if the SPI is already enabled */
+	if ((g_spi1.Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
+	{
+		/* Enable SPI peripheral */
+		__HAL_SPI_ENABLE(&g_spi1);
+	}
+}
+
+/**
   * @brief Hardware reset connected IMU
   *
   * @return void

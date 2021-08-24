@@ -17,6 +17,7 @@
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
+void IMU_SPI_Init();
 uint16_t ImuSpiTransfer(uint32_t MOSI);
 uint16_t ImuReadReg(uint8_t RegAddr);
 uint16_t ImuWriteReg(uint8_t RegAddr, uint8_t RegValue);
