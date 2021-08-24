@@ -402,40 +402,48 @@ void DMA1_Channel5_IRQHandler(void)
   */
 void SPI2_IRQHandler(void)
 {
+	/* Upper byte grabbed from SPI */
+	static uint32_t rx_upper = DEFAULT_DATA;
+
 	/* Error occured */
 	uint32_t error = 0u;
 
 	/* SPI status register */
 	uint32_t spiSr;
 
-	/* Rx SPI data */
-	uint32_t rxData;
+	/* lower byte Rx data */
+	uint32_t rx_lower;
 
 	/* Tx SPI data */
 	uint32_t txData;
 
-	/* Read SPI2 SR */
+	/* Read SPI2 SR to clear flags */
 	spiSr = SPI2->SR;
 
-	/* Read first SPI data word received */
-	rxData = SPI2->DR;
-
-	/* If data is not available then error occurred */
-	if(!(spiSr & SPI_SR_RXNE))
+	/* Are we receiving the upper byte? */
+	if (rx_upper == DEFAULT_DATA)
 	{
-		error |= 1u;
+		/* Read first SPI byte received */
+		rx_upper = SPI2->DR;
+		/* Exit */
+		return;
+	}
+	else
+	{
+		/* Read second SPI byte received */
+		rx_lower = SPI2->DR;
 	}
 
-	/* Check for SPI overflow (FIFO transmit is half full or greater) */
-	if(spiSr & SPI_FTLVL_HALF_FULL)
+	/* Check for stall time violation (Rx FIFO full) */
+	if((spiSr & SPI_FRLVL_FULL) == SPI_FRLVL_FULL)
 	{
-		error |= 2u;
+		error = 1u;
 	}
 
-	/* Error interrupt source */
-	if(spiSr & (SPI_FLAG_OVR | SPI_FLAG_MODF))
+	/* Error interrupt source. This can be a mode fault, overrun, or underrun */
+	if(spiSr & (SPI_FLAG_OVR | SPI_FLAG_MODF | SPI_SR_UDR))
 	{
-		error |= 4u;
+		error = 1u;
 	}
 
 	/* Has an error occurred? */
@@ -449,23 +457,29 @@ void SPI2_IRQHandler(void)
 		UserSpiReset(true);
 		/* Load single word to transmit */
 		SPI2->DR = 0u;
-		return;
-	}
-
-	/* Handle transaction */
-	if(rxData & 0x8000)
-	{
-		/* Write */
-		txData = WriteReg((rxData & 0x7F00) >> 8, rxData & 0xFF);
 	}
 	else
 	{
-		/* Read */
-		txData = ReadReg(rxData >> 8);
-	}
+		/* Handle transaction */
 
-	/* Transmit data back */
-	SPI2->DR = txData;
+		/* Is write requested? */
+		if(rx_upper & 0x80u)
+		{
+			/* Write */
+			txData = WriteReg(rx_upper & 0x7Fu, rx_lower);
+		}
+		else
+		{
+			/* Read */
+			txData = ReadReg(rx_upper);
+		}
+
+		/* Transmit data back, swap endianness. This is done to account for
+		 * automatic byte packing when in byte-mode */
+		SPI2->DR = (txData << 8u) | (txData >> 8u);
+	}
+	/* Reset first byte holder */
+	rx_upper = DEFAULT_DATA;
 }
 
 /**
@@ -536,6 +550,8 @@ void EXTI15_10_IRQHandler(void)
 		g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
 		/* Get SPI back to good state */
 		UserSpiReset(true);
+		/* Load single word to transmit */
+		SPI2->DR = 0u;
 	}
 }
 

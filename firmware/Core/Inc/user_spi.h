@@ -21,7 +21,7 @@
 void BurstReadSetup();
 void BurstReadDisable();
 void UpdateUserSpiConfig(uint32_t CheckUnlock);
-void UserSpiReset(bool enable_irq);
+void UserSpiReset(bool register_mode);
 /* @endcond */
 
 /* Public variables exported from module */

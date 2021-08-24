@@ -14,6 +14,8 @@
 /* Header includes require for prototypes */
 #include <stdint.h>
 
+#define DEFAULT_DATA		0x80000000u
+
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
