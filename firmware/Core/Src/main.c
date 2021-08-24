@@ -99,7 +99,7 @@ int main()
   /* Init ADC for housekeeping */
   ADC_Init();
   /* Configure and enable user SPI port (based on loaded register values) */
-  UpdateUserSpiConfig(false);
+  User_SPI_Update_Config(false);
   /* Trigger a USB re-enum on host */
   USB_Reset();
   /* Init and Enable DMA channels */
@@ -174,7 +174,7 @@ int main()
 		  else if(g_update_flags & USER_SPI_CONFIG_FLAG)
 		  {
 			  g_update_flags &= ~USER_SPI_CONFIG_FLAG;
-			  UpdateUserSpiConfig(true);
+			  User_SPI_Update_Config(true);
 		  }
 		  /* Advance to next state */
 		  state = STATE_CHECK_PPS;
@@ -283,8 +283,8 @@ static void DMA_Init()
 	g_dma_spi2_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
 	g_dma_spi2_tx.Init.PeriphInc = DMA_PINC_DISABLE;
 	g_dma_spi2_tx.Init.MemInc = DMA_MINC_ENABLE;
-	g_dma_spi2_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
-	g_dma_spi2_tx.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+	g_dma_spi2_tx.Init.PeriphDataAlignment = DMA_MDATAALIGN_BYTE;
+	g_dma_spi2_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
 	g_dma_spi2_tx.Init.Mode = DMA_NORMAL;
 	g_dma_spi2_tx.Init.Priority = DMA_PRIORITY_VERY_HIGH;
 	if (HAL_DMA_Init(&g_dma_spi2_tx) != HAL_OK)

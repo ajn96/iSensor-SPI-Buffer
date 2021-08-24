@@ -21,6 +21,7 @@
 
 /* Private function prototypes */
 static void FinishImuBurst();
+static void ProcessSPITransaction(uint32_t rx);
 
 /** Current capture size (in 16 bit words). Global scope */
 volatile uint32_t g_wordsPerCapture;
@@ -417,21 +418,16 @@ void SPI2_IRQHandler(void)
 	/* Rx data */
 	uint32_t rx;
 
-	/* Tx SPI data */
-	uint32_t txData;
-
 	/* Read SPI2 SR to clear flags */
 	spiSr = SPI2->SR;
+
+	/* Grab Rx data */
+	rx = SPI2->DR;
 
 	/* More than two bytes received? Then flag error and reset SPI */
 	if ((spiSr & SPI_FRLVL_FULL) == SPI_FRLVL_FULL)
 	{
 		error = 1u;
-	}
-	else
-	{
-		/* Grab Rx data */
-		rx = SPI2->DR;
 	}
 
 	/* Error interrupt source. This can be a mode fault, overrun, or underrun */
@@ -449,34 +445,28 @@ void SPI2_IRQHandler(void)
 	/* Has an error occurred? */
 	if (error != 0u)
 	{
-		/* Flag error */
-		g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
-		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+		/* Allow errors for burst read start */
+		if(((rx & 0xFF) == 6) && (g_CurrentBufEntry != 0u))
+		{
+			/* Handle transaction */
+			ProcessSPITransaction(rx);
+		}
+		else
+		{
+			/* Flag error */
+			g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
+			g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 
-		/* Re-init SPI to make sure we end up in a good state */
-		UserSpiReset(true);
-		/* Load single word to transmit */
-		SPI2->DR = 0u;
+			/* Re-init SPI to make sure we end up in a good state */
+			User_SPI_Reset(true);
+			/* Load single word to transmit */
+			SPI2->DR = 0u;
+		}
 	}
 	else
 	{
 		/* Handle transaction */
-
-		/* Is write requested? */
-		if(rx & 0x0080u)
-		{
-			/* Write */
-			txData = Reg_Write(rx & 0x7F, rx >> 8u);
-		}
-		else
-		{
-			/* Read */
-			txData = Reg_Read(rx & 0x7F);
-		}
-
-		/* Transmit data back, swap endianness. This is done to account for
-		 * automatic byte packing when in byte-mode */
-		SPI2->DR = (txData << 8u) | (txData >> 8u);
+		ProcessSPITransaction(rx);
 	}
 }
 
@@ -500,16 +490,13 @@ void SPI2_IRQHandler(void)
 void EXTI15_10_IRQHandler(void)
 {
 	/* Rx SPI data */
-	uint32_t rxData;
-
-	/* Tx SPI data */
-	uint32_t txData;
+	uint32_t rx;
 
 	/* Clear exti PR register (lines 10-15) */
 	EXTI->PR = (0x3F << 10);
 
 	/* Read first SPI data word received */
-	rxData = SPI2->DR;
+	rx = SPI2->DR;
 
 	/* If a burst is running disable DMA and re-init SPI */
 	if(g_userburstRunning)
@@ -521,36 +508,57 @@ void EXTI15_10_IRQHandler(void)
 		g_userburstRunning = 0;
 
 		/* Check if another burst was not requested */
-		if((rxData & 0xFF00) != 0x0600)
+		if((rx & 0xFF) != 0x0006)
 		{
 			/* Exit burst mode */
-			BurstReadDisable();
+			User_SPI_Burst_Disable();
 		}
-
-		/* Handle transaction */
-		if(rxData & 0x8000)
-		{
-			/* Write */
-			txData = Reg_Write((rxData & 0x7F00) >> 8, rxData & 0xFF);
-		}
-		else
-		{
-			/* Read. This will trigger another burst if staying in burst read mode */
-			txData = Reg_Read(rxData >> 8);
-		}
-
-		/* Transmit data back */
-		SPI2->DR = txData;
+		/* Process transaction */
+		ProcessSPITransaction(rx);
 	}
+	/* Burst not running means this interrupt should not be enabled */
 	else
 	{
 		/* This should not happen, flag error */
 		g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
 		/* Get SPI back to good state */
-		UserSpiReset(true);
+		User_SPI_Burst_Disable();
 		/* Load single word to transmit */
 		SPI2->DR = 0u;
 	}
+}
+
+/**
+  * @brief Process a 16 bit data word from the user SPI
+  *
+  * @param rx Two bytes from the user SPI, packed
+  *
+  * @return void
+  *
+  * This function accomodates for the swapped endiness of bytes which
+  * are packed into the SPI Rx data register.
+  *
+  * If the value on the SPI bus is: 0x1234, then the data register
+  * will hold 0x3412. This is true for both receive and transmit.
+  */
+static void ProcessSPITransaction(uint32_t rx)
+{
+	uint16_t txData;
+	/* Is write requested? */
+	if(rx & 0x0080u)
+	{
+		/* Write */
+		txData = Reg_Write(rx & 0x7F, rx >> 8u);
+	}
+	else
+	{
+		/* Read */
+		txData = Reg_Read(rx & 0x7F);
+	}
+
+	/* Transmit data back, swap endianness. This is done to account for
+	 * automatic byte packing when in byte-mode */
+	SPI2->DR = (txData << 8u) | (txData >> 8u);
 }
 
 /**

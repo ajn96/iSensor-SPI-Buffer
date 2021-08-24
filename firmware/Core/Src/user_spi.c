@@ -31,7 +31,7 @@ static uint32_t SPI2_CR2;
   * This is required because there is no way to clear Tx FIFO in the SPI
   * peripheral otherwise
   */
-void UserSpiReset(bool register_mode)
+void User_SPI_Reset(bool register_mode)
 {
 	/* Hard reset SPI through RCC */
 	RCC->APB1RSTR |= RCC_APB1RSTR_SPI2RST;
@@ -62,10 +62,10 @@ void UserSpiReset(bool register_mode)
   * This function must be called when there is buffered data available to be read,
   * which has been copied to the buffer output data registers.
   */
-void BurstReadSetup()
+void User_SPI_Burst_Setup()
 {
 	/* Reset SPI, disabling SPI interrupts */
-	UserSpiReset(false);
+	User_SPI_Reset(false);
 
 	/* Load buffer count to output initially */
 	SPI2->DR = (g_regs[BUF_CNT_0_REG] << 8u)|(g_regs[BUF_CNT_0_REG] >> 8u);
@@ -114,13 +114,13 @@ void BurstReadSetup()
   * This function disables SPI2 DMA requests via hard reset, and disables
   * SPI2 DMA channel. It then re-configures the SPI for user mode.
   */
-void BurstReadDisable()
+void User_SPI_Burst_Disable()
 {
 	g_spi2.hdmatx->Instance->CCR &= ~DMA_CCR_EN;
 	/* Disable CS interrupt */
 	NVIC_DisableIRQ(EXTI15_10_IRQn);
 	/* Reset SPI, re-enabling SPI IRQ */
-	UserSpiReset(true);
+	User_SPI_Reset(true);
 }
 
 /**
@@ -144,7 +144,7 @@ void BurstReadDisable()
   *
   * As such, words must be received byte-wise and transmitted word-wise (16-bit).
   */
-void UpdateUserSpiConfig(uint32_t CheckUnlock)
+void User_SPI_Update_Config(uint32_t CheckUnlock)
 {
 	uint16_t config = g_regs[USER_SPI_CONFIG_REG];
 	static uint16_t lastConfig = USER_SPI_CONFIG_DEFAULT;

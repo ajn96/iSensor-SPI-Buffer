@@ -18,10 +18,10 @@
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
-void BurstReadSetup();
-void BurstReadDisable();
-void UpdateUserSpiConfig(uint32_t CheckUnlock);
-void UserSpiReset(bool register_mode);
+void User_SPI_Burst_Setup();
+void User_SPI_Burst_Disable();
+void User_SPI_Update_Config(uint32_t CheckUnlock);
+void User_SPI_Reset(bool register_mode);
 /* @endcond */
 
 /* Public variables exported from module */

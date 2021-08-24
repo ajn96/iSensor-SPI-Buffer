@@ -146,7 +146,7 @@ void Reg_Buf_Dequeue_To_Outputs()
 		/* Check if burst read mode is enabled */
 		if(g_regs[BUF_CONFIG_REG] & BUF_CFG_BUF_BURST)
 		{
-			BurstReadSetup();
+			User_SPI_Burst_Setup();
 		}
 	}
 	else
@@ -157,7 +157,7 @@ void Reg_Buf_Dequeue_To_Outputs()
 		/* Check if burst read mode is enabled and reset SPI */
 		if(g_regs[BUF_CONFIG_REG] & BUF_CFG_BUF_BURST)
 		{
-			UserSpiReset(true);
+			User_SPI_Burst_Disable();
 			SPI2->DR = 0;
 		}
 	}
@@ -424,7 +424,7 @@ void Reg_Factory_Reset()
 
 	/* Apply all settings and reset buffer */
 	IMU_Update_SPI_Config();
-	UpdateUserSpiConfig(false);
+	User_SPI_Update_Config(false);
 	DIO_Update_Output_Config();
 	DIO_Update_Input_Config();
 	Buffer_Reset();
