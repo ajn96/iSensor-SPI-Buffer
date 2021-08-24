@@ -396,23 +396,26 @@ void DMA1_Channel5_IRQHandler(void)
   * peripheral is configured to generate an interrupt once two bytes of data
   * have been received.
   *
+  * IMPORTANT NOTE: Due to data packing, each read from the SPI data register
+  * actually pulls two bytes from the Rx FIFO. These bytes are in reversed
+  * order from how they were received on the bus. For more information on this
+  * behavior, see the data packing section of the SPI entry in the technical
+  * reference manual.
+  *
   * If a burst read is requested, this interrupt is disabled, and the CS
   * rising edge interrupt is enabled instead. This allows for variable length
   * burst read transactions.
   */
 void SPI2_IRQHandler(void)
 {
-	/* Upper byte grabbed from SPI */
-	static uint32_t rx_upper = DEFAULT_DATA;
-
 	/* Error occured */
 	uint32_t error = 0u;
 
 	/* SPI status register */
 	uint32_t spiSr;
 
-	/* lower byte Rx data */
-	uint32_t rx_lower;
+	/* Rx data */
+	uint32_t rx;
 
 	/* Tx SPI data */
 	uint32_t txData;
@@ -420,39 +423,25 @@ void SPI2_IRQHandler(void)
 	/* Read SPI2 SR to clear flags */
 	spiSr = SPI2->SR;
 
-	/* More than one byte received? Then flag error and reset SPI */
-	if (spiSr & SPI_FRLVL_HALF_FULL)
+	/* More than two bytes received? Then flag error and reset SPI */
+	if ((spiSr & SPI_FRLVL_FULL) == SPI_FRLVL_FULL)
 	{
 		error = 1u;
 	}
 	else
 	{
-		/* Are we receiving the upper byte? */
-		if (rx_upper == DEFAULT_DATA)
-		{
-			/* Read first SPI byte received */
-			rx_upper = SPI2->DR;
-			/* Exit */
-			return;
-		}
-		else
-		{
-			/* Read second SPI byte received */
-			rx_lower = SPI2->DR;
-		}
-	}
-
-	/* Read STATUS again to ensure flags are up to date */
-	spiSr = SPI2->SR;
-
-	/* Is there currently data in Tx? Then error occurred */
-	if (spiSr & SPI_FTLVL_FULL)
-	{
-		error = 1u;
+		/* Grab Rx data */
+		rx = SPI2->DR;
 	}
 
 	/* Error interrupt source. This can be a mode fault, overrun, or underrun */
 	if(spiSr & (SPI_FLAG_OVR | SPI_FLAG_MODF | SPI_SR_UDR))
+	{
+		error = 1u;
+	}
+
+	/* If there is still Tx data then an error has occurred */
+	if(spiSr & SPI_SR_FTLVL)
 	{
 		error = 1u;
 	}
@@ -474,23 +463,21 @@ void SPI2_IRQHandler(void)
 		/* Handle transaction */
 
 		/* Is write requested? */
-		if(rx_upper & 0x80u)
+		if(rx & 0x0080u)
 		{
 			/* Write */
-			txData = Reg_Write(rx_upper & 0x7Fu, rx_lower);
+			txData = Reg_Write(rx & 0x7F, rx >> 8u);
 		}
 		else
 		{
 			/* Read */
-			txData = Reg_Read(rx_upper);
+			txData = Reg_Read(rx & 0x7F);
 		}
 
 		/* Transmit data back, swap endianness. This is done to account for
 		 * automatic byte packing when in byte-mode */
 		SPI2->DR = (txData << 8u) | (txData >> 8u);
 	}
-	/* Reset first byte holder */
-	rx_upper = DEFAULT_DATA;
 }
 
 /**

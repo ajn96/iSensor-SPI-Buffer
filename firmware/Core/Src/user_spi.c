@@ -11,9 +11,16 @@
 #include "reg.h"
 #include "user_spi.h"
 #include "buffer.h"
+#include "isr.h"
 
 /** Track if a burst read is enabled. Global scope */
 volatile uint32_t g_userburstRunning;
+
+/* SPI control 1 register value for operation */
+static uint32_t SPI2_CR1;
+
+/* SPI control 1 register value for operation */
+static uint32_t SPI2_CR2;
 
 /**
   * @brief Reset user SPI port
@@ -26,9 +33,13 @@ volatile uint32_t g_userburstRunning;
   */
 void UserSpiReset(bool register_mode)
 {
+	/* Hard reset SPI through RCC */
 	RCC->APB1RSTR |= RCC_APB1RSTR_SPI2RST;
 	RCC->APB1RSTR &= ~RCC_APB1RSTR_SPI2RST;
-	HAL_SPI_Init(&g_spi2);
+	/* Apply SPI settings */
+	SPI2->CR1 = SPI2_CR1;
+	SPI2->CR2 = SPI2_CR2;
+	/* Are we enabling SPI interrupts? */
 	if (register_mode)
 	{
 		/* Enable user SPI to generate interrupt on two bytes received (RXNE) */
@@ -36,9 +47,11 @@ void UserSpiReset(bool register_mode)
 	}
 	else
 	{
-		__HAL_SPI_DISABLE_IT(&g_spi2, (SPI_IT_ERR|SPI_IT_TXE|SPI_IT_RXNE));
+		/* Burst mode, disable SPI interrupts */
+		SPI2->CR2 &= ~(SPI_IT_ERR|SPI_IT_TXE|SPI_IT_RXNE);
 	}
-	__HAL_SPI_ENABLE(&g_spi2);
+	/* Enable */
+	SPI2->CR1 |= SPI_CR1_SPE;
 }
 
 /**
@@ -51,12 +64,11 @@ void UserSpiReset(bool register_mode)
   */
 void BurstReadSetup()
 {
-	/* Reset SPI, disabling interrupts */
+	/* Reset SPI, disabling SPI interrupts */
 	UserSpiReset(false);
 
 	/* Load buffer count to output initially */
-	SPI2->DR = (g_regs[BUF_CNT_0_REG] >> 8u);
-	SPI2->DR = (g_regs[BUF_CNT_0_REG] & 0xFFu);
+	SPI2->DR = (g_regs[BUF_CNT_0_REG] << 8u)|(g_regs[BUF_CNT_0_REG] >> 8u);
 
 	/************ Enable the Tx DMA Stream/Channel  *********************/
 
@@ -107,7 +119,7 @@ void BurstReadDisable()
 	g_spi2.hdmatx->Instance->CCR &= ~DMA_CCR_EN;
 	/* Disable CS interrupt */
 	NVIC_DisableIRQ(EXTI15_10_IRQn);
-	/* Reset SPI */
+	/* Reset SPI, re-enabling SPI IRQ */
 	UserSpiReset(true);
 }
 
@@ -182,7 +194,20 @@ void UpdateUserSpiConfig(uint32_t CheckUnlock)
 
 	/* Reset SPI and apply settings */
 	HAL_SPI_DeInit(&g_spi2);
-	UserSpiReset(true);
+	SPI2->CR1 &= ~(SPI_CR1_SPE);
+	HAL_SPI_Init(&g_spi2);
+
+	/* Clear FRXTH to enable trigger on 16-bits Rx data */
+	SPI2->CR2 &= ~(SPI_CR2_FRXTH);
+	/* Enable user SPI to generate interrupt on two bytes received (RXNE) */
+	SPI2->CR2 |= SPI_IT_RXNE;
+
+	/* Save control settings based on latest user config */
+	SPI2_CR1 = SPI2->CR1;
+	SPI2_CR2 = SPI2->CR2;
+
+	/* Enable SPI */
+	SPI2->CR1 |= SPI_CR1_SPE;
 
 	/* Load output with initial zeros */
 	SPI2->DR = 0u;
