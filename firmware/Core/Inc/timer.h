@@ -17,7 +17,7 @@
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
-void InitMicrosecondTimer();
+void Timer_Init();
 void ClearMicrosecondTimer();
 uint32_t GetMicrosecondTimestamp();
 void EnablePPSTimer();

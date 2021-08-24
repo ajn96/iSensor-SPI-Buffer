@@ -32,7 +32,6 @@
 static void SystemClock_Config();
 static void MX_GPIO_Init();
 static void DMA_Init();
-static void DWT_Init();
 
 /** IMU SPI Rx DMA handle. Global scope */
 DMA_HandleTypeDef g_dma_spi1_rx;
@@ -61,94 +60,63 @@ int main()
 {
   /* Check if application needs to reboot into DFU mode prior to any config */
   CheckDFUFlags();
-
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
-
   /* Configure the system clock */
   SystemClock_Config();
-
   /* Enable watch dog timer (2 seconds period) */
   EnableWatchDog(2000);
-
   /* Check if system had previously encountered an unexpected fault */
   FlashInitErrorLog();
-
   /* Initialize GPIO */
   MX_GPIO_Init();
-
-  /* Initialize DWT timer peripheral */
-  DWT_Init();
-
+  /* Init misc timers  */
+  Timer_Init();
   /* Initialize IMU SPI port */
   IMU_SPI_Init();
-
   /* Initialize SD card interface */
   SDCardInit();
-
   /* Initialize USB hardware */
   MX_USB_DEVICE_Init();
-
   /* Load registers from flash */
   LoadRegsFlash();
-
   /* Load build date from .data to register array */
   GetBuildDate();
-
   /* Load STM32 unique SN to register array */
   GetSN();
-
   /* Check for logged error codes and update FAULT_CODE */
   FlashCheckLoggedError();
-
   /* Check if system previously reset due to watch dog */
   CheckWatchDogStatus();
-
   /* Init buffer */
   BufReset();
-
-  /* Init microsecond sample timer (TIM2)  */
-  InitMicrosecondTimer();
-
   /* Init IMU spi period timer (TIM4) */
   InitImuSpiTimer();
-
   /* Init IMU CS timer in PWM mode (TIM3) */
   InitImuCsTimer();
-
   /* Config IMU SPI settings */
   UpdateImuSpiConfig();
-
   /* Init DIO outputs */
   UpdateDIOOutputConfig();
-
   /* Init DIO inputs (data ready and PPS) */
   UpdateDIOInputConfig();
-
   /* Disable data capture initially */
   DisableDataCapture();
-
   /* Set DR int priority (lower than user SPI - no preemption) */
   HAL_NVIC_SetPriority(EXTI9_5_IRQn, 1, 0);
-
   /* Init ADC for housekeeping */
   ADCInit();
-
   /* Configure and enable user SPI port (based on loaded register values) */
   UpdateUserSpiConfig(false);
-
   /* Trigger a USB re-enum on host */
   USBReset();
-
   /* Init and Enable DMA channels */
   DMA_Init();
-
   /* Check for script auto-run set immediately before entering cyclic executive */
   ScriptAutorun();
 
   /* Set state to 0 */
   state = 0;
-
   /* Clear all update flags before entering loop (shouldn't be set anyways, but it doesn't hurt) */
   g_update_flags = 0;
 
@@ -476,27 +444,4 @@ static void MX_GPIO_Init()
 	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-}
-
-/**
-  * @brief  Init DWT peripheral.
-  *
-  * @return void
-  *
-  * This peripheral is used to count microseconds for
-  * the timer module.
-  */
-static void DWT_Init()
-{
-  /* Disable TRC */
-  CoreDebug->DEMCR &= ~CoreDebug_DEMCR_TRCENA_Msk; // ~0x01000000;
-  /* Enable TRC */
-  CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk; // 0x01000000;
-  /* Disable clock cycle counter */
-  DWT->CTRL &= ~DWT_CTRL_CYCCNTENA_Msk; //~0x00000001;
-  /* Enable clock cycle counter */
-  DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk; //0x00000001;
-
-  /* Enable watch dog debug freeze */
-  DBGMCU->APB1FZ |= DBGMCU_APB1_FZ_DBG_IWDG_STOP;
 }

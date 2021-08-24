@@ -17,6 +17,7 @@
 static void InitTIM2(uint32_t timerfreq);
 static void InitTIM8();
 static void ConfigurePPSPins(uint32_t enable);
+static void DWT_Init();
 
 /** PPS interrupt source. Global scope */
 uint32_t g_PPSInterruptMask = 0;
@@ -32,6 +33,26 @@ static uint32_t PPS_TickCount;
 
 /** Number of PPS ticks per sec */
 static uint32_t PPS_MaxTickCount;
+
+/**
+  * @brief Initialize all timers for operation.
+  *
+  * @return void
+  *
+  * Timer 2 is used as a 1MHz timer for the timestamp measurements
+  * Timer 8 is used as a timeout timer, also at 1MHz
+  *
+  * The DWT timer is used for a polling based timer
+  */
+void Timer_Init()
+{
+	/* Set up TIM8 */
+	InitTIM8();
+	/* Init TIM2 at 1MHz also */
+	InitTIM2(1000000);
+	/* Init DWT timer */
+	DWT_Init();
+}
 
 /**
   * @brief Check if the PPS signal is unlocked (greater than 1100ms since last PPS strobe)
@@ -92,21 +113,6 @@ uint32_t GetMicrosecondTimestamp()
 uint32_t GetPPSTimestamp()
 {
 	return (g_regs[UTC_TIMESTAMP_LWR_REG] | (g_regs[UTC_TIMESTAMP_UPR_REG] << 16));
-}
-
-/**
-  * @brief Init TIM2 to operate in 32-bit mode with a 1MHz timebase.
-  *
-  * @return void
-  *
-  * This timer is used to generate the buffer entry timestamp values
-  */
-void InitMicrosecondTimer()
-{
-	InitTIM8();
-
-	/* Init TIM2 at 1MHz also */
-	InitTIM2(1000000);
 }
 
 /**
@@ -441,4 +447,27 @@ static void ConfigurePPSPins(uint32_t enable)
 	{
 		g_pinConfig.ppsPin = 0;
 	}
+}
+
+/**
+  * @brief  Init DWT peripheral.
+  *
+  * @return void
+  *
+  * This peripheral is used to count microseconds for
+  * the timer module.
+  */
+static void DWT_Init()
+{
+  /* Disable TRC */
+  CoreDebug->DEMCR &= ~CoreDebug_DEMCR_TRCENA_Msk; // ~0x01000000;
+  /* Enable TRC */
+  CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk; // 0x01000000;
+  /* Disable clock cycle counter */
+  DWT->CTRL &= ~DWT_CTRL_CYCCNTENA_Msk; //~0x00000001;
+  /* Enable clock cycle counter */
+  DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk; //0x00000001;
+
+  /* Enable watch dog debug freeze */
+  DBGMCU->APB1FZ |= DBGMCU_APB1_FZ_DBG_IWDG_STOP;
 }
