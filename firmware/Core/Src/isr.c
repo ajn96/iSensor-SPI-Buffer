@@ -420,22 +420,33 @@ void SPI2_IRQHandler(void)
 	/* Read SPI2 SR to clear flags */
 	spiSr = SPI2->SR;
 
-	/* Are we receiving the upper byte? */
-	if (rx_upper == DEFAULT_DATA)
+	/* More than one byte received? Then flag error and reset SPI */
+	if (spiSr & SPI_FRLVL_HALF_FULL)
 	{
-		/* Read first SPI byte received */
-		rx_upper = SPI2->DR;
-		/* Exit */
-		return;
+		error = 1u;
 	}
 	else
 	{
-		/* Read second SPI byte received */
-		rx_lower = SPI2->DR;
+		/* Are we receiving the upper byte? */
+		if (rx_upper == DEFAULT_DATA)
+		{
+			/* Read first SPI byte received */
+			rx_upper = SPI2->DR;
+			/* Exit */
+			return;
+		}
+		else
+		{
+			/* Read second SPI byte received */
+			rx_lower = SPI2->DR;
+		}
 	}
 
-	/* Check for stall time violation (Rx FIFO full) */
-	if((spiSr & SPI_FRLVL_FULL) == SPI_FRLVL_FULL)
+	/* Read STATUS again to ensure flags are up to date */
+	spiSr = SPI2->SR;
+
+	/* Is there currently data in Tx? Then error occurred */
+	if (spiSr & SPI_FTLVL_FULL)
 	{
 		error = 1u;
 	}
