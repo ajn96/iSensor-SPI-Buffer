@@ -8,9 +8,9 @@
   * @brief		iSensor-SPI-Buffer LED control module
  **/
 
+#include "reg.h"
 #include "led.h"
 #include "stm32f3xx_hal.h"
-#include "registers.h"
 
 /**
   * @brief Turn on a selected LED
@@ -19,7 +19,7 @@
   *
   * @return void
   */
-void TurnOnLED(LED light)
+void LED_Turn_On(LED light)
 {
 	switch(light)
 	{
@@ -44,7 +44,7 @@ void TurnOnLED(LED light)
   *
   * @return void
   */
-void TurnOffLED(LED light)
+void LED_Turn_Off(LED light)
 {
 	switch(light)
 	{

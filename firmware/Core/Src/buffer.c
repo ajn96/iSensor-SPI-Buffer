@@ -8,8 +8,8 @@
   * @brief		iSensor-SPI-Buffer buffer implementation
  **/
 
+#include "reg.h"
 #include "buffer.h"
-#include "registers.h"
 #include "stm32f3xx_hal.h"
 
 /** Index for the last buffer output register. This is based on buffer size. Global scope */
@@ -49,7 +49,7 @@ static uint32_t buf_lastEntryIndex;
   *
   * The return value depends on the replace oldest setting and buffer count
   */
-uint32_t BufCanAddElement()
+uint32_t Buffer_Can_Add_Element()
 {
 	/* can always add new element if replace oldest is set */
 	if(buf_replaceOldest)
@@ -78,7 +78,7 @@ uint32_t BufCanAddElement()
   * of this function execution to prevent issues with g_bufCount being
   * inadvertently changed
   */
-uint8_t* BufTakeElement()
+uint8_t* Buffer_Take_Element()
 {
 	uint8_t* buf_addr = buf;
 
@@ -130,7 +130,7 @@ uint8_t* BufTakeElement()
   * If replace oldest is set to false, the head stays still when the
   * buffer data structure reaches capacity.
   */
-uint8_t* BufAddElement()
+uint8_t* Buffer_Add_Element()
 {
 	uint8_t* buf_addr = buf;
 	if(g_bufCount < buf_maxCount)
@@ -183,7 +183,7 @@ uint8_t* BufAddElement()
   * (buffer length, buffer config) are both validated to ensure the
   * buffer is initialized to a valid state.
   */
-void BufReset()
+void Buffer_Reset()
 {
 	/* Reset head/tail and count to 0 */
 	buf_head = 0;

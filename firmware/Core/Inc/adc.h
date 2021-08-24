@@ -17,8 +17,8 @@
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
-void ADCInit();
-void UpdateADC();
+void ADC_Init();
+void ADC_Update();
 /* @endcond */
 
 /** Temp sensor value at 30C (for two point calibration) */

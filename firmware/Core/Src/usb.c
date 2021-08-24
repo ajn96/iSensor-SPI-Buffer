@@ -2,16 +2,16 @@
   * Copyright (c) Analog Devices Inc, 2020
   * All Rights Reserved.
   *
-  * @file		usb_cli.c
+  * @file		usb.c
   * @date		6/26/2020
   * @author		A. Nolan (alex.nolan@analog.com)
   * @brief		Implementation file for iSensor-SPI-Buffer USB command line register interface
  **/
 
-#include "usb_cli.h"
+#include "usb.h"
+#include "reg.h"
 #include "main.h"
 #include "usbd_cdc_if.h"
-#include "registers.h"
 #include "script.h"
 #include "timer.h"
 
@@ -44,7 +44,7 @@ static const uint8_t NewLineStr[] = "\r\n";
   *
   * @return void
   */
-void USBReset()
+void USB_Reset()
 {
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
@@ -56,7 +56,7 @@ void USBReset()
 	GPIOB->BSRR = GPIO_PIN_11;
 
 	/* Wait 10ms for host to detect */
-	SleepMicroseconds(10000);
+	Timer_Sleep_Microseconds(10000);
 
 	/* Bring USB PU low again */
 	GPIOB->BRR = GPIO_PIN_11;
@@ -74,7 +74,7 @@ void USBReset()
   * This function should be called periodically from
   * the main loop to check if new USB data has been received
   */
-void USBRxHandler()
+void USB_Rx_Handler()
 {
 	/* Track index within current command string */
 	static uint32_t commandIndex = 0;
@@ -101,7 +101,7 @@ void USBRxHandler()
 					EchoBuf[0] = '\b';
 					EchoBuf[1] = ' ';
 					EchoBuf[2] = '\b';
-					USBTxHandler(EchoBuf, 3);
+					USB_Tx_Handler(EchoBuf, 3);
 				}
 			}
 			/* carriage return char (end of command) */
@@ -110,14 +110,14 @@ void USBRxHandler()
 				/* Send newline char if CLI echo is enabled */
 				if(!(g_regs[CLI_CONFIG_REG] & USB_ECHO_BITM))
 				{
-					USBTxHandler(NewLineStr, sizeof(NewLineStr));
+					USB_Tx_Handler(NewLineStr, sizeof(NewLineStr));
 				}
 				/* Place a string terminator */
 				CurrentCommand[commandIndex] = 0;
 				/* Parse command */
-				ParseScriptElement(CurrentCommand, &scr);
+				Script_Parse_Element(CurrentCommand, &scr);
 				/* Execute command */
-				RunScriptElement(&scr, UserTxBufferFS, true);
+				Script_Run_Element(&scr, UserTxBufferFS, true);
 				/* Clear command buffer */
 				for(int i = 0; i < sizeof(CurrentCommand); i++)
 					CurrentCommand[i] = 0;
@@ -136,7 +136,7 @@ void USBRxHandler()
 				if(!(g_regs[CLI_CONFIG_REG] & USB_ECHO_BITM))
 				{
 					EchoBuf[0] = UserRxBufferFS[bufIndex];
-					USBTxHandler(EchoBuf, 1);
+					USB_Tx_Handler(EchoBuf, 1);
 				}
 			}
 		}
@@ -156,11 +156,11 @@ void USBRxHandler()
   * routines, when a script object is executed
   * from a USB CLI context.
   */
-void USBTxHandler(const uint8_t* buf, uint32_t count)
+void USB_Tx_Handler(const uint8_t* buf, uint32_t count)
 {
 	if(count == 0)
 		return;
-	if(USBWaitForTxDone(50))
+	if(USB_Wait_For_Tx_Done(50))
 	{
 		USBD_CDC_SetTxBuffer(&hUsbDeviceFS, (uint8_t *) buf, count);
 		USBD_CDC_TransmitPacket(&hUsbDeviceFS);
@@ -174,7 +174,7 @@ void USBTxHandler(const uint8_t* buf, uint32_t count)
   *
   * @return true if Tx is free, false is timeout elapses
   */
-bool USBWaitForTxDone(uint32_t TimeoutMs)
+bool USB_Wait_For_Tx_Done(uint32_t TimeoutMs)
 {
 	uint32_t endTime = HAL_GetTick() + TimeoutMs;
 	/* Check for tx busy */
@@ -198,7 +198,7 @@ bool USBWaitForTxDone(uint32_t TimeoutMs)
   * After calling this function, WATERMARK_INT_CONFIG will be set based on the
   * current buffer length setting.
   */
-void WatermarkLevelAutoset()
+void USB_Watermark_Autoset()
 {
 	uint16_t bufNumRegs, bufCliLen, waterMarkLevel;
 

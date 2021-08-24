@@ -56,9 +56,9 @@ typedef struct
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
-void CheckStream();
-void ParseScriptElement(const uint8_t* commandBuf, script * scr);
-void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB);
+void Script_Check_Stream();
+void Script_Parse_Element(const uint8_t* commandBuf, script * scr);
+void Script_Run_Element(script* scr, uint8_t * outBuf, bool isUSB);
 /* @endcond */
 
 /** Buffer output base address (on page 255) */

@@ -11,8 +11,8 @@
   * the pin passthrough and sync generation.
  **/
 
+#include "reg.h"
 #include "dio.h"
-#include "registers.h"
 #include "data_capture.h"
 #include "math.h"
 
@@ -57,7 +57,7 @@ static void ParseDIOOutputConfig();
   * period = 72000000 / (preScale * freq)
   *
   */
-void StartSyncGen()
+void DIO_Start_Sync_Gen()
 {
 	uint32_t period, preScale, cycles;
 
@@ -130,7 +130,7 @@ void StartSyncGen()
   *
   * @return ID code read from ID pins (0 - 3)
   */
-uint32_t GetHardwareID()
+uint32_t DIO_Get_Hardware_ID()
 {
 	uint32_t id;
 
@@ -149,7 +149,7 @@ uint32_t GetHardwareID()
   * that only one DIO pin is selected as data ready. If no data ready pin
   * is selected, it defaults to DIO1.
   */
-void ValidateDIOInputConfig()
+void DIO_Validate_Input_Config()
 {
 	/* Get current config value */
 	uint32_t config = g_regs[DIO_INPUT_CONFIG_REG];
@@ -183,13 +183,13 @@ void ValidateDIOInputConfig()
   * source with the desired polarity. This function does not enable PPS input (just ensures
   * that only one bit is set).
   */
-void UpdateDIOInputConfig()
+void DIO_Update_Input_Config()
 {
 	uint32_t config;
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
 	/* Validate DIO input config */
-	ValidateDIOInputConfig();
+	DIO_Validate_Input_Config();
 
 	/* Get current config value */
 	config = g_regs[DIO_INPUT_CONFIG_REG];
@@ -288,7 +288,7 @@ void UpdateDIOInputConfig()
   *
   * Any pins which are unused will be configured as inputs.
  **/
-void UpdateDIOOutputConfig()
+void DIO_Update_Output_Config()
 {
 	/* Struct to configure GPIO pins */
 	GPIO_InitTypeDef GPIO_InitStruct = {0};

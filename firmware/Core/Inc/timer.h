@@ -18,14 +18,14 @@
 
 /* @cond DOXYGEN_IGNORE */
 void Timer_Init();
-void ClearMicrosecondTimer();
-uint32_t GetMicrosecondTimestamp();
-void EnablePPSTimer();
-void DisablePPSTimer();
-void IncrementPPSTime();
-uint32_t GetPPSTimestamp();
-void SleepMicroseconds(uint32_t microseconds);
-void CheckPPSUnlock();
+void Timer_Clear_Microsecond_Timer();
+uint32_t Timer_Get_Microsecond_Timestamp();
+void Timer_Enable_PPS();
+void Timer_Disable_PPS();
+void Timer_Increment_PPS_Time();
+uint32_t Timer_Get_PPS_Timestamp();
+void Timer_Sleep_Microseconds(uint32_t microseconds);
+void Timer_Check_PPS_Unlock();
 /* @endcond */
 
 /** EXTI interrupt mask for possible PPS inputs */

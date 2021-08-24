@@ -8,8 +8,8 @@
   * @brief		Implementation file for iSensor-SPI-Buffer ADC module (for temp sensor and Vdd monitoring)
  **/
 
+#include "reg.h"
 #include "adc.h"
-#include "registers.h"
 #include "main.h"
 #include "stm32f3xx_hal.h"
 #include "stm32f3xx_hal_conf.h"
@@ -37,7 +37,7 @@ static ADC_HandleTypeDef hadc1;
   * Because these values are measured for diagnostics monitoring pursposes
   * only, using a long sample time is not a problem.
   */
-void ADCInit()
+void ADC_Init()
 {
 	ADC_MultiModeTypeDef multimode = {0};
 	ADC_ChannelConfTypeDef sConfig = {0};
@@ -58,14 +58,14 @@ void ADCInit()
 	hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
 	if (HAL_ADC_Init(&hadc1) != HAL_OK)
 	{
-		Error_Handler();
+		Main_Error_Handler();
 	}
 
 	/* Configure the ADC multi-mode */
 	multimode.Mode = ADC_MODE_INDEPENDENT;
 	if (HAL_ADCEx_MultiModeConfigChannel(&hadc1, &multimode) != HAL_OK)
 	{
-		Error_Handler();
+		Main_Error_Handler();
 	}
 
 	/* Configure ADC vrefint channel */
@@ -103,7 +103,7 @@ void ADCInit()
   * sampled prior to the temp sensor channel, because the calculated
   * Vdd value is used to compensate the temp sensor scale factor.
   */
-void UpdateADC()
+void ADC_Update()
 {
 	static uint32_t adc_state = ADC_VDD_START;
 

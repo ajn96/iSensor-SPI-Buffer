@@ -8,12 +8,13 @@
   * @brief		iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.
  **/
 
+#include "usb.h"
 #include "main.h"
+#include "reg.h"
+#include "imu.h"
 #include "usbd_cdc_if.h"
 #include "usb_device.h"
-#include "usb_cli.h"
 #include "sd_card.h"
-#include "registers.h"
 #include "buffer.h"
 #include "user_interrupt.h"
 #include "flash.h"
@@ -24,7 +25,6 @@
 #include "adc.h"
 #include "dfu.h"
 #include "user_spi.h"
-#include "imu_spi.h"
 #include "data_capture.h"
 #include "script.h"
 
@@ -59,15 +59,15 @@ static uint32_t state;
 int main()
 {
   /* Check if application needs to reboot into DFU mode prior to any config */
-  CheckDFUFlags();
+  DFU_Check_Flags();
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
   /* Configure the system clock */
   SystemClock_Config();
   /* Enable watch dog timer (2 seconds period) */
-  EnableWatchDog(2000);
+  Watchdog_Enable(2000);
   /* Check if system had previously encountered an unexpected fault */
-  FlashInitErrorLog();
+  Flash_Fault_Log_Init();
   /* Initialize GPIO */
   MX_GPIO_Init();
   /* Init misc timers  */
@@ -75,45 +75,37 @@ int main()
   /* Initialize IMU SPI port */
   IMU_SPI_Init();
   /* Initialize SD card interface */
-  SDCardInit();
+  SD_Card_Init();
   /* Initialize USB hardware */
   MX_USB_DEVICE_Init();
-  /* Load registers from flash */
-  LoadRegsFlash();
-  /* Load build date from .data to register array */
-  GetBuildDate();
-  /* Load STM32 unique SN to register array */
-  GetSN();
+  /* Load register values */
+  Reg_Init();
   /* Check for logged error codes and update FAULT_CODE */
-  FlashCheckLoggedError();
+  Flash_Check_Logged_Fault();
   /* Check if system previously reset due to watch dog */
-  CheckWatchDogStatus();
+  Watchdog_Check_Status();
   /* Init buffer */
-  BufReset();
-  /* Init IMU spi period timer (TIM4) */
-  InitImuSpiTimer();
-  /* Init IMU CS timer in PWM mode (TIM3) */
-  InitImuCsTimer();
+  Buffer_Reset();
   /* Config IMU SPI settings */
-  UpdateImuSpiConfig();
+  IMU_Update_SPI_Config();
   /* Init DIO outputs */
-  UpdateDIOOutputConfig();
+  DIO_Update_Output_Config();
   /* Init DIO inputs (data ready and PPS) */
-  UpdateDIOInputConfig();
+  DIO_Update_Input_Config();
   /* Disable data capture initially */
-  DisableDataCapture();
+  Data_Capture_Disable();
   /* Set DR int priority (lower than user SPI - no preemption) */
   HAL_NVIC_SetPriority(EXTI9_5_IRQn, 1, 0);
   /* Init ADC for housekeeping */
-  ADCInit();
+  ADC_Init();
   /* Configure and enable user SPI port (based on loaded register values) */
   UpdateUserSpiConfig(false);
   /* Trigger a USB re-enum on host */
-  USBReset();
+  USB_Reset();
   /* Init and Enable DMA channels */
   DMA_Init();
   /* Check for script auto-run set immediately before entering cyclic executive */
-  ScriptAutorun();
+  SD_Card_Script_Autorun();
 
   /* Set state to 0 */
   state = 0;
@@ -127,14 +119,14 @@ int main()
 	  if(g_update_flags & DEQUEUE_BUF_FLAG)
 	  {
 		  g_update_flags &= ~DEQUEUE_BUF_FLAG;
-		  BufDequeueToOutputRegs();
+		  Reg_Buf_Dequeue_To_Outputs();
 	  }
 
 	  /* Check user interrupt generation status */
-	  UpdateUserInterrupt();
+	  User_Interrupt_Update();
 
 	  /* Feed watch dog timer */
-	  FeedWatchDog();
+	  Watchdog_Feed();
 
 	  /* State machine for non-timing critical processing tasks */
 	  switch(state)
@@ -146,37 +138,37 @@ int main()
 			  g_update_flags &= ~DISABLE_CAPTURE_FLAG;
 			  /* Make sure both can't be set */
 			  g_update_flags &= ~(ENABLE_CAPTURE_FLAG);
-			  DisableDataCapture();
+			  Data_Capture_Disable();
 		  }
 		  /* Handle change to DIO input config (validate only, no enable) */
 		  else if(g_update_flags & DIO_INPUT_CONFIG_FLAG)
 		  {
 			  g_update_flags &= ~DIO_INPUT_CONFIG_FLAG;
-			  ValidateDIOInputConfig();
+			  DIO_Validate_Input_Config();
 		  }
 		  /* Handle capture enable */
 		  else if(g_update_flags & ENABLE_CAPTURE_FLAG)
 		  {
 			  g_update_flags &= ~ENABLE_CAPTURE_FLAG;
-			  EnableDataCapture();
+			  Data_Capture_Enable();
 		  }
 		  /* Handle user commands */
 		  else if(g_update_flags & USER_COMMAND_FLAG)
 		  {
 			  g_update_flags &= ~USER_COMMAND_FLAG;
-			  ProcessCommand();
+			  Reg_Process_Command();
 		  }
 		  /* Handle capture DIO output config change */
 		  else if(g_update_flags & DIO_OUTPUT_CONFIG_FLAG)
 		  {
 			  g_update_flags &= ~DIO_OUTPUT_CONFIG_FLAG;
-			  UpdateDIOOutputConfig();
+			  DIO_Update_Output_Config();
 		  }
 		  /* Handle change to IMU SPI config */
 		  else if(g_update_flags & IMU_SPI_CONFIG_FLAG)
 		  {
 			  g_update_flags &= ~IMU_SPI_CONFIG_FLAG;
-			  UpdateImuSpiConfig();
+			  IMU_Update_SPI_Config();
 		  }
 		  /* Handle change to user SPI config */
 		  else if(g_update_flags & USER_SPI_CONFIG_FLAG)
@@ -189,31 +181,31 @@ int main()
 		  break;
 	  case STATE_CHECK_PPS:
 		  /* Check that PPS isn't unlocked */
-		  CheckPPSUnlock();
+		  Timer_Check_PPS_Unlock();
 		  /* Advance to next state */
 		  state = STATE_READ_ADC;
 		  break;
 	  case STATE_READ_ADC:
 		  /* Update ADC state machine */
-		  UpdateADC();
+		  ADC_Update();
 		  /* Advance to next state */
 		  state = STATE_CHECK_USB;
 		  break;
 	  case STATE_CHECK_USB:
 		  /* Handle any USB command line Rx activity */
-		  USBRxHandler();
+		  USB_Rx_Handler();
 		  /* Advance to next state */
 		  state = STATE_CHECK_STREAM;
 		  break;
 	  case STATE_CHECK_STREAM:
 		  /* Check stream status for CLI */
-		  CheckStream();
+		  Script_Check_Stream();
 		  /* Advance to next state */
 		  state = STATE_STEP_SCRIPT;
 		  break;
 	  case STATE_STEP_SCRIPT:
 		  /* Call SD script step function */
-		  ScriptStep();
+		  SD_Card_Script_Step();
 	  default:
 		  /* Go back to first state */
 		  state = STATE_CHECK_FLAGS;
@@ -230,12 +222,14 @@ int main()
   *
   * @return void
   *
-  * Errors will force a system reset
+  * During init, errors are logged, then init continues. This is
+  * done to reduce potential for a fault locking the device in a reset
+  * loop.
   */
-void Error_Handler()
+void Main_Error_Handler()
 {
 	/* Log error for future retrieval */
-	FlashLogError(ERROR_INIT);
+	Flash_Log_Fault(ERROR_INIT);
 }
 
 /**
@@ -265,7 +259,7 @@ static void DMA_Init()
 	g_dma_spi1_rx.Init.Priority = DMA_PRIORITY_HIGH;
 	if (HAL_DMA_Init(&g_dma_spi1_rx) != HAL_OK)
 	{
-	  Error_Handler();
+	  Main_Error_Handler();
 	}
 	__HAL_LINKDMA(&g_spi1,hdmarx,g_dma_spi1_rx);
 
@@ -280,7 +274,7 @@ static void DMA_Init()
 	g_dma_spi1_tx.Init.Priority = DMA_PRIORITY_HIGH;
 	if (HAL_DMA_Init(&g_dma_spi1_tx) != HAL_OK)
 	{
-	  Error_Handler();
+	  Main_Error_Handler();
 	}
 	__HAL_LINKDMA(&g_spi1,hdmatx,g_dma_spi1_tx);
 
@@ -295,7 +289,7 @@ static void DMA_Init()
 	g_dma_spi2_tx.Init.Priority = DMA_PRIORITY_VERY_HIGH;
 	if (HAL_DMA_Init(&g_dma_spi2_tx) != HAL_OK)
 	{
-	  Error_Handler();
+	  Main_Error_Handler();
 	}
 	__HAL_LINKDMA(&g_spi2,hdmatx,g_dma_spi2_tx);
 
@@ -335,7 +329,7 @@ static void SystemClock_Config()
   RCC_OscInitStruct.PLL.PREDIV = RCC_PREDIV_DIV1;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
-    Error_Handler();
+    Main_Error_Handler();
   }
   /** Initializes the CPU, AHB and APB busses clocks
   */
@@ -348,7 +342,7 @@ static void SystemClock_Config()
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
-    Error_Handler();
+    Main_Error_Handler();
   }
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB
 		  	  	  	  	  	  	  	  |RCC_PERIPHCLK_TIM2
@@ -364,7 +358,7 @@ static void SystemClock_Config()
   PeriphClkInit.Tim16ClockSelection = RCC_TIM16CLK_HCLK;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
-    Error_Handler();
+    Main_Error_Handler();
   }
 }
 

@@ -8,12 +8,13 @@
   * @brief		iSensor-SPI-Buffer script module (loaded from SD card or provided via USB CLI)
  **/
 
+/* Includes */
 #include "script.h"
+#include "reg.h"
 #include <stdio.h>
-#include "registers.h"
+#include "usb.h"
 #include "main.h"
 #include "sd_card.h"
-#include "usb_cli.h"
 
 /* Private function prototypes */
 static uint32_t ParseCommandArgs(const uint8_t* commandBuf, uint32_t* args);
@@ -147,7 +148,7 @@ static const uint8_t HelpStr[] = "\r\n"
   * the stream source. SD card streams have priority over
   * USB streams, and will cancel a running USB stream.
   */
-void CheckStream()
+void Script_Check_Stream()
 {
 	uint16_t watermarkLevel = g_regs[WATERMARK_INT_CONFIG_REG] & ~WATERMARK_PULSE_MASK;
 
@@ -189,7 +190,7 @@ void CheckStream()
   * to a pre-defined string literal. Then, the arguments for each
   * particular command type are parsed and validated.
   */
-void ParseScriptElement(const uint8_t* commandBuf, script * scr)
+void Script_Parse_Element(const uint8_t* commandBuf, script * scr)
 {
 	scr->numArgs = 0;
 	scr->invalidArgs = 0;
@@ -387,16 +388,16 @@ void ParseScriptElement(const uint8_t* commandBuf, script * scr)
   * to the script item. Currently is just a switch statement, could do some neat stuff
   * with a function pointer table in the future.
   */
-void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
+void Script_Run_Element(script* scr, uint8_t * outBuf, bool isUSB)
 {
 	/* Check that command is valid */
 	if(scr->scrCommand >= invalid)
 	{
 		/* Transmit error and return */
 		if(isUSB)
-			USBTxHandler(InvalidCmdStr, sizeof(InvalidCmdStr));
+			USB_Tx_Handler(InvalidCmdStr, sizeof(InvalidCmdStr));
 		else
-			SDTxHandler(InvalidCmdStr, sizeof(InvalidCmdStr));
+			SD_Card_Tx_Handler(InvalidCmdStr, sizeof(InvalidCmdStr));
 		return;
 	}
 
@@ -405,9 +406,9 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 	{
 		/* Transmit error and return */
 		if(isUSB)
-			USBTxHandler(InvalidArgStr, sizeof(InvalidArgStr));
+			USB_Tx_Handler(InvalidArgStr, sizeof(InvalidArgStr));
 		else
-			SDTxHandler(InvalidArgStr, sizeof(InvalidArgStr));
+			SD_Card_Tx_Handler(InvalidArgStr, sizeof(InvalidArgStr));
 		return;
 	}
 
@@ -416,9 +417,9 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 	{
 		/* Transmit error and return */
 		if(isUSB)
-			USBTxHandler(NotAllowedStr, sizeof(NotAllowedStr));
+			USB_Tx_Handler(NotAllowedStr, sizeof(NotAllowedStr));
 		else
-			SDTxHandler(NotAllowedStr, sizeof(NotAllowedStr));
+			SD_Card_Tx_Handler(NotAllowedStr, sizeof(NotAllowedStr));
 		return;
 	}
 
@@ -473,9 +474,9 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 			AboutHandler(outBuf, isUSB);
 			/* Transmit help message */
 			if(isUSB)
-				USBTxHandler(HelpStr, sizeof(HelpStr));
+				USB_Tx_Handler(HelpStr, sizeof(HelpStr));
 			else
-				SDTxHandler(HelpStr, sizeof(HelpStr));
+				SD_Card_Tx_Handler(HelpStr, sizeof(HelpStr));
 			break;
 		case about:
 			AboutHandler(outBuf, isUSB);
@@ -486,9 +487,9 @@ void RunScriptElement(script* scr, uint8_t * outBuf, bool isUSB)
 		default:
 			/* Should not get here. Transmit error and return */
 			if(isUSB)
-				USBTxHandler(UnknownErrorStr, sizeof(UnknownErrorStr));
+				USB_Tx_Handler(UnknownErrorStr, sizeof(UnknownErrorStr));
 			else
-				SDTxHandler(UnknownErrorStr, sizeof(UnknownErrorStr));
+				SD_Card_Tx_Handler(UnknownErrorStr, sizeof(UnknownErrorStr));
 			break;
 	}
 }
@@ -540,10 +541,10 @@ static void FactoryResetHandler()
 {
 	/* Perform factory reset */
 	g_regs[USER_COMMAND_REG] = CMD_FACTORY_RESET;
-	ProcessCommand();
+	Reg_Process_Command();
 	/* Perform flash update */
 	g_regs[USER_COMMAND_REG] = CMD_FLASH_UPDATE;
-	ProcessCommand();
+	Reg_Process_Command();
 }
 
 /**
@@ -582,7 +583,7 @@ static void ReadHandler(script* scr, uint8_t* outBuf, bool isUSB)
 	{
 		for(uint32_t addr = scr->args[0]; addr <= scr->args[1]; addr += 2)
 		{
-			readVal = ReadReg(addr);
+			readVal = Reg_Read(addr);
 			UShortToHex(writeBufPtr, readVal);
 			writeBufPtr[4] = g_regs[CLI_CONFIG_REG] >> CLI_DELIM_BITP;
 			writeBufPtr += 5;
@@ -604,11 +605,11 @@ static void ReadHandler(script* scr, uint8_t* outBuf, bool isUSB)
 				}
 				if(isUSB)
 				{
-					USBTxHandler(outBuf, count);
-					USBWaitForTxDone(20);
+					USB_Tx_Handler(outBuf, count);
+					USB_Wait_For_Tx_Done(20);
 				}
 				else
-					SDTxHandler(outBuf, count);
+					SD_Card_Tx_Handler(outBuf, count);
 				/* Reset pointers */
 				writeBufPtr = outBuf;
 				count = 0;
@@ -629,11 +630,11 @@ static void ReadHandler(script* scr, uint8_t* outBuf, bool isUSB)
 	/* transmit any remainder data */
 	if(isUSB)
 	{
-		USBTxHandler(outBuf, count);
-		USBWaitForTxDone(20);
+		USB_Tx_Handler(outBuf, count);
+		USB_Wait_For_Tx_Done(20);
 	}
 	else
-		SDTxHandler(outBuf, count);
+		SD_Card_Tx_Handler(outBuf, count);
 }
 
 /**
@@ -655,7 +656,7 @@ static void WriteHandler(script* scr)
 	scr->args[1] &= 0xFF;
 
 	/* Perform write */
-	WriteReg(scr->args[0], scr->args[1]);
+	Reg_Write(scr->args[0], scr->args[1]);
 }
 
 /**
@@ -680,9 +681,9 @@ static void ReadBufHandler(bool isUSB)
 	count = 0;
 
 	/* Set page to 255 (if not already) */
-	if(ReadReg(0) != BUF_READ_PAGE)
+	if(Reg_Read(0) != BUF_READ_PAGE)
 	{
-		WriteReg(0, BUF_READ_PAGE);
+		Reg_Write(0, BUF_READ_PAGE);
 	}
 
 	if(BufA)
@@ -700,10 +701,10 @@ static void ReadBufHandler(bool isUSB)
 
 	for(buf = 0; buf < numBufs; buf++)
 	{
-		BufDequeueToOutputRegs();
+		Reg_Buf_Dequeue_To_Outputs();
 		for(addr = BUF_BASE_ADDR; addr <= bufLastAddr; addr += 2)
 		{
-			readVal = ReadReg(addr);
+			readVal = Reg_Read(addr);
 			UShortToHex(writeBufPtr, readVal);
 			writeBufPtr[4] = g_regs[CLI_CONFIG_REG] >> CLI_DELIM_BITP;
 			writeBufPtr += 5;
@@ -725,9 +726,9 @@ static void ReadBufHandler(bool isUSB)
 
 				/* Perform transmit */
 				if(isUSB)
-					USBTxHandler(activeBuf, count);
+					USB_Tx_Handler(activeBuf, count);
 				else
-					SDTxHandler(activeBuf, count);
+					SD_Card_Tx_Handler(activeBuf, count);
 				count = 0;
 
 				/* Reset pointers (ping/pong for stream) */
@@ -760,10 +761,10 @@ static void ReadBufHandler(bool isUSB)
 	/* Transmit any residual data */
 	if(isUSB)
 	{
-		USBTxHandler(activeBuf, count);
+		USB_Tx_Handler(activeBuf, count);
 	}
 	else
-		SDTxHandler(activeBuf, count);
+		SD_Card_Tx_Handler(activeBuf, count);
 }
 
 /**
@@ -774,6 +775,8 @@ static void ReadBufHandler(bool isUSB)
   * @param outBuf Buffer to write data to. Must be at least 6 bytes
   *
   * @param isUSB Flag indicating if output data should be sent to USB or SD card
+  *
+  * @param regIndex the index of the register to access (in g_regs)
   *
   * The function is used to implement register read alias commands.
   */
@@ -794,9 +797,9 @@ static void RegAliasReadHandler(uint8_t* outBuf, bool isUSB, uint16_t regIndex)
 		outBuf[5] = '\n';
 	}
 	if(isUSB)
-		USBTxHandler(outBuf, 6);
+		USB_Tx_Handler(outBuf, 6);
 	else
-		SDTxHandler(outBuf, 6);
+		SD_Card_Tx_Handler(outBuf, 6);
 }
 
 /**
@@ -825,9 +828,9 @@ static void AboutHandler(uint8_t* outBuf, bool isUSB)
 			g_regs[FW_DAY_MONTH_REG] >> 8);
 
 	if(isUSB)
-		USBTxHandler(outBuf, len);
+		USB_Tx_Handler(outBuf, len);
 	else
-		SDTxHandler(outBuf, len);
+		SD_Card_Tx_Handler(outBuf, len);
 }
 
 /**
@@ -851,15 +854,17 @@ static void UptimeHandler(uint8_t* outBuf, bool isUSB)
 			HAL_GetTick());
 
 	if(isUSB)
-		USBTxHandler(outBuf, len);
+		USB_Tx_Handler(outBuf, len);
 	else
-		SDTxHandler(outBuf, len);
+		SD_Card_Tx_Handler(outBuf, len);
 }
 
 /**
   * @brief Parse space delimited arguments out from a command
   *
   * @param commandBuf Pointer to command string
+  *
+  * @param args Pointer to an array which receives the command arguments
   *
   * @return void
   *

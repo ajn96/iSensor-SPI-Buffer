@@ -8,8 +8,8 @@
   * @brief		iSensor-SPI-Buffer watchdog reset timer module implementation
  **/
 
+#include "reg.h"
 #include "watchdog.h"
-#include "registers.h"
 #include "stm32f3xx_hal.h"
 #include "stm32f303xe.h"
 
@@ -22,7 +22,7 @@
   * trip and force a system reset. Default watchdog timeout is 2s, which should be
   * significantly longer than any operation execution time in firmware.
   */
-void FeedWatchDog()
+void Watchdog_Feed()
 {
 	IWDG->KR = WATCHDOG_RELOAD_KEY;
 }
@@ -32,7 +32,7 @@ void FeedWatchDog()
   *
   * @return void
   */
-void CheckWatchDogStatus()
+void Watchdog_Check_Status()
 {
 	if(__HAL_RCC_GET_FLAG(RCC_FLAG_IWDGRST))
 	{
@@ -57,7 +57,7 @@ void CheckWatchDogStatus()
   *
   * Max timeout: 4095 / (40KHz / 256) -> 26.2s
   */
-void EnableWatchDog(uint32_t timeout_ms)
+void Watchdog_Enable(uint32_t timeout_ms)
 {
 	/* Watchdog scaled freq */
 	uint32_t scaledFreq;
@@ -127,5 +127,5 @@ void EnableWatchDog(uint32_t timeout_ms)
 	while(IWDG->SR);
 
 	/* Initial clear */
-	FeedWatchDog();
+	Watchdog_Feed();
 }

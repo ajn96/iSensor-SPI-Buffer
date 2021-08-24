@@ -18,7 +18,7 @@
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
-void Error_Handler();
+void Main_Error_Handler();
 /* @endcond */
 
 /** Bool data type */

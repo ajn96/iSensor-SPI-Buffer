@@ -17,9 +17,9 @@
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
-void CheckWatchDogStatus();
-void FeedWatchDog();
-void EnableWatchDog(uint32_t timeout_ms);
+void Watchdog_Check_Status();
+void Watchdog_Feed();
+void Watchdog_Enable(uint32_t timeout_ms);
 /* @endcond */
 
 /** Watchdog base freq (40KHz) */

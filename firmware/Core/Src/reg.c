@@ -2,16 +2,17 @@
   * Copyright (c) Analog Devices Inc, 2020
   * All Rights Reserved.
   *
-  * @file		registers.c
+  * @file		reg.c
   * @date		3/18/2020
   * @author		A. Nolan (alex.nolan@analog.com)
   * @brief		iSensor-SPI-Buffer register interfacing module. Called by user SPI and USB CLI
  **/
 
 /* Includes */
-#include "registers.h"
+#include "usb.h"
+#include "reg.h"
+#include "imu.h"
 #include "sd_card.h"
-#include "imu_spi.h"
 #include "main.h"
 #include "buffer.h"
 #include "flash.h"
@@ -21,10 +22,11 @@
 #include "dio.h"
 #include "timer.h"
 #include "user_interrupt.h"
-#include "usb_cli.h"
 
 /* Local function prototypes */
 static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue);
+static void GetSN();
+static void GetBuildDate();
 
 /** Register update flags for main loop processing. Global scope */
 volatile uint32_t g_update_flags = 0;
@@ -92,6 +94,37 @@ BUF_READ_PAGE, 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, /* 0xC0 - 0xC7 
 static volatile uint32_t selected_page = BUF_CONFIG_PAGE;
 
 /**
+  * @brief Initialize the register module by loading all saves values from flash
+  *
+  * @return void
+  *
+  * Most register values are loaded directly from the flash register array. Some
+  * values (SN and FW date) are encoded into the code, and must be loaded
+  * separately using Update_Identifiers()
+  */
+void Reg_Init()
+{
+	/* Load registers from flash */
+	Flash_Load_Registers();
+	Reg_Update_Identifiers();
+}
+
+/**
+  * @brief Load SN and date code registers to SRAM
+  *
+  * @return void
+  *
+  * These register values are encoded into the .text section of flash
+  */
+void Reg_Update_Identifiers()
+{
+	/* Load build date from .data to register array */
+	GetBuildDate();
+	/* Load STM32 unique SN to register array */
+	GetSN();
+}
+
+/**
   * @brief Dequeues an entry from the buffer and loads it to the primary output registers
   *
   * @return void
@@ -102,13 +135,13 @@ static volatile uint32_t selected_page = BUF_CONFIG_PAGE;
   * entry 0). After moving all values to the correct location in the output register array,
   * the function sets up the burst read DMA (if enabled in user SPI config).
   */
-void BufDequeueToOutputRegs()
+void Reg_Buf_Dequeue_To_Outputs()
 {
 	/* Check if buf count > 0) */
 	if(g_regs[BUF_CNT_0_REG] > 0)
 	{
 		/* Get element from the buffer */
-		g_CurrentBufEntry = (uint16_t *) BufTakeElement();
+		g_CurrentBufEntry = (uint16_t *) Buffer_Take_Element();
 
 		/* Check if burst read mode is enabled */
 		if(g_regs[BUF_CONFIG_REG] & BUF_CFG_BUF_BURST)
@@ -142,14 +175,14 @@ void BufDequeueToOutputRegs()
   * If the selected page is [253 - 255] this read request is processed
   * directly.
   */
-uint16_t ReadReg(uint8_t regAddr)
+uint16_t Reg_Read(uint8_t regAddr)
 {
 	uint16_t regIndex;
 	uint16_t status;
 
 	if(selected_page < OUTPUT_PAGE)
 	{
-		return ImuReadReg(regAddr);
+		return IMU_Read_Register(regAddr);
 	}
 	else
 	{
@@ -190,9 +223,9 @@ uint16_t ReadReg(uint8_t regAddr)
 
 		/* Load time stamp on demand upon read */
 		if(regIndex == TIMESTAMP_LWR_REG)
-			return GetMicrosecondTimestamp() & 0xFFFF;
+			return Timer_Get_Microsecond_Timestamp() & 0xFFFF;
 		if(regIndex == TIMESTAMP_UPR_REG)
-			return GetMicrosecondTimestamp() >> 16;
+			return Timer_Get_Microsecond_Timestamp() >> 16;
 
 		/* get value from reg array */
 		return g_regs[regIndex];
@@ -214,7 +247,7 @@ uint16_t ReadReg(uint8_t regAddr)
   * directly. The firmware echoes back the processed write value so that
   * the master can verify the write contents on the next SPI transaction.
   */
-uint16_t WriteReg(uint8_t regAddr, uint8_t regValue)
+uint16_t Reg_Write(uint8_t regAddr, uint8_t regValue)
 {
 	uint16_t regIndex;
 
@@ -238,7 +271,7 @@ uint16_t WriteReg(uint8_t regAddr, uint8_t regValue)
 	if(selected_page < OUTPUT_PAGE)
 	{
 		/* Pass to IMU */
-		return ImuWriteReg(regAddr, regValue);
+		return IMU_Write_Register(regAddr, regValue);
 	}
 	else
 	{
@@ -258,7 +291,7 @@ uint16_t WriteReg(uint8_t regAddr, uint8_t regValue)
   * Command execution priority is determined by the order in which the command
   * flags are checked.
   */
-void ProcessCommand()
+void Reg_Process_Command()
 {
 	uint16_t command = g_regs[USER_COMMAND_REG];
 
@@ -269,7 +302,7 @@ void ProcessCommand()
 	SPI2->CR1 &= ~SPI_CR1_SPE;
 
 	/* Set output pins low while running command */
-	UpdateOutputPins(0, 0, 0);
+	User_Interrupt_Update_Output_Pins(0, 0, 0);
 
 	if(command & CMD_SOFTWARE_RESET)
 	{
@@ -277,52 +310,52 @@ void ProcessCommand()
 	}
 	else if(command & CMD_CLEAR_BUFFER)
 	{
-		BufReset();
+		Buffer_Reset();
 	}
 	else if(command & CMD_FLASH_UPDATE)
 	{
-		FlashUpdate();
+		Flash_Update();
 	}
 	else if(command & CMD_FACTORY_RESET)
 	{
-		FactoryReset();
+		Reg_Factory_Reset();
 	}
 	else if(command & CMD_CLEAR_FAULT)
 	{
-		FlashLogError(ERROR_NONE);
-		FlashCheckLoggedError();
+		Flash_Log_Fault(ERROR_NONE);
+		Flash_Check_Logged_Fault();
 	}
 	else if(command & CMD_PPS_ENABLE)
 	{
-		EnablePPSTimer();
+		Timer_Enable_PPS();
 	}
 	else if(command & CMD_PPS_DISABLE)
 	{
-		DisablePPSTimer();
+		Timer_Disable_PPS();
 	}
 	else if(command & CMD_START_SCRIPT)
 	{
-		StartScript();
+		SD_Card_Start_Script();
 	}
 	else if(command & CMD_STOP_SCRIPT)
 	{
-		StopScript();
+		SD_Card_Stop_Script();
 	}
 	else if(command & CMD_WATERMARK_SET)
 	{
-		WatermarkLevelAutoset();
+		USB_Watermark_Autoset();
 	}
 	else if(command & CMD_SYNC_GEN)
 	{
-		StartSyncGen();
+		DIO_Start_Sync_Gen();
 	}
 	else if(command & CMD_IMU_RESET)
 	{
-		ResetImu();
+		IMU_Reset();
 	}
 	else if(command & CMD_BOOTLOADER)
 	{
-		PrepareDFUBoot();
+		DFU_Prepare_Reboot();
 	}
 
 	/* Re-enable SPI */
@@ -334,18 +367,18 @@ void ProcessCommand()
   *
   * @return void
   *
-  * This is accomplished in "lazy" manner via #define for each register
+  * This is accomplished in "lazy" manner via a preprocessor define for each register
   * default value (defaults are stored in program memory, storage is managed
   * by compiler). This function only changes values in SRAM, does not change
   * flash contents (registers will reset on next re-boot).
   */
-void FactoryReset()
+void Reg_Factory_Reset()
 {
 	/* Store endurance count during factory reset */
 	uint16_t endurance, flash_sig, flash_sig_drv;
 
 	/* Disable data capture from IMU (shouldn't be running, but better safe than sorry) */
-	DisableDataCapture();
+	Data_Capture_Disable();
 
 	/* Reset selected page */
 	selected_page = BUF_CONFIG_PAGE;
@@ -387,18 +420,45 @@ void FactoryReset()
 	g_regs[FLASH_SIG_DRV_REG] = flash_sig_drv;
 
 	/* Populate SN and build date */
-	GetSN();
-	GetBuildDate();
+	Reg_Update_Identifiers();
 
 	/* Apply all settings and reset buffer */
-	UpdateImuSpiConfig();
+	IMU_Update_SPI_Config();
 	UpdateUserSpiConfig(false);
-	UpdateDIOOutputConfig();
-	UpdateDIOInputConfig();
-	BufReset();
+	DIO_Update_Output_Config();
+	DIO_Update_Input_Config();
+	Buffer_Reset();
 
 	/* Load logged error status from flash */
-	FlashCheckLoggedError();
+	Flash_Check_Logged_Fault();
+}
+
+/**
+  * @brief Handler for when the user button is pressed
+  *
+  * @return void
+  *
+  * This function executes commands based on the button
+  * configuration set in BTN_CONFIG. This function can
+  * be called from an interrupt context (EXTI rising
+  * edge interrupt for button). The EXTI pending interrupt
+  * register for the button line should be cleared before and
+  * after executing this function to add some implicit
+  * debouncing (interrupt won't trigger, then immediately
+  * trigger again).
+  */
+void Reg_Button_Handler()
+{
+	uint16_t setting = g_regs[BTN_CONFIG_REG];
+
+	for(int bitPos = 0; bitPos < 16; bitPos++)
+	{
+		if(setting & (1 << bitPos))
+		{
+			g_regs[USER_COMMAND_REG] = (1 << bitPos);
+			Reg_Process_Command();
+		}
+	}
 }
 
 /**
@@ -408,7 +468,7 @@ void FactoryReset()
   *
   * The SN registers are populated from the 96-bit unique ID (UID)
   */
-void GetSN()
+static void GetSN()
 {
 	uint16_t id;
 	for(uint8_t i = 0; i < 12; i = i + 2)
@@ -427,7 +487,7 @@ void GetSN()
   * Registers are populated by parsing the __DATE__ macro result, which
   * is set at compile time
   */
-void GetBuildDate()
+static void GetBuildDate()
 {
 	uint8_t date[11] = __DATE__;
 
@@ -501,34 +561,6 @@ void GetBuildDate()
 #ifdef DEBUG
 	g_regs[FW_REV_REG] |= 0x8000;
 #endif
-}
-
-/**
-  * @brief Handler for when a button is pressed
-  *
-  * @return void
-  *
-  * This function executes commands based on the button
-  * configuration set in BTN_CONFIG. This function can
-  * be called from an interrupt context (EXTI rising
-  * edge interrupt for button). The EXTI pending interrupt
-  * register for the button line should be cleared before and
-  * after executing this function to add some implicit
-  * debouncing (interrupt won't trigger, then immediately
-  * trigger again).
-  */
-void ButtonPressHandler()
-{
-	uint16_t setting = g_regs[BTN_CONFIG_REG];
-
-	for(int bitPos = 0; bitPos < 16; bitPos++)
-	{
-		if(setting & (1 << bitPos))
-		{
-			g_regs[USER_COMMAND_REG] = (1 << bitPos);
-			ProcessCommand();
-		}
-	}
 }
 
 /**
@@ -639,7 +671,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 			if(regValue == 0)
 			{
 				/* Clear buffer for writes of 0 to count */
-				BufReset();
+				Buffer_Reset();
 				return regIndex;
 			}
 			else
@@ -689,7 +721,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 		if(isUpper)
 		{
 			/* Reset the buffer after writing upper half of register (applies new settings) */
-			BufReset();
+			Buffer_Reset();
 		}
 	}
 

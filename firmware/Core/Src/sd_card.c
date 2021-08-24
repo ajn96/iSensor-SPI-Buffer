@@ -8,11 +8,11 @@
   * @brief		iSensor-SPI-Buffer SD card interfacing and script execution module
  **/
 
+#include "reg.h"
 #include "sd_card.h"
 #include <stdio.h>
 #include "script.h"
 #include "fatfs.h"
-#include "registers.h"
 #include "timer.h"
 
 
@@ -68,7 +68,7 @@ static const uint8_t ScriptStart[] = "Script Starting...\r\n";
   * routines, when a script object is executed
   * from a SD card script context.
   */
-void SDTxHandler(const uint8_t* buf, uint32_t count)
+void SD_Card_Tx_Handler(const uint8_t* buf, uint32_t count)
 {
 	if(count == 0)
 		return;
@@ -95,7 +95,7 @@ void SDTxHandler(const uint8_t* buf, uint32_t count)
   * directly by the application on startup. It does not attempt to
   * connect to the SD card in any way.lked right into tha
   */
-void SDCardInit()
+void SD_Card_Init()
 {
 	/* Init SPI3 */
 	SPI3_Init();
@@ -115,11 +115,11 @@ void SDCardInit()
   * set in STATUS, the script will be run. The watchdog reset check is in place to
   * remove the potential for a watchdog reset loop.
   */
-void ScriptAutorun()
+void SD_Card_Script_Autorun()
 {
 	if(((g_regs[CLI_CONFIG_REG] & SD_AUTORUN_BITM) != 0)&&((g_regs[STATUS_0_REG] & STATUS_WATCHDOG) == 0))
 	{
-		StartScript();
+		SD_Card_Start_Script();
 	}
 }
 
@@ -136,7 +136,7 @@ void ScriptAutorun()
   * execution work occurs in ScriptStep(), which is called periodically
   * from the main cyclic executive loop.
   */
-void StartScript()
+void SD_Card_Start_Script()
 {
 	/* Set script running flag to false */
 	scriptRunning = 0;
@@ -171,7 +171,7 @@ void StartScript()
 	}
 
 	/* Write start message */
-	SDTxHandler(ScriptStart, sizeof(ScriptStart) - 1);
+	SD_Card_Tx_Handler(ScriptStart, sizeof(ScriptStart) - 1);
 
 	/* If we reach here, script is loaded and good. Can start execution
 	 * process. First set script running status bit
@@ -198,7 +198,7 @@ void StartScript()
   * It then closes the output text file and unmounts from the SD
   * card.
   */
-void StopScript()
+void SD_Card_Stop_Script()
 {
 	/* Clear script running status bit */
 	g_regs[STATUS_0_REG] &= ~(STATUS_SCR_RUNNING);
@@ -231,7 +231,7 @@ void StopScript()
   * for performing the actual script execution, and writing the
   * output to the SD card (via
   */
-void ScriptStep()
+void SD_Card_Script_Step()
 {
 	/* Exit if script not running */
 	if(!scriptRunning)
@@ -242,7 +242,7 @@ void ScriptStep()
 	/* Check if we've finished the script */
 	if(cmdIndex >= numCmds)
 	{
-		StopScript();
+		SD_Card_Stop_Script();
 		return;
 	}
 
@@ -293,7 +293,7 @@ void ScriptStep()
 		{
 			sd_buf[i] = 0;
 		}
-		RunScriptElement(&cmdList[cmdIndex], sd_buf, false);
+		Script_Run_Element(&cmdList[cmdIndex], sd_buf, false);
 		cmdIndex++;
 	}
 }
@@ -323,7 +323,7 @@ static bool SDCardAttached()
 	HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
 	/* Wait 1ms for any changes to stabilize and measure input. If high then return false */
-	SleepMicroseconds(1000);
+	Timer_Sleep_Microseconds(1000);
 	state = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_2);
 
 	/* Disable pull up */
@@ -504,7 +504,7 @@ static void ParseReadBuffer(UINT bytesRead)
 		if(sd_buf[i] == '\n')
 		{
 			/* We got a good line from the file, parse into command array */
-			ParseScriptElement(cmd, &cmdList[numCmds]);
+			Script_Parse_Element(cmd, &cmdList[numCmds]);
 			numCmds++;
 			if(numCmds >= SCRIPT_MAX_ENTRIES)
 				return;
@@ -529,7 +529,7 @@ static void ParseReadBuffer(UINT bytesRead)
 	if((bytesRead < sizeof(sd_buf)) && (cmdIndex > 0))
 	{
 		/* Clean up command at end of file */
-		ParseScriptElement(cmd, &cmdList[numCmds]);
+		Script_Parse_Element(cmd, &cmdList[numCmds]);
 		numCmds++;
 		cmdIndex = 0;
 		for(int j = 0; j < 64; j++)

@@ -17,8 +17,8 @@
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
-void UpdateUserInterrupt();
-void UpdateOutputPins(uint32_t interrupt, uint32_t overflow, uint32_t error);
+void User_Interrupt_Update();
+void User_Interrupt_Update_Output_Pins(uint32_t interrupt, uint32_t overflow, uint32_t error);
 /* @endcond */
 
 /** Watermark interrupt toggle freq (Hz) when in toggle mode */

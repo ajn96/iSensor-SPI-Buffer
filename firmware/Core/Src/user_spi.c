@@ -8,8 +8,8 @@
   * @brief		iSensor-SPI-Buffer user (slave) SPI module
  **/
 
+#include "reg.h"
 #include "user_spi.h"
-#include "registers.h"
 #include "buffer.h"
 
 /** Track if a burst read is enabled. Global scope */

@@ -8,9 +8,9 @@
   * @brief		Implementation file for iSensor-SPI-Buffer runtime firmware upgrade module
  **/
 
+#include <usb.h>
 #include "dfu.h"
 #include "stm32f303xe.h"
-#include "usb_cli.h"
 
 /* Private function prototypes */
 static void ExecuteDFUBoot();
@@ -30,7 +30,7 @@ void (*SysMemBootJump)(void);
   * by the application code on the prior run, when a bootloader reboot command
   * is received.
   */
-void CheckDFUFlags()
+void DFU_Check_Flags()
 {
 	uint32_t flag = *DFU_FLAG_ADDR;
 	*DFU_FLAG_ADDR = 0;
@@ -51,10 +51,10 @@ void CheckDFUFlags()
   * stack is cleared, processor is running from internal clock,
   * and no hardware peripherals are active.
   */
-void PrepareDFUBoot()
+void DFU_Prepare_Reboot()
 {
 	*DFU_FLAG_ADDR = ENABLE_DFU_KEY;
-	USBReset();
+	USB_Reset();
 	NVIC_SystemReset();
 }
 

@@ -14,8 +14,8 @@
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
-void EnableDataCapture();
-void DisableDataCapture();
+void Data_Capture_Enable();
+void Data_Capture_Disable();
 /* @endcond */
 
 #endif /* INC_DATA_CAPTURE_H_ */

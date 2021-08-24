@@ -2,14 +2,14 @@
   * Copyright (c) Analog Devices Inc, 2020
   * All Rights Reserved.
   *
-  * @file		registers.h
+  * @file		reg.h
   * @date		3/18/2020
   * @author		A. Nolan (alex.nolan@analog.com)
   * @brief		Header file for iSensor-SPI-Buffer register interfacing module
  **/
 
-#ifndef INC_REGISTERS_H_
-#define INC_REGISTERS_H_
+#ifndef INC_REG_H_
+#define INC_REG_H_
 
 /* Header includes require for prototypes */
 #include <stdint.h>
@@ -188,14 +188,14 @@ extern volatile uint16_t* g_CurrentBufEntry;
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
-uint16_t ReadReg(uint8_t regAddr);
-uint16_t WriteReg(uint8_t regAddr, uint8_t regValue);
-void GetSN();
-void GetBuildDate();
-void ProcessCommand();
-void FactoryReset();
-void BufDequeueToOutputRegs();
-void ButtonPressHandler();
+void Reg_Init();
+void Reg_Update_Identifiers();
+uint16_t Reg_Read(uint8_t regAddr);
+uint16_t Reg_Write(uint8_t regAddr, uint8_t regValue);
+void Reg_Process_Command();
+void Reg_Factory_Reset();
+void Reg_Buf_Dequeue_To_Outputs();
+void Reg_Button_Handler();
 /* @endcond */
 
-#endif /* INC_REGISTERS_H_ */
+#endif /* INC_REG_H_ */

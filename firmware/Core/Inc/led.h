@@ -21,8 +21,8 @@ typedef enum LED
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
-void TurnOnLED(LED light);
-void TurnOffLED(LED light);
+void LED_Turn_On(LED light);
+void LED_Turn_Off(LED light);
 /* @endcond */
 
 #endif /* INC_LED_H_ */

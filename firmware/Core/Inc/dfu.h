@@ -17,12 +17,14 @@
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
-void CheckDFUFlags();
-void PrepareDFUBoot();
+void DFU_Check_Flags();
+void DFU_Prepare_Reboot();
 /* @endcond */
 
+/** Key to indicate DFU reboot is required. Set at DFU Flag location in SRAM */
 #define ENABLE_DFU_KEY		0xA5A51234
 
+/** Address in SRAM where the DFU key is written to indicate DFU reboot required */
 #define DFU_FLAG_ADDR		(volatile uint32_t *) 0x2000FFFC
 
 #endif /* INC_DFU_H_ */

@@ -14,6 +14,7 @@
 /* Header includes require for prototypes */
 #include <stdint.h>
 
+/** Default value used to track which user SPI byte is being processed */
 #define DEFAULT_DATA		0x80000000u
 
 /* Public function prototypes */

@@ -2,20 +2,24 @@
   * Copyright (c) Analog Devices Inc, 2020
   * All Rights Reserved.
   *
-  * @file		imu_spi.c
+  * @file		imu.c
   * @date		3/18/2020
   * @author		A. Nolan (alex.nolan@analog.com)
   * @brief		Implementation for iSensor-SPI-Buffer IMU interfacing module
  **/
 
-#include "imu_spi.h"
+#include "reg.h"
+#include "imu.h"
 #include "main.h"
-#include "registers.h"
 #include "timer.h"
 #include "stm32f3xx_hal.h"
 
 /* Local function prototypes */
 static void ApplySclkDivider(uint32_t preScalerSetting);
+static void InitImuSpiTimer();
+static void InitImuCsTimer();
+static void ConfigureImuCsTimer(uint32_t period);
+static void ConfigureImuSpiTimer(uint32_t period);
 
 /** track stall time (microseconds) */
 static uint32_t imuStallTimeUs = 25;
@@ -50,7 +54,7 @@ void IMU_SPI_Init()
 	g_spi1.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
 	if (HAL_SPI_Init(&g_spi1) != HAL_OK)
 	{
-		Error_Handler();
+		Main_Error_Handler();
 	}
 
 	/* Set fifo rx threshold according the reception data length: 16bit */
@@ -62,6 +66,10 @@ void IMU_SPI_Init()
 		/* Enable SPI peripheral */
 		__HAL_SPI_ENABLE(&g_spi1);
 	}
+
+	/* Init timers for IMU SPI interface */
+	InitImuCsTimer();
+	InitImuSpiTimer();
 }
 
 /**
@@ -71,10 +79,10 @@ void IMU_SPI_Init()
   *
   * Reset pin is pulled low for 1ms, then brought high
   */
-void ResetImu()
+void IMU_Reset()
 {
 	GPIOA->ODR &= ~GPIO_PIN_3;
-	SleepMicroseconds(1000);
+	Timer_Sleep_Microseconds(1000);
 	GPIOA->ODR |= GPIO_PIN_3;
 }
 
@@ -83,7 +91,7 @@ void ResetImu()
   *
   * @return void
   */
-void DisableImuSpiDMA()
+void IMU_Disable_SPI_DMA()
 {
 	/* Disable the DMA peripherals */
 	g_spi1.hdmarx->Instance->CCR &= ~DMA_CCR_EN;
@@ -106,7 +114,7 @@ void DisableImuSpiDMA()
   * transfer. CS is manually controlled by leaving TIM3 (CS timer) disabled,
   * and manually setting the count register to 0.
  **/
-void StartImuBurst(uint8_t* bufEntry)
+void IMU_Start_Burst(uint8_t* bufEntry)
 {
 	/* Flush SPI FIFO */
 	for(int i = 0; i < 4; i++)
@@ -188,7 +196,7 @@ void StartImuBurst(uint8_t* bufEntry)
   * This function wraps the SPI master HAL layer into something easily usable. All
   * SPI pass through functionality is built on this call.
  **/
-uint16_t ImuSpiTransfer(uint32_t MOSI)
+uint16_t IMU_SPI_Transfer(uint32_t MOSI)
 {
 	/* Drop CS */
 	TIM3->CR1 = 0;
@@ -220,7 +228,7 @@ uint16_t ImuSpiTransfer(uint32_t MOSI)
   * This function produces two SPI transfers to the IMU. One to send the
   * initial read request, and a second to get back the read result data.
  **/
-uint16_t ImuReadReg(uint8_t RegAddr)
+uint16_t IMU_Read_Register(uint8_t RegAddr)
 {
 	uint32_t readRequest;
 
@@ -231,13 +239,13 @@ uint16_t ImuReadReg(uint8_t RegAddr)
 	readRequest &= 0x7FFF;
 
 	/* Perform first transfer */
-	ImuSpiTransfer(readRequest);
+	IMU_SPI_Transfer(readRequest);
 
 	/* Delay for stall time (1us offset) */
-	SleepMicroseconds(imuStallTimeUs - 1);
+	Timer_Sleep_Microseconds(imuStallTimeUs - 1);
 
 	/* Return result data on second word */
-	return ImuSpiTransfer(0);
+	return IMU_SPI_Transfer(0);
 }
 
 /**
@@ -251,7 +259,7 @@ uint16_t ImuReadReg(uint8_t RegAddr)
   *
   * This function produces only a single SPI transaction to the IMU
  **/
-uint16_t ImuWriteReg(uint8_t RegAddr, uint8_t RegValue)
+uint16_t IMU_Write_Register(uint8_t RegAddr, uint8_t RegValue)
 {
 	uint32_t writeRequest;
 
@@ -259,137 +267,7 @@ uint16_t ImuWriteReg(uint8_t RegAddr, uint8_t RegValue)
 	writeRequest = (0x8000 | (RegAddr << 8) | RegValue);
 
 	/* Perform write and return result */
-	return ImuSpiTransfer(writeRequest);
-}
-
-/**
- * @brief Sets the TIM3 period for use in PWM mode to drive CS
- *
- * @return void
- *
- * @param period Timer ticks period for TIM3. This corresponds to the CS low pulse width
- *
- * TIM3 will be disabled (CS high) by this function. It should not be called while a data capture is in progress.
- */
-void ConfigureImuCsTimer(uint32_t period)
-{
-	/* Disable */
-    TIM3->CR1 &= 0x1;
-
-	/* Set count to 0xFFFF */
-	TIM3->CNT = 0xFFFF;
-
-    /* Set compare channel 2 value */
-	TIM3->CCR2 = period;
-}
-
-/**
- * @brief Inits TIM3 for use in PWM mode to drive CS
- *
- * @return void
- *
- * TIM4 is used to drive SPI buffered data acquisition from the IMU.
- * One timer interrupt is generated per SPI word clocked out from the
- * DUT. TIM4 runs at a full 72MHz. With a 16-bit resolution and a
- * time base of 72MHz, TIM4 will roll over every 910us The worst case
- * spi period allowed is 255us stall + (17 bits / 140KHz) -> 376us
- */
-void InitImuCsTimer()
-{
-	TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-	TIM_MasterConfigTypeDef sMasterConfig = {0};
-	TIM_OC_InitTypeDef sConfigOC = {0};
-
-	htim3.Instance = TIM3;
-	htim3.Init.Prescaler = 0;
-	htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim3.Init.Period = 0xFFFFFFFF;
-	htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-	htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-	HAL_TIM_Base_Init(&htim3);
-
-	sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-	HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig);
-	HAL_TIM_PWM_Init(&htim3);
-
-	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-	HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig);
-
-	sConfigOC.OCMode = TIM_OCMODE_PWM1;
-	sConfigOC.Pulse = 100;
-	sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
-	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-	HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2);
-
-	/* Clear OC2PE bit to make compare values apply immediately */
-	TIM3->CCMR1 &= ~(TIM_CCMR1_OC2PE);
-
-    /* Enable PWM */
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
-	/* Disable timer */
-    TIM3->CR1 &= ~0x1;
-}
-
-/**
- * @brief Configures the period on TIM4
- *
- * @param period The timer period (in 72MHz ticks)
- *
- * @return void
- */
-void ConfigureImuSpiTimer(uint32_t period)
-{
-	/* Disable timer */
-	TIM4->CR1 &= ~0x1;
-
-	/* Set new period. Period is stall + SCLK time */
-	TIM4->ARR = period;
-
-	/* Clear timer interrupt flag */
-	TIM4->SR &= ~TIM_SR_UIF;
-}
-
-/**
- * @brief Inits TIM4 for use as a IMU spi period timer
- *
- * @return void
- *
- * TIM4 is used to drive SPI buffered data acquisition from the IMU.
- * One timer interrupt is generated per SPI word clocked out from the
- * DUT. TIM4 runs at a full 72MHz. With a 16-bit resolution and a
- * time base of 72MHz, TIM4 will roll over every 910us The worst case
- * spi period allowed is 255us stall + (17 bits / 140KHz) -> 376us
- */
-void InitImuSpiTimer()
-{
-	TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-	TIM_MasterConfigTypeDef sMasterConfig = {0};
-	htim4.Instance = TIM4;
-	/* 72MHz clock */
-	htim4.Init.Prescaler = 0;
-	htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim4.Init.Period = 0;
-	htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-	htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-	HAL_TIM_Base_Init(&htim4);
-
-	sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-	HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig);
-
-	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-	HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig);
-
-	/* Enable interrupt in timer */
-	TIM4->DIER |= TIM_IT_UPDATE;
-
-	/* Clear timer interrupt flag */
-	TIM4->SR &= ~TIM_SR_UIF;
-
-	/* Set interrupt priority and enable */
-	HAL_NVIC_SetPriority(TIM4_IRQn, 0, 0);
-	HAL_NVIC_EnableIRQ(TIM4_IRQn);
+	return IMU_SPI_Transfer(writeRequest);
 }
 
 /**
@@ -402,7 +280,7 @@ void InitImuSpiTimer()
  * on the upper 8 bits. See register documentation for details of what
  * target SCLK frequencies are achievable.
  */
-void UpdateImuSpiConfig()
+void IMU_Update_SPI_Config()
 {
 	/* SCLK divider setting (format to be passed to HAL) */
 	uint32_t sclkDividerSetting;
@@ -528,3 +406,139 @@ static void ApplySclkDivider(uint32_t preScalerSetting)
     /* Enable SPI peripheral */
     __HAL_SPI_ENABLE(&g_spi1);
 }
+
+/**
+ * @brief Inits TIM4 for use as a IMU spi period timer
+ *
+ * @return void
+ *
+ * TIM4 is used to drive SPI buffered data acquisition from the IMU.
+ * One timer interrupt is generated per SPI word clocked out from the
+ * DUT. TIM4 runs at a full 72MHz. With a 16-bit resolution and a
+ * time base of 72MHz, TIM4 will roll over every 910us The worst case
+ * spi period allowed is 255us stall + (17 bits / 140KHz) -> 376us
+ */
+static void InitImuSpiTimer()
+{
+	TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+	TIM_MasterConfigTypeDef sMasterConfig = {0};
+	htim4.Instance = TIM4;
+	/* 72MHz clock */
+	htim4.Init.Prescaler = 0;
+	htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim4.Init.Period = 0;
+	htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+	HAL_TIM_Base_Init(&htim4);
+
+	sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+	HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig);
+
+	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+	HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig);
+
+	/* Enable interrupt in timer */
+	TIM4->DIER |= TIM_IT_UPDATE;
+
+	/* Clear timer interrupt flag */
+	TIM4->SR &= ~TIM_SR_UIF;
+
+	/* Set interrupt priority and enable */
+	HAL_NVIC_SetPriority(TIM4_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(TIM4_IRQn);
+}
+
+/**
+ * @brief Inits TIM3 for use in PWM mode to drive CS
+ *
+ * @return void
+ *
+ * TIM4 is used to drive SPI buffered data acquisition from the IMU.
+ * One timer interrupt is generated per SPI word clocked out from the
+ * DUT. TIM4 runs at a full 72MHz. With a 16-bit resolution and a
+ * time base of 72MHz, TIM4 will roll over every 910us The worst case
+ * spi period allowed is 255us stall + (17 bits / 140KHz) -> 376us
+ */
+static void InitImuCsTimer()
+{
+	TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+	TIM_MasterConfigTypeDef sMasterConfig = {0};
+	TIM_OC_InitTypeDef sConfigOC = {0};
+
+	htim3.Instance = TIM3;
+	htim3.Init.Prescaler = 0;
+	htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim3.Init.Period = 0xFFFFFFFF;
+	htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+	HAL_TIM_Base_Init(&htim3);
+
+	sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+	HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig);
+	HAL_TIM_PWM_Init(&htim3);
+
+	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+	HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig);
+
+	sConfigOC.OCMode = TIM_OCMODE_PWM1;
+	sConfigOC.Pulse = 100;
+	sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
+	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+	HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2);
+
+	/* Clear OC2PE bit to make compare values apply immediately */
+	TIM3->CCMR1 &= ~(TIM_CCMR1_OC2PE);
+
+    /* Enable PWM */
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+	/* Disable timer */
+    TIM3->CR1 &= ~0x1;
+}
+
+/**
+ * @brief Sets the TIM3 period for use in PWM mode to drive CS
+ *
+ * @return void
+ *
+ * @param period Timer ticks period for TIM3. This corresponds to the CS low pulse width
+ *
+ * TIM3 will be disabled (CS high) by this function. It should not be called while
+ * a data capture is in progress. This function must be called whenever the IMU
+ * SPI interface settings are updated, either at startup or on demand by the user.
+ */
+static void ConfigureImuCsTimer(uint32_t period)
+{
+	/* Disable */
+    TIM3->CR1 &= 0x1;
+
+	/* Set count to 0xFFFF */
+	TIM3->CNT = 0xFFFF;
+
+    /* Set compare channel 2 value */
+	TIM3->CCR2 = period;
+}
+
+/**
+ * @brief Configures the period on TIM4
+ *
+ * @param period The timer period (in 72MHz ticks)
+ *
+ * @return void
+ *
+ * This function must be called whenever the IMU SPI interface
+ * settings are updated, either at startup or on demand by the user.
+ */
+static void ConfigureImuSpiTimer(uint32_t period)
+{
+	/* Disable timer */
+	TIM4->CR1 &= ~0x1;
+
+	/* Set new period. Period is stall + SCLK time */
+	TIM4->ARR = period;
+
+	/* Clear timer interrupt flag */
+	TIM4->SR &= ~TIM_SR_UIF;
+}
+

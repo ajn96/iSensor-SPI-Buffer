@@ -8,8 +8,8 @@
   * @brief		Implementation for for iSensor-SPI-Buffer timer module. Covers microsecond timer and PPS timer.
  **/
 
+#include "reg.h"
 #include "timer.h"
-#include "registers.h"
 #include "dio.h"
 #include "main.h"
 
@@ -61,7 +61,7 @@ void Timer_Init()
   *
   * This function should be periodically called as part of the firmware housekeeping process
  **/
-void CheckPPSUnlock()
+void Timer_Check_PPS_Unlock()
 {
 	/* Exit if PPS input is disabled */
 	if(g_pinConfig.ppsPin == 0)
@@ -70,7 +70,7 @@ void CheckPPSUnlock()
 	}
 
 	/* If microsecond timestamp is greater than 1,100,000 (1.1 seconds) then unlock has occurred */
-	if(GetMicrosecondTimestamp() > 1100000)
+	if(Timer_Get_Microsecond_Timestamp() > 1100000)
 	{
 		g_regs[STATUS_0_REG] |= STATUS_PPS_UNLOCK;
 		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
@@ -86,7 +86,7 @@ void CheckPPSUnlock()
   *
   * This function uses TIM6 to perform delay.
  **/
-void SleepMicroseconds(uint32_t microseconds)
+void Timer_Sleep_Microseconds(uint32_t microseconds)
 {
 	/* Reset timer */
 	TIM8->CNT = 0;
@@ -100,7 +100,7 @@ void SleepMicroseconds(uint32_t microseconds)
   *
   * @return The timer value
   */
-uint32_t GetMicrosecondTimestamp()
+uint32_t Timer_Get_Microsecond_Timestamp()
 {
 	return TIM2->CNT;
 }
@@ -110,7 +110,7 @@ uint32_t GetMicrosecondTimestamp()
   *
   * @return The PPS counter value
   */
-uint32_t GetPPSTimestamp()
+uint32_t Timer_Get_PPS_Timestamp()
 {
 	return (g_regs[UTC_TIMESTAMP_LWR_REG] | (g_regs[UTC_TIMESTAMP_UPR_REG] << 16));
 }
@@ -120,7 +120,7 @@ uint32_t GetPPSTimestamp()
   *
   * @return void
   */
-void ClearMicrosecondTimer()
+void Timer_Clear_Microsecond_Timer()
 {
 	TIM2->CNT = 0;
 }
@@ -141,10 +141,10 @@ void ClearMicrosecondTimer()
   * DIO3: PC7 -> EXTI9_5 interrupt, mask (1 << 7)
   * DIO4: PA8 -> EXTI9_5 interrupt, mask (1 << 8)
   */
-void EnablePPSTimer()
+void Timer_Enable_PPS()
 {
 	ConfigurePPSPins(1);
-	UpdateDIOOutputConfig();
+	DIO_Update_Output_Config();
 }
 
 /**
@@ -152,10 +152,10 @@ void EnablePPSTimer()
   *
   * @return void
   */
-void DisablePPSTimer()
+void Timer_Disable_PPS()
 {
 	ConfigurePPSPins(0);
-	UpdateDIOOutputConfig();
+	DIO_Update_Output_Config();
 }
 
 /**
@@ -167,7 +167,7 @@ void DisablePPSTimer()
   * handles PPS tick count incrementation, and resetting the microsecond timestamp
   * every time one second has elapsed.
   */
-void IncrementPPSTime()
+void Timer_Increment_PPS_Time()
 {
 	uint32_t internalTime, startTime;
 
@@ -176,13 +176,13 @@ void IncrementPPSTime()
 	if(PPS_TickCount >= PPS_MaxTickCount)
 	{
 		/* Get the internal timestamp for period measurement */
-		internalTime = GetMicrosecondTimestamp();
+		internalTime = Timer_Get_Microsecond_Timestamp();
 		/* Clear microsecond tick counter */
-		ClearMicrosecondTimer();
+		Timer_Clear_Microsecond_Timer();
 		/* Reset tick count for next second */
 		PPS_TickCount = 0;
 		/* Get starting PPS timestamp and increment */
-		startTime = GetPPSTimestamp();
+		startTime = Timer_Get_PPS_Timestamp();
 		startTime++;
 		g_regs[UTC_TIMESTAMP_LWR_REG] = startTime & 0xFFFF;
 		g_regs[UTC_TIMESTAMP_UPR_REG] = (startTime >> 16);

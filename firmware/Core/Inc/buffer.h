@@ -17,10 +17,10 @@
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
-void BufReset();
-uint8_t* BufTakeElement();
-uint8_t* BufAddElement();
-uint32_t BufCanAddElement();
+void Buffer_Reset();
+uint8_t* Buffer_Take_Element();
+uint8_t* Buffer_Add_Element();
+uint32_t Buffer_Can_Add_Element();
 /* @endcond */
 
 /** Buffer memory allocation */

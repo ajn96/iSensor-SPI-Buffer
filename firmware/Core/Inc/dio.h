@@ -37,11 +37,11 @@ typedef struct DIOConfig
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
-void UpdateDIOInputConfig();
-void ValidateDIOInputConfig();
-void UpdateDIOOutputConfig();
-void StartSyncGen();
-uint32_t GetHardwareID();
+void DIO_Update_Input_Config();
+void DIO_Validate_Input_Config();
+void DIO_Update_Output_Config();
+void DIO_Start_Sync_Gen();
+uint32_t DIO_Get_Hardware_ID();
 /* @endcond */
 
 /** Mask for EXTI interrupt sources which come from the IMU data ready signal */

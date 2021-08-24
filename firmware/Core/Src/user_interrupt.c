@@ -8,9 +8,9 @@
   * @brief		iSensor-SPI-Buffer user interrupt (data ready) config and generation functions
  **/
 
+#include "reg.h"
 #include "user_interrupt.h"
 #include "dio.h"
-#include "registers.h"
 #include "led.h"
 
 /**
@@ -22,7 +22,7 @@
   * clears or sets the selected interrupt and overflow notification pins
   * (DIOx_Slave) and also updates the STATUS register flags
  **/
-void UpdateUserInterrupt()
+void User_Interrupt_Update()
 {
 	/* Interrupt flags */
 	uint32_t overflow, interrupt, error, currentTime;
@@ -80,15 +80,15 @@ void UpdateUserInterrupt()
 	/* Apply error to LEDs */
 	if(error)
 	{
-		TurnOnLED(Blue);
+		LED_Turn_On(Blue);
 	}
 	else
 	{
-		TurnOffLED(Blue);
+		LED_Turn_Off(Blue);
 	}
 
 	/* Update interrupt output pins */
-	UpdateOutputPins(watermarkState, overflow, error);
+	User_Interrupt_Update_Output_Pins(watermarkState, overflow, error);
 }
 
 /**
@@ -102,7 +102,7 @@ void UpdateUserInterrupt()
   *
   * @return void
  **/
-void UpdateOutputPins(uint32_t watermark, uint32_t overflow, uint32_t error)
+void User_Interrupt_Update_Output_Pins(uint32_t watermark, uint32_t overflow, uint32_t error)
 {
 	/* Apply interrupt values to pins */
 	if(g_pinConfig.watermarkPins & 0x1)

@@ -8,12 +8,13 @@
   * @brief		iSensor-SPI-Buffer flash memory interfacing functions.
  **/
 
+#include "reg.h"
 #include "flash.h"
-#include "registers.h"
 #include "stm32f3xx_hal.h"
 
 /* Local function prototypes */
 static void PrepareRegsForFlash();
+static uint16_t CalcRegSig(uint16_t * regs, uint32_t count);
 
 /**
   * @brief Flash update command handler
@@ -25,7 +26,7 @@ static void PrepareRegsForFlash();
   * is used for register contents validation on the next boot. Registers are
   * backed up to flash starting at an offset of 62KB in flash memory
   */
-void FlashUpdate()
+void Flash_Update()
 {
 	/* Error code from flash erase page */
 	uint32_t error;
@@ -72,15 +73,14 @@ void FlashUpdate()
 	HAL_FLASH_Lock();
 
 	/* Restore SN/Date register values in SRAM */
-	GetSN();
-	GetBuildDate();
+	Reg_Update_Identifiers();
 
 	/* Copy BUF_CNT and STATUS from last page to config page (last page not stored to flash) */
 	g_regs[STATUS_0_REG] = g_regs[STATUS_1_REG];
 	g_regs[BUF_CNT_0_REG] = g_regs[BUF_CNT_1_REG];
 
 	/* Restore fault code register */
-	FlashCheckLoggedError();
+	Flash_Check_Logged_Fault();
 }
 
 /**
@@ -93,7 +93,7 @@ void FlashUpdate()
   * flash. If there is a mis-match, the STATUS FLASH_ERROR bit
   * is set. Register values on page 253 - 254 are stored.
   */
-void LoadRegsFlash()
+void Flash_Load_Registers()
 {
 	uint16_t expectedSig;
 	uint16_t storedSig;
@@ -128,7 +128,7 @@ void LoadRegsFlash()
 		g_regs[ENDURANCE_REG] = 0;
 	}
 
-	FlashCheckLoggedError();
+	Flash_Check_Logged_Fault();
 }
 
 /**
@@ -139,7 +139,7 @@ void LoadRegsFlash()
   * Loads the previously stored error code from flash memory to the designated
   * flash error register. If the error code is non-zero, sets the status register fault bit.
   */
-void FlashCheckLoggedError()
+void Flash_Check_Logged_Fault()
 {
 	/* Load error code from flash */
 	uint16_t errorCode = (*(uint16_t *) FLASH_ERROR_ADDR) & 0x001F;
@@ -170,7 +170,7 @@ void FlashCheckLoggedError()
   * don't care about error handling within this routine - as soon as it returns, the system will
   * be reset.
   */
-void FlashLogError(uint32_t faultCode)
+void Flash_Log_Fault(uint32_t faultCode)
 {
 	/* struct to erase flash page through HAL */
 	FLASH_EraseInitTypeDef EraseInitStruct;
@@ -218,7 +218,7 @@ void FlashLogError(uint32_t faultCode)
   * the validity of stored error log. If the log is invalid, error logging has not
   * been initialized, and the log is cleared. Updates the FAULT_CODE and STATUS registers.
   */
-void FlashInitErrorLog()
+void Flash_Fault_Log_Init()
 {
 	/* Initial error code */
 	uint16_t errorCode = (*(uint16_t *) FLASH_ERROR_ADDR) & 0xFFFF;
@@ -226,7 +226,7 @@ void FlashInitErrorLog()
 	if(errorCode & 0xFFE0)
 	{
 		/* Unused bits are set in the error code. Probably hasn't been initialized properly */
-		FlashLogError(ERROR_NONE);
+		Flash_Log_Fault(ERROR_NONE);
 	}
 }
 
@@ -235,7 +235,7 @@ void FlashInitErrorLog()
   *
   * @return void
   */
-uint16_t CalcRegSig(uint16_t * regs, uint32_t count)
+static uint16_t CalcRegSig(uint16_t * regs, uint32_t count)
 {
 	/* Sig is just a sum (should more or less work for verifying flash contents) */
 	uint16_t sig = 0;

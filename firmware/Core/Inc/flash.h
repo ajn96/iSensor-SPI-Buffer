@@ -17,12 +17,11 @@
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
-void FlashUpdate();
-void LoadRegsFlash();
-void FlashCheckLoggedError();
-void FlashLogError(uint32_t faultCode);
-void FlashInitErrorLog();
-uint16_t CalcRegSig(uint16_t * regs, uint32_t count);
+void Flash_Update();
+void Flash_Load_Registers();
+void Flash_Check_Logged_Fault();
+void Flash_Log_Fault(uint32_t faultCode);
+void Flash_Fault_Log_Init();
 /* @endcond */
 
 /** Address for flash register storage (starts 256KB down in flash, program starts at 0) */

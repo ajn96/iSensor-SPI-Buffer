@@ -8,10 +8,10 @@
   * @brief		iSensor-SPI-Buffer interrupt service routines
  **/
 
+#include "reg.h"
+#include "imu.h"
 #include "isr.h"
-#include "registers.h"
 #include "buffer.h"
-#include "imu_spi.h"
 #include "user_spi.h"
 #include "dio.h"
 #include "flash.h"
@@ -73,7 +73,7 @@ void EXTI9_5_IRQHandler()
 	if(EXTI_PR & (PPS_INT_MASK))
 	{
 		/* Increment PPS counter and clear microsecond timestamp */
-		IncrementPPSTime();
+		Timer_Increment_PPS_Time();
 	}
 
 	/* Exit if no data ready interrupt */
@@ -100,15 +100,15 @@ void EXTI9_5_IRQHandler()
 	}
 
 	/* If buffer element cannot be added then exit */
-	if(!BufCanAddElement())
+	if(!Buffer_Can_Add_Element())
 		return;
 
 	/* Get the sample timestamp */
-	SampleTimestampUs = GetMicrosecondTimestamp();
-	SampleTimestampS = GetPPSTimestamp();
+	SampleTimestampUs = Timer_Get_Microsecond_Timestamp();
+	SampleTimestampS = Timer_Get_PPS_Timestamp();
 
 	/* Get element handle */
-	BufferElementHandle = BufAddElement();
+	BufferElementHandle = Buffer_Add_Element();
 
 	/* Add timestamp to buffer */
 	*(uint32_t *) BufferElementHandle = SampleTimestampS;
@@ -132,7 +132,7 @@ void EXTI9_5_IRQHandler()
 	if(g_regs[BUF_CONFIG_REG] & BUF_CFG_IMU_BURST)
 	{
 		ImuDMADone = 0;
-		StartImuBurst(BufferElementHandle);
+		IMU_Start_Burst(BufferElementHandle);
 	}
 	else
 	{
@@ -170,7 +170,7 @@ void EXTI4_IRQHandler()
 	EXTI->PR = (1 << 4);
 
 	/* Increment PPS timestamp */
-	IncrementPPSTime();
+	Timer_Increment_PPS_Time();
 }
 
 /**
@@ -466,12 +466,12 @@ void SPI2_IRQHandler(void)
 		if(rx_upper & 0x80u)
 		{
 			/* Write */
-			txData = WriteReg(rx_upper & 0x7Fu, rx_lower);
+			txData = Reg_Write(rx_upper & 0x7Fu, rx_lower);
 		}
 		else
 		{
 			/* Read */
-			txData = ReadReg(rx_upper);
+			txData = Reg_Read(rx_upper);
 		}
 
 		/* Transmit data back, swap endianness. This is done to account for
@@ -533,12 +533,12 @@ void EXTI15_10_IRQHandler(void)
 		if(rxData & 0x8000)
 		{
 			/* Write */
-			txData = WriteReg((rxData & 0x7F00) >> 8, rxData & 0xFF);
+			txData = Reg_Write((rxData & 0x7F00) >> 8, rxData & 0xFF);
 		}
 		else
 		{
 			/* Read. This will trigger another burst if staying in burst read mode */
-			txData = ReadReg(rxData >> 8);
+			txData = Reg_Read(rxData >> 8);
 		}
 
 		/* Transmit data back */
@@ -563,7 +563,7 @@ void EXTI15_10_IRQHandler(void)
 void HardFault_Handler(void)
 {
 	/* Store error message for future retrieval and reboot */
-	FlashLogError(ERROR_HARDFAULT);
+	Flash_Log_Fault(ERROR_HARDFAULT);
 	NVIC_SystemReset();
 }
 
@@ -575,7 +575,7 @@ void HardFault_Handler(void)
 void MemManage_Handler(void)
 {
 	/* Store error message for future retrieval and reboot */
-	FlashLogError(ERROR_MEM);
+	Flash_Log_Fault(ERROR_MEM);
 	NVIC_SystemReset();
 }
 
@@ -587,7 +587,7 @@ void MemManage_Handler(void)
 void BusFault_Handler(void)
 {
 	/* Store error message for future retrieval and reboot */
-	FlashLogError(ERROR_BUS);
+	Flash_Log_Fault(ERROR_BUS);
 	NVIC_SystemReset();
 }
 
@@ -599,6 +599,6 @@ void BusFault_Handler(void)
 void UsageFault_Handler(void)
 {
 	/* Store error message for future retrieval and reboot */
-	FlashLogError(ERROR_USAGE);
+	Flash_Log_Fault(ERROR_USAGE);
 	NVIC_SystemReset();
 }
