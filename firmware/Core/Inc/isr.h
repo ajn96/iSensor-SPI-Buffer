@@ -14,6 +14,9 @@
 /* Header includes require for prototypes */
 #include <stdint.h>
 
+/** Mask for the user SPI CS EXTI interrupt */
+#define USER_SPI_CS_INT_MSK 		(0x3Fu << 10u)
+
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */

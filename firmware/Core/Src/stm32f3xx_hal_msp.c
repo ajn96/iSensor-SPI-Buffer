@@ -140,6 +140,9 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
     PB14     ------> SPI2_MISO
     PB15     ------> SPI2_MOSI 
     */
+
+	/* This still leaves the CS pin as an EXTI interrupt source, but
+	 * it now is operating as a SPI alternate function pin */
     GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;

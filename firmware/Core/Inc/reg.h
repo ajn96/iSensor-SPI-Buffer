@@ -184,6 +184,7 @@
 extern volatile uint32_t g_update_flags;
 extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
 extern volatile uint16_t* g_CurrentBufEntry;
+volatile uint32_t g_selected_page;
 
 /* Public function prototypes */
 

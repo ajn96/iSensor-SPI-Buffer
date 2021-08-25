@@ -424,6 +424,26 @@ void SPI2_IRQHandler(void)
 	/* Grab Rx data */
 	rx = SPI2->DR;
 
+	/* Are we starting a burst read? Need to take extra care here. We want to
+	 * avoid potential issues if the user just immediately starts full length
+	 * burst reads. The best way to deal with this without polling waiting for
+	 * CS to go high (which can mess with other parts of the code, polling from
+	 * ISR is never a good idea) is to simply disable the user SPI interrupt.
+	 * Then, when the burst is configured, the CS rising edge interrupt will be
+	 * enabled for terminating the burst. Once no more bursts are requested, this
+	 * interrupt will be re-enabled through the user SPI burst disable function. */
+	if(((rx & 0xFF) == 0x06)&&(g_selected_page == BUF_READ_PAGE))
+	{
+		/* Handle transaction, starting burst setup process */
+		ProcessSPITransaction(rx);
+		/* Disable SPI (also interrupts). Will be re-enabled for burst */
+		SPI2->CR1 &= ~SPI_CR1_SPE;
+		/* Clear any pending interrupts just in case */
+		NVIC_ClearPendingIRQ(SPI2_IRQn);
+		/* Exit early */
+		return;
+	}
+
 	/* More than two bytes received? Then flag error and reset SPI */
 	if ((spiSr & SPI_FRLVL_FULL) == SPI_FRLVL_FULL)
 	{
@@ -445,23 +465,14 @@ void SPI2_IRQHandler(void)
 	/* Has an error occurred? */
 	if (error != 0u)
 	{
-		/* Allow errors for burst read start */
-		if(((rx & 0xFF) == 6) && (g_CurrentBufEntry != 0u))
-		{
-			/* Handle transaction */
-			ProcessSPITransaction(rx);
-		}
-		else
-		{
-			/* Flag error */
-			g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
-			g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
+		/* Flag error */
+		g_regs[STATUS_0_REG] |= STATUS_SPI_OVERFLOW;
+		g_regs[STATUS_1_REG] = g_regs[STATUS_0_REG];
 
-			/* Re-init SPI to make sure we end up in a good state */
-			User_SPI_Reset(true);
-			/* Load single word to transmit */
-			SPI2->DR = 0u;
-		}
+		/* Re-init SPI to make sure we end up in a good state */
+		User_SPI_Reset(true);
+		/* Load single word to transmit */
+		SPI2->DR = 0u;
 	}
 	else
 	{
@@ -486,14 +497,17 @@ void SPI2_IRQHandler(void)
   * interrupt is kept enabled, and the buffer board is configured for another burst.
   * If a standard register read/write is requested, then the CS interrupt is
   * disabled, and the standard SPI interrupt re-enabled.
+  *
+  * When this function is called, the SPI should be operating in 16-bit mode, rather
+  * than the 8-bit mode used for register interfacing.
   */
 void EXTI15_10_IRQHandler(void)
 {
-	/* Rx SPI data */
-	uint32_t rx;
+	/* SPI data */
+	uint32_t rx, tx;
 
 	/* Clear exti PR register (lines 10-15) */
-	EXTI->PR = (0x3F << 10);
+	EXTI->PR = USER_SPI_CS_INT_MSK;
 
 	/* Read first SPI data word received */
 	rx = SPI2->DR;
@@ -508,13 +522,23 @@ void EXTI15_10_IRQHandler(void)
 		g_userburstRunning = 0;
 
 		/* Check if another burst was not requested */
-		if((rx & 0xFF) != 0x0006)
+		if((rx & 0xFF00) != 0x0600)
 		{
 			/* Exit burst mode */
 			User_SPI_Burst_Disable();
 		}
-		/* Process transaction */
-		ProcessSPITransaction(rx);
+		/* Handle transaction */
+		if(rx & 0x8000u)
+		{
+			/* Write */
+			tx = Reg_Write((rx & 0x7F00u) >> 8u, rx & 0xFFu);
+		}
+		else
+		{
+			/* Read */
+			tx = Reg_Read(rx >> 8u);
+		}
+		SPI2->DR = tx;
 	}
 	/* Burst not running means this interrupt should not be enabled */
 	else
@@ -531,15 +555,20 @@ void EXTI15_10_IRQHandler(void)
 /**
   * @brief Process a 16 bit data word from the user SPI
   *
-  * @param rx Two bytes from the user SPI, packed
+  * @param rx Two bytes from the user SPI in register mode, packed
   *
   * @return void
   *
-  * This function accomodates for the swapped endiness of bytes which
+  * This function accommodates for the swapped endianess of bytes which
   * are packed into the SPI Rx data register.
   *
   * If the value on the SPI bus is: 0x1234, then the data register
   * will hold 0x3412. This is true for both receive and transmit.
+  *
+  * IMPORTANT: This should only be used for register mode, when
+  * the SPI data word size is 8 bits. In burst mode, where the SPI
+  * data word size is 16 bits, this will not work, since data packing
+  * is not used.
   */
 static void ProcessSPITransaction(uint32_t rx)
 {

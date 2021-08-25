@@ -28,6 +28,9 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue);
 static void GetSN();
 static void GetBuildDate();
 
+/** Selected page. Starts on 253 (config page) */
+volatile uint32_t g_selected_page = BUF_CONFIG_PAGE;
+
 /** Register update flags for main loop processing. Global scope */
 volatile uint32_t g_update_flags = 0;
 
@@ -89,9 +92,6 @@ BUF_READ_PAGE, 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, /* 0xC0 - 0xC7 
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xF0 - 0xF7 */
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, /* 0xF8 - 0xFF */
 };
-
-/** Selected page. Starts on 253 (config page) */
-static volatile uint32_t selected_page = BUF_CONFIG_PAGE;
 
 /**
   * @brief Initialize the register module by loading all saves values from flash
@@ -180,14 +180,14 @@ uint16_t Reg_Read(uint8_t regAddr)
 	uint16_t regIndex;
 	uint16_t status;
 
-	if(selected_page < OUTPUT_PAGE)
+	if(g_selected_page < OUTPUT_PAGE)
 	{
 		return IMU_Read_Register(regAddr);
 	}
 	else
 	{
 		/* Find offset from page */
-		regIndex = (selected_page - OUTPUT_PAGE) * REG_PER_PAGE;
+		regIndex = (g_selected_page - OUTPUT_PAGE) * REG_PER_PAGE;
 		/* The regAddr will be in range 0 - 127 for register index in range 0 - 63*/
 		regIndex += (regAddr >> 1);
 
@@ -255,20 +255,20 @@ uint16_t Reg_Write(uint8_t regAddr, uint8_t regValue)
 	if(regAddr == 0)
 	{
 		/* Are we moving to page 255? Enable capture first time */
-		if((regValue == BUF_READ_PAGE) && (selected_page != BUF_READ_PAGE))
+		if((regValue == BUF_READ_PAGE) && (g_selected_page != BUF_READ_PAGE))
 		{
 			g_update_flags |= ENABLE_CAPTURE_FLAG;
 		}
 		/* Are we leaving page 255? Then disable capture */
-		if((regValue != BUF_READ_PAGE) && (selected_page == BUF_READ_PAGE))
+		if((regValue != BUF_READ_PAGE) && (g_selected_page == BUF_READ_PAGE))
 		{
 			g_update_flags |= DISABLE_CAPTURE_FLAG;
 		}
 		/* Save page */
-		selected_page = regValue;
+		g_selected_page = regValue;
 	}
 
-	if(selected_page < OUTPUT_PAGE)
+	if(g_selected_page < OUTPUT_PAGE)
 	{
 		/* Pass to IMU */
 		return IMU_Write_Register(regAddr, regValue);
@@ -381,7 +381,7 @@ void Reg_Factory_Reset()
 	Data_Capture_Disable();
 
 	/* Reset selected page */
-	selected_page = BUF_CONFIG_PAGE;
+	g_selected_page = BUF_CONFIG_PAGE;
 
 	/* Save endurance and flash sig */
 	endurance = g_regs[ENDURANCE_REG];
@@ -584,7 +584,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	uint32_t isUpper = regAddr & 0x1;
 
 	/* Find offset from page */
-	regIndex = (selected_page - OUTPUT_PAGE) * REG_PER_PAGE;
+	regIndex = (g_selected_page - OUTPUT_PAGE) * REG_PER_PAGE;
 
 	/* The regAddr will be in range 0 - 127 for register index in range 0 - 63*/
 	regIndex += (regAddr >> 1);
@@ -597,7 +597,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 	}
 
 	/* Ignore writes to out of bound or read only registers */
-	if(selected_page == BUF_CONFIG_PAGE)
+	if(g_selected_page == BUF_CONFIG_PAGE)
 	{
 		/* Last writable reg on config page is UTC_TIMESTAMP_UPR_REG */
 		if(regIndex > UTC_TIMESTAMP_UPR_REG)
@@ -653,7 +653,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 			TIM2->CNT = 0;
 		}
 	}
-	else if(selected_page == BUF_WRITE_PAGE)
+	else if(g_selected_page == BUF_WRITE_PAGE)
 	{
 		/* regs under write data are reserved */
 		if(regIndex < BUF_WRITE_0_REG)
@@ -663,7 +663,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 		if(regIndex > (BUF_WRITE_0_REG + 31))
 			return regIndex;
 	}
-	else if(selected_page == BUF_READ_PAGE)
+	else if(g_selected_page == BUF_READ_PAGE)
 	{
 		/* Buffer output registers / buffer retrieve are read only */
 		if(regIndex == BUF_CNT_1_REG)
@@ -686,7 +686,7 @@ static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue)
 			return regIndex;
 		}
 	}
-	else if(selected_page == OUTPUT_PAGE)
+	else if(g_selected_page == OUTPUT_PAGE)
 	{
 		/* Don't currently have any special actions here, all writes allowed */
 	}

@@ -29,26 +29,37 @@ static uint32_t SPI2_CR2;
   *
   * Disable and re-enable SPI using RCC. Kind of hacky, not a clean way to do this.
   * This is required because there is no way to clear Tx FIFO in the SPI
-  * peripheral otherwise
+  * peripheral otherwise when operating as a SPI slave.
+  *
+  * After using the RCC to reset the SPI, it is configured for register mode (8-bit words,
+  * Rx interrupt on FIFO half full) or burst mode (16-bit mode, no interrupts).
   */
 void User_SPI_Reset(bool register_mode)
 {
 	/* Hard reset SPI through RCC */
 	RCC->APB1RSTR |= RCC_APB1RSTR_SPI2RST;
 	RCC->APB1RSTR &= ~RCC_APB1RSTR_SPI2RST;
-	/* Apply SPI settings */
+	/* Apply SPI settings (still disabled) */
 	SPI2->CR1 = SPI2_CR1;
 	SPI2->CR2 = SPI2_CR2;
-	/* Are we enabling SPI interrupts? */
+	/* Are we going into register mode? */
 	if (register_mode)
 	{
 		/* Enable user SPI to generate interrupt on two bytes received (RXNE) */
 		SPI2->CR2 |= SPI_IT_RXNE;
+		/* Set word length of 8 bits for register mode */
+		SPI2->CR2 &= ~SPI_CR2_DS;
+		SPI2->CR2 |= 0x7u << SPI_CR2_DS_Pos;
 	}
+	/* Must be burst mode */
 	else
 	{
 		/* Burst mode, disable SPI interrupts */
 		SPI2->CR2 &= ~(SPI_IT_ERR|SPI_IT_TXE|SPI_IT_RXNE);
+		/* Set word length of 16-bits */
+		SPI2->CR2 |= 0xFu << SPI_CR2_DS_Pos;
+		/* Set Rx thresh of 1 by clearing bit */
+		SPI2->CR2 &= ~SPI_RXFIFO_THRESHOLD;
 	}
 	/* Enable */
 	SPI2->CR1 |= SPI_CR1_SPE;
@@ -68,7 +79,7 @@ void User_SPI_Burst_Setup()
 	User_SPI_Reset(false);
 
 	/* Load buffer count to output initially */
-	SPI2->DR = (g_regs[BUF_CNT_0_REG] << 8u)|(g_regs[BUF_CNT_0_REG] >> 8u);
+	SPI2->DR = g_regs[BUF_CNT_0_REG];
 
 	/************ Enable the Tx DMA Stream/Channel  *********************/
 
@@ -78,8 +89,8 @@ void User_SPI_Burst_Setup()
 	/* Clear all flags */
 	g_spi2.hdmatx->DmaBaseAddress->IFCR  = (DMA_FLAG_GL1 << g_spi2.hdmatx->ChannelIndex);
 
-	/* Configure DMA Channel data length (total buffer entry size in bytes) */
-	g_spi2.hdmatx->Instance->CNDTR = g_regs[BUF_LEN_REG] + 10;
+	/* Configure DMA Channel data length. DMA operates in 16-bit mode */
+	g_spi2.hdmatx->Instance->CNDTR = (g_regs[BUF_LEN_REG] + 10u) >> 1u;
 
 	/* Configure DMA Channel peripheral address (SPI data register) */
 	g_spi2.hdmatx->Instance->CPAR = (uint32_t) &SPI2->DR;
@@ -97,13 +108,13 @@ void User_SPI_Burst_Setup()
 	/* Set TX DMA request enable in SPI */
 	SET_BIT(SPI2->CR2, SPI_CR2_TXDMAEN);
 
-	/* Enable CS rising edge interrupt after clearing pending IRQ */
-	EXTI->PR = (0x3F << 10);
-	NVIC_ClearPendingIRQ(EXTI15_10_IRQn);
-	NVIC_EnableIRQ(EXTI15_10_IRQn);
-
 	/* Set the user burst running flag */
 	g_userburstRunning = 1;
+
+	/* Enable CS rising edge interrupt after clearing any pending IRQ */
+	EXTI->PR = USER_SPI_CS_INT_MSK;
+	NVIC_ClearPendingIRQ(EXTI15_10_IRQn);
+	NVIC_EnableIRQ(EXTI15_10_IRQn);
 }
 
 /**
@@ -194,15 +205,16 @@ void User_SPI_Update_Config(uint32_t CheckUnlock)
 
 	/* Reset SPI and apply settings */
 	HAL_SPI_DeInit(&g_spi2);
-	SPI2->CR1 &= ~(SPI_CR1_SPE);
 	HAL_SPI_Init(&g_spi2);
+	/* Ensure SPI is disabled */
+	SPI2->CR1 &= ~(SPI_CR1_SPE);
 
 	/* Clear FRXTH to enable trigger on 16-bits Rx data */
 	SPI2->CR2 &= ~(SPI_CR2_FRXTH);
 	/* Enable user SPI to generate interrupt on two bytes received (RXNE) */
 	SPI2->CR2 |= SPI_IT_RXNE;
 
-	/* Save control settings based on latest user config */
+	/* Save control settings based on latest user config for reg mode */
 	SPI2_CR1 = SPI2->CR1;
 	SPI2_CR2 = SPI2->CR2;
 

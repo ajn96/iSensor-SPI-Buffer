@@ -233,13 +233,21 @@ void Main_Error_Handler()
 }
 
 /**
-  * @brief Init and DMA channels in use and configure DMA interrupts
+  * @brief Init all DMA channels in use and configure DMA interrupts
   *
   * @return void
   *
   * Currently use three DMA channels, on DMA peripheral 1:
   * DMA2/3 - IMU SPI port, used for burst reads from IMU
   * DMA5 - User SPI port, Used for buffer burst outputs. Rx not used
+  *
+  * All DMA channels are configured to generate interrupts upon the completion
+  * of a transfer. The user SPI DMA interrupt is used just to check for any
+  * error events which might have occurred during the burst read process.
+  *
+  * The IMU DMA interrupts are used to determine when a burst read from the
+  * IMU has completed. Both the Tx and Rx channels must be done for a burst
+  * read to have completed (Tx should finish last).
   */
 static void DMA_Init()
 {
@@ -283,8 +291,8 @@ static void DMA_Init()
 	g_dma_spi2_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
 	g_dma_spi2_tx.Init.PeriphInc = DMA_PINC_DISABLE;
 	g_dma_spi2_tx.Init.MemInc = DMA_MINC_ENABLE;
-	g_dma_spi2_tx.Init.PeriphDataAlignment = DMA_MDATAALIGN_BYTE;
-	g_dma_spi2_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+	g_dma_spi2_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+	g_dma_spi2_tx.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
 	g_dma_spi2_tx.Init.Mode = DMA_NORMAL;
 	g_dma_spi2_tx.Init.Priority = DMA_PRIORITY_VERY_HIGH;
 	if (HAL_DMA_Init(&g_dma_spi2_tx) != HAL_OK)
