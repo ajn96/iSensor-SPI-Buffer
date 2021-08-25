@@ -229,7 +229,7 @@ void SD_Card_Stop_Script()
   *
   * This function is called from the main loop. It is responsible
   * for performing the actual script execution, and writing the
-  * output to the SD card (via
+  * output to the SD card (via Script_Run_Element with isUSB set to false)
   */
 void SD_Card_Script_Step()
 {
@@ -357,10 +357,6 @@ static bool OpenScriptFiles()
 
 		/* Save error */
 		g_regs[SCR_ERROR_REG] |= SCR_MOUNT_ERROR;
-
-		/* Retry once */
-		if((g_regs[SCR_ERROR_REG] & SCR_MOUNT_ERROR) == 0)
-			return OpenScriptFiles();
 
 		/* Return error */
 		return false;
