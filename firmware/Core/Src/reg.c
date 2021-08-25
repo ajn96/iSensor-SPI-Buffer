@@ -22,6 +22,7 @@
 #include "dio.h"
 #include "timer.h"
 #include "user_interrupt.h"
+#include "isr.h"
 
 /* Local function prototypes */
 static uint16_t ProcessRegWrite(uint8_t regAddr, uint8_t regValue);
@@ -154,11 +155,19 @@ void Reg_Buf_Dequeue_To_Outputs()
 		/* Set current buf entry to 0 */
 		g_CurrentBufEntry = 0;
 
-		/* Check if burst read mode is enabled and reset SPI */
+		/* Check if burst read mode is enabled, but no data is available*/
 		if(g_regs[BUF_CONFIG_REG] & BUF_CFG_BUF_BURST)
 		{
-			User_SPI_Burst_Disable();
-			SPI2->DR = 0;
+			/* Ensure SPI interrupts are disabled, load zero to Tx */
+			User_SPI_Reset(false);
+			SPI2->DR = 0u;
+			/* Enable CS rising edge interrupt after clearing any pending IRQ. Next
+			 * CS rising edge will reset SPI to good state after blank burst. Also set
+			 * burst in progress flag to avoid erroneous SPI error */
+			g_userburstRunning = 1u;
+			EXTI->PR = USER_SPI_CS_INT_MSK;
+			NVIC_ClearPendingIRQ(EXTI15_10_IRQn);
+			NVIC_EnableIRQ(EXTI15_10_IRQn);
 		}
 	}
 }
