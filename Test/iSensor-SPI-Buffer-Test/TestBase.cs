@@ -163,6 +163,23 @@ namespace iSensor_SPI_Buffer_Test
             WriteUnsigned("USER_SCR0", initialVal, true);
         }
 
+        public void CheckBurstChecksum(ushort[] burstData)
+        {
+            ushort expected = burstData[4];
+
+            uint sig = 0;
+            for(int i = 0; i < 4; i++)
+            {
+                sig += burstData[i];
+            }
+            for (int i = 5; i < burstData.Count(); i++)
+            {
+                sig += burstData[i];
+            }
+            sig &= 0xFFFFu;
+            Assert.AreEqual(sig, expected, "ERROR: Invalid buffer checksum");
+        }
+
         public List<ushort[]> GetBurstData()
         {
             List<ushort[]> retList = new List<ushort[]>();

@@ -47,11 +47,15 @@ namespace iSensor_SPI_Buffer_Test
         [Test]
         public void ADIS1649xBurstTest()
         {
+            const uint DEC_RATE = 0;
+            const uint TEST_TIME_SEC = 10;
+
             List<ushort[]> data;
             List<ushort[]> temp;
             uint count;
             uint buffersRead;
             uint max;
+            uint num_samples = TEST_TIME_SEC * 4000 / (DEC_RATE + 1);
             RegClass dec_reg = new RegClass { Address = 12, Page = 3 };
             RegClass fnctio_ctrl_reg = new RegClass { Address = 6, Page = 3 };
             RegClass status_reg = new RegClass { Address = 8, Page = 0 };
@@ -82,8 +86,8 @@ namespace iSensor_SPI_Buffer_Test
             FX3.SetPin(FX3.ResetPin, 1);
             System.Threading.Thread.Sleep(1000);
             FX3.StallTime = 50;
-            Dut.WriteUnsigned(dec_reg, 1);
-            Assert.AreEqual(1, Dut.ReadUnsigned(dec_reg), "Decimate write failed");
+            Dut.WriteUnsigned(dec_reg, DEC_RATE);
+            Assert.AreEqual(DEC_RATE, Dut.ReadUnsigned(dec_reg), "Decimate write failed");
             Dut.WriteUnsigned(fnctio_ctrl_reg, 0xC);
             Assert.AreEqual(0xC, Dut.ReadUnsigned(fnctio_ctrl_reg));
 
@@ -101,7 +105,7 @@ namespace iSensor_SPI_Buffer_Test
             FX3.WordCount = 24;
 
             data = new List<ushort[]>();
-            while (buffersRead < 4000)
+            while (buffersRead < num_samples)
             {
                 count = ReadUnsigned("BUF_CNT_1");
                 count -= 2;
@@ -115,6 +119,10 @@ namespace iSensor_SPI_Buffer_Test
                 for (int i = 1; i < temp.Count; i++)
                 {
                     Assert.AreEqual(temp[i][temp[i].Count() - 2], (temp[i - 1][temp[i].Count() - 2] + 1) & 0xFFFFu, "Invalid data count increment");
+                }
+                foreach(ushort[] buf in temp)
+                {
+                    CheckBurstChecksum(buf);
                 }
                 data.AddRange(temp);
                 buffersRead += count;
