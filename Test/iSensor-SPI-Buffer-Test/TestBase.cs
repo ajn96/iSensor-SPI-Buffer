@@ -163,6 +163,25 @@ namespace iSensor_SPI_Buffer_Test
             WriteUnsigned("USER_SCR0", initialVal, true);
         }
 
+        public List<ushort[]> GetBurstData()
+        {
+            List<ushort[]> retList = new List<ushort[]>();
+            ushort[] buf;
+
+            buf = null;
+            while (buf == null)
+            {
+                buf = FX3.GetBuffer();
+            }
+
+            while(buf != null)
+            {
+                retList.Add(buf);
+                buf = FX3.GetBuffer();
+            }
+            return retList;
+        }
+
         public void RestoreDefaultValues()
         {
             foreach(RegClass Reg in RegMap)

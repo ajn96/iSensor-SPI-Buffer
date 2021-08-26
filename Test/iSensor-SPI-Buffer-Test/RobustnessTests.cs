@@ -45,62 +45,84 @@ namespace iSensor_SPI_Buffer_Test
         }
 
         [Test]
-        public void ADIS1649xBufferTest()
+        public void ADIS1649xBurstTest()
         {
-
-            uint[] buf;
+            List<ushort[]> data;
+            List<ushort[]> temp;
             uint count;
-            bool goodData = true;
             uint buffersRead;
             uint max;
-            double freq = 1000;
+            RegClass dec_reg = new RegClass { Address = 12, Page = 3 };
+            RegClass fnctio_ctrl_reg = new RegClass { Address = 6, Page = 3 };
+            RegClass status_reg = new RegClass { Address = 8, Page = 0 };
 
-            /* Want stall time 5us, sclk freq 9MHz */
-            WriteUnsigned("IMU_SPI_CONFIG", 0x205, true);
+            /* Want stall time 5us, sclk freq 2MHz */
+            WriteUnsigned("IMU_SPI_CONFIG", 0x805);
+            /* Set for double burst */
+            WriteUnsigned("BUF_CONFIG", 6);
+            /* Set 38 bytes capture */
+            WriteUnsigned("BUF_LEN", 38);
+            /* Set for passthrough on DIO1, DR on DIO1 */
+            WriteUnsigned("DIO_INPUT_CONFIG", 0x11);
+            WriteUnsigned("DIO_OUTPUT_CONFIG", 1);
 
-            /* Set writedata regs */
-            uint index = 1;
+            /* Set writedata regs to zero */
             foreach (RegClass reg in WriteDataRegs)
             {
-                Dut.WriteUnsigned(reg, index);
-                index++;
+                Dut.WriteUnsigned(reg, 0);
             }
+            /* Set burst trigger */
+            WriteUnsigned("BUF_WRITE_0", 0x7C00);
 
-            List<RegClass> ReadRegs = new List<RegClass>();
-            ReadRegs.Add(RegMap["BUF_RETRIEVE"]);
-            ReadRegs.Add(RegMap["BUF_CNT_1"]);
-            ReadRegs.Add(RegMap["BUF_TIMESTAMP_LWR"]);
-            ReadRegs.Add(RegMap["BUF_TIMESTAMP_UPR"]);
-            ReadRegs.Add(RegMap["BUF_DELTA_TIME"]);
-            /* Realistic use case: 32-bit data on each axis + temp + data count + status -> 15 register reads -> 16 SPI words */
-            for (int i = 0; i < 16; i++)
-            {
-                ReadRegs.Add(RegMap["BUF_DATA_" + i.ToString()]);
-            }
-            ReadRegs.Add(RegMap["BUF_SIG"]);
-
-            WriteUnsigned("BUF_LEN", 32, true);
             max = ReadUnsigned("BUF_MAX_CNT");
             Console.WriteLine("Max buffer capacity: " + max.ToString());
 
-            /* Set data production rate 4.25KHz */
-            FX3.StartPWM(freq, 0.5, FX3.DIO1);
+            /* Ensure IMU is configured for operation */
+            FX3.SetPin(FX3.ResetPin, 0);
+            FX3.SetPin(FX3.ResetPin, 1);
+            System.Threading.Thread.Sleep(1000);
+            FX3.StallTime = 50;
+            Dut.WriteUnsigned(dec_reg, 1);
+            Assert.AreEqual(1, Dut.ReadUnsigned(dec_reg), "Decimate write failed");
+            Dut.WriteUnsigned(fnctio_ctrl_reg, 0xC);
+            Assert.AreEqual(0xC, Dut.ReadUnsigned(fnctio_ctrl_reg));
 
-            /* Clear */
+            /* Read IMU status */
+            Console.WriteLine("IMU Status: 0x" + Dut.ReadUnsigned(status_reg).ToString("X4"));
+
+            /* Clear buffer */
             WriteUnsigned("BUF_CNT_1", 0, false);
 
-            Console.WriteLine("Testing DR freq: " + freq.ToString() + "Hz");
+            Console.WriteLine("Testing DR freq: " + FX3.MeasurePinFreq(FX3.DIO1, 1, 100, 5).ToString() + "Hz");
             buffersRead = 0;
-            while (goodData)
+
+            /* Set up for streams */
+            FX3.TriggerReg = RegMap["BUF_RETRIEVE"];
+            FX3.WordCount = 24;
+
+            data = new List<ushort[]>();
+            while (buffersRead < 4000)
             {
-                System.Threading.Thread.Sleep(10);
                 count = ReadUnsigned("BUF_CNT_1");
                 count -= 2;
-                buf = Dut.ReadUnsigned(10, ReadRegs, 1, count);
-                goodData = ValidateBufferData(BufferEntry.ParseBufferData(buf, ReadRegs), freq);
+                FX3.SetupBurstMode();
+                FX3.StartBurstStream(count, FX3.BurstMOSIData);
+                System.Threading.Thread.Sleep(20);
+                FX3.WaitForStreamCompletion();
+                temp = GetBurstData();
+                /* First burst read is invalid */
+                temp.RemoveAt(0);
+                for (int i = 1; i < temp.Count; i++)
+                {
+                    Assert.AreEqual(temp[i][temp[i].Count() - 2], (temp[i - 1][temp[i].Count() - 2] + 1) & 0xFFFFu, "Invalid data count increment");
+                }
+                data.AddRange(temp);
                 buffersRead += count;
-                Console.WriteLine("Total buffers read: " + buffersRead.ToString());
+                Console.WriteLine("Available buffers: " + count.ToString());
             }
+            Console.WriteLine("Total buffers read: " + data.Count.ToString());
+            CheckDUTConnection();
+
         }
 
         [Test]
