@@ -26,5 +26,6 @@ void User_SPI_Reset(bool register_mode);
 
 /* Public variables exported from module */
 extern volatile uint32_t g_userburstRunning;
+extern volatile uint32_t g_user_burst_start;
 
 #endif /* INC_USER_SPI_H_ */

@@ -118,8 +118,12 @@ int main()
 	  /* Process buf dequeue every loop iteration (high priority) */
 	  if(g_update_flags & DEQUEUE_BUF_FLAG)
 	  {
-		  g_update_flags &= ~DEQUEUE_BUF_FLAG;
-		  Reg_Buf_Dequeue_To_Outputs();
+		  /* Only proceed once burst start flag is cleared */
+		  if(g_user_burst_start == 0u)
+		  {
+			  g_update_flags &= ~DEQUEUE_BUF_FLAG;
+			  Reg_Buf_Dequeue_To_Outputs();
+		  }
 	  }
 
 	  /* Check user interrupt generation status */

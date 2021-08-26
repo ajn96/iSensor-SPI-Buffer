@@ -27,7 +27,7 @@ static void ProcessSPITransaction(uint32_t rx);
 volatile uint32_t g_wordsPerCapture;
 
 /** Track if there is currently a capture in progress */
-volatile uint32_t g_captureInProgress;
+volatile uint32_t g_captureInProgress = 0u;
 
 /** Pointer to buffer element which is being populated */
 static uint8_t* BufferElementHandle;
@@ -405,7 +405,20 @@ void DMA1_Channel5_IRQHandler(void)
   *
   * If a burst read is requested, this interrupt is disabled, and the CS
   * rising edge interrupt is enabled instead. This allows for variable length
-  * burst read transactions.
+  * burst read transactions. The hand off from register mode to burst mode and
+  * back requires special care. We want to avoid potential issues if the user
+  * just immediately starts full length burst reads, rather than requesting a burst
+  * first. We essentially have to wait for the current SPI transaction
+  * to finish before enabling the burst. Otherwise, the burst can potentially get
+  * enabled half way through this transfer, which messes up the whole burst read
+  * sequence. We could accomplish this by polling CS in the ISR, but that has
+  * a strong potential to mess with other functionality (user SPI interrupt is
+  * highest priority, and also generally polling in an ISR is a bad idea). Instead,
+  * a flag is set, which must be cleared by the CS ISR. This flag is checked
+  * by the buffer dequeue routine which runs from the main loop.
+  *
+  * Once no more bursts are requested, the SPI2
+  * interrupt will be re-enabled through the user SPI burst disable function.
   */
 void SPI2_IRQHandler(void)
 {
@@ -424,22 +437,17 @@ void SPI2_IRQHandler(void)
 	/* Grab Rx data */
 	rx = SPI2->DR;
 
-	/* Are we starting a burst read? Need to take extra care here. We want to
-	 * avoid potential issues if the user just immediately starts full length
-	 * burst reads. The best way to deal with this without polling waiting for
-	 * CS to go high (which can mess with other parts of the code, polling from
-	 * ISR is never a good idea) is to simply disable the user SPI interrupt.
-	 * Then, when the burst is configured, the CS rising edge interrupt will be
-	 * enabled for terminating the burst. Once no more bursts are requested, this
-	 * interrupt will be re-enabled through the user SPI burst disable function. */
-	if(((rx & 0xFF) == 0x06)&&(g_selected_page == BUF_READ_PAGE))
+	/* Are we starting a burst read? */
+	if(Reg_Is_Burst_Read(rx & 0xFFu))
 	{
-		/* Handle transaction, starting burst setup process */
-		ProcessSPITransaction(rx);
-		/* Disable SPI (also interrupts). Will be re-enabled for burst */
-		SPI2->CR1 &= ~SPI_CR1_SPE;
-		/* Clear any pending interrupts just in case */
-		NVIC_ClearPendingIRQ(SPI2_IRQn);
+		/* Set flag for buffer dequeue. Increases coupling, but oh well */
+		g_update_flags |= DEQUEUE_BUF_FLAG;
+		/* Disable SPI interrupts immediately */
+		NVIC_DisableIRQ(SPI2_IRQn);
+		/* Set flag indicating burst start and enable CS interrupt */
+		g_user_burst_start = 1u;
+		NVIC_ClearPendingIRQ(EXTI15_10_IRQn);
+		NVIC_EnableIRQ(EXTI15_10_IRQn);
 		/* Exit early */
 		return;
 	}
@@ -479,6 +487,8 @@ void SPI2_IRQHandler(void)
 		/* Handle transaction */
 		ProcessSPITransaction(rx);
 	}
+	/* Clear EXTI PR register (lines 10-15) */
+	EXTI->PR = USER_SPI_CS_INT_MSK;
 }
 
 /**
@@ -506,8 +516,15 @@ void EXTI15_10_IRQHandler(void)
 	/* SPI data */
 	uint32_t rx, tx;
 
-	/* Clear exti PR register (lines 10-15) */
+	/* Clear EXTI PR register (lines 10-15) */
 	EXTI->PR = USER_SPI_CS_INT_MSK;
+
+	/* First CS posedge after burst read request? */
+	if(g_user_burst_start != 0u)
+	{
+		g_user_burst_start = 0u;
+		return;
+	}
 
 	/* Read first SPI data word received */
 	rx = SPI2->DR;

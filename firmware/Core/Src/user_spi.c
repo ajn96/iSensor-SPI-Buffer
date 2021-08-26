@@ -14,7 +14,10 @@
 #include "isr.h"
 
 /** Track if a burst read is enabled. Global scope */
-volatile uint32_t g_userburstRunning;
+volatile uint32_t g_userburstRunning = 0u;
+
+/** Track if a user burst read has been started */
+volatile uint32_t g_user_burst_start = 0u;
 
 /* SPI control 1 register value for operation */
 static uint32_t SPI2_CR1;
@@ -36,6 +39,8 @@ static uint32_t SPI2_CR2;
   */
 void User_SPI_Reset(bool register_mode)
 {
+	/* Ensure burst waiting flag is cleared */
+	g_user_burst_start = 0u;
 	/* Hard reset SPI through RCC */
 	RCC->APB1RSTR |= RCC_APB1RSTR_SPI2RST;
 	RCC->APB1RSTR &= ~RCC_APB1RSTR_SPI2RST;
@@ -45,21 +50,28 @@ void User_SPI_Reset(bool register_mode)
 	/* Are we going into register mode? */
 	if (register_mode)
 	{
-		/* Enable user SPI to generate interrupt on two bytes received (RXNE) */
-		SPI2->CR2 |= SPI_IT_RXNE;
+		/* Disable burst interrupt */
+		NVIC_DisableIRQ(EXTI15_10_IRQn);
 		/* Set word length of 8 bits for register mode */
 		SPI2->CR2 &= ~SPI_CR2_DS;
 		SPI2->CR2 |= 0x7u << SPI_CR2_DS_Pos;
+		/* Enable user SPI interrupt on two bytes received (RXNE) */
+		NVIC_ClearPendingIRQ(SPI2_IRQn);
+		NVIC_EnableIRQ(SPI2_IRQn);
 	}
 	/* Must be burst mode */
 	else
 	{
 		/* Burst mode, disable SPI interrupts */
-		SPI2->CR2 &= ~(SPI_IT_ERR|SPI_IT_TXE|SPI_IT_RXNE);
+		NVIC_DisableIRQ(SPI2_IRQn);
 		/* Set word length of 16-bits */
 		SPI2->CR2 |= 0xFu << SPI_CR2_DS_Pos;
 		/* Set Rx thresh of 1 by clearing bit */
 		SPI2->CR2 &= ~SPI_RXFIFO_THRESHOLD;
+		/* Enable CS rising edge interrupt after clearing any pending IRQ */
+		EXTI->PR = USER_SPI_CS_INT_MSK;
+		NVIC_ClearPendingIRQ(EXTI15_10_IRQn);
+		NVIC_EnableIRQ(EXTI15_10_IRQn);
 	}
 	/* Enable */
 	SPI2->CR1 |= SPI_CR1_SPE;
@@ -75,7 +87,7 @@ void User_SPI_Reset(bool register_mode)
   */
 void User_SPI_Burst_Setup()
 {
-	/* Reset SPI, disabling SPI interrupts */
+	/* Reset SPI, disabling SPI interrupts and enabling CS interrupt */
 	User_SPI_Reset(false);
 
 	/* Load buffer count to output initially */
@@ -110,11 +122,6 @@ void User_SPI_Burst_Setup()
 
 	/* Set the user burst running flag */
 	g_userburstRunning = 1;
-
-	/* Enable CS rising edge interrupt after clearing any pending IRQ */
-	EXTI->PR = USER_SPI_CS_INT_MSK;
-	NVIC_ClearPendingIRQ(EXTI15_10_IRQn);
-	NVIC_EnableIRQ(EXTI15_10_IRQn);
 }
 
 /**
@@ -128,8 +135,6 @@ void User_SPI_Burst_Setup()
 void User_SPI_Burst_Disable()
 {
 	g_spi2.hdmatx->Instance->CCR &= ~DMA_CCR_EN;
-	/* Disable CS interrupt */
-	NVIC_DisableIRQ(EXTI15_10_IRQn);
 	/* Reset SPI, re-enabling SPI IRQ */
 	User_SPI_Reset(true);
 }
@@ -224,9 +229,9 @@ void User_SPI_Update_Config(uint32_t CheckUnlock)
 	/* Load output with initial zeros */
 	SPI2->DR = 0u;
 
-	/* Set user SPI interrupt priority (highest) */
+	/* Set user SPI interrupt priority (highest), no preemption */
 	HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
-	HAL_NVIC_SetPriority(SPI2_IRQn, 1, 0);
+	HAL_NVIC_SetPriority(SPI2_IRQn, 0, 0);
 
 	/* Clear pending interrupts for SPI */
 	EXTI->PR = (0x3F << 10);
@@ -243,5 +248,8 @@ void User_SPI_Update_Config(uint32_t CheckUnlock)
 
 	/* Save last valid config */
 	lastConfig = config;
+
+	/* Ensure burst waiting flag is cleared */
+	g_user_burst_start = 0u;
 }
 

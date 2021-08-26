@@ -13,6 +13,7 @@
 
 /* Header includes require for prototypes */
 #include <stdint.h>
+#include "main.h"
 
 /* Number of registers per page */
 #define REG_PER_PAGE				64
@@ -184,13 +185,13 @@
 extern volatile uint32_t g_update_flags;
 extern volatile uint16_t g_regs[NUM_REG_PAGES * REG_PER_PAGE];
 extern volatile uint16_t* g_CurrentBufEntry;
-volatile uint32_t g_selected_page;
 
 /* Public function prototypes */
 
 /* @cond DOXYGEN_IGNORE */
 void Reg_Init();
 void Reg_Update_Identifiers();
+bool Reg_Is_Burst_Read(uint8_t addr);
 uint16_t Reg_Read(uint8_t regAddr);
 uint16_t Reg_Write(uint8_t regAddr, uint8_t regValue);
 void Reg_Process_Command();
