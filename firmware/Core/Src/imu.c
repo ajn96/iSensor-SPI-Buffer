@@ -227,10 +227,15 @@ uint16_t IMU_SPI_Transfer(uint32_t MOSI)
   *
   * This function produces two SPI transfers to the IMU. One to send the
   * initial read request, and a second to get back the read result data.
+  *
+  * A stall time is inserted between the two words, as well as after the
+  * last word. This is needed when accessing the IMU over USB - don't
+  * want to read requests to be immediately back to back.
  **/
 uint16_t IMU_Read_Register(uint8_t RegAddr)
 {
 	uint32_t readRequest;
+	uint16_t res;
 
 	/* shift address to correct position */
 	readRequest = RegAddr << 8;
@@ -244,8 +249,14 @@ uint16_t IMU_Read_Register(uint8_t RegAddr)
 	/* Delay for stall time (1us offset) */
 	Timer_Sleep_Microseconds(imuStallTimeUs - 1);
 
+	/* Grab result */
+	res = IMU_SPI_Transfer(0);
+
+	/* Wait an additional stall time */
+	Timer_Sleep_Microseconds(imuStallTimeUs - 1);
+
 	/* Return result data on second word */
-	return IMU_SPI_Transfer(0);
+	return res;
 }
 
 /**
