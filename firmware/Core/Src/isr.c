@@ -538,24 +538,25 @@ void EXTI15_10_IRQHandler(void)
 		/* Clear burst running flag */
 		g_userburstRunning = 0;
 
-		/* Check if another burst was not requested */
+		/* Are we no longer in burst mode? */
 		if((rx & 0xFF00) != 0x0600)
 		{
 			/* Exit burst mode */
 			User_SPI_Burst_Disable();
+			/* We are now back in 8-bit mode, need to accommodate by
+			 * swapping around the Rx bytes */
+			tx = (rx << 8u) & 0xFF00u;
+			rx = (rx >> 8u) & 0xFFu;
+			rx |= tx;
+			/* Handle SPI transaction */
+			ProcessSPITransaction(rx);
 		}
-		/* Handle transaction */
-		if(rx & 0x8000u)
-		{
-			/* Write */
-			tx = Reg_Write((rx & 0x7F00u) >> 8u, rx & 0xFFu);
-		}
+		/* We must be reading another burst */
 		else
 		{
-			/* Read */
-			tx = Reg_Read(rx >> 8u);
+			/* Set flag for additional burst read */
+			g_update_flags |= DEQUEUE_BUF_FLAG;
 		}
-		SPI2->DR = tx;
 	}
 	/* Burst not running means this interrupt should not be enabled */
 	else
