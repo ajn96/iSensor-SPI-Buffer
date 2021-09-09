@@ -9,15 +9,15 @@ This guide assumes that you've connected the SPI Buffer Board to the PC and open
 ```
 write 0 FD	//Change the active page to page 253
 write 2 2	//Write to the BUF_CONFIG register - stop sampling when sensor data overflows, enable data capture using the IMU burst mode
-write 3 0 //Upper 8-bits of BUF_CONFIG
+write 3 0 	//Upper 8-bits of BUF_CONFIG
 write 4 28	//Write the desired buffer size (correct value for ADIS1649x IMUs)
-write 5 0 //Upper 8-bits of BUF_LEN
+write 5 0 	//Upper 8-bits of BUF_LEN
 write 8 12	//Set buffer board data ready polarity to rising edge, set buffer board data ready to DIO2
-write 9 0 //Upper 8-bits of DIO_INPUT_CONFG
+write 9 0 	//Upper 8-bits of DIO_INPUT_CONFG
 write A 2	//Pass DIO2 through to the host SPI connector
-write B 0 //Upper 8-bits of DIO_OUTPUT_CONFIG 
+write B 0 	//Upper 8-bits of DIO_OUTPUT_CONFIG 
 write C 4	//Set the buffer board watermark for 4 samples
-write D 0 //Upper 8-bits of watermark
+write D 0 	//Upper 8-bits of watermark
 write 10 5	//Set the IMU SPI to a 5us stall
 write 11 8	//Set the IMU SPI SCLK to 2.25MHz
 
@@ -25,7 +25,7 @@ write 0 FE	//Change the active page to page 254
 write 12 0	//Write the lower byte of the burst trigger command to the request buffer
 write 13 7C	//Write the upper byte of the burst trigger command to the request buffer
 
-cmd 8	// Issue buffer board flash write command - NOTE: issuing this command will commit the current configuration to the buffer board NVM. These settings will be recalled next time the buffer board is powered on.
+cmd 8		// Issue buffer board flash write command - NOTE: issuing this command will commit the current configuration to the buffer board NVM. These settings will be recalled next time the buffer board is powered on.
 ```
 
 ### Configuring the IMU  using the CLI
