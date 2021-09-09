@@ -9,10 +9,15 @@ This guide assumes that you've connected the SPI Buffer Board to the PC and open
 ```
 write 0 FD	//Change the active page to page 253
 write 2 2	//Write to the BUF_CONFIG register - stop sampling when sensor data overflows, enable data capture using the IMU burst mode
+write 3 0 //Upper 8-bits of BUF_CONFIG
 write 4 28	//Write the desired buffer size (correct value for ADIS1649x IMUs)
+write 5 0 //Upper 8-bits of BUF_LEN
 write 8 12	//Set buffer board data ready polarity to rising edge, set buffer board data ready to DIO2
+write 9 0 //Upper 8-bits of DIO_INPUT_CONFG
 write A 2	//Pass DIO2 through to the host SPI connector
+write B 0 //Upper 8-bits of DIO_OUTPUT_CONFIG 
 write C 4	//Set the buffer board watermark for 4 samples
+write D 0 //Upper 8-bits of watermark
 write 10 5	//Set the IMU SPI to a 5us stall
 write 11 8	//Set the IMU SPI SCLK to 2.25MHz
 
@@ -30,7 +35,9 @@ The following steps outline the minimum configuration required to capture data f
 ```
 write 0 3	//Change the active page to page 3 on the IMU
 write 6 D	//Set the data ready output to DIO2
-write 12 9	//Set the datarate to 400SPS (Hz)
+write 7 0 //Upper 8-bits
+write C 9	//Set the datarate to 400SPS (Hz)
+write D 0 //Upper 8 bits
 write 2 8	//Write the lower byte of the IMU flash write command
 write 3 0	//Write the upper byte of the IMU flash write command - NOTE: issuing this command will commit the current configuration to the IMU NVM. These settings will be recalled next time the buffer board is powered on
 write 0 0	//Set the active IMU to page 0 - NOTE: this step is only necessary when first configuring the IMU and does not need to be performed in subsequent power cycles
