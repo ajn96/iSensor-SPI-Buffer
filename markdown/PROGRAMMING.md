@@ -34,7 +34,7 @@ The Tag-Connect pogo-pin adapter should securely clip into the SWD programming p
 
 The SPI Buffer Board **must be powered externally during programming!** The SWD port does *not* provide power. Power can be supplied to the SPI Buffer Board using either the USB port or the 24-pin IMU host connector. 
 
-## Loading Firmware to the Buffer Board                      '
+## Loading Firmware to the Buffer Board
 
 To load firmware to the Buffer Board, simply drag and drop iSensor-SPI-Buffer.bin to the "NODE_F303RE" device in the Windows explorer.
 ![Loading Code](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/swd_loading_code.PNG)
