@@ -60,7 +60,14 @@ Each set of four values corresponds to the contents of each 16-bit register. Whe
 Once the buffer board and IMU have been configured, issuing the following commands in the order shown will start the data capture sequence and the data stream.
 
 ```
-write 0 255	//Change the active page to page 255
-stream 1
+stream 1 	//Enable data streaming from buffer
+write 0 FF	//Change the active page to page 255 to start capture
 ```
 
+This will start automatic printing of each buffer sample. To put the data in a CSV format, use the "delim ," command (default delimiter is a space)
+
+![Stream Data](img/cli_stream.PNG)
+
+### Triggering Data Capture
+
+To stop a data capture, send a "stream 0" command to disable streaming
