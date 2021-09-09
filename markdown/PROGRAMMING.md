@@ -41,10 +41,14 @@ To load firmware to the Buffer Board, simply drag and drop iSensor-SPI-Buffer.bi
 
 ## Debugging Common Issues
 
+### Insufficient Space
+
 If the Programmer cannot connect to the Buffer Board, it may give a "Insufficient Space" error message when attempting to load a firmware binary.
 
 ![Code Loading Error](https://raw.githubusercontent.com/ajn96/iSensor-SPI-Buffer/master/img/swd_load_error.PNG)
 
-A common cause is if the Buffer Board is not powered properly. You can power the Buffer Board over USB or via the 24-pin connector, by changing J4 to the desired setting. The system also typically works best if you apply power to the buffer board, then plug in the Nucleo pogo pin SWD connection to the buffer board, then finally connect the Nucleo to your PC via USB. Powering up the buffer board after it has already been connected to the Nucleo does not work consistently.
+A common cause of this error is the Buffer Board not being powered up properly. The Buffer Board can be powered over USB or via the 24-pin connector, by changing J4 to the desired setting. The programming process typically works best if you apply power to the buffer board, then plug in the Nucleo pogo pin SWD connection to the buffer board, then finally connect the Nucleo to your PC via USB. Powering up the buffer board after it has already been connected to the Nucleo does not work consistently.
 
-Updating the buffer board firmware does not change any register values in flash. When code is loaded initially, many registers will start with a value of 0xFFFF. To ensure the buffer board comes up in a good state, it is recommeded to run the Factory Reset command after initial programming.
+### Invalid Register Values
+
+Updating the buffer board firmware does not change any register values in flash. When code is loaded initially, many registers will start with a value of 0xFFFF. To ensure the buffer board comes up in a good state, it is recommeded to run the Factory Reset command after initial programming (preferrably over the USB CLI).
