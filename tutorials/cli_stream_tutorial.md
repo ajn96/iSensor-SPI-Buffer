@@ -20,7 +20,6 @@ write 0 FE	//Change the active page to page 254
 write 12 0	//Write the lower byte of the burst trigger command to the request buffer
 write 13 7C	//Write the upper byte of the burst trigger command to the request buffer
 
-write 0 FD	//Change the active page to page 253
 cmd 8	// Issue buffer board flash write command - NOTE: issuing this command will commit the current configuration to the buffer board NVM. These settings will be recalled next time the buffer board is powered on.
 ```
 
