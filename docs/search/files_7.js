@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['registers_2ec_370',['registers.c',['../registers_8c.html',1,'']]],
-  ['registers_2eh_371',['registers.h',['../registers_8h.html',1,'']]]
+  ['reg_2ec_380',['reg.c',['../reg_8c.html',1,'']]],
+  ['reg_2eh_381',['reg.h',['../reg_8h.html',1,'']]]
 ];

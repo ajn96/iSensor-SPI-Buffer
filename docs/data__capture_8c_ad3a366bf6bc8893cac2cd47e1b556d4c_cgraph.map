@@ -1,0 +1,5 @@
+<map id="Data_Capture_Enable" name="Data_Capture_Enable">
+<area shape="rect" id="node1" title="Enables autonomous data capture by enabling DR ISR in NVIC." alt="" coords="5,13,153,39"/>
+<area shape="rect" id="node2" href="$dio_8c.html#aa46d515c975148e69d95b5554423a873" title="Validates and updates the data ready input configuration based on DIO_INPUT_CONFIG." alt="" coords="201,13,372,39"/>
+<area shape="rect" id="node3" href="$dio_8c.html#a1dbfdd91d1b8633600bf00e2b6ef501c" title="Validates the DIO_INPUT_CONFIG value." alt="" coords="420,5,553,47"/>
+</map>

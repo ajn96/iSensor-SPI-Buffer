@@ -1,0 +1,5 @@
+<map id="InitImuSpiTimer" name="InitImuSpiTimer">
+<area shape="rect" id="node1" title="Inits TIM4 for use as a IMU spi period timer." alt="" coords="249,5,360,32"/>
+<area shape="rect" id="node2" href="$imu_8c.html#a3eb970eebf0c8d4db8ea2e423337175e" title="SPI1 Initialization Function (master SPI port to IMU)" alt="" coords="104,5,201,32"/>
+<area shape="rect" id="node3" href="$main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
+</map>

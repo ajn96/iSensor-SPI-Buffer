@@ -1,0 +1,4 @@
+<map id="SPI2_IRQHandler" name="SPI2_IRQHandler">
+<area shape="rect" id="node1" title="This function handles the user SPI (SPI2) rx data interrupt." alt="" coords="5,5,128,32"/>
+<area shape="rect" id="node2" href="$reg_8c.html#a21315cbfd72bccb63fdd1e97cea672de" title="Check if the requested read is a start of a burst." alt="" coords="176,5,313,32"/>
+</map>

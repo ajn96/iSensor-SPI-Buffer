@@ -1,5 +1,5 @@
 <map id="DMA_Init" name="DMA_Init">
-<area shape="rect" id="node1" title="Init and DMA channels in use and configure DMA interrupts." alt="" coords="5,5,80,32"/>
-<area shape="rect" id="node2" href="$main_8c.html#ad4e07955fadfeb416e9620ddb42f8fe9" title="This function is executed in case of error occurrence." alt="" coords="128,5,229,32"/>
-<area shape="rect" id="node3" href="$flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773" title="Stores an error code to flash memory." alt="" coords="277,5,380,32"/>
+<area shape="rect" id="node1" title="Init all DMA channels in use and configure DMA interrupts." alt="" coords="5,5,80,32"/>
+<area shape="rect" id="node2" href="$main_8c.html#a0cafedb28e2070a60a7c2b39043b38d8" title="This function is executed in case of error occurrence." alt="" coords="128,5,264,32"/>
+<area shape="rect" id="node3" href="$flash_8c.html#af425d5b1241befa56dbe794fffae169f" title="Stores an error code to flash memory." alt="" coords="312,5,431,32"/>
 </map>

@@ -1,0 +1,4 @@
+<map id="USB_Reset" name="USB_Reset">
+<area shape="rect" id="node1" title="Toggle USB PU to force a re&#45;enumeration on the host side." alt="" coords="5,5,96,32"/>
+<area shape="rect" id="node2" href="$timer_8c.html#a610c9ca08bddd3bae993770ce68a19c8" title="Blocking sleep function call." alt="" coords="144,5,327,32"/>
+</map>

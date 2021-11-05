@@ -1,4 +1,4 @@
 <map id="SDCardAttached" name="SDCardAttached">
 <area shape="rect" id="node1" title="Check if SD card is attached." alt="" coords="5,5,124,32"/>
-<area shape="rect" id="node2" href="$timer_8c.html#ad679c296af1e7b89bd58be986d71d985" title="Blocking sleep function call." alt="" coords="172,5,308,32"/>
+<area shape="rect" id="node2" href="$timer_8c.html#a610c9ca08bddd3bae993770ce68a19c8" title="Blocking sleep function call." alt="" coords="172,5,355,32"/>
 </map>

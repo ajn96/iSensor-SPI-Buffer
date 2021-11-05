@@ -1,5 +1,5 @@
 <map id="ReadHandler" name="ReadHandler">
 <area shape="rect" id="node1" title="Read command handler." alt="" coords="5,31,101,57"/>
-<area shape="rect" id="node2" href="$registers_8c.html#aeee7c6312a09dcb27a9d0b68fe37afcf" title="Process a register read request (from master)" alt="" coords="161,5,236,32"/>
+<area shape="rect" id="node2" href="$reg_8c.html#ae990584c59a18c196de2500b5cc81880" title="Process a register read request (from master)" alt="" coords="157,5,240,32"/>
 <area shape="rect" id="node3" href="$script_8c.html#aea16d045e8282ac0a27d9ac0f520c286" title="Convert a 16 bit value to the corresponding hex string (4 chars)" alt="" coords="149,56,248,83"/>
 </map>

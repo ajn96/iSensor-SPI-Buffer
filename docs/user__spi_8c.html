@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.14</span>
+   &#160;<span id="projectnumber">1.15</span>
    </div>
    <div id="projectbrief">Firmware for the iSensor-SPI-Buffer board to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -78,73 +78,53 @@ $(function() {
 
 <p>iSensor-SPI-Buffer user (slave) SPI module  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="user__spi_8h_source.html">user_spi.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="reg_8h_source.html">reg.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="user__spi_8h_source.html">user_spi.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="buffer_8h_source.html">buffer.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="isr_8h_source.html">isr.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for user_spi.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="user__spi_8c__incl.png" border="0" usemap="#auser__spi_8c" alt=""/></div>
-<map name="user__spi_8c" id="user__spi_8c">
-<area shape="rect" title="iSensor&#45;SPI&#45;Buffer user (slave) SPI module" alt="" coords="454,5,537,32"/>
-<area shape="rect" href="user__spi_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer user SPI (slave SPI) module." alt="" coords="454,80,537,107"/>
-<area shape="rect" href="registers_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer register interfacing module." alt="" coords="454,155,537,181"/>
-<area shape="rect" href="main_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer main." alt="" coords="563,379,625,405"/>
-<area shape="rect" href="imu__spi_8h.html" title="Implementation for iSensor&#45;SPI&#45;Buffer IMU interfacing module." alt="" coords="545,229,624,256"/>
-<area shape="rect" href="buffer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer buffer data structure module." alt="" coords="406,453,470,480"/>
-<area shape="rect" href="flash_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer flash memory interfacing functions." alt="" coords="271,453,331,480"/>
-<area shape="rect" href="data__capture_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer autonomous IMU data acquisition module." alt="" coords="5,528,113,555"/>
-<area shape="rect" href="dfu_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer runtime firmware upgrade module." alt="" coords="854,453,905,480"/>
-<area shape="rect" title=" " alt="" coords="321,677,438,704"/>
-<area shape="rect" href="timer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer timer module." alt="" coords="596,304,659,331"/>
-<area shape="rect" href="user__interrupt_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer user interrupt (data ready) config and generation functions." alt="" coords="718,453,830,480"/>
-<area shape="rect" href="led_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer LED control module." alt="" coords="243,603,294,629"/>
-<area shape="rect" href="watchdog_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer watchdog timer module." alt="" coords="929,453,1017,480"/>
-<area shape="rect" href="dio_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer DIO interfacing module." alt="" coords="195,453,246,480"/>
-<area shape="rect" title=" " alt="" coords="545,453,643,480"/>
-<area shape="rect" href="adc_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer ADC module (for temp sensor and Vdd monitoring)" alt="" coords="1041,453,1096,480"/>
-<area shape="rect" title=" " alt="" coords="276,528,341,555"/>
-<area shape="rect" title=" " alt="" coords="873,528,979,555"/>
-<area shape="rect" title=" " alt="" coords="189,528,252,555"/>
-<area shape="rect" href="stm32f3xx__hal__conf_8h.html" title="HAL configuration file." alt="" coords="1564,528,1712,555"/>
-<area shape="rect" title=" " alt="" coords="1900,603,2043,629"/>
-<area shape="rect" title=" " alt="" coords="2067,603,2215,629"/>
-<area shape="rect" title=" " alt="" coords="2239,603,2384,629"/>
-<area shape="rect" title=" " alt="" coords="2409,603,2558,629"/>
-<area shape="rect" title=" " alt="" coords="2582,603,2742,629"/>
-<area shape="rect" title=" " alt="" coords="719,603,864,629"/>
-<area shape="rect" title=" " alt="" coords="888,603,1039,629"/>
-<area shape="rect" title=" " alt="" coords="1063,603,1205,629"/>
-<area shape="rect" title=" " alt="" coords="1229,603,1375,629"/>
-<area shape="rect" title=" " alt="" coords="1399,603,1543,629"/>
-<area shape="rect" title=" " alt="" coords="1567,603,1709,629"/>
-<area shape="rect" title=" " alt="" coords="1733,603,1876,629"/>
+<map name="user__spi_8c" id="auser__spi_8c">
+<area shape="rect" title="iSensor&#45;SPI&#45;Buffer user (slave) SPI module" alt="" coords="112,5,195,32"/>
+<area shape="rect" href="reg_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer register interfacing module." alt="" coords="165,80,216,107"/>
+<area shape="rect" href="user__spi_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer user SPI (slave SPI) module." alt="" coords="240,80,323,107"/>
+<area shape="rect" href="buffer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer buffer data structure module." alt="" coords="5,80,69,107"/>
+<area shape="rect" href="isr_8h.html" title="Header file for the interrupt service routine module." alt="" coords="94,80,141,107"/>
+<area shape="rect" title=" " alt="" coords="121,155,186,181"/>
+<area shape="rect" href="main_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer main." alt="" coords="231,155,292,181"/>
+<area shape="rect" title=" " alt="" coords="203,229,320,256"/>
 </map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a0cf0803624b0e83866ea3dd06b23b05a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__spi_8c.html#a0cf0803624b0e83866ea3dd06b23b05a">UserSpiReset</a> ()</td></tr>
-<tr class="memdesc:a0cf0803624b0e83866ea3dd06b23b05a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset user SPI port.  <a href="user__spi_8c.html#a0cf0803624b0e83866ea3dd06b23b05a">More...</a><br /></td></tr>
-<tr class="separator:a0cf0803624b0e83866ea3dd06b23b05a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f1e131bf66f71bfe6d9c3b30f3d9d00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__spi_8c.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00">BurstReadSetup</a> ()</td></tr>
-<tr class="memdesc:a4f1e131bf66f71bfe6d9c3b30f3d9d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures SPI for a burst buffer read.  <a href="user__spi_8c.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00">More...</a><br /></td></tr>
-<tr class="separator:a4f1e131bf66f71bfe6d9c3b30f3d9d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ba4975cc957879494953133d89031a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__spi_8c.html#a3ba4975cc957879494953133d89031a5">BurstReadDisable</a> ()</td></tr>
-<tr class="memdesc:a3ba4975cc957879494953133d89031a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore SPI functionality after a burst read.  <a href="user__spi_8c.html#a3ba4975cc957879494953133d89031a5">More...</a><br /></td></tr>
-<tr class="separator:a3ba4975cc957879494953133d89031a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad15c7b76347823955edf42ec381e9793"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__spi_8c.html#ad15c7b76347823955edf42ec381e9793">UpdateUserSpiConfig</a> (uint32_t CheckUnlock)</td></tr>
-<tr class="memdesc:ad15c7b76347823955edf42ec381e9793"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register.  <a href="user__spi_8c.html#ad15c7b76347823955edf42ec381e9793">More...</a><br /></td></tr>
-<tr class="separator:ad15c7b76347823955edf42ec381e9793"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af894683d9f035fc8224bdc09e5f911aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__spi_8c.html#af894683d9f035fc8224bdc09e5f911aa">User_SPI_Reset</a> (<a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> register_mode)</td></tr>
+<tr class="memdesc:af894683d9f035fc8224bdc09e5f911aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset user SPI port.  <a href="user__spi_8c.html#af894683d9f035fc8224bdc09e5f911aa">More...</a><br /></td></tr>
+<tr class="separator:af894683d9f035fc8224bdc09e5f911aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad51e687d5598f38640fb99635774b2bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__spi_8c.html#ad51e687d5598f38640fb99635774b2bd">User_SPI_Burst_Setup</a> ()</td></tr>
+<tr class="memdesc:ad51e687d5598f38640fb99635774b2bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures SPI for a burst buffer read.  <a href="user__spi_8c.html#ad51e687d5598f38640fb99635774b2bd">More...</a><br /></td></tr>
+<tr class="separator:ad51e687d5598f38640fb99635774b2bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac75f5056b4e9ecb70b28865e0a893ab4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__spi_8c.html#ac75f5056b4e9ecb70b28865e0a893ab4">User_SPI_Burst_Disable</a> ()</td></tr>
+<tr class="memdesc:ac75f5056b4e9ecb70b28865e0a893ab4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore SPI functionality after a burst read.  <a href="user__spi_8c.html#ac75f5056b4e9ecb70b28865e0a893ab4">More...</a><br /></td></tr>
+<tr class="separator:ac75f5056b4e9ecb70b28865e0a893ab4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3381cb39831e32d78aea87ba9c605942"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__spi_8c.html#a3381cb39831e32d78aea87ba9c605942">User_SPI_Update_Config</a> (uint32_t CheckUnlock)</td></tr>
+<tr class="memdesc:a3381cb39831e32d78aea87ba9c605942"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register.  <a href="user__spi_8c.html#a3381cb39831e32d78aea87ba9c605942">More...</a><br /></td></tr>
+<tr class="separator:a3381cb39831e32d78aea87ba9c605942"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a090b8a30a19d0dbdd3dbcfed8dc2df69"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__spi_8c.html#a090b8a30a19d0dbdd3dbcfed8dc2df69">g_userburstRunning</a></td></tr>
+<tr class="memitem:a090b8a30a19d0dbdd3dbcfed8dc2df69"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__spi_8c.html#a090b8a30a19d0dbdd3dbcfed8dc2df69">g_userburstRunning</a> = 0u</td></tr>
 <tr class="separator:a090b8a30a19d0dbdd3dbcfed8dc2df69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35c3e3dee022adebf0fc138c81b515b9"><td class="memItemLeft" align="right" valign="top">SPI_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__spi_8c.html#a35c3e3dee022adebf0fc138c81b515b9">g_spi2</a></td></tr>
-<tr class="separator:a35c3e3dee022adebf0fc138c81b515b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac514950ea85e080587ac1d5fa432f219"><td class="memItemLeft" align="right" valign="top">volatile uint16_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__spi_8c.html#ac514950ea85e080587ac1d5fa432f219">g_CurrentBufEntry</a></td></tr>
-<tr class="separator:ac514950ea85e080587ac1d5fa432f219"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0963b05bebaa79e9cc9b76594b1d3e73"><td class="memItemLeft" align="right" valign="top">volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__spi_8c.html#a0963b05bebaa79e9cc9b76594b1d3e73">g_regs</a> [<a class="el" href="registers_8h.html#a807211953b57b1a3f715e8a4496f3d2d">NUM_REG_PAGES</a> *REG_PER_PAGE]</td></tr>
-<tr class="separator:a0963b05bebaa79e9cc9b76594b1d3e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b151b35b66587c98f3bb8242748850c"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__spi_8c.html#a0b151b35b66587c98f3bb8242748850c">g_user_burst_start</a> = 0u</td></tr>
+<tr class="separator:a0b151b35b66587c98f3bb8242748850c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba8777d4fcc7421b53dec4cff10482f9"><td class="memItemLeft" align="right" valign="top"><a id="aba8777d4fcc7421b53dec4cff10482f9"></a>
+static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>SPI2_CR1</b></td></tr>
+<tr class="separator:aba8777d4fcc7421b53dec4cff10482f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bdd8698c86c19c7c77965e4a292b3a8"><td class="memItemLeft" align="right" valign="top"><a id="a2bdd8698c86c19c7c77965e4a292b3a8"></a>
+static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>SPI2_CR2</b></td></tr>
+<tr class="separator:a2bdd8698c86c19c7c77965e4a292b3a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>iSensor-SPI-Buffer user (slave) SPI module </p>
@@ -152,14 +132,14 @@ Variables</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>4/28/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a3ba4975cc957879494953133d89031a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ba4975cc957879494953133d89031a5">&#9670;&nbsp;</a></span>BurstReadDisable()</h2>
+<a id="ac75f5056b4e9ecb70b28865e0a893ab4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac75f5056b4e9ecb70b28865e0a893ab4">&#9670;&nbsp;</a></span>User_SPI_Burst_Disable()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void BurstReadDisable </td>
+          <td class="memname">void User_SPI_Burst_Disable </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -169,36 +149,36 @@ Variables</h2></td></tr>
 
 <p>Restore SPI functionality after a burst read. </p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function disables SPI2 DMA requests via hard reset, and disables SPI2 DMA channel </p>
+<p>This function disables SPI2 DMA requests via hard reset, and disables SPI2 DMA channel. It then re-configures the SPI for user mode. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="user__spi_8c_a3ba4975cc957879494953133d89031a5_cgraph.png" border="0" usemap="#auser__spi_8c_a3ba4975cc957879494953133d89031a5_cgraph" alt=""/></div>
-<map name="user__spi_8c_a3ba4975cc957879494953133d89031a5_cgraph" id="user__spi_8c_a3ba4975cc957879494953133d89031a5_cgraph">
-<area shape="rect" title="Restore SPI functionality after a burst read." alt="" coords="5,5,132,32"/>
-<area shape="rect" href="user__spi_8c.html#a0cf0803624b0e83866ea3dd06b23b05a" title="Reset user SPI port." alt="" coords="180,5,283,32"/>
+<div class="center"><img src="user__spi_8c_ac75f5056b4e9ecb70b28865e0a893ab4_cgraph.png" border="0" usemap="#auser__spi_8c_ac75f5056b4e9ecb70b28865e0a893ab4_cgraph" alt=""/></div>
+<map name="user__spi_8c_ac75f5056b4e9ecb70b28865e0a893ab4_cgraph" id="auser__spi_8c_ac75f5056b4e9ecb70b28865e0a893ab4_cgraph">
+<area shape="rect" title="Restore SPI functionality after a burst read." alt="" coords="5,5,171,32"/>
+<area shape="rect" href="user__spi_8c.html#af894683d9f035fc8224bdc09e5f911aa" title="Reset user SPI port." alt="" coords="219,5,337,32"/>
 </map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="user__spi_8c_a3ba4975cc957879494953133d89031a5_icgraph.png" border="0" usemap="#auser__spi_8c_a3ba4975cc957879494953133d89031a5_icgraph" alt=""/></div>
-<map name="user__spi_8c_a3ba4975cc957879494953133d89031a5_icgraph" id="user__spi_8c_a3ba4975cc957879494953133d89031a5_icgraph">
-<area shape="rect" title="Restore SPI functionality after a burst read." alt="" coords="209,5,336,32"/>
+<div class="center"><img src="user__spi_8c_ac75f5056b4e9ecb70b28865e0a893ab4_icgraph.png" border="0" usemap="#auser__spi_8c_ac75f5056b4e9ecb70b28865e0a893ab4_icgraph" alt=""/></div>
+<map name="user__spi_8c_ac75f5056b4e9ecb70b28865e0a893ab4_icgraph" id="auser__spi_8c_ac75f5056b4e9ecb70b28865e0a893ab4_icgraph">
+<area shape="rect" title="Restore SPI functionality after a burst read." alt="" coords="209,5,375,32"/>
 <area shape="rect" href="isr_8c.html#a738473a5b43f6c92b80ce1d3d6f77ed9" title="This function handles the user SPI (SPI2) chip select rising edge." alt="" coords="5,5,161,32"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a4f1e131bf66f71bfe6d9c3b30f3d9d00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f1e131bf66f71bfe6d9c3b30f3d9d00">&#9670;&nbsp;</a></span>BurstReadSetup()</h2>
+<a id="ad51e687d5598f38640fb99635774b2bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad51e687d5598f38640fb99635774b2bd">&#9670;&nbsp;</a></span>User_SPI_Burst_Setup()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void BurstReadSetup </td>
+          <td class="memname">void User_SPI_Burst_Setup </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -212,23 +192,57 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="user__spi_8c_a4f1e131bf66f71bfe6d9c3b30f3d9d00_cgraph.png" border="0" usemap="#auser__spi_8c_a4f1e131bf66f71bfe6d9c3b30f3d9d00_cgraph" alt=""/></div>
-<map name="user__spi_8c_a4f1e131bf66f71bfe6d9c3b30f3d9d00_cgraph" id="user__spi_8c_a4f1e131bf66f71bfe6d9c3b30f3d9d00_cgraph">
-<area shape="rect" title="Configures SPI for a burst buffer read." alt="" coords="5,5,123,32"/>
-<area shape="rect" href="user__spi_8c.html#a0cf0803624b0e83866ea3dd06b23b05a" title="Reset user SPI port." alt="" coords="171,5,273,32"/>
+<div class="center"><img src="user__spi_8c_ad51e687d5598f38640fb99635774b2bd_cgraph.png" border="0" usemap="#auser__spi_8c_ad51e687d5598f38640fb99635774b2bd_cgraph" alt=""/></div>
+<map name="user__spi_8c_ad51e687d5598f38640fb99635774b2bd_cgraph" id="auser__spi_8c_ad51e687d5598f38640fb99635774b2bd_cgraph">
+<area shape="rect" title="Configures SPI for a burst buffer read." alt="" coords="5,5,161,32"/>
+<area shape="rect" href="user__spi_8c.html#af894683d9f035fc8224bdc09e5f911aa" title="Reset user SPI port." alt="" coords="209,5,328,32"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="ad15c7b76347823955edf42ec381e9793"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad15c7b76347823955edf42ec381e9793">&#9670;&nbsp;</a></span>UpdateUserSpiConfig()</h2>
+<a id="af894683d9f035fc8224bdc09e5f911aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af894683d9f035fc8224bdc09e5f911aa">&#9670;&nbsp;</a></span>User_SPI_Reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void UpdateUserSpiConfig </td>
+          <td class="memname">void User_SPI_Reset </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="main_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td>
+          <td class="paramname"><em>register_mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reset user SPI port. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>Disable and re-enable SPI using RCC. Kind of hacky, not a clean way to do this. This is required because there is no way to clear Tx FIFO in the SPI peripheral otherwise when operating as a SPI slave.</p>
+<p>After using the RCC to reset the SPI, it is configured for register mode (8-bit words, Rx interrupt on FIFO half full) or burst mode (16-bit mode, no interrupts). </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="user__spi_8c_af894683d9f035fc8224bdc09e5f911aa_icgraph.png" border="0" usemap="#auser__spi_8c_af894683d9f035fc8224bdc09e5f911aa_icgraph" alt=""/></div>
+<map name="user__spi_8c_af894683d9f035fc8224bdc09e5f911aa_icgraph" id="auser__spi_8c_af894683d9f035fc8224bdc09e5f911aa_icgraph">
+<area shape="rect" title="Reset user SPI port." alt="" coords="423,31,541,57"/>
+<area shape="rect" href="user__spi_8c.html#ac75f5056b4e9ecb70b28865e0a893ab4" title="Restore SPI functionality after a burst read." alt="" coords="209,5,375,32"/>
+<area shape="rect" href="user__spi_8c.html#ad51e687d5598f38640fb99635774b2bd" title="Configures SPI for a burst buffer read." alt="" coords="214,56,370,83"/>
+<area shape="rect" href="isr_8c.html#a738473a5b43f6c92b80ce1d3d6f77ed9" title="This function handles the user SPI (SPI2) chip select rising edge." alt="" coords="5,5,161,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a3381cb39831e32d78aea87ba9c605942"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3381cb39831e32d78aea87ba9c605942">&#9670;&nbsp;</a></span>User_SPI_Update_Config()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void User_SPI_Update_Config </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>CheckUnlock</em></td><td>)</td>
@@ -245,120 +259,35 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function performs all needed initialization for the slave SPI port, and should be called as start of the firmware start up process. If CheckUnlock is true, then the function will check that the upper 8 bits of USER_SPI_CONFIG is 0xA5. If it is not, the SPI update will not be processed. This prevents accidental writes to the SPI config register. </p>
+<p>This function performs all needed initialization for the slave SPI port, and should be called as start of the firmware start up process. If CheckUnlock is true, then the function will check that the upper 8 bits of USER_SPI_CONFIG is 0xA5. If it is not, the SPI update will not be processed. This prevents accidental writes to the SPI config register.</p>
+<p>IMPORTANT! From the STM32F303 TRM:</p>
+<p>When the data frame size fits into one byte (less than or equal to 8 bits), data packing is used automatically when any read or write 16-bit access is performed on the SPIx_DR register.</p>
+<p>As such, words must be received byte-wise and transmitted word-wise (16-bit). </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="user__spi_8c_ad15c7b76347823955edf42ec381e9793_icgraph.png" border="0" usemap="#auser__spi_8c_ad15c7b76347823955edf42ec381e9793_icgraph" alt=""/></div>
-<map name="user__spi_8c_ad15c7b76347823955edf42ec381e9793_icgraph" id="user__spi_8c_ad15c7b76347823955edf42ec381e9793_icgraph">
-<area shape="rect" title="Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register." alt="" coords="104,5,249,32"/>
+<div class="center"><img src="user__spi_8c_a3381cb39831e32d78aea87ba9c605942_icgraph.png" border="0" usemap="#auser__spi_8c_a3381cb39831e32d78aea87ba9c605942_icgraph" alt=""/></div>
+<map name="user__spi_8c_a3381cb39831e32d78aea87ba9c605942_icgraph" id="auser__spi_8c_a3381cb39831e32d78aea87ba9c605942_icgraph">
+<area shape="rect" title="Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register." alt="" coords="104,5,272,32"/>
 <area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a0cf0803624b0e83866ea3dd06b23b05a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0cf0803624b0e83866ea3dd06b23b05a">&#9670;&nbsp;</a></span>UserSpiReset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void UserSpiReset </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Reset user SPI port. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>Disable and re-enable SPI using RCC. Kind of hacky, not a clean way to do this. This is required because there is no way to clear Tx FIFO in the SPI peripheral otherwise </p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="user__spi_8c_a0cf0803624b0e83866ea3dd06b23b05a_icgraph.png" border="0" usemap="#auser__spi_8c_a0cf0803624b0e83866ea3dd06b23b05a_icgraph" alt=""/></div>
-<map name="user__spi_8c_a0cf0803624b0e83866ea3dd06b23b05a_icgraph" id="user__spi_8c_a0cf0803624b0e83866ea3dd06b23b05a_icgraph">
-<area shape="rect" title="Reset user SPI port." alt="" coords="384,31,487,57"/>
-<area shape="rect" href="user__spi_8c.html#a3ba4975cc957879494953133d89031a5" title="Restore SPI functionality after a burst read." alt="" coords="209,5,336,32"/>
-<area shape="rect" href="user__spi_8c.html#a4f1e131bf66f71bfe6d9c3b30f3d9d00" title="Configures SPI for a burst buffer read." alt="" coords="214,56,331,83"/>
-<area shape="rect" href="isr_8c.html#a738473a5b43f6c92b80ce1d3d6f77ed9" title="This function handles the user SPI (SPI2) chip select rising edge." alt="" coords="5,5,161,32"/>
-</map>
-</div>
-
-</div>
-</div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="ac514950ea85e080587ac1d5fa432f219"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac514950ea85e080587ac1d5fa432f219">&#9670;&nbsp;</a></span>g_CurrentBufEntry</h2>
+<a id="a0b151b35b66587c98f3bb8242748850c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b151b35b66587c98f3bb8242748850c">&#9670;&nbsp;</a></span>g_user_burst_start</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">volatile uint16_t* g_CurrentBufEntry</td>
+          <td class="memname">volatile uint32_t g_user_burst_start = 0u</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-<p>Pointer to buffer entry. Will be 0 if no buffer entry "loaded" to output registers (from <a class="el" href="registers_8c.html" title="iSensor-SPI-Buffer register interfacing module. Called by user SPI and USB CLI">registers.c</a>)</p>
-<p>Pointer to buffer entry. Will be 0 if no buffer entry "loaded" to output registers </p>
-
-</div>
-</div>
-<a id="a0963b05bebaa79e9cc9b76594b1d3e73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0963b05bebaa79e9cc9b76594b1d3e73">&#9670;&nbsp;</a></span>g_regs</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">volatile uint16_t g_regs[<a class="el" href="registers_8h.html#a807211953b57b1a3f715e8a4496f3d2d">NUM_REG_PAGES</a> *REG_PER_PAGE]</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Global register array (from <a class="el" href="registers_8c.html" title="iSensor-SPI-Buffer register interfacing module. Called by user SPI and USB CLI">registers.c</a>) </p>
-
-</div>
-</div>
-<a id="a35c3e3dee022adebf0fc138c81b515b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35c3e3dee022adebf0fc138c81b515b9">&#9670;&nbsp;</a></span>g_spi2</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SPI_HandleTypeDef g_spi2</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>User SPI handle (from <a class="el" href="main_8c.html" title="iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.">main.c</a>)</p>
-<p>SPI handle for slave port (from master controller). Global scope </p>
+<p>Track if a user burst read has been started </p>
 
 </div>
 </div>
@@ -369,7 +298,7 @@ Here is the caller graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">volatile uint32_t g_userburstRunning</td>
+          <td class="memname">volatile uint32_t g_userburstRunning = 0u</td>
         </tr>
       </table>
 </div><div class="memdoc">

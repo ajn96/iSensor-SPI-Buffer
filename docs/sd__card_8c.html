@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.14</span>
+   &#160;<span id="projectnumber">1.15</span>
    </div>
    <div id="projectbrief">Firmware for the iSensor-SPI-Buffer board to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -78,50 +78,27 @@ $(function() {
 
 <p>iSensor-SPI-Buffer SD card interfacing and script execution module  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="sd__card_8h_source.html">sd_card.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="reg_8h_source.html">reg.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="sd__card_8h_source.html">sd_card.h</a>&quot;</code><br />
+<code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="script_8h_source.html">script.h</a>&quot;</code><br />
+<code>#include &quot;fatfs.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="timer_8h_source.html">timer.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for sd_card.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="sd__card_8c__incl.png" border="0" usemap="#asd__card_8c" alt=""/></div>
-<map name="sd__card_8c" id="sd__card_8c">
-<area shape="rect" title="iSensor&#45;SPI&#45;Buffer SD card interfacing and script execution module" alt="" coords="575,5,654,32"/>
-<area shape="rect" href="sd__card_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer SD card interfacing and script execution module." alt="" coords="575,80,654,107"/>
-<area shape="rect" href="script_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer script module (loaded from SD card)" alt="" coords="582,155,647,181"/>
-<area shape="rect" href="registers_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer register interfacing module." alt="" coords="528,453,611,480"/>
-<area shape="rect" href="timer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer timer module." alt="" coords="3022,603,3085,629"/>
-<area shape="rect" title=" " alt="" coords="3147,155,3205,181"/>
-<area shape="rect" href="main_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer main." alt="" coords="683,304,744,331"/>
-<area shape="rect" href="usb__cli_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer USB command line register interface." alt="" coords="577,229,652,256"/>
-<area shape="rect" title=" " alt="" coords="657,677,775,704"/>
-<area shape="rect" href="buffer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer buffer data structure module." alt="" coords="835,528,899,555"/>
-<area shape="rect" href="flash_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer flash memory interfacing functions." alt="" coords="647,528,707,555"/>
-<area shape="rect" href="led_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer LED control module." alt="" coords="468,603,519,629"/>
-<area shape="rect" href="dfu_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer runtime firmware upgrade module." alt="" coords="232,528,283,555"/>
-<area shape="rect" href="user__interrupt_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer user interrupt (data ready) config and generation functions." alt="" coords="605,379,717,405"/>
-<area shape="rect" href="watchdog_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer watchdog timer module." alt="" coords="195,379,283,405"/>
-<area shape="rect" href="dio_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer DIO interfacing module." alt="" coords="741,379,792,405"/>
-<area shape="rect" title=" " alt="" coords="409,379,506,405"/>
-<area shape="rect" href="adc_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer ADC module (for temp sensor and Vdd monitoring)" alt="" coords="993,379,1047,405"/>
-<area shape="rect" href="imu__spi_8h.html" title="Implementation for iSensor&#45;SPI&#45;Buffer IMU interfacing module." alt="" coords="731,528,810,555"/>
-<area shape="rect" href="data__capture_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer autonomous IMU data acquisition module." alt="" coords="515,528,623,555"/>
-<area shape="rect" href="user__spi_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer user SPI (slave SPI) module." alt="" coords="357,528,440,555"/>
-<area shape="rect" title=" " alt="" coords="613,603,678,629"/>
-<area shape="rect" title=" " alt="" coords="173,603,280,629"/>
-<area shape="rect" title=" " alt="" coords="666,453,729,480"/>
-<area shape="rect" href="stm32f3xx__hal__conf_8h.html" title="HAL configuration file." alt="" coords="1769,453,1917,480"/>
-<area shape="rect" title=" " alt="" coords="2105,528,2247,555"/>
-<area shape="rect" title=" " alt="" coords="2271,528,2419,555"/>
-<area shape="rect" title=" " alt="" coords="2443,528,2589,555"/>
-<area shape="rect" title=" " alt="" coords="2613,528,2763,555"/>
-<area shape="rect" title=" " alt="" coords="2787,528,2947,555"/>
-<area shape="rect" title=" " alt="" coords="923,528,1069,555"/>
-<area shape="rect" title=" " alt="" coords="1093,528,1243,555"/>
-<area shape="rect" title=" " alt="" coords="1268,528,1409,555"/>
-<area shape="rect" title=" " alt="" coords="1434,528,1579,555"/>
-<area shape="rect" title=" " alt="" coords="1604,528,1748,555"/>
-<area shape="rect" title=" " alt="" coords="1772,528,1913,555"/>
-<area shape="rect" title=" " alt="" coords="1938,528,2081,555"/>
-<area shape="rect" title=" " alt="" coords="555,304,658,331"/>
+<map name="sd__card_8c" id="asd__card_8c">
+<area shape="rect" title="iSensor&#45;SPI&#45;Buffer SD card interfacing and script execution module" alt="" coords="223,5,301,32"/>
+<area shape="rect" href="reg_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer register interfacing module." alt="" coords="195,80,246,107"/>
+<area shape="rect" href="sd__card_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer SD card interfacing and script execution module." alt="" coords="5,80,84,107"/>
+<area shape="rect" title=" " alt="" coords="361,80,422,107"/>
+<area shape="rect" href="script_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer script module (loaded from SD card)" alt="" coords="271,80,336,107"/>
+<area shape="rect" title=" " alt="" coords="447,80,504,107"/>
+<area shape="rect" href="timer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer timer module." alt="" coords="108,80,171,107"/>
+<area shape="rect" title=" " alt="" coords="107,155,172,181"/>
+<area shape="rect" href="main_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer main." alt="" coords="197,155,258,181"/>
+<area shape="rect" title=" " alt="" coords="77,229,194,256"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -148,29 +125,27 @@ Functions</h2></td></tr>
 <tr class="memitem:a85638c35dfe6f3becb0836208a037713"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a85638c35dfe6f3becb0836208a037713">ParseReadBuffer</a> (UINT bytesRead)</td></tr>
 <tr class="memdesc:a85638c35dfe6f3becb0836208a037713"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a script buffer read from the SD card.  <a href="sd__card_8c.html#a85638c35dfe6f3becb0836208a037713">More...</a><br /></td></tr>
 <tr class="separator:a85638c35dfe6f3becb0836208a037713"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d1f2d063a0389e1db1e31b7cc174a89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a3d1f2d063a0389e1db1e31b7cc174a89">SDTxHandler</a> (const uint8_t *buf, uint32_t count)</td></tr>
-<tr class="memdesc:a3d1f2d063a0389e1db1e31b7cc174a89"><td class="mdescLeft">&#160;</td><td class="mdescRight">SD card write handler function.  <a href="sd__card_8c.html#a3d1f2d063a0389e1db1e31b7cc174a89">More...</a><br /></td></tr>
-<tr class="separator:a3d1f2d063a0389e1db1e31b7cc174a89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a625b0dce0e53a68e74b117c8ced97afe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a625b0dce0e53a68e74b117c8ced97afe">SDCardInit</a> ()</td></tr>
-<tr class="memdesc:a625b0dce0e53a68e74b117c8ced97afe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init SD card hardware interface and FATFs driver.  <a href="sd__card_8c.html#a625b0dce0e53a68e74b117c8ced97afe">More...</a><br /></td></tr>
-<tr class="separator:a625b0dce0e53a68e74b117c8ced97afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade0e1d4a61790fd47ec542cbf559af68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#ade0e1d4a61790fd47ec542cbf559af68">ScriptAutorun</a> ()</td></tr>
-<tr class="memdesc:ade0e1d4a61790fd47ec542cbf559af68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run SD card script automatic execution process.  <a href="sd__card_8c.html#ade0e1d4a61790fd47ec542cbf559af68">More...</a><br /></td></tr>
-<tr class="separator:ade0e1d4a61790fd47ec542cbf559af68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3549a7ed2c1d2569224b55e2d286c0e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a3549a7ed2c1d2569224b55e2d286c0e8">StartScript</a> ()</td></tr>
-<tr class="memdesc:a3549a7ed2c1d2569224b55e2d286c0e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start script run.  <a href="sd__card_8c.html#a3549a7ed2c1d2569224b55e2d286c0e8">More...</a><br /></td></tr>
-<tr class="separator:a3549a7ed2c1d2569224b55e2d286c0e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6088aedec2b1022a826a94f45805854"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#ad6088aedec2b1022a826a94f45805854">StopScript</a> ()</td></tr>
-<tr class="memdesc:ad6088aedec2b1022a826a94f45805854"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop a running SD card script.  <a href="sd__card_8c.html#ad6088aedec2b1022a826a94f45805854">More...</a><br /></td></tr>
-<tr class="separator:ad6088aedec2b1022a826a94f45805854"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32b1dbc0c13c1814f562104c761f8d6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a32b1dbc0c13c1814f562104c761f8d6c">ScriptStep</a> ()</td></tr>
-<tr class="memdesc:a32b1dbc0c13c1814f562104c761f8d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Step the script execution process.  <a href="sd__card_8c.html#a32b1dbc0c13c1814f562104c761f8d6c">More...</a><br /></td></tr>
-<tr class="separator:a32b1dbc0c13c1814f562104c761f8d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ebf84188c00ca6f6f52107d468c1f56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a8ebf84188c00ca6f6f52107d468c1f56">SD_Card_Tx_Handler</a> (const uint8_t *buf, uint32_t count)</td></tr>
+<tr class="memdesc:a8ebf84188c00ca6f6f52107d468c1f56"><td class="mdescLeft">&#160;</td><td class="mdescRight">SD card write handler function.  <a href="sd__card_8c.html#a8ebf84188c00ca6f6f52107d468c1f56">More...</a><br /></td></tr>
+<tr class="separator:a8ebf84188c00ca6f6f52107d468c1f56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25735539a7b8f8e64b129820e24e5d77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a25735539a7b8f8e64b129820e24e5d77">SD_Card_Init</a> ()</td></tr>
+<tr class="memdesc:a25735539a7b8f8e64b129820e24e5d77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init SD card hardware interface and FATFs driver.  <a href="sd__card_8c.html#a25735539a7b8f8e64b129820e24e5d77">More...</a><br /></td></tr>
+<tr class="separator:a25735539a7b8f8e64b129820e24e5d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42564c9b9fc183f58991cacaebc6bcbd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a42564c9b9fc183f58991cacaebc6bcbd">SD_Card_Script_Autorun</a> ()</td></tr>
+<tr class="memdesc:a42564c9b9fc183f58991cacaebc6bcbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run SD card script automatic execution process.  <a href="sd__card_8c.html#a42564c9b9fc183f58991cacaebc6bcbd">More...</a><br /></td></tr>
+<tr class="separator:a42564c9b9fc183f58991cacaebc6bcbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05920cc4a64e39d1e46d43c6980dbea4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a05920cc4a64e39d1e46d43c6980dbea4">SD_Card_Start_Script</a> ()</td></tr>
+<tr class="memdesc:a05920cc4a64e39d1e46d43c6980dbea4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start script run.  <a href="sd__card_8c.html#a05920cc4a64e39d1e46d43c6980dbea4">More...</a><br /></td></tr>
+<tr class="separator:a05920cc4a64e39d1e46d43c6980dbea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeaaced8d46eddd45f356a4b4d2b67cdc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#aeaaced8d46eddd45f356a4b4d2b67cdc">SD_Card_Stop_Script</a> ()</td></tr>
+<tr class="memdesc:aeaaced8d46eddd45f356a4b4d2b67cdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop a running SD card script.  <a href="sd__card_8c.html#aeaaced8d46eddd45f356a4b4d2b67cdc">More...</a><br /></td></tr>
+<tr class="separator:aeaaced8d46eddd45f356a4b4d2b67cdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95dd20f2e9506730114735c236adcfe7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a95dd20f2e9506730114735c236adcfe7">SD_Card_Script_Step</a> ()</td></tr>
+<tr class="memdesc:a95dd20f2e9506730114735c236adcfe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Step the script execution process.  <a href="sd__card_8c.html#a95dd20f2e9506730114735c236adcfe7">More...</a><br /></td></tr>
+<tr class="separator:a95dd20f2e9506730114735c236adcfe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a0963b05bebaa79e9cc9b76594b1d3e73"><td class="memItemLeft" align="right" valign="top">volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a0963b05bebaa79e9cc9b76594b1d3e73">g_regs</a> [<a class="el" href="registers_8h.html#a807211953b57b1a3f715e8a4496f3d2d">NUM_REG_PAGES</a> *REG_PER_PAGE]</td></tr>
-<tr class="separator:a0963b05bebaa79e9cc9b76594b1d3e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a939ff86f7bddb14b321f51d69a0c683d"><td class="memItemLeft" align="right" valign="top">SPI_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a939ff86f7bddb14b321f51d69a0c683d">g_spi3</a></td></tr>
 <tr class="separator:a939ff86f7bddb14b321f51d69a0c683d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82a90c63ceb17b161d89ae2fe043f8a0"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sd__card_8c.html#a82a90c63ceb17b161d89ae2fe043f8a0">sd_buf</a> [<a class="el" href="script_8h.html#ab11983675d40a27dee780f0db1cf1940">STREAM_BUF_SIZE</a>]</td></tr>
@@ -320,7 +295,7 @@ Here is the caller graph for this function:</div>
 
 <p>Parse a script buffer read from the SD card. </p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>The script read data to be parsed must be stored in sd_buf. This function iterates through the read array and calls the lower level <a class="el" href="script_8c.html#a3fcce12d9c19ab8120644cb4a2dd72fc" title="Parse a command string into a script element.">ParseScriptElement()</a> routine whenever a newline character is encountered. </p>
+<p>The script read data to be parsed must be stored in sd_buf. This function iterates through the read array and calls the lower level ParseScriptElement() routine whenever a newline character is encountered. </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -372,14 +347,53 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="ade0e1d4a61790fd47ec542cbf559af68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade0e1d4a61790fd47ec542cbf559af68">&#9670;&nbsp;</a></span>ScriptAutorun()</h2>
+<a id="a25735539a7b8f8e64b129820e24e5d77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25735539a7b8f8e64b129820e24e5d77">&#9670;&nbsp;</a></span>SD_Card_Init()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ScriptAutorun </td>
+          <td class="memname">void SD_Card_Init </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Init SD card hardware interface and FATFs driver. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function configures the SPI3 port for use with an SD card and inits all GPIO as needed. This function is called directly by the application on startup. It does not attempt to connect to the SD card in any way.lked right into tha </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="sd__card_8c_a25735539a7b8f8e64b129820e24e5d77_cgraph.png" border="0" usemap="#asd__card_8c_a25735539a7b8f8e64b129820e24e5d77_cgraph" alt=""/></div>
+<map name="sd__card_8c_a25735539a7b8f8e64b129820e24e5d77_cgraph" id="sd__card_8c_a25735539a7b8f8e64b129820e24e5d77_cgraph">
+<area shape="rect" title="Init SD card hardware interface and FATFs driver." alt="" coords="5,5,104,32"/>
+<area shape="rect" href="sd__card_8c.html#aa982ad2254de265717f1ad2404cf53ad" title="SPI3 Initialization Function (SD card master SPI port)" alt="" coords="152,5,227,32"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="sd__card_8c_a25735539a7b8f8e64b129820e24e5d77_icgraph.png" border="0" usemap="#asd__card_8c_a25735539a7b8f8e64b129820e24e5d77_icgraph" alt=""/></div>
+<map name="sd__card_8c_a25735539a7b8f8e64b129820e24e5d77_icgraph" id="sd__card_8c_a25735539a7b8f8e64b129820e24e5d77_icgraph">
+<area shape="rect" title="Init SD card hardware interface and FATFs driver." alt="" coords="104,5,203,32"/>
+<area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a42564c9b9fc183f58991cacaebc6bcbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42564c9b9fc183f58991cacaebc6bcbd">&#9670;&nbsp;</a></span>SD_Card_Script_Autorun()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SD_Card_Script_Autorun </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -393,23 +407,23 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="sd__card_8c_ade0e1d4a61790fd47ec542cbf559af68_icgraph.png" border="0" usemap="#asd__card_8c_ade0e1d4a61790fd47ec542cbf559af68_icgraph" alt=""/></div>
-<map name="sd__card_8c_ade0e1d4a61790fd47ec542cbf559af68_icgraph" id="sd__card_8c_ade0e1d4a61790fd47ec542cbf559af68_icgraph">
-<area shape="rect" title="Run SD card script automatic execution process." alt="" coords="104,5,205,32"/>
+<div class="center"><img src="sd__card_8c_a42564c9b9fc183f58991cacaebc6bcbd_icgraph.png" border="0" usemap="#asd__card_8c_a42564c9b9fc183f58991cacaebc6bcbd_icgraph" alt=""/></div>
+<map name="sd__card_8c_a42564c9b9fc183f58991cacaebc6bcbd_icgraph" id="sd__card_8c_a42564c9b9fc183f58991cacaebc6bcbd_icgraph">
+<area shape="rect" title="Run SD card script automatic execution process." alt="" coords="104,5,271,32"/>
 <area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a32b1dbc0c13c1814f562104c761f8d6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32b1dbc0c13c1814f562104c761f8d6c">&#9670;&nbsp;</a></span>ScriptStep()</h2>
+<a id="a95dd20f2e9506730114735c236adcfe7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95dd20f2e9506730114735c236adcfe7">&#9670;&nbsp;</a></span>SD_Card_Script_Step()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ScriptStep </td>
+          <td class="memname">void SD_Card_Script_Step </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -419,14 +433,113 @@ Here is the caller graph for this function:</div>
 
 <p>Step the script execution process. </p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function is called from the main loop. It is responsible for performing the actual script execution, and writing the output to the SD card (via </p>
+<p>This function is called from the main loop. It is responsible for performing the actual script execution, and writing the output to the SD card (via Script_Run_Element with isUSB set to false) </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="sd__card_8c_a32b1dbc0c13c1814f562104c761f8d6c_cgraph.png" border="0" usemap="#asd__card_8c_a32b1dbc0c13c1814f562104c761f8d6c_cgraph" alt=""/></div>
-<map name="sd__card_8c_a32b1dbc0c13c1814f562104c761f8d6c_cgraph" id="sd__card_8c_a32b1dbc0c13c1814f562104c761f8d6c_cgraph">
-<area shape="rect" title="Step the script execution process." alt="" coords="5,5,88,32"/>
-<area shape="rect" href="sd__card_8c.html#ad6088aedec2b1022a826a94f45805854" title="Stop a running SD card script." alt="" coords="136,5,219,32"/>
+<div class="center"><img src="sd__card_8c_a95dd20f2e9506730114735c236adcfe7_cgraph.png" border="0" usemap="#asd__card_8c_a95dd20f2e9506730114735c236adcfe7_cgraph" alt=""/></div>
+<map name="sd__card_8c_a95dd20f2e9506730114735c236adcfe7_cgraph" id="sd__card_8c_a95dd20f2e9506730114735c236adcfe7_cgraph">
+<area shape="rect" title="Step the script execution process." alt="" coords="5,5,155,32"/>
+<area shape="rect" href="sd__card_8c.html#aeaaced8d46eddd45f356a4b4d2b67cdc" title="Stop a running SD card script." alt="" coords="203,5,352,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a05920cc4a64e39d1e46d43c6980dbea4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05920cc4a64e39d1e46d43c6980dbea4">&#9670;&nbsp;</a></span>SD_Card_Start_Script()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SD_Card_Start_Script </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Start script run. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function checks if an SD card is connected, then sets up the FAT file system if there is a card. Once the file system is set up, "script.txt" is read and parsed, if it exists. Once the script has been processed, the script execution state variables are initialized, and the script is kicked off. The actual script execution work occurs in ScriptStep(), which is called periodically from the main cyclic executive loop. </p>
+
+</div>
+</div>
+<a id="aeaaced8d46eddd45f356a4b4d2b67cdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeaaced8d46eddd45f356a4b4d2b67cdc">&#9670;&nbsp;</a></span>SD_Card_Stop_Script()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SD_Card_Stop_Script </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Stop a running SD card script. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function can be invoked by the user (via the script cancel command), or will run automatically once the script execution process has finished. It clears the script running flags and the script active STATUS register bit. It then closes the output text file and unmounts from the SD card. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="sd__card_8c_aeaaced8d46eddd45f356a4b4d2b67cdc_icgraph.png" border="0" usemap="#asd__card_8c_aeaaced8d46eddd45f356a4b4d2b67cdc_icgraph" alt=""/></div>
+<map name="sd__card_8c_aeaaced8d46eddd45f356a4b4d2b67cdc_icgraph" id="sd__card_8c_aeaaced8d46eddd45f356a4b4d2b67cdc_icgraph">
+<area shape="rect" title="Stop a running SD card script." alt="" coords="203,5,352,32"/>
+<area shape="rect" href="sd__card_8c.html#a95dd20f2e9506730114735c236adcfe7" title="Step the script execution process." alt="" coords="5,5,155,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a8ebf84188c00ca6f6f52107d468c1f56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ebf84188c00ca6f6f52107d468c1f56">&#9670;&nbsp;</a></span>SD_Card_Tx_Handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SD_Card_Tx_Handler </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>SD card write handler function. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buf</td><td>Buffer containing data to write</td></tr>
+    <tr><td class="paramname">count</td><td>Number of bytes to write</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function is called by the script execution routines, when a script object is executed from a SD card script context. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="sd__card_8c_a8ebf84188c00ca6f6f52107d468c1f56_icgraph.png" border="0" usemap="#asd__card_8c_a8ebf84188c00ca6f6f52107d468c1f56_icgraph" alt=""/></div>
+<map name="sd__card_8c_a8ebf84188c00ca6f6f52107d468c1f56_icgraph" id="sd__card_8c_a8ebf84188c00ca6f6f52107d468c1f56_icgraph">
+<area shape="rect" title="SD card write handler function." alt="" coords="160,5,307,32"/>
+<area shape="rect" href="script_8c.html#ae59259b2eeccc744717130f54cbb66e3" title="Print system uptime CLI." alt="" coords="5,5,112,32"/>
 </map>
 </div>
 
@@ -462,96 +575,9 @@ Here is the call graph for this function:</div>
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="sd__card_8c_a091d146cc644caa26078156892f38997_cgraph.png" border="0" usemap="#asd__card_8c_a091d146cc644caa26078156892f38997_cgraph" alt=""/></div>
-<map name="sd__card_8c_a091d146cc644caa26078156892f38997_cgraph" id="sd__card_8c_a091d146cc644caa26078156892f38997_cgraph">
+<map name="sd__card_8c_a091d146cc644caa26078156892f38997_cgraph" id="asd__card_8c_a091d146cc644caa26078156892f38997_cgraph">
 <area shape="rect" title="Check if SD card is attached." alt="" coords="5,5,124,32"/>
-<area shape="rect" href="timer_8c.html#ad679c296af1e7b89bd58be986d71d985" title="Blocking sleep function call." alt="" coords="172,5,308,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a625b0dce0e53a68e74b117c8ced97afe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a625b0dce0e53a68e74b117c8ced97afe">&#9670;&nbsp;</a></span>SDCardInit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDCardInit </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Init SD card hardware interface and FATFs driver. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function configures the SPI3 port for use with an SD card and inits all GPIO as needed. This function is called directly by the application on startup. It does not attempt to connect to the SD card in any way.lked right into tha </p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="sd__card_8c_a625b0dce0e53a68e74b117c8ced97afe_cgraph.png" border="0" usemap="#asd__card_8c_a625b0dce0e53a68e74b117c8ced97afe_cgraph" alt=""/></div>
-<map name="sd__card_8c_a625b0dce0e53a68e74b117c8ced97afe_cgraph" id="sd__card_8c_a625b0dce0e53a68e74b117c8ced97afe_cgraph">
-<area shape="rect" title="Init SD card hardware interface and FATFs driver." alt="" coords="5,5,89,32"/>
-<area shape="rect" href="sd__card_8c.html#aa982ad2254de265717f1ad2404cf53ad" title="SPI3 Initialization Function (SD card master SPI port)" alt="" coords="137,5,212,32"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="sd__card_8c_a625b0dce0e53a68e74b117c8ced97afe_icgraph.png" border="0" usemap="#asd__card_8c_a625b0dce0e53a68e74b117c8ced97afe_icgraph" alt=""/></div>
-<map name="sd__card_8c_a625b0dce0e53a68e74b117c8ced97afe_icgraph" id="sd__card_8c_a625b0dce0e53a68e74b117c8ced97afe_icgraph">
-<area shape="rect" title="Init SD card hardware interface and FATFs driver." alt="" coords="104,5,188,32"/>
-<area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a3d1f2d063a0389e1db1e31b7cc174a89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d1f2d063a0389e1db1e31b7cc174a89">&#9670;&nbsp;</a></span>SDTxHandler()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDTxHandler </td>
-          <td>(</td>
-          <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>buf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>count</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>SD card write handler function. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">buf</td><td>Buffer containing data to write</td></tr>
-    <tr><td class="paramname">count</td><td>Number of bytes to write</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function is called by the script execution routines, when a script object is executed from a SD card script context. </p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="sd__card_8c_a3d1f2d063a0389e1db1e31b7cc174a89_icgraph.png" border="0" usemap="#asd__card_8c_a3d1f2d063a0389e1db1e31b7cc174a89_icgraph" alt=""/></div>
-<map name="sd__card_8c_a3d1f2d063a0389e1db1e31b7cc174a89_icgraph" id="sd__card_8c_a3d1f2d063a0389e1db1e31b7cc174a89_icgraph">
-<area shape="rect" title="SD card write handler function." alt="" coords="160,5,259,32"/>
-<area shape="rect" href="script_8c.html#ae59259b2eeccc744717130f54cbb66e3" title="Print system uptime CLI." alt="" coords="5,5,112,32"/>
+<area shape="rect" href="timer_8c.html#a610c9ca08bddd3bae993770ce68a19c8" title="Blocking sleep function call." alt="" coords="172,5,355,32"/>
 </map>
 </div>
 
@@ -588,61 +614,10 @@ Here is the caller graph for this function:</div>
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="sd__card_8c_aa982ad2254de265717f1ad2404cf53ad_icgraph.png" border="0" usemap="#asd__card_8c_aa982ad2254de265717f1ad2404cf53ad_icgraph" alt=""/></div>
-<map name="sd__card_8c_aa982ad2254de265717f1ad2404cf53ad_icgraph" id="sd__card_8c_aa982ad2254de265717f1ad2404cf53ad_icgraph">
-<area shape="rect" title="SPI3 Initialization Function (SD card master SPI port)" alt="" coords="236,5,311,32"/>
-<area shape="rect" href="sd__card_8c.html#a625b0dce0e53a68e74b117c8ced97afe" title="Init SD card hardware interface and FATFs driver." alt="" coords="104,5,188,32"/>
+<map name="sd__card_8c_aa982ad2254de265717f1ad2404cf53ad_icgraph" id="asd__card_8c_aa982ad2254de265717f1ad2404cf53ad_icgraph">
+<area shape="rect" title="SPI3 Initialization Function (SD card master SPI port)" alt="" coords="251,5,325,32"/>
+<area shape="rect" href="sd__card_8c.html#a25735539a7b8f8e64b129820e24e5d77" title="Init SD card hardware interface and FATFs driver." alt="" coords="104,5,203,32"/>
 <area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a3549a7ed2c1d2569224b55e2d286c0e8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3549a7ed2c1d2569224b55e2d286c0e8">&#9670;&nbsp;</a></span>StartScript()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void StartScript </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Start script run. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function checks if an SD card is connected, then sets up the FAT file system if there is a card. Once the file system is set up, "script.txt" is read and parsed, if it exists. Once the script has been processed, the script execution state variables are initialized, and the script is kicked off. The actual script execution work occurs in <a class="el" href="sd__card_8c.html#a32b1dbc0c13c1814f562104c761f8d6c" title="Step the script execution process.">ScriptStep()</a>, which is called periodically from the main cyclic executive loop. </p>
-
-</div>
-</div>
-<a id="ad6088aedec2b1022a826a94f45805854"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6088aedec2b1022a826a94f45805854">&#9670;&nbsp;</a></span>StopScript()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void StopScript </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Stop a running SD card script. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This function can be invoked by the user (via the script cancel command), or will run automatically once the script execution process has finished. It clears the script running flags and the script active STATUS register bit. It then closes the output text file and unmounts from the SD card. </p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="sd__card_8c_ad6088aedec2b1022a826a94f45805854_icgraph.png" border="0" usemap="#asd__card_8c_ad6088aedec2b1022a826a94f45805854_icgraph" alt=""/></div>
-<map name="sd__card_8c_ad6088aedec2b1022a826a94f45805854_icgraph" id="sd__card_8c_ad6088aedec2b1022a826a94f45805854_icgraph">
-<area shape="rect" title="Stop a running SD card script." alt="" coords="136,5,219,32"/>
-<area shape="rect" href="sd__card_8c.html#a32b1dbc0c13c1814f562104c761f8d6c" title="Step the script execution process." alt="" coords="5,5,88,32"/>
 </map>
 </div>
 
@@ -738,29 +713,6 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 <p>File system object </p>
-
-</div>
-</div>
-<a id="a0963b05bebaa79e9cc9b76594b1d3e73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0963b05bebaa79e9cc9b76594b1d3e73">&#9670;&nbsp;</a></span>g_regs</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">volatile uint16_t g_regs[<a class="el" href="registers_8h.html#a807211953b57b1a3f715e8a4496f3d2d">NUM_REG_PAGES</a> *REG_PER_PAGE]</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Global register array (from <a class="el" href="registers_8c.html" title="iSensor-SPI-Buffer register interfacing module. Called by user SPI and USB CLI">registers.c</a>) </p>
 
 </div>
 </div>

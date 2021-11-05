@@ -1,0 +1,7 @@
+<map id="imu.h" name="imu.h">
+<area shape="rect" id="node1" title="Implementation for iSensor&#45;SPI&#45;Buffer IMU interfacing module." alt="" coords="119,5,173,32"/>
+<area shape="rect" id="node2" href="$imu_8c.html" title="Implementation for iSensor&#45;SPI&#45;Buffer IMU interfacing module." alt="" coords="5,80,60,107"/>
+<area shape="rect" id="node3" href="$isr_8c.html" title="iSensor&#45;SPI&#45;Buffer interrupt service routines" alt="" coords="84,80,131,107"/>
+<area shape="rect" id="node4" href="$main_8c.html" title="iSensor&#45;SPI&#45;Buffer main. Contains STM init functions and application cyclic executive." alt="" coords="155,80,217,107"/>
+<area shape="rect" id="node5" href="$reg_8c.html" title="iSensor&#45;SPI&#45;Buffer register interfacing module. Called by user SPI and USB CLI" alt="" coords="241,80,291,107"/>
+</map>

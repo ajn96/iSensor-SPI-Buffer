@@ -1,0 +1,4 @@
+<map id="Reg_Is_Burst_Read" name="Reg_Is_Burst_Read">
+<area shape="rect" id="node1" title="Check if the requested read is a start of a burst." alt="" coords="176,5,313,32"/>
+<area shape="rect" id="node2" href="$isr_8c.html#a68d8880cd80cb17a2501487c3d649ea1" title="This function handles the user SPI (SPI2) rx data interrupt." alt="" coords="5,5,128,32"/>
+</map>

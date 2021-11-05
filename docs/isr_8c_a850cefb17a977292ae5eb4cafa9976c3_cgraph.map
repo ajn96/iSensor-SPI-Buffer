@@ -1,4 +1,4 @@
 <map id="BusFault_Handler" name="BusFault_Handler">
 <area shape="rect" id="node1" title="This function handles Pre&#45;fetch fault, memory access fault." alt="" coords="5,5,131,32"/>
-<area shape="rect" id="node2" href="$flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773" title="Stores an error code to flash memory." alt="" coords="179,5,281,32"/>
+<area shape="rect" id="node2" href="$flash_8c.html#af425d5b1241befa56dbe794fffae169f" title="Stores an error code to flash memory." alt="" coords="179,5,297,32"/>
 </map>

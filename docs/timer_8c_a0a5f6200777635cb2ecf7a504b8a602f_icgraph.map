@@ -1,0 +1,7 @@
+<map id="Timer_Get_Microsecond_Timestamp" name="Timer_Get_Microsecond_Timestamp">
+<area shape="rect" id="node1" title="Gets the current 32&#45;bit value from the IMU sample timestamp timer." alt="" coords="431,23,593,65"/>
+<area shape="rect" id="node2" href="$timer_8c.html#aa7385e600b46072ce661ced03df1eeac" title="Check if the PPS signal is unlocked (greater than 1100ms since last PPS strobe)" alt="" coords="200,5,379,32"/>
+<area shape="rect" id="node3" href="$timer_8c.html#acb786d65635223cdb27fc44fad6babad" title="Increment PPS timestamp by 1." alt="" coords="196,56,383,83"/>
+<area shape="rect" id="node4" href="$isr_8c.html#acd7f454d4f8ce7b9b1caebf717e40e55" title="EXTI 4 interrupt handler." alt="" coords="13,31,141,57"/>
+<area shape="rect" id="node5" href="$isr_8c.html#a9f0a091727452df71a1760d1133bf9b4" title="IMU data ready ISR. Kicks off data capture process." alt="" coords="5,81,148,108"/>
+</map>

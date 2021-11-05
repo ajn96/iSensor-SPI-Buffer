@@ -1,0 +1,4 @@
+<map id="DFU_Check_Flags" name="DFU_Check_Flags">
+<area shape="rect" id="node1" title="Checks if a reboot into the DFU bootloader is needed." alt="" coords="5,5,136,32"/>
+<area shape="rect" id="node2" href="$dfu_8c.html#ad6c7d5abd728d3d19ad622cfe4367ff6" title="Executes a DFU reboot." alt="" coords="184,5,307,32"/>
+</map>

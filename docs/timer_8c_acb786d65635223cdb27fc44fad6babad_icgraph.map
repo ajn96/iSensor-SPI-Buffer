@@ -1,0 +1,5 @@
+<map id="Timer_Increment_PPS_Time" name="Timer_Increment_PPS_Time">
+<area shape="rect" id="node1" title="Increment PPS timestamp by 1." alt="" coords="196,31,383,57"/>
+<area shape="rect" id="node2" href="$isr_8c.html#acd7f454d4f8ce7b9b1caebf717e40e55" title="EXTI 4 interrupt handler." alt="" coords="13,5,141,32"/>
+<area shape="rect" id="node3" href="$isr_8c.html#a9f0a091727452df71a1760d1133bf9b4" title="IMU data ready ISR. Kicks off data capture process." alt="" coords="5,56,148,83"/>
+</map>

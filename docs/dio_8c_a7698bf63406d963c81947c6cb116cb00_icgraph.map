@@ -1,0 +1,6 @@
+<map id="DIO_Update_Output_Config" name="DIO_Update_Output_Config">
+<area shape="rect" id="node1" title="Validates DIO_OUTPUT_CONFIG settings and applies to GPIO." alt="" coords="192,56,373,83"/>
+<area shape="rect" id="node2" href="$main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="49,5,100,32"/>
+<area shape="rect" id="node3" href="$timer_8c.html#ab3f8163242595c79acae9d1bcd4f83fa" title="Disable PPS timer functionality." alt="" coords="5,56,144,83"/>
+<area shape="rect" id="node4" href="$timer_8c.html#a824c02b3916a58038fbed245e3c92324" title="Enable PPS input for time stamp synchronization (improved long term stability over 20ppm crystal)." alt="" coords="7,107,142,133"/>
+</map>

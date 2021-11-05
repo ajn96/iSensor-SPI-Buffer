@@ -1,0 +1,6 @@
+<map id="Reg_Read" name="Reg_Read">
+<area shape="rect" id="node1" title="Process a register read request (from master)" alt="" coords="416,31,499,57"/>
+<area shape="rect" id="node2" href="$isr_8c.html#a9f205735b8aa53aa3809d7a1ad2d81c9" title="Process a 16 bit data word from the user SPI." alt="" coords="209,5,368,32"/>
+<area shape="rect" id="node4" href="$script_8c.html#ac667819c6a60b19091561cb8a62e0f2b" title="Read command handler." alt="" coords="241,56,337,83"/>
+<area shape="rect" id="node3" href="$isr_8c.html#a738473a5b43f6c92b80ce1d3d6f77ed9" title="This function handles the user SPI (SPI2) chip select rising edge." alt="" coords="5,5,161,32"/>
+</map>

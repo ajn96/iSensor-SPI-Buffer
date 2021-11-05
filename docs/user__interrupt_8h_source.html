@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.14</span>
+   &#160;<span id="projectnumber">1.15</span>
    </div>
    <div id="projectbrief">Firmware for the iSensor-SPI-Buffer board to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -76,14 +76,14 @@ $(function() {
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#ifndef INC_USER_INTERRUPT_H_</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define INC_USER_INTERRUPT_H_</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">/* Includes */</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="registers_8h.html">registers.h</a>&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">/* Header includes require for prototypes */</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> <a class="code" href="user__interrupt_8c.html#a7462f47cda251a48a22aad3c1773ab09">UpdateUserInterrupt</a>();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="user__interrupt_8c.html#addaedaa5323a42d2e7144a285edc8611">UpdateOutputPins</a>(uint32_t interrupt, uint32_t overflow, uint32_t error);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> <a class="code" href="user__interrupt_8c.html#a52af15617e501137ca1bfc2c0315577e">User_Interrupt_Update</a>();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="user__interrupt_8c.html#a54815fcb8889046383b79d29e3adcc01">User_Interrupt_Update_Output_Pins</a>(uint32_t interrupt, uint32_t overflow, uint32_t error);</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">/* @endcond */</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="user__interrupt_8h.html#a5c899f31b1cf4a79368a9577fcf202d7">   25</a></span>&#160;<span class="preprocessor">#define WATERMARK_FREQ                  10000</span></div>
@@ -92,20 +92,19 @@ $(function() {
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_USER_INTERRUPT_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="astruct_d_i_o_config_html_a649c80f118ae93452d24930563ee106d"><div class="ttname"><a href="struct_d_i_o_config.html#a649c80f118ae93452d24930563ee106d">DIOConfig::errorPins</a></div><div class="ttdeci">uint32_t errorPins</div><div class="ttdef"><b>Definition:</b> dio.h:31</div></div>
-<div class="ttc" id="auser__interrupt_8c_html_a17931caf5a120ecd6d1a4b71f59895d5"><div class="ttname"><a href="user__interrupt_8c.html#a17931caf5a120ecd6d1a4b71f59895d5">g_pinConfig</a></div><div class="ttdeci">DIOConfig g_pinConfig</div><div class="ttdef"><b>Definition:</b> dio.c:17</div></div>
-<div class="ttc" id="aregisters_8h_html_a807211953b57b1a3f715e8a4496f3d2d"><div class="ttname"><a href="registers_8h.html#a807211953b57b1a3f715e8a4496f3d2d">NUM_REG_PAGES</a></div><div class="ttdeci">#define NUM_REG_PAGES</div><div class="ttdef"><b>Definition:</b> registers.h:40</div></div>
-<div class="ttc" id="auser__interrupt_8c_html_a0963b05bebaa79e9cc9b76594b1d3e73"><div class="ttname"><a href="user__interrupt_8c.html#a0963b05bebaa79e9cc9b76594b1d3e73">g_regs</a></div><div class="ttdeci">volatile uint16_t g_regs[NUM_REG_PAGES *REG_PER_PAGE]</div></div>
-<div class="ttc" id="astruct_d_i_o_config_html_a3908e5bdf07ce8f75fab5a4bbea457fc"><div class="ttname"><a href="struct_d_i_o_config.html#a3908e5bdf07ce8f75fab5a4bbea457fc">DIOConfig::watermarkPins</a></div><div class="ttdeci">uint32_t watermarkPins</div><div class="ttdef"><b>Definition:</b> dio.h:25</div></div>
-<div class="ttc" id="astruct_d_i_o_config_html_ad9ec588c586728cdc2cdf769b3c630df"><div class="ttname"><a href="struct_d_i_o_config.html#ad9ec588c586728cdc2cdf769b3c630df">DIOConfig::overflowPins</a></div><div class="ttdeci">uint32_t overflowPins</div><div class="ttdef"><b>Definition:</b> dio.h:28</div></div>
-<div class="ttc" id="auser__interrupt_8c_html_addaedaa5323a42d2e7144a285edc8611"><div class="ttname"><a href="user__interrupt_8c.html#addaedaa5323a42d2e7144a285edc8611">UpdateOutputPins</a></div><div class="ttdeci">void UpdateOutputPins(uint32_t watermark, uint32_t overflow, uint32_t error)</div><div class="ttdoc">Updates the output pins based on given interrupt/overflow status.</div><div class="ttdef"><b>Definition:</b> user_interrupt.c:108</div></div>
-<div class="ttc" id="auser__interrupt_8c_html_a7462f47cda251a48a22aad3c1773ab09"><div class="ttname"><a href="user__interrupt_8c.html#a7462f47cda251a48a22aad3c1773ab09">UpdateUserInterrupt</a></div><div class="ttdeci">void UpdateUserInterrupt()</div><div class="ttdoc">Updates the user interrupt (data ready) signal status.</div><div class="ttdef"><b>Definition:</b> user_interrupt.c:28</div></div>
+<div class="ttc" id="areg_8h_html"><div class="ttname"><a href="reg_8h.html">reg.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
+<div class="ttc" id="auser__interrupt_8c_html_a54815fcb8889046383b79d29e3adcc01"><div class="ttname"><a href="user__interrupt_8c.html#a54815fcb8889046383b79d29e3adcc01">User_Interrupt_Update_Output_Pins</a></div><div class="ttdeci">void User_Interrupt_Update_Output_Pins(uint32_t watermark, uint32_t overflow, uint32_t error)</div><div class="ttdoc">Updates the output pins based on given interrupt/overflow status.</div><div class="ttdef"><b>Definition:</b> user_interrupt.c:105</div></div>
+<div class="ttc" id="astruct_d_i_o_config_html_a649c80f118ae93452d24930563ee106d"><div class="ttname"><a href="struct_d_i_o_config.html#a649c80f118ae93452d24930563ee106d">DIOConfig::errorPins</a></div><div class="ttdeci">uint32_t errorPins</div><div class="ttdef"><b>Definition:</b> dio.h:30</div></div>
+<div class="ttc" id="adio_8h_html"><div class="ttname"><a href="dio_8h.html">dio.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer DIO interfacing module.</div></div>
+<div class="ttc" id="adio_8h_html_a6f243dba51236f2b5163a285092bae63"><div class="ttname"><a href="dio_8h.html#a6f243dba51236f2b5163a285092bae63">g_pinConfig</a></div><div class="ttdeci">volatile DIOConfig g_pinConfig</div><div class="ttdef"><b>Definition:</b> dio.c:20</div></div>
+<div class="ttc" id="aled_8c_html_a0137ee0969bb19e0209f7ffa3e78d1e3"><div class="ttname"><a href="led_8c.html#a0137ee0969bb19e0209f7ffa3e78d1e3">LED_Turn_On</a></div><div class="ttdeci">void LED_Turn_On(LED light)</div><div class="ttdoc">Turn on a selected LED.</div><div class="ttdef"><b>Definition:</b> led.c:22</div></div>
+<div class="ttc" id="auser__interrupt_8c_html_a52af15617e501137ca1bfc2c0315577e"><div class="ttname"><a href="user__interrupt_8c.html#a52af15617e501137ca1bfc2c0315577e">User_Interrupt_Update</a></div><div class="ttdeci">void User_Interrupt_Update()</div><div class="ttdoc">Updates the user interrupt (data ready) signal status.</div><div class="ttdef"><b>Definition:</b> user_interrupt.c:25</div></div>
+<div class="ttc" id="astruct_d_i_o_config_html_a3908e5bdf07ce8f75fab5a4bbea457fc"><div class="ttname"><a href="struct_d_i_o_config.html#a3908e5bdf07ce8f75fab5a4bbea457fc">DIOConfig::watermarkPins</a></div><div class="ttdeci">uint32_t watermarkPins</div><div class="ttdef"><b>Definition:</b> dio.h:24</div></div>
+<div class="ttc" id="astruct_d_i_o_config_html_ad9ec588c586728cdc2cdf769b3c630df"><div class="ttname"><a href="struct_d_i_o_config.html#ad9ec588c586728cdc2cdf769b3c630df">DIOConfig::overflowPins</a></div><div class="ttdeci">uint32_t overflowPins</div><div class="ttdef"><b>Definition:</b> dio.h:27</div></div>
+<div class="ttc" id="aled_8h_html"><div class="ttname"><a href="led_8h.html">led.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer LED control module.</div></div>
 <div class="ttc" id="auser__interrupt_8h_html"><div class="ttname"><a href="user__interrupt_8h.html">user_interrupt.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer user interrupt (data ready) config and generation functions.</div></div>
+<div class="ttc" id="aled_8c_html_ac5d6499055e5e7cd2d5425cbf404c32e"><div class="ttname"><a href="led_8c.html#ac5d6499055e5e7cd2d5425cbf404c32e">LED_Turn_Off</a></div><div class="ttdeci">void LED_Turn_Off(LED light)</div><div class="ttdoc">Turn off a selected LED.</div><div class="ttdef"><b>Definition:</b> led.c:47</div></div>
 <div class="ttc" id="auser__interrupt_8h_html_af6189f3a2a7b6c1c76627f282b57aeb7"><div class="ttname"><a href="user__interrupt_8h.html#af6189f3a2a7b6c1c76627f282b57aeb7">WATERMARK_HALF_PERIOD_TICKS</a></div><div class="ttdeci">#define WATERMARK_HALF_PERIOD_TICKS</div><div class="ttdef"><b>Definition:</b> user_interrupt.h:28</div></div>
-<div class="ttc" id="astruct_d_i_o_config_html"><div class="ttname"><a href="struct_d_i_o_config.html">DIOConfig</a></div><div class="ttdef"><b>Definition:</b> dio.h:20</div></div>
-<div class="ttc" id="aled_8c_html_a99d3a7743f7abf1c66201c0b1297040a"><div class="ttname"><a href="led_8c.html#a99d3a7743f7abf1c66201c0b1297040a">TurnOnLED</a></div><div class="ttdeci">void TurnOnLED(LED light)</div><div class="ttdoc">Turn on a selected LED.</div><div class="ttdef"><b>Definition:</b> led.c:23</div></div>
-<div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
-<div class="ttc" id="aled_8c_html_a33badabbc4771ff785afaea9dcb90adc"><div class="ttname"><a href="led_8c.html#a33badabbc4771ff785afaea9dcb90adc">TurnOffLED</a></div><div class="ttdeci">void TurnOffLED(LED light)</div><div class="ttdoc">Turn off a selected LED.</div><div class="ttdef"><b>Definition:</b> led.c:48</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20

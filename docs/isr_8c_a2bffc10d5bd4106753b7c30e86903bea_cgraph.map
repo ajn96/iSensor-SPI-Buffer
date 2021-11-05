@@ -1,4 +1,4 @@
 <map id="HardFault_Handler" name="HardFault_Handler">
 <area shape="rect" id="node1" title="This function handles Hard fault interrupt." alt="" coords="5,5,135,32"/>
-<area shape="rect" id="node2" href="$flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773" title="Stores an error code to flash memory." alt="" coords="183,5,285,32"/>
+<area shape="rect" id="node2" href="$flash_8c.html#af425d5b1241befa56dbe794fffae169f" title="Stores an error code to flash memory." alt="" coords="183,5,301,32"/>
 </map>

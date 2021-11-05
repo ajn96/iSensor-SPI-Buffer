@@ -1,13 +1,20 @@
 var searchData=
 [
-  ['tick_5fint_5fpriority_293',['TICK_INT_PRIORITY',['../stm32f3xx__hal__conf_8h.html#ae27809d4959b9fd5b5d974e3e1c77d2e',1,'stm32f3xx_hal_conf.h']]],
-  ['tim4_5firqhandler_294',['TIM4_IRQHandler',['../isr_8c.html#a6e7703924e97aa04dbae6b88adcec3d1',1,'isr.c']]],
-  ['timer_2ec_295',['timer.c',['../timer_8c.html',1,'']]],
-  ['timer_2eh_296',['timer.h',['../timer_8h.html',1,'']]],
-  ['timer1_297',['Timer1',['../stm32f3xx__it_8c.html#ab8421453c1cb542905d54e2aa747863e',1,'stm32f3xx_it.c']]],
-  ['timer2_298',['Timer2',['../stm32f3xx__it_8c.html#af14e7ef7e69cf56470599553e9d50aea',1,'stm32f3xx_it.c']]],
-  ['ts_5fcal1_299',['TS_CAL1',['../adc_8h.html#aae5ffe51f62b02abbdb9ae7d644298fe',1,'adc.h']]],
-  ['ts_5fcal2_300',['TS_CAL2',['../adc_8h.html#a33906f7922bfa1d2dc8d9068b9f7be45',1,'adc.h']]],
-  ['turnoffled_301',['TurnOffLED',['../led_8c.html#a33badabbc4771ff785afaea9dcb90adc',1,'led.c']]],
-  ['turnonled_302',['TurnOnLED',['../led_8c.html#a99d3a7743f7abf1c66201c0b1297040a',1,'led.c']]]
+  ['tick_5fint_5fpriority_295',['TICK_INT_PRIORITY',['../stm32f3xx__hal__conf_8h.html#ae27809d4959b9fd5b5d974e3e1c77d2e',1,'stm32f3xx_hal_conf.h']]],
+  ['tim4_5firqhandler_296',['TIM4_IRQHandler',['../isr_8c.html#a6e7703924e97aa04dbae6b88adcec3d1',1,'isr.c']]],
+  ['timer_2ec_297',['timer.c',['../timer_8c.html',1,'']]],
+  ['timer_2eh_298',['timer.h',['../timer_8h.html',1,'']]],
+  ['timer1_299',['Timer1',['../stm32f3xx__it_8c.html#ab8421453c1cb542905d54e2aa747863e',1,'stm32f3xx_it.c']]],
+  ['timer2_300',['Timer2',['../stm32f3xx__it_8c.html#af14e7ef7e69cf56470599553e9d50aea',1,'stm32f3xx_it.c']]],
+  ['timer_5fcheck_5fpps_5funlock_301',['Timer_Check_PPS_Unlock',['../timer_8c.html#aa7385e600b46072ce661ced03df1eeac',1,'timer.c']]],
+  ['timer_5fclear_5fmicrosecond_5ftimer_302',['Timer_Clear_Microsecond_Timer',['../timer_8c.html#a547b452d1b19932ff1f2d8e742a34dc9',1,'timer.c']]],
+  ['timer_5fdisable_5fpps_303',['Timer_Disable_PPS',['../timer_8c.html#ab3f8163242595c79acae9d1bcd4f83fa',1,'timer.c']]],
+  ['timer_5fenable_5fpps_304',['Timer_Enable_PPS',['../timer_8c.html#a824c02b3916a58038fbed245e3c92324',1,'timer.c']]],
+  ['timer_5fget_5fmicrosecond_5ftimestamp_305',['Timer_Get_Microsecond_Timestamp',['../timer_8c.html#a0a5f6200777635cb2ecf7a504b8a602f',1,'timer.c']]],
+  ['timer_5fget_5fpps_5ftimestamp_306',['Timer_Get_PPS_Timestamp',['../timer_8c.html#a8089777879fb412e61bd57e10993b7d0',1,'timer.c']]],
+  ['timer_5fincrement_5fpps_5ftime_307',['Timer_Increment_PPS_Time',['../timer_8c.html#acb786d65635223cdb27fc44fad6babad',1,'timer.c']]],
+  ['timer_5finit_308',['Timer_Init',['../timer_8c.html#a7cc941ce9a1dba3638482250c4e36aa4',1,'timer.c']]],
+  ['timer_5fsleep_5fmicroseconds_309',['Timer_Sleep_Microseconds',['../timer_8c.html#a610c9ca08bddd3bae993770ce68a19c8',1,'timer.c']]],
+  ['ts_5fcal1_310',['TS_CAL1',['../adc_8h.html#aae5ffe51f62b02abbdb9ae7d644298fe',1,'adc.h']]],
+  ['ts_5fcal2_311',['TS_CAL2',['../adc_8h.html#a33906f7922bfa1d2dc8d9068b9f7be45',1,'adc.h']]]
 ];

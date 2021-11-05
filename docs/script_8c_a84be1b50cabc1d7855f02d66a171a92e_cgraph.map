@@ -1,4 +1,4 @@
 <map id="WriteHandler" name="WriteHandler">
 <area shape="rect" id="node1" title="Write command handler." alt="" coords="5,5,103,32"/>
-<area shape="rect" id="node2" href="$registers_8c.html#a14e4e9f1315bb4941574076d9a824d4a" title="Process a register write request (from master)" alt="" coords="151,5,227,32"/>
+<area shape="rect" id="node2" href="$reg_8c.html#a97f4b6010b00c791d0c06284e1049d15" title="Process a register write request (from master)" alt="" coords="151,5,233,32"/>
 </map>

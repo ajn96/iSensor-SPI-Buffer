@@ -1,4 +1,7 @@
 <map id="isr.h" name="isr.h">
-<area shape="rect" id="node1" title="Header file for the interrupt service routine module." alt="" coords="5,5,52,32"/>
-<area shape="rect" id="node2" href="$isr_8c.html" title="iSensor&#45;SPI&#45;Buffer interrupt service routines" alt="" coords="5,80,52,107"/>
+<area shape="rect" id="node1" title="Header file for the interrupt service routine module." alt="" coords="173,5,220,32"/>
+<area shape="rect" id="node2" href="$data__capture_8c.html" title="iSensor&#45;SPI&#45;Buffer autonomous IMU data acquisition functions." alt="" coords="5,80,113,107"/>
+<area shape="rect" id="node3" href="$isr_8c.html" title="iSensor&#45;SPI&#45;Buffer interrupt service routines" alt="" coords="137,80,184,107"/>
+<area shape="rect" id="node4" href="$reg_8c.html" title="iSensor&#45;SPI&#45;Buffer register interfacing module. Called by user SPI and USB CLI" alt="" coords="209,80,259,107"/>
+<area shape="rect" id="node5" href="$user__spi_8c.html" title="iSensor&#45;SPI&#45;Buffer user (slave) SPI module" alt="" coords="283,80,366,107"/>
 </map>

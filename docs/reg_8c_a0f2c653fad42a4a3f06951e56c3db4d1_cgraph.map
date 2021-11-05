@@ -1,0 +1,7 @@
+<map id="Reg_Init" name="Reg_Init">
+<area shape="rect" id="node1" title="Initialize the register module by loading all saves values from flash." alt="" coords="5,31,75,57"/>
+<area shape="rect" id="node2" href="$flash_8c.html#a2fe1dea04eb80abcf236bc42ca5197b6" title="Load register values from flash memory to SRAM." alt="" coords="125,5,275,32"/>
+<area shape="rect" id="node3" href="$reg_8c.html#a5a97e807930ced3ef117034418ce77ba" title="Load SN and date code registers to SRAM." alt="" coords="123,56,277,83"/>
+<area shape="rect" id="node4" href="$reg_8c.html#a3ebca895ecd4473a57471eea92563da3" title="Populates the firmware date registers automatically." alt="" coords="325,31,424,57"/>
+<area shape="rect" id="node5" href="$reg_8c.html#a46941ae03c5cba06f24bbe10ba29eefa" title="Populates the six SN registers automatically." alt="" coords="344,81,405,108"/>
+</map>

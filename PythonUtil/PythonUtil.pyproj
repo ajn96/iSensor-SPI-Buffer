@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{194a40d5-a949-4d20-903b-904e53219aeb}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>Examples\steam_benchmark.py</StartupFile>
+    <StartupFile>Examples\adis1649x_example_windows.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>

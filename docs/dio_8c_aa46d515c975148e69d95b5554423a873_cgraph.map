@@ -1,0 +1,4 @@
+<map id="DIO_Update_Input_Config" name="DIO_Update_Input_Config">
+<area shape="rect" id="node1" title="Validates and updates the data ready input configuration based on DIO_INPUT_CONFIG." alt="" coords="5,13,176,39"/>
+<area shape="rect" id="node2" href="$dio_8c.html#a1dbfdd91d1b8633600bf00e2b6ef501c" title="Validates the DIO_INPUT_CONFIG value." alt="" coords="224,5,357,47"/>
+</map>

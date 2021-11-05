@@ -1,0 +1,4 @@
+<map id="IMU_Write_Register" name="IMU_Write_Register">
+<area shape="rect" id="node1" title="Writes an 8 bit value to the IMU." alt="" coords="5,5,144,32"/>
+<area shape="rect" id="node2" href="$imu_8c.html#aff621068a4670f2aeb6dc2234806f8d6" title="Basic IMU SPI data transfer function (protocol agnostic)." alt="" coords="192,5,319,32"/>
+</map>

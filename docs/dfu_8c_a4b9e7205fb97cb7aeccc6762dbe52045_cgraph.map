@@ -1,0 +1,5 @@
+<map id="DFU_Prepare_Reboot" name="DFU_Prepare_Reboot">
+<area shape="rect" id="node1" title="Set DFU reboot flag in RAM and reset system." alt="" coords="5,5,153,32"/>
+<area shape="rect" id="node2" href="$usb_8c.html#af1aec7b3c1d6bc30ddc783c304ff04cc" title="Toggle USB PU to force a re&#45;enumeration on the host side." alt="" coords="201,5,292,32"/>
+<area shape="rect" id="node3" href="$timer_8c.html#a610c9ca08bddd3bae993770ce68a19c8" title="Blocking sleep function call." alt="" coords="340,5,523,32"/>
+</map>

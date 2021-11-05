@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.14</span>
+   &#160;<span id="projectnumber">1.15</span>
    </div>
    <div id="projectbrief">Firmware for the iSensor-SPI-Buffer board to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -76,57 +76,51 @@ $(function() {
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#ifndef INC_FLASH_H_</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define INC_FLASH_H_</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">/* Includes */</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;stdint.h&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="registers_8h.html">registers.h</a>&quot;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;stm32f3xx_hal.h&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">/* Header includes require for prototypes */</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> <a class="code" href="flash_8c.html#a48f0984b98ef386bfcc84f996210c37a">FlashUpdate</a>();</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">void</span> <a class="code" href="flash_8c.html#abdfa63ba6e284d347e454e4ac0af459e">LoadRegsFlash</a>();</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">void</span> <a class="code" href="flash_8c.html#a0573959b49fb264dd25636a6032ef01c">FlashCheckLoggedError</a>();</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">void</span> <a class="code" href="flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773">FlashLogError</a>(uint32_t faultCode);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> <a class="code" href="flash_8c.html#a46338bc563a7426b0d9983d549049e87">FlashInitErrorLog</a>();</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;uint16_t <a class="code" href="flash_8c.html#a3e2a702707895bee69f8a070f89c7bf1">CalcRegSig</a>(uint16_t * regs, uint32_t count);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">/* @endcond */</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> <a class="code" href="flash_8c.html#a9f2fc1de168b97346e9e2822dc93190e">Flash_Update</a>();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="flash_8c.html#a2fe1dea04eb80abcf236bc42ca5197b6">Flash_Load_Registers</a>();</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> <a class="code" href="flash_8c.html#ae25f4aa30bf9bdd2c89c4bcda9b3b5bc">Flash_Check_Logged_Fault</a>();</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">void</span> <a class="code" href="flash_8c.html#af425d5b1241befa56dbe794fffae169f">Flash_Log_Fault</a>(uint32_t faultCode);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">void</span> <a class="code" href="flash_8c.html#ad20211cdf029b40e6249e15c638f2874">Flash_Fault_Log_Init</a>();</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">/* @endcond */</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="flash_8h.html#a2a45475fd43c3e90d91cff9fff2958ea">   28</a></span>&#160;<span class="preprocessor">#define FLASH_REG_ADDR          0x08040000</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="flash_8h.html#a2a45475fd43c3e90d91cff9fff2958ea">   31</a></span>&#160;<span class="preprocessor">#define FLASH_REG_ADDR          0x08040000</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="flash_8h.html#a66666f2b5fcc8b63cfe003ecb632705c">   31</a></span>&#160;<span class="preprocessor">#define FLASH_ERROR_ADDR        0x0803F800</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="flash_8h.html#a66666f2b5fcc8b63cfe003ecb632705c">   34</a></span>&#160;<span class="preprocessor">#define FLASH_ERROR_ADDR        0x0803F800</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">/* Error codes stored in flash */</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">/* Error codes stored in flash */</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="flash_8h.html#abe670cc5ceed3fad3be682fc0c1bb62e">   36</a></span>&#160;<span class="preprocessor">#define ERROR_NONE              0</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="flash_8h.html#abe670cc5ceed3fad3be682fc0c1bb62e">   39</a></span>&#160;<span class="preprocessor">#define ERROR_NONE              0</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="flash_8h.html#a44f30b25078f303e66d1ebc56bc37bd7">   39</a></span>&#160;<span class="preprocessor">#define ERROR_INIT              (1 &lt;&lt; 0)</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="flash_8h.html#a44f30b25078f303e66d1ebc56bc37bd7">   42</a></span>&#160;<span class="preprocessor">#define ERROR_INIT              (1 &lt;&lt; 0)</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="flash_8h.html#ac5e43cb1c95bdb650ac689a60aaae60a">   42</a></span>&#160;<span class="preprocessor">#define ERROR_HARDFAULT         (1 &lt;&lt; 1)</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="flash_8h.html#ac5e43cb1c95bdb650ac689a60aaae60a">   45</a></span>&#160;<span class="preprocessor">#define ERROR_HARDFAULT         (1 &lt;&lt; 1)</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="flash_8h.html#af945df1d0b29a71042ccecf55eab5aff">   45</a></span>&#160;<span class="preprocessor">#define ERROR_MEM               (1 &lt;&lt; 2)</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="flash_8h.html#af945df1d0b29a71042ccecf55eab5aff">   48</a></span>&#160;<span class="preprocessor">#define ERROR_MEM               (1 &lt;&lt; 2)</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="flash_8h.html#affe4e4b1d477052d3a1008e86f7564b9">   48</a></span>&#160;<span class="preprocessor">#define ERROR_BUS               (1 &lt;&lt; 3)</span></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="flash_8h.html#affe4e4b1d477052d3a1008e86f7564b9">   51</a></span>&#160;<span class="preprocessor">#define ERROR_BUS               (1 &lt;&lt; 3)</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="flash_8h.html#af593441b71c2cac378a0f9d4d19c3cc2">   51</a></span>&#160;<span class="preprocessor">#define ERROR_USAGE             (1 &lt;&lt; 4)</span></div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="flash_8h.html#af593441b71c2cac378a0f9d4d19c3cc2">   54</a></span>&#160;<span class="preprocessor">#define ERROR_USAGE             (1 &lt;&lt; 4)</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_FLASH_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_FLASH_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aregisters_8h_html_a807211953b57b1a3f715e8a4496f3d2d"><div class="ttname"><a href="registers_8h.html#a807211953b57b1a3f715e8a4496f3d2d">NUM_REG_PAGES</a></div><div class="ttdeci">#define NUM_REG_PAGES</div><div class="ttdef"><b>Definition:</b> registers.h:40</div></div>
-<div class="ttc" id="aflash_8c_html_a0963b05bebaa79e9cc9b76594b1d3e73"><div class="ttname"><a href="flash_8c.html#a0963b05bebaa79e9cc9b76594b1d3e73">g_regs</a></div><div class="ttdeci">volatile uint16_t g_regs[NUM_REG_PAGES *REG_PER_PAGE]</div></div>
-<div class="ttc" id="aregisters_8c_html_a042bb33891e7dcafa8dcf3a696eaa451"><div class="ttname"><a href="registers_8c.html#a042bb33891e7dcafa8dcf3a696eaa451">GetBuildDate</a></div><div class="ttdeci">void GetBuildDate()</div><div class="ttdoc">Populates the firmware date registers automatically.</div><div class="ttdef"><b>Definition:</b> registers.c:428</div></div>
-<div class="ttc" id="aflash_8c_html_a48f0984b98ef386bfcc84f996210c37a"><div class="ttname"><a href="flash_8c.html#a48f0984b98ef386bfcc84f996210c37a">FlashUpdate</a></div><div class="ttdeci">void FlashUpdate()</div><div class="ttdoc">Flash update command handler.</div><div class="ttdef"><b>Definition:</b> flash.c:29</div></div>
-<div class="ttc" id="aflash_8c_html_a46338bc563a7426b0d9983d549049e87"><div class="ttname"><a href="flash_8c.html#a46338bc563a7426b0d9983d549049e87">FlashInitErrorLog</a></div><div class="ttdeci">void FlashInitErrorLog()</div><div class="ttdoc">Initialize flash error logging.</div><div class="ttdef"><b>Definition:</b> flash.c:222</div></div>
-<div class="ttc" id="aflash_8c_html_a0573959b49fb264dd25636a6032ef01c"><div class="ttname"><a href="flash_8c.html#a0573959b49fb264dd25636a6032ef01c">FlashCheckLoggedError</a></div><div class="ttdeci">void FlashCheckLoggedError()</div><div class="ttdoc">Checks for error codes which may have been logged to flash, and sets the status register bit.</div><div class="ttdef"><b>Definition:</b> flash.c:143</div></div>
-<div class="ttc" id="aflash_8c_html_a3e2a702707895bee69f8a070f89c7bf1"><div class="ttname"><a href="flash_8c.html#a3e2a702707895bee69f8a070f89c7bf1">CalcRegSig</a></div><div class="ttdeci">uint16_t CalcRegSig(uint16_t *regs, uint32_t count)</div><div class="ttdoc">Calculate a signature of a block of RAM. Used for verifying flash memory contents.</div><div class="ttdef"><b>Definition:</b> flash.c:239</div></div>
-<div class="ttc" id="aflash_8c_html_a6f11954101952461e4854186f07ef72b"><div class="ttname"><a href="flash_8c.html#a6f11954101952461e4854186f07ef72b">PrepareRegsForFlash</a></div><div class="ttdeci">static void PrepareRegsForFlash()</div><div class="ttdoc">Clears all non-volatile registers in RAM and updates reg signature.</div><div class="ttdef"><b>Definition:</b> flash.c:255</div></div>
-<div class="ttc" id="aflash_8c_html_abdfa63ba6e284d347e454e4ac0af459e"><div class="ttname"><a href="flash_8c.html#abdfa63ba6e284d347e454e4ac0af459e">LoadRegsFlash</a></div><div class="ttdeci">void LoadRegsFlash()</div><div class="ttdoc">Load register values from flash memory to SRAM.</div><div class="ttdef"><b>Definition:</b> flash.c:97</div></div>
-<div class="ttc" id="aflash_8h_html_abe670cc5ceed3fad3be682fc0c1bb62e"><div class="ttname"><a href="flash_8h.html#abe670cc5ceed3fad3be682fc0c1bb62e">ERROR_NONE</a></div><div class="ttdeci">#define ERROR_NONE</div><div class="ttdef"><b>Definition:</b> flash.h:39</div></div>
-<div class="ttc" id="aflash_8c_html_aa2248ba2758bb6fde5d3311e13e25773"><div class="ttname"><a href="flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773">FlashLogError</a></div><div class="ttdeci">void FlashLogError(uint32_t faultCode)</div><div class="ttdoc">Stores an error code to flash memory.</div><div class="ttdef"><b>Definition:</b> flash.c:174</div></div>
-<div class="ttc" id="aflash_8h_html_a2a45475fd43c3e90d91cff9fff2958ea"><div class="ttname"><a href="flash_8h.html#a2a45475fd43c3e90d91cff9fff2958ea">FLASH_REG_ADDR</a></div><div class="ttdeci">#define FLASH_REG_ADDR</div><div class="ttdef"><b>Definition:</b> flash.h:31</div></div>
-<div class="ttc" id="aflash_8h_html_a66666f2b5fcc8b63cfe003ecb632705c"><div class="ttname"><a href="flash_8h.html#a66666f2b5fcc8b63cfe003ecb632705c">FLASH_ERROR_ADDR</a></div><div class="ttdeci">#define FLASH_ERROR_ADDR</div><div class="ttdef"><b>Definition:</b> flash.h:34</div></div>
-<div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
-<div class="ttc" id="aregisters_8c_html_a7b32151b1c6c1f3adcf8c1b2d245d191"><div class="ttname"><a href="registers_8c.html#a7b32151b1c6c1f3adcf8c1b2d245d191">GetSN</a></div><div class="ttdeci">void GetSN()</div><div class="ttdoc">Populates the six SN registers automatically.</div><div class="ttdef"><b>Definition:</b> registers.c:409</div></div>
+<div class="ttc" id="aflash_8c_html_ad20211cdf029b40e6249e15c638f2874"><div class="ttname"><a href="flash_8c.html#ad20211cdf029b40e6249e15c638f2874">Flash_Fault_Log_Init</a></div><div class="ttdeci">void Flash_Fault_Log_Init()</div><div class="ttdoc">Initialize flash error logging.</div><div class="ttdef"><b>Definition:</b> flash.c:221</div></div>
+<div class="ttc" id="areg_8h_html"><div class="ttname"><a href="reg_8h.html">reg.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
+<div class="ttc" id="aflash_8c_html_af425d5b1241befa56dbe794fffae169f"><div class="ttname"><a href="flash_8c.html#af425d5b1241befa56dbe794fffae169f">Flash_Log_Fault</a></div><div class="ttdeci">void Flash_Log_Fault(uint32_t faultCode)</div><div class="ttdoc">Stores an error code to flash memory.</div><div class="ttdef"><b>Definition:</b> flash.c:173</div></div>
+<div class="ttc" id="aflash_8c_html_ae25f4aa30bf9bdd2c89c4bcda9b3b5bc"><div class="ttname"><a href="flash_8c.html#ae25f4aa30bf9bdd2c89c4bcda9b3b5bc">Flash_Check_Logged_Fault</a></div><div class="ttdeci">void Flash_Check_Logged_Fault()</div><div class="ttdoc">Checks for error codes which may have been logged to flash, and sets the status register bit.</div><div class="ttdef"><b>Definition:</b> flash.c:142</div></div>
+<div class="ttc" id="aflash_8c_html_a9f2fc1de168b97346e9e2822dc93190e"><div class="ttname"><a href="flash_8c.html#a9f2fc1de168b97346e9e2822dc93190e">Flash_Update</a></div><div class="ttdeci">void Flash_Update()</div><div class="ttdoc">Flash update command handler.</div><div class="ttdef"><b>Definition:</b> flash.c:29</div></div>
+<div class="ttc" id="aflash_8c_html_a6f11954101952461e4854186f07ef72b"><div class="ttname"><a href="flash_8c.html#a6f11954101952461e4854186f07ef72b">PrepareRegsForFlash</a></div><div class="ttdeci">static void PrepareRegsForFlash()</div><div class="ttdoc">Clears all non-volatile registers in RAM and updates reg signature.</div><div class="ttdef"><b>Definition:</b> flash.c:254</div></div>
+<div class="ttc" id="aflash_8c_html_a2d42d5b7b027202b23740264dac24df8"><div class="ttname"><a href="flash_8c.html#a2d42d5b7b027202b23740264dac24df8">CalcRegSig</a></div><div class="ttdeci">static uint16_t CalcRegSig(uint16_t *regs, uint32_t count)</div><div class="ttdoc">Calculate a signature of a block of RAM. Used for verifying flash memory contents.</div><div class="ttdef"><b>Definition:</b> flash.c:238</div></div>
+<div class="ttc" id="areg_8c_html_a5a97e807930ced3ef117034418ce77ba"><div class="ttname"><a href="reg_8c.html#a5a97e807930ced3ef117034418ce77ba">Reg_Update_Identifiers</a></div><div class="ttdeci">void Reg_Update_Identifiers()</div><div class="ttdoc">Load SN and date code registers to SRAM.</div><div class="ttdef"><b>Definition:</b> reg.c:139</div></div>
+<div class="ttc" id="aflash_8h_html_abe670cc5ceed3fad3be682fc0c1bb62e"><div class="ttname"><a href="flash_8h.html#abe670cc5ceed3fad3be682fc0c1bb62e">ERROR_NONE</a></div><div class="ttdeci">#define ERROR_NONE</div><div class="ttdef"><b>Definition:</b> flash.h:36</div></div>
+<div class="ttc" id="aflash_8c_html_a2fe1dea04eb80abcf236bc42ca5197b6"><div class="ttname"><a href="flash_8c.html#a2fe1dea04eb80abcf236bc42ca5197b6">Flash_Load_Registers</a></div><div class="ttdeci">void Flash_Load_Registers()</div><div class="ttdoc">Load register values from flash memory to SRAM.</div><div class="ttdef"><b>Definition:</b> flash.c:96</div></div>
+<div class="ttc" id="aflash_8h_html_a2a45475fd43c3e90d91cff9fff2958ea"><div class="ttname"><a href="flash_8h.html#a2a45475fd43c3e90d91cff9fff2958ea">FLASH_REG_ADDR</a></div><div class="ttdeci">#define FLASH_REG_ADDR</div><div class="ttdef"><b>Definition:</b> flash.h:28</div></div>
+<div class="ttc" id="aflash_8h_html_a66666f2b5fcc8b63cfe003ecb632705c"><div class="ttname"><a href="flash_8h.html#a66666f2b5fcc8b63cfe003ecb632705c">FLASH_ERROR_ADDR</a></div><div class="ttdeci">#define FLASH_ERROR_ADDR</div><div class="ttdef"><b>Definition:</b> flash.h:31</div></div>
 <div class="ttc" id="aflash_8h_html"><div class="ttname"><a href="flash_8h.html">flash.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer flash memory interfacing functions.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -1,0 +1,4 @@
+<map id="Reg_Init" name="Reg_Init">
+<area shape="rect" id="node1" title="Initialize the register module by loading all saves values from flash." alt="" coords="104,5,173,32"/>
+<area shape="rect" id="node2" href="$main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
+</map>

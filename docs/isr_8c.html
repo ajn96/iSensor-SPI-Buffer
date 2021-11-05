@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.14</span>
+   &#160;<span id="projectnumber">1.15</span>
    </div>
    <div id="projectbrief">Firmware for the iSensor-SPI-Buffer board to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -78,46 +78,34 @@ $(function() {
 
 <p>iSensor-SPI-Buffer interrupt service routines  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="isr_8h_source.html">isr.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="reg_8h_source.html">reg.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="imu_8h_source.html">imu.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="isr_8h_source.html">isr.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="buffer_8h_source.html">buffer.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="user__spi_8h_source.html">user_spi.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="dio_8h_source.html">dio.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="flash_8h_source.html">flash.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="main_8h_source.html">main.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="data__capture_8h_source.html">data_capture.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="timer_8h_source.html">timer.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for isr.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="isr_8c__incl.png" border="0" usemap="#aisr_8c" alt=""/></div>
-<map name="isr_8c" id="isr_8c">
-<area shape="rect" title="iSensor&#45;SPI&#45;Buffer interrupt service routines" alt="" coords="2794,5,2841,32"/>
-<area shape="rect" href="isr_8h.html" title="Header file for the interrupt service routine module." alt="" coords="2794,80,2841,107"/>
-<area shape="rect" href="imu__spi_8h.html" title="Implementation for iSensor&#45;SPI&#45;Buffer IMU interfacing module." alt="" coords="2778,155,2857,181"/>
-<area shape="rect" href="registers_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer register interfacing module." alt="" coords="2301,379,2384,405"/>
-<area shape="rect" href="buffer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer buffer data structure module." alt="" coords="2641,453,2705,480"/>
-<area shape="rect" href="data__capture_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer autonomous IMU data acquisition module." alt="" coords="2425,453,2533,480"/>
-<area shape="rect" href="timer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer timer module." alt="" coords="2723,304,2786,331"/>
-<area shape="rect" href="main_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer main." alt="" coords="2289,229,2351,256"/>
-<area shape="rect" title=" " alt="" coords="2413,603,2531,629"/>
-<area shape="rect" href="flash_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer flash memory interfacing functions." alt="" coords="2557,453,2617,480"/>
-<area shape="rect" href="led_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer LED control module." alt="" coords="2372,528,2423,555"/>
-<area shape="rect" href="dfu_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer runtime firmware upgrade module." alt="" coords="2141,453,2192,480"/>
-<area shape="rect" href="user__interrupt_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer user interrupt (data ready) config and generation functions." alt="" coords="2264,304,2376,331"/>
-<area shape="rect" href="watchdog_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer watchdog timer module." alt="" coords="2077,304,2165,331"/>
-<area shape="rect" href="dio_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer DIO interfacing module." alt="" coords="2400,304,2451,331"/>
-<area shape="rect" title=" " alt="" coords="2475,304,2573,331"/>
-<area shape="rect" href="adc_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer ADC module (for temp sensor and Vdd monitoring)" alt="" coords="1947,304,2002,331"/>
-<area shape="rect" href="user__spi_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer user SPI (slave SPI) module." alt="" coords="2267,453,2349,480"/>
-<area shape="rect" title=" " alt="" coords="2561,528,2626,555"/>
-<area shape="rect" title=" " alt="" coords="2144,528,2251,555"/>
-<area shape="rect" title=" " alt="" coords="2459,379,2522,405"/>
-<area shape="rect" href="stm32f3xx__hal__conf_8h.html" title="HAL configuration file." alt="" coords="1123,379,1271,405"/>
-<area shape="rect" title=" " alt="" coords="1459,453,1602,480"/>
-<area shape="rect" title=" " alt="" coords="1626,453,1774,480"/>
-<area shape="rect" title=" " alt="" coords="1798,453,1943,480"/>
-<area shape="rect" title=" " alt="" coords="1968,453,2117,480"/>
-<area shape="rect" title=" " alt="" coords="93,453,253,480"/>
-<area shape="rect" title=" " alt="" coords="278,453,423,480"/>
-<area shape="rect" title=" " alt="" coords="447,453,598,480"/>
-<area shape="rect" title=" " alt="" coords="623,453,764,480"/>
-<area shape="rect" title=" " alt="" coords="789,453,934,480"/>
-<area shape="rect" title=" " alt="" coords="959,453,1103,480"/>
-<area shape="rect" title=" " alt="" coords="1127,453,1268,480"/>
-<area shape="rect" title=" " alt="" coords="1293,453,1435,480"/>
+<map name="isr_8c" id="aisr_8c">
+<area shape="rect" title="iSensor&#45;SPI&#45;Buffer interrupt service routines" alt="" coords="384,5,431,32"/>
+<area shape="rect" href="reg_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer register interfacing module." alt="" coords="522,80,573,107"/>
+<area shape="rect" href="main_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer main." alt="" coords="525,155,586,181"/>
+<area shape="rect" href="imu_8h.html" title="Implementation for iSensor&#45;SPI&#45;Buffer IMU interfacing module." alt="" coords="5,80,60,107"/>
+<area shape="rect" href="isr_8h.html" title="Header file for the interrupt service routine module." alt="" coords="84,80,131,107"/>
+<area shape="rect" href="buffer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer buffer data structure module." alt="" coords="155,80,219,107"/>
+<area shape="rect" href="user__spi_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer user SPI (slave SPI) module." alt="" coords="415,80,498,107"/>
+<area shape="rect" href="dio_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer DIO interfacing module." alt="" coords="626,155,677,181"/>
+<area shape="rect" href="flash_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer flash memory interfacing functions." alt="" coords="244,80,304,107"/>
+<area shape="rect" href="data__capture_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer autonomous IMU data acquisition module." alt="" coords="699,80,807,107"/>
+<area shape="rect" href="timer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer timer module." alt="" coords="328,80,391,107"/>
+<area shape="rect" title=" " alt="" coords="241,155,307,181"/>
+<area shape="rect" title=" " alt="" coords="545,229,662,256"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -126,6 +114,9 @@ Functions</h2></td></tr>
 <tr class="memitem:af1b2415315c15bd1688844b89f63ea7f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#af1b2415315c15bd1688844b89f63ea7f">FinishImuBurst</a> ()</td></tr>
 <tr class="memdesc:af1b2415315c15bd1688844b89f63ea7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleans up an IMU burst data read.  <a href="isr_8c.html#af1b2415315c15bd1688844b89f63ea7f">More...</a><br /></td></tr>
 <tr class="separator:af1b2415315c15bd1688844b89f63ea7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f205735b8aa53aa3809d7a1ad2d81c9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a9f205735b8aa53aa3809d7a1ad2d81c9">ProcessSPITransaction</a> (uint32_t rx)</td></tr>
+<tr class="memdesc:a9f205735b8aa53aa3809d7a1ad2d81c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process a 16 bit data word from the user SPI.  <a href="isr_8c.html#a9f205735b8aa53aa3809d7a1ad2d81c9">More...</a><br /></td></tr>
+<tr class="separator:a9f205735b8aa53aa3809d7a1ad2d81c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f0a091727452df71a1760d1133bf9b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a9f0a091727452df71a1760d1133bf9b4">EXTI9_5_IRQHandler</a> ()</td></tr>
 <tr class="memdesc:a9f0a091727452df71a1760d1133bf9b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">IMU data ready ISR. Kicks off data capture process.  <a href="isr_8c.html#a9f0a091727452df71a1760d1133bf9b4">More...</a><br /></td></tr>
 <tr class="separator:a9f0a091727452df71a1760d1133bf9b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,6 +135,9 @@ Functions</h2></td></tr>
 <tr class="memitem:abd16b3391557c4a3a8020d675e2c452f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#abd16b3391557c4a3a8020d675e2c452f">DMA1_Channel5_IRQHandler</a> (void)</td></tr>
 <tr class="memdesc:abd16b3391557c4a3a8020d675e2c452f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function handles DMA1 channel5 global interrupt (spi2 (user) Tx).  <a href="isr_8c.html#abd16b3391557c4a3a8020d675e2c452f">More...</a><br /></td></tr>
 <tr class="separator:abd16b3391557c4a3a8020d675e2c452f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68d8880cd80cb17a2501487c3d649ea1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a68d8880cd80cb17a2501487c3d649ea1">SPI2_IRQHandler</a> (void)</td></tr>
+<tr class="memdesc:a68d8880cd80cb17a2501487c3d649ea1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function handles the user SPI (SPI2) rx data interrupt.  <a href="isr_8c.html#a68d8880cd80cb17a2501487c3d649ea1">More...</a><br /></td></tr>
+<tr class="separator:a68d8880cd80cb17a2501487c3d649ea1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a738473a5b43f6c92b80ce1d3d6f77ed9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a738473a5b43f6c92b80ce1d3d6f77ed9">EXTI15_10_IRQHandler</a> (void)</td></tr>
 <tr class="memdesc:a738473a5b43f6c92b80ce1d3d6f77ed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function handles the user SPI (SPI2) chip select rising edge.  <a href="isr_8c.html#a738473a5b43f6c92b80ce1d3d6f77ed9">More...</a><br /></td></tr>
 <tr class="separator:a738473a5b43f6c92b80ce1d3d6f77ed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -162,25 +156,9 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a0963b05bebaa79e9cc9b76594b1d3e73"><td class="memItemLeft" align="right" valign="top">volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a0963b05bebaa79e9cc9b76594b1d3e73">g_regs</a> [<a class="el" href="registers_8h.html#a807211953b57b1a3f715e8a4496f3d2d">NUM_REG_PAGES</a> *REG_PER_PAGE]</td></tr>
-<tr class="separator:a0963b05bebaa79e9cc9b76594b1d3e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2e7f7d2196f13ccbd1dd3b4177ef135"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#aa2e7f7d2196f13ccbd1dd3b4177ef135">g_bufCount</a></td></tr>
-<tr class="separator:aa2e7f7d2196f13ccbd1dd3b4177ef135"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4eae4d74cf9b50c1088c5c05ee83ee2d"><td class="memItemLeft" align="right" valign="top">DMA_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a4eae4d74cf9b50c1088c5c05ee83ee2d">g_dma_spi2_tx</a></td></tr>
-<tr class="separator:a4eae4d74cf9b50c1088c5c05ee83ee2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac1f4630d4e8c615569ebe2ac0631580"><td class="memItemLeft" align="right" valign="top">DMA_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#aac1f4630d4e8c615569ebe2ac0631580">g_dma_spi1_rx</a></td></tr>
-<tr class="separator:aac1f4630d4e8c615569ebe2ac0631580"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9dbb1a46106345497ffe77a0cf9c5ee8"><td class="memItemLeft" align="right" valign="top">DMA_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a9dbb1a46106345497ffe77a0cf9c5ee8">g_dma_spi1_tx</a></td></tr>
-<tr class="separator:a9dbb1a46106345497ffe77a0cf9c5ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7374f4f68aaef9867e081e6cb59e3d9"><td class="memItemLeft" align="right" valign="top">SPI_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#ac7374f4f68aaef9867e081e6cb59e3d9">g_spi1</a></td></tr>
-<tr class="separator:ac7374f4f68aaef9867e081e6cb59e3d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35c3e3dee022adebf0fc138c81b515b9"><td class="memItemLeft" align="right" valign="top">SPI_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a35c3e3dee022adebf0fc138c81b515b9">g_spi2</a></td></tr>
-<tr class="separator:a35c3e3dee022adebf0fc138c81b515b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a090b8a30a19d0dbdd3dbcfed8dc2df69"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a090b8a30a19d0dbdd3dbcfed8dc2df69">g_userburstRunning</a></td></tr>
-<tr class="separator:a090b8a30a19d0dbdd3dbcfed8dc2df69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65a6f223155b319c75cb6c1a54e7cdf5"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a65a6f223155b319c75cb6c1a54e7cdf5">g_wordsPerCapture</a></td></tr>
 <tr class="separator:a65a6f223155b319c75cb6c1a54e7cdf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07af1c87664cfacf9460801271ab0dec"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a07af1c87664cfacf9460801271ab0dec">g_captureInProgress</a></td></tr>
+<tr class="memitem:a07af1c87664cfacf9460801271ab0dec"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a07af1c87664cfacf9460801271ab0dec">g_captureInProgress</a> = 0u</td></tr>
 <tr class="separator:a07af1c87664cfacf9460801271ab0dec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a065ba8ba0838a8bd4db45dcb1efdfefe"><td class="memItemLeft" align="right" valign="top">static uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html#a065ba8ba0838a8bd4db45dcb1efdfefe">BufferElementHandle</a></td></tr>
 <tr class="separator:a065ba8ba0838a8bd4db45dcb1efdfefe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -221,9 +199,9 @@ Variables</h2></td></tr>
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="isr_8c_a850cefb17a977292ae5eb4cafa9976c3_cgraph.png" border="0" usemap="#aisr_8c_a850cefb17a977292ae5eb4cafa9976c3_cgraph" alt=""/></div>
-<map name="isr_8c_a850cefb17a977292ae5eb4cafa9976c3_cgraph" id="isr_8c_a850cefb17a977292ae5eb4cafa9976c3_cgraph">
+<map name="isr_8c_a850cefb17a977292ae5eb4cafa9976c3_cgraph" id="aisr_8c_a850cefb17a977292ae5eb4cafa9976c3_cgraph">
 <area shape="rect" title="This function handles Pre&#45;fetch fault, memory access fault." alt="" coords="5,5,131,32"/>
-<area shape="rect" href="flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773" title="Stores an error code to flash memory." alt="" coords="179,5,281,32"/>
+<area shape="rect" href="flash_8c.html#af425d5b1241befa56dbe794fffae169f" title="Stores an error code to flash memory." alt="" coords="179,5,297,32"/>
 </map>
 </div>
 
@@ -313,15 +291,20 @@ Here is the call graph for this function:</div>
 
 <p>This function handles the user SPI (SPI2) chip select rising edge. </p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This interrupt is the only interrupt generated by the user SPI port. All new data and error flags are handled in this one interrupt. This should make the burst behavior more consistent, since there is no longer any dependency on how many bytes were clocked out, or potential for weird data offsets. </p>
+<p>Two interrupts are used for the user SPI interface. In register mode, the SPI2 interrupt is used to interrupt when two bytes are received, to avoid an unnecessary dependency on the CS state (caused issues for some Linux systems which like to toggle CS after each byte). This interrupt is used when in burst mode only. In burst mode, a variable number of bytes is clocked out, so the CS rising edge must be used to delimit the end of a transaction.</p>
+<p>In this interrupt, if another burst read is requested, the CS rising edge interrupt is kept enabled, and the buffer board is configured for another burst. If a standard register read/write is requested, then the CS interrupt is disabled, and the standard SPI interrupt re-enabled.</p>
+<p>When this function is called, the SPI should be operating in 16-bit mode, rather than the 8-bit mode used for register interfacing. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="isr_8c_a738473a5b43f6c92b80ce1d3d6f77ed9_cgraph.png" border="0" usemap="#aisr_8c_a738473a5b43f6c92b80ce1d3d6f77ed9_cgraph" alt=""/></div>
-<map name="isr_8c_a738473a5b43f6c92b80ce1d3d6f77ed9_cgraph" id="isr_8c_a738473a5b43f6c92b80ce1d3d6f77ed9_cgraph">
-<area shape="rect" title="This function handles the user SPI (SPI2) chip select rising edge." alt="" coords="5,5,161,32"/>
-<area shape="rect" href="user__spi_8c.html#a3ba4975cc957879494953133d89031a5" title="Restore SPI functionality after a burst read." alt="" coords="209,5,336,32"/>
-<area shape="rect" href="user__spi_8c.html#a0cf0803624b0e83866ea3dd06b23b05a" title="Reset user SPI port." alt="" coords="384,5,487,32"/>
+<map name="isr_8c_a738473a5b43f6c92b80ce1d3d6f77ed9_cgraph" id="aisr_8c_a738473a5b43f6c92b80ce1d3d6f77ed9_cgraph">
+<area shape="rect" title="This function handles the user SPI (SPI2) chip select rising edge." alt="" coords="5,81,161,108"/>
+<area shape="rect" href="isr_8c.html#a9f205735b8aa53aa3809d7a1ad2d81c9" title="Process a 16 bit data word from the user SPI." alt="" coords="213,56,371,83"/>
+<area shape="rect" href="user__spi_8c.html#ac75f5056b4e9ecb70b28865e0a893ab4" title="Restore SPI functionality after a burst read." alt="" coords="209,107,375,133"/>
+<area shape="rect" href="reg_8c.html#ae990584c59a18c196de2500b5cc81880" title="Process a register read request (from master)" alt="" coords="441,5,523,32"/>
+<area shape="rect" href="reg_8c.html#a97f4b6010b00c791d0c06284e1049d15" title="Process a register write request (from master)" alt="" coords="441,56,523,83"/>
+<area shape="rect" href="user__spi_8c.html#af894683d9f035fc8224bdc09e5f911aa" title="Reset user SPI port." alt="" coords="423,107,541,133"/>
 </map>
 </div>
 
@@ -349,12 +332,12 @@ Here is the call graph for this function:</div>
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="isr_8c_acd7f454d4f8ce7b9b1caebf717e40e55_cgraph.png" border="0" usemap="#aisr_8c_acd7f454d4f8ce7b9b1caebf717e40e55_cgraph" alt=""/></div>
-<map name="isr_8c_acd7f454d4f8ce7b9b1caebf717e40e55_cgraph" id="isr_8c_acd7f454d4f8ce7b9b1caebf717e40e55_cgraph">
-<area shape="rect" title="EXTI 4 interrupt handler." alt="" coords="5,56,133,83"/>
-<area shape="rect" href="timer_8c.html#aa070c28f17a0f620ec21a681b383769a" title="Increment PPS timestamp by 1." alt="" coords="181,56,316,83"/>
-<area shape="rect" href="timer_8c.html#aee4842c061c047f9938eccfbbecf9d34" title="Reset TIM2 counter to 0." alt="" coords="375,5,534,32"/>
-<area shape="rect" href="timer_8c.html#a42165c313ad966bc655a7b7db5bd0264" title="Gets the current 32&#45;bit value from the IMU sample timestamp timer." alt="" coords="364,56,545,83"/>
-<area shape="rect" href="timer_8c.html#af3a8b8ce4dc5d61599ad5cef8dcd003a" title="Gets the current 32&#45;bit value from PPS timestamp registers." alt="" coords="387,107,522,133"/>
+<map name="isr_8c_acd7f454d4f8ce7b9b1caebf717e40e55_cgraph" id="aisr_8c_acd7f454d4f8ce7b9b1caebf717e40e55_cgraph">
+<area shape="rect" title="EXTI 4 interrupt handler." alt="" coords="5,78,133,105"/>
+<area shape="rect" href="timer_8c.html#acb786d65635223cdb27fc44fad6babad" title="Increment PPS timestamp by 1." alt="" coords="181,78,368,105"/>
+<area shape="rect" href="timer_8c.html#a547b452d1b19932ff1f2d8e742a34dc9" title="Reset TIM2 counter to 0." alt="" coords="423,5,595,47"/>
+<area shape="rect" href="timer_8c.html#a0a5f6200777635cb2ecf7a504b8a602f" title="Gets the current 32&#45;bit value from the IMU sample timestamp timer." alt="" coords="428,71,591,112"/>
+<area shape="rect" href="timer_8c.html#a8089777879fb412e61bd57e10993b7d0" title="Gets the current 32&#45;bit value from PPS timestamp registers." alt="" coords="416,137,603,163"/>
 </map>
 </div>
 
@@ -382,12 +365,12 @@ Here is the call graph for this function:</div>
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="isr_8c_a9f0a091727452df71a1760d1133bf9b4_cgraph.png" border="0" usemap="#aisr_8c_a9f0a091727452df71a1760d1133bf9b4_cgraph" alt=""/></div>
-<map name="isr_8c_a9f0a091727452df71a1760d1133bf9b4_cgraph" id="isr_8c_a9f0a091727452df71a1760d1133bf9b4_cgraph">
-<area shape="rect" title="IMU data ready ISR. Kicks off data capture process." alt="" coords="5,56,148,83"/>
-<area shape="rect" href="timer_8c.html#aa070c28f17a0f620ec21a681b383769a" title="Increment PPS timestamp by 1." alt="" coords="196,56,331,83"/>
-<area shape="rect" href="timer_8c.html#aee4842c061c047f9938eccfbbecf9d34" title="Reset TIM2 counter to 0." alt="" coords="390,5,549,32"/>
-<area shape="rect" href="timer_8c.html#a42165c313ad966bc655a7b7db5bd0264" title="Gets the current 32&#45;bit value from the IMU sample timestamp timer." alt="" coords="379,56,560,83"/>
-<area shape="rect" href="timer_8c.html#af3a8b8ce4dc5d61599ad5cef8dcd003a" title="Gets the current 32&#45;bit value from PPS timestamp registers." alt="" coords="402,107,537,133"/>
+<map name="isr_8c_a9f0a091727452df71a1760d1133bf9b4_cgraph" id="aisr_8c_a9f0a091727452df71a1760d1133bf9b4_cgraph">
+<area shape="rect" title="IMU data ready ISR. Kicks off data capture process." alt="" coords="5,78,148,105"/>
+<area shape="rect" href="timer_8c.html#acb786d65635223cdb27fc44fad6babad" title="Increment PPS timestamp by 1." alt="" coords="196,78,383,105"/>
+<area shape="rect" href="timer_8c.html#a547b452d1b19932ff1f2d8e742a34dc9" title="Reset TIM2 counter to 0." alt="" coords="438,5,610,47"/>
+<area shape="rect" href="timer_8c.html#a0a5f6200777635cb2ecf7a504b8a602f" title="Gets the current 32&#45;bit value from the IMU sample timestamp timer." alt="" coords="443,71,605,112"/>
+<area shape="rect" href="timer_8c.html#a8089777879fb412e61bd57e10993b7d0" title="Gets the current 32&#45;bit value from PPS timestamp registers." alt="" coords="431,137,617,163"/>
 </map>
 </div>
 
@@ -445,9 +428,9 @@ Here is the call graph for this function:</div>
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="isr_8c_a2bffc10d5bd4106753b7c30e86903bea_cgraph.png" border="0" usemap="#aisr_8c_a2bffc10d5bd4106753b7c30e86903bea_cgraph" alt=""/></div>
-<map name="isr_8c_a2bffc10d5bd4106753b7c30e86903bea_cgraph" id="isr_8c_a2bffc10d5bd4106753b7c30e86903bea_cgraph">
+<map name="isr_8c_a2bffc10d5bd4106753b7c30e86903bea_cgraph" id="aisr_8c_a2bffc10d5bd4106753b7c30e86903bea_cgraph">
 <area shape="rect" title="This function handles Hard fault interrupt." alt="" coords="5,5,135,32"/>
-<area shape="rect" href="flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773" title="Stores an error code to flash memory." alt="" coords="183,5,285,32"/>
+<area shape="rect" href="flash_8c.html#af425d5b1241befa56dbe794fffae169f" title="Stores an error code to flash memory." alt="" coords="183,5,301,32"/>
 </map>
 </div>
 
@@ -475,9 +458,100 @@ Here is the call graph for this function:</div>
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="isr_8c_a3150f74512510287a942624aa9b44cc5_cgraph.png" border="0" usemap="#aisr_8c_a3150f74512510287a942624aa9b44cc5_cgraph" alt=""/></div>
-<map name="isr_8c_a3150f74512510287a942624aa9b44cc5_cgraph" id="isr_8c_a3150f74512510287a942624aa9b44cc5_cgraph">
+<map name="isr_8c_a3150f74512510287a942624aa9b44cc5_cgraph" id="aisr_8c_a3150f74512510287a942624aa9b44cc5_cgraph">
 <area shape="rect" title="This function handles Memory management fault." alt="" coords="5,5,153,32"/>
-<area shape="rect" href="flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773" title="Stores an error code to flash memory." alt="" coords="201,5,304,32"/>
+<area shape="rect" href="flash_8c.html#af425d5b1241befa56dbe794fffae169f" title="Stores an error code to flash memory." alt="" coords="201,5,320,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a9f205735b8aa53aa3809d7a1ad2d81c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f205735b8aa53aa3809d7a1ad2d81c9">&#9670;&nbsp;</a></span>ProcessSPITransaction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void ProcessSPITransaction </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>rx</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Process a 16 bit data word from the user SPI. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rx</td><td>Two bytes from the user SPI in register mode, packed</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>This function accommodates for the swapped endianess of bytes which are packed into the SPI Rx data register.</p>
+<p>If the value on the SPI bus is: 0x1234, then the data register will hold 0x3412. This is true for both receive and transmit.</p>
+<p>IMPORTANT: This should only be used for register mode, when the SPI data word size is 8 bits. In burst mode, where the SPI data word size is 16 bits, this will not work, since data packing is not used. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="isr_8c_a9f205735b8aa53aa3809d7a1ad2d81c9_cgraph.png" border="0" usemap="#aisr_8c_a9f205735b8aa53aa3809d7a1ad2d81c9_cgraph" alt=""/></div>
+<map name="isr_8c_a9f205735b8aa53aa3809d7a1ad2d81c9_cgraph" id="aisr_8c_a9f205735b8aa53aa3809d7a1ad2d81c9_cgraph">
+<area shape="rect" title="Process a 16 bit data word from the user SPI." alt="" coords="5,31,164,57"/>
+<area shape="rect" href="reg_8c.html#ae990584c59a18c196de2500b5cc81880" title="Process a register read request (from master)" alt="" coords="212,5,295,32"/>
+<area shape="rect" href="reg_8c.html#a97f4b6010b00c791d0c06284e1049d15" title="Process a register write request (from master)" alt="" coords="212,56,295,83"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="isr_8c_a9f205735b8aa53aa3809d7a1ad2d81c9_icgraph.png" border="0" usemap="#aisr_8c_a9f205735b8aa53aa3809d7a1ad2d81c9_icgraph" alt=""/></div>
+<map name="isr_8c_a9f205735b8aa53aa3809d7a1ad2d81c9_icgraph" id="aisr_8c_a9f205735b8aa53aa3809d7a1ad2d81c9_icgraph">
+<area shape="rect" title="Process a 16 bit data word from the user SPI." alt="" coords="209,5,368,32"/>
+<area shape="rect" href="isr_8c.html#a738473a5b43f6c92b80ce1d3d6f77ed9" title="This function handles the user SPI (SPI2) chip select rising edge." alt="" coords="5,5,161,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a68d8880cd80cb17a2501487c3d649ea1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68d8880cd80cb17a2501487c3d649ea1">&#9670;&nbsp;</a></span>SPI2_IRQHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SPI2_IRQHandler </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function handles the user SPI (SPI2) rx data interrupt. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>The SPI Rx data interrupt is used for standard register reads. The SPI2 peripheral is configured to generate an interrupt once two bytes of data have been received.</p>
+<p>IMPORTANT NOTE: Due to data packing, each read from the SPI data register actually pulls two bytes from the Rx FIFO. These bytes are in reversed order from how they were received on the bus. For more information on this behavior, see the data packing section of the SPI entry in the technical reference manual.</p>
+<p>If a burst read is requested, this interrupt is disabled, and the CS rising edge interrupt is enabled instead. This allows for variable length burst read transactions. The hand off from register mode to burst mode and back requires special care. We want to avoid potential issues if the user just immediately starts full length burst reads, rather than requesting a burst first. We essentially have to wait for the current SPI transaction to finish before enabling the burst. Otherwise, the burst can potentially get enabled half way through this transfer, which messes up the whole burst read sequence. We could accomplish this by polling CS in the ISR, but that has a strong potential to mess with other functionality (user SPI interrupt is highest priority, and also generally polling in an ISR is a bad idea). Instead, a flag is set, which must be cleared by the CS ISR. This flag is checked by the buffer dequeue routine which runs from the main loop.</p>
+<p>Once no more bursts are requested, the SPI2 interrupt will be re-enabled through the user SPI burst disable function. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="isr_8c_a68d8880cd80cb17a2501487c3d649ea1_cgraph.png" border="0" usemap="#aisr_8c_a68d8880cd80cb17a2501487c3d649ea1_cgraph" alt=""/></div>
+<map name="isr_8c_a68d8880cd80cb17a2501487c3d649ea1_cgraph" id="aisr_8c_a68d8880cd80cb17a2501487c3d649ea1_cgraph">
+<area shape="rect" title="This function handles the user SPI (SPI2) rx data interrupt." alt="" coords="5,5,128,32"/>
+<area shape="rect" href="reg_8c.html#a21315cbfd72bccb63fdd1e97cea672de" title="Check if the requested read is a start of a burst." alt="" coords="176,5,313,32"/>
 </map>
 </div>
 
@@ -527,9 +601,9 @@ Here is the call graph for this function:</div>
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="isr_8c_a1d98923de2ed6b7309b66f9ba2971647_cgraph.png" border="0" usemap="#aisr_8c_a1d98923de2ed6b7309b66f9ba2971647_cgraph" alt=""/></div>
-<map name="isr_8c_a1d98923de2ed6b7309b66f9ba2971647_cgraph" id="isr_8c_a1d98923de2ed6b7309b66f9ba2971647_cgraph">
+<map name="isr_8c_a1d98923de2ed6b7309b66f9ba2971647_cgraph" id="aisr_8c_a1d98923de2ed6b7309b66f9ba2971647_cgraph">
 <area shape="rect" title="This function handles Undefined instruction or illegal state." alt="" coords="5,5,144,32"/>
-<area shape="rect" href="flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773" title="Stores an error code to flash memory." alt="" coords="192,5,295,32"/>
+<area shape="rect" href="flash_8c.html#af425d5b1241befa56dbe794fffae169f" title="Stores an error code to flash memory." alt="" coords="192,5,311,32"/>
 </map>
 </div>
 
@@ -605,30 +679,6 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="aa2e7f7d2196f13ccbd1dd3b4177ef135"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2e7f7d2196f13ccbd1dd3b4177ef135">&#9670;&nbsp;</a></span>g_bufCount</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">volatile uint32_t g_bufCount</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Buffer internal count variable (from <a class="el" href="buffer_8c.html" title="iSensor-SPI-Buffer buffer implementation">buffer.c</a>)</p>
-<p>Number of elements currently stored in the buffer. Global scope </p>
-
-</div>
-</div>
 <a id="a07af1c87664cfacf9460801271ab0dec"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a07af1c87664cfacf9460801271ab0dec">&#9670;&nbsp;</a></span>g_captureInProgress</h2>
 
@@ -636,178 +686,11 @@ Here is the call graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">volatile uint32_t g_captureInProgress</td>
+          <td class="memname">volatile uint32_t g_captureInProgress = 0u</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Track if there is currently a capture in progress </p>
-
-</div>
-</div>
-<a id="aac1f4630d4e8c615569ebe2ac0631580"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac1f4630d4e8c615569ebe2ac0631580">&#9670;&nbsp;</a></span>g_dma_spi1_rx</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">DMA_HandleTypeDef g_dma_spi1_rx</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>IMU SPI Rx DMA (from <a class="el" href="main_8c.html" title="iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.">main.c</a>)</p>
-<p>IMU SPI Rx DMA handle. Global scope </p>
-
-</div>
-</div>
-<a id="a9dbb1a46106345497ffe77a0cf9c5ee8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9dbb1a46106345497ffe77a0cf9c5ee8">&#9670;&nbsp;</a></span>g_dma_spi1_tx</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">DMA_HandleTypeDef g_dma_spi1_tx</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>IMU SPI Rx DMA (from <a class="el" href="main_8c.html" title="iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.">main.c</a>)</p>
-<p>IMU SPI Tx DMA handle. Global scope </p>
-
-</div>
-</div>
-<a id="a4eae4d74cf9b50c1088c5c05ee83ee2d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4eae4d74cf9b50c1088c5c05ee83ee2d">&#9670;&nbsp;</a></span>g_dma_spi2_tx</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">DMA_HandleTypeDef g_dma_spi2_tx</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>User SPI Tx DMA (from <a class="el" href="main_8c.html" title="iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.">main.c</a>)</p>
-<p>User SPI Tx DMA handle. Global scope </p>
-
-</div>
-</div>
-<a id="a0963b05bebaa79e9cc9b76594b1d3e73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0963b05bebaa79e9cc9b76594b1d3e73">&#9670;&nbsp;</a></span>g_regs</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">volatile uint16_t g_regs[<a class="el" href="registers_8h.html#a807211953b57b1a3f715e8a4496f3d2d">NUM_REG_PAGES</a> *REG_PER_PAGE]</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Global register array (from <a class="el" href="registers_8c.html" title="iSensor-SPI-Buffer register interfacing module. Called by user SPI and USB CLI">registers.c</a>) </p>
-
-</div>
-</div>
-<a id="ac7374f4f68aaef9867e081e6cb59e3d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac7374f4f68aaef9867e081e6cb59e3d9">&#9670;&nbsp;</a></span>g_spi1</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SPI_HandleTypeDef g_spi1</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>IMU SPI handle (from <a class="el" href="main_8c.html" title="iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.">main.c</a>)</p>
-<p>SPI handle for IMU master port. Global scope </p>
-
-</div>
-</div>
-<a id="a35c3e3dee022adebf0fc138c81b515b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35c3e3dee022adebf0fc138c81b515b9">&#9670;&nbsp;</a></span>g_spi2</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SPI_HandleTypeDef g_spi2</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>User SPI handle (from <a class="el" href="main_8c.html" title="iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.">main.c</a>)</p>
-<p>SPI handle for slave port (from master controller). Global scope </p>
-
-</div>
-</div>
-<a id="a090b8a30a19d0dbdd3dbcfed8dc2df69"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a090b8a30a19d0dbdd3dbcfed8dc2df69">&#9670;&nbsp;</a></span>g_userburstRunning</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">volatile uint32_t g_userburstRunning</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Track if a burst read is enabled (from <a class="el" href="user__spi_8c.html" title="iSensor-SPI-Buffer user (slave) SPI module">user_spi.c</a>)</p>
-<p>Track if a burst read is enabled. Global scope </p>
 
 </div>
 </div>

@@ -1,0 +1,5 @@
+<map id="ExecuteDFUBoot" name="ExecuteDFUBoot">
+<area shape="rect" id="node1" title="Executes a DFU reboot." alt="" coords="283,5,405,32"/>
+<area shape="rect" id="node2" href="$dfu_8c.html#ac4049fa9d2bc5a43fcd551bf41bfd98f" title="Checks if a reboot into the DFU bootloader is needed." alt="" coords="104,5,235,32"/>
+<area shape="rect" id="node3" href="$main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
+</map>

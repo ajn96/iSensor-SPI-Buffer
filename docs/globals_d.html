@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.14</span>
+   &#160;<span id="projectnumber">1.15</span>
    </div>
    <div id="projectbrief">Firmware for the iSensor-SPI-Buffer board to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -67,6 +67,12 @@ $(function() {
 <div class="textblock">Here is a list of all documented functions, variables, defines, enums, and typedefs with links to the documentation:</div>
 
 <h3><a id="index_d"></a>- d -</h3><ul>
+<li>Data_Capture_Disable()
+: <a class="el" href="data__capture_8c.html#a092ba93a71cecfb33d6ae112eeb2f5c0">data_capture.c</a>
+</li>
+<li>Data_Capture_Enable()
+: <a class="el" href="data__capture_8c.html#ad3a366bf6bc8893cac2cd47e1b556d4c">data_capture.c</a>
+</li>
 <li>DATA_READY_INT_MASK
 : <a class="el" href="dio_8h.html#a8fc55dc20edabab3d19c20221f5c28e0">dio.h</a>
 </li>
@@ -76,17 +82,35 @@ $(function() {
 <li>DelimCmd
 : <a class="el" href="script_8c.html#a60f481e0a6db5359b3076169e47e3afe">script.c</a>
 </li>
+<li>DFU_Check_Flags()
+: <a class="el" href="dfu_8c.html#ac4049fa9d2bc5a43fcd551bf41bfd98f">dfu.c</a>
+</li>
+<li>DFU_FLAG_ADDR
+: <a class="el" href="dfu_8h.html#ab156af3c6110b32f231110fdaf1b1dee">dfu.h</a>
+</li>
+<li>DFU_Prepare_Reboot()
+: <a class="el" href="dfu_8c.html#a4b9e7205fb97cb7aeccc6762dbe52045">dfu.c</a>
+</li>
+<li>DIO_Get_Hardware_ID()
+: <a class="el" href="dio_8c.html#a4b557800b2512b06f5698dc6cd071e3b">dio.c</a>
+</li>
+<li>DIO_INPUT_CLEAR_MASK
+: <a class="el" href="dio_8h.html#acf5aed0e68e10d0468f075ebfb02e50d">dio.h</a>
+</li>
+<li>DIO_Start_Sync_Gen()
+: <a class="el" href="dio_8c.html#a1a271d9bbe0975ea3108e6b9f90763b1">dio.c</a>
+</li>
+<li>DIO_Update_Input_Config()
+: <a class="el" href="dio_8c.html#aa46d515c975148e69d95b5554423a873">dio.c</a>
+</li>
+<li>DIO_Update_Output_Config()
+: <a class="el" href="dio_8c.html#a7698bf63406d963c81947c6cb116cb00">dio.c</a>
+</li>
+<li>DIO_Validate_Input_Config()
+: <a class="el" href="dio_8c.html#a1dbfdd91d1b8633600bf00e2b6ef501c">dio.c</a>
+</li>
 <li>DIOConfig
 : <a class="el" href="dio_8h.html#ad9566a73aa524180d467768ff9f132f5">dio.h</a>
-</li>
-<li>DisableDataCapture()
-: <a class="el" href="data__capture_8c.html#ab71775102e1565ca2e8fd384d27204b3">data_capture.c</a>
-</li>
-<li>DisableImuSpiDMA()
-: <a class="el" href="imu__spi_8c.html#a50a9e9e1e661156087f12a81c2b6bc30">imu_spi.c</a>
-</li>
-<li>DisablePPSTimer()
-: <a class="el" href="timer_8c.html#a674d0d6bc8aa368d9b71e03e7a54cd13">timer.c</a>
 </li>
 <li>DMA1_Channel2_IRQHandler()
 : <a class="el" href="isr_8c.html#a0c3390d4dc5cfceccbeda71aa672d99d">isr.c</a>
@@ -101,7 +125,7 @@ $(function() {
 : <a class="el" href="main_8c.html#a7ad17703ce0e9b527278fb5783adb44d">main.c</a>
 </li>
 <li>DWT_Init()
-: <a class="el" href="main_8c.html#a41f752b7e6021861e56ecdf56993e9a8">main.c</a>
+: <a class="el" href="timer_8c.html#a41f752b7e6021861e56ecdf56993e9a8">timer.c</a>
 </li>
 </ul>
 </div><!-- contents -->

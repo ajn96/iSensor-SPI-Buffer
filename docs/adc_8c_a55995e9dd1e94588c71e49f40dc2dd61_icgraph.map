@@ -1,4 +1,4 @@
 <map id="ProcessTempReading" name="ProcessTempReading">
-<area shape="rect" id="node1" title="Handle end of conversion for a temp sensor value." alt="" coords="144,5,293,32"/>
-<area shape="rect" id="node2" href="$adc_8c.html#a88d8b1c45444aeddd983d3add5e8224e" title="Read and scale ADC values then load to output registers." alt="" coords="5,5,96,32"/>
+<area shape="rect" id="node1" title="Handle end of conversion for a temp sensor value." alt="" coords="151,5,300,32"/>
+<area shape="rect" id="node2" href="$adc_8c.html#afb90330f1a30b6eece128aaeab497658" title="Read and scale ADC values then load to output registers." alt="" coords="5,5,103,32"/>
 </map>

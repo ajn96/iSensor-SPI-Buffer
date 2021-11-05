@@ -1,0 +1,4 @@
+<map id="Flash_Fault_Log_Init" name="Flash_Fault_Log_Init">
+<area shape="rect" id="node1" title="Initialize flash error logging." alt="" coords="5,5,148,32"/>
+<area shape="rect" id="node2" href="$flash_8c.html#af425d5b1241befa56dbe794fffae169f" title="Stores an error code to flash memory." alt="" coords="196,5,315,32"/>
+</map>

@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.14</span>
+   &#160;<span id="projectnumber">1.15</span>
    </div>
    <div id="projectbrief">Firmware for the iSensor-SPI-Buffer board to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -78,53 +78,52 @@ $(function() {
 
 <p>iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="main_8h_source.html">main.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="usb_8h_source.html">usb.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="main_8h_source.html">main.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="reg_8h_source.html">reg.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="imu_8h_source.html">imu.h</a>&quot;</code><br />
 <code>#include &quot;usbd_cdc_if.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="usb__cli_8h_source.html">usb_cli.h</a>&quot;</code><br />
+<code>#include &quot;usb_device.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="sd__card_8h_source.html">sd_card.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="buffer_8h_source.html">buffer.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="user__interrupt_8h_source.html">user_interrupt.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="flash_8h_source.html">flash.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="led_8h_source.html">led.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="watchdog_8h_source.html">watchdog.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="timer_8h_source.html">timer.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="dio_8h_source.html">dio.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="adc_8h_source.html">adc.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="dfu_8h_source.html">dfu.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="user__spi_8h_source.html">user_spi.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="data__capture_8h_source.html">data_capture.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="script_8h_source.html">script.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for main.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="main_8c__incl.png" border="0" usemap="#amain_8c" alt=""/></div>
-<map name="main_8c" id="main_8c">
-<area shape="rect" title="iSensor&#45;SPI&#45;Buffer main. Contains STM init functions and application cyclic executive." alt="" coords="2487,5,2548,32"/>
-<area shape="rect" href="main_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer main." alt="" coords="2419,229,2480,256"/>
-<area shape="rect" title=" " alt="" coords="2377,155,2479,181"/>
-<area shape="rect" href="usb__cli_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer USB command line register interface." alt="" coords="2505,80,2580,107"/>
-<area shape="rect" href="sd__card_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer SD card interfacing and script execution module." alt="" coords="2827,229,2906,256"/>
-<area shape="rect" title=" " alt="" coords="2295,603,2412,629"/>
-<area shape="rect" href="registers_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer register interfacing module." alt="" coords="2416,379,2499,405"/>
-<area shape="rect" href="timer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer timer module." alt="" coords="2826,528,2889,555"/>
-<area shape="rect" href="buffer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer buffer data structure module." alt="" coords="2693,453,2757,480"/>
-<area shape="rect" href="flash_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer flash memory interfacing functions." alt="" coords="2217,453,2277,480"/>
-<area shape="rect" href="led_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer LED control module." alt="" coords="2509,528,2560,555"/>
-<area shape="rect" href="dfu_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer runtime firmware upgrade module." alt="" coords="2141,453,2192,480"/>
-<area shape="rect" href="user__interrupt_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer user interrupt (data ready) config and generation functions." alt="" coords="2344,304,2456,331"/>
-<area shape="rect" href="watchdog_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer watchdog timer module." alt="" coords="1853,304,1941,331"/>
-<area shape="rect" href="dio_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer DIO interfacing module." alt="" coords="2269,304,2320,331"/>
-<area shape="rect" title=" " alt="" coords="2097,304,2194,331"/>
-<area shape="rect" href="adc_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer ADC module (for temp sensor and Vdd monitoring)" alt="" coords="1966,304,2021,331"/>
-<area shape="rect" href="imu__spi_8h.html" title="Implementation for iSensor&#45;SPI&#45;Buffer IMU interfacing module." alt="" coords="2301,453,2379,480"/>
-<area shape="rect" href="data__capture_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer autonomous IMU data acquisition module." alt="" coords="2403,453,2511,480"/>
-<area shape="rect" href="user__spi_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer user SPI (slave SPI) module." alt="" coords="2587,453,2669,480"/>
-<area shape="rect" title=" " alt="" coords="2199,528,2265,555"/>
-<area shape="rect" title=" " alt="" coords="1063,528,1169,555"/>
-<area shape="rect" title=" " alt="" coords="2270,379,2333,405"/>
-<area shape="rect" href="stm32f3xx__hal__conf_8h.html" title="HAL configuration file." alt="" coords="1130,379,1278,405"/>
-<area shape="rect" title=" " alt="" coords="1633,453,1775,480"/>
-<area shape="rect" title=" " alt="" coords="1799,453,1947,480"/>
-<area shape="rect" title=" " alt="" coords="1971,453,2117,480"/>
-<area shape="rect" title=" " alt="" coords="93,453,243,480"/>
-<area shape="rect" title=" " alt="" coords="267,453,427,480"/>
-<area shape="rect" title=" " alt="" coords="451,453,597,480"/>
-<area shape="rect" title=" " alt="" coords="621,453,771,480"/>
-<area shape="rect" title=" " alt="" coords="796,453,937,480"/>
-<area shape="rect" title=" " alt="" coords="962,453,1107,480"/>
-<area shape="rect" title=" " alt="" coords="1132,453,1276,480"/>
-<area shape="rect" title=" " alt="" coords="1300,453,1441,480"/>
-<area shape="rect" title=" " alt="" coords="1466,453,1609,480"/>
-<area shape="rect" href="script_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer script module (loaded from SD card)" alt="" coords="2606,155,2671,181"/>
-<area shape="rect" title=" " alt="" coords="2958,304,3015,331"/>
+<map name="main_8c" id="amain_8c">
+<area shape="rect" title="iSensor&#45;SPI&#45;Buffer main. Contains STM init functions and application cyclic executive." alt="" coords="933,5,994,32"/>
+<area shape="rect" href="usb_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer USB command line register interface." alt="" coords="1445,80,1500,107"/>
+<area shape="rect" href="main_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer main." alt="" coords="1358,155,1419,181"/>
+<area shape="rect" href="reg_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer register interfacing module." alt="" coords="1174,80,1225,107"/>
+<area shape="rect" href="imu_8h.html" title="Implementation for iSensor&#45;SPI&#45;Buffer IMU interfacing module." alt="" coords="740,80,795,107"/>
+<area shape="rect" title=" " alt="" coords="408,80,511,107"/>
+<area shape="rect" title=" " alt="" coords="535,80,632,107"/>
+<area shape="rect" href="sd__card_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer SD card interfacing and script execution module." alt="" coords="5,80,84,107"/>
+<area shape="rect" href="buffer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer buffer data structure module." alt="" coords="183,80,247,107"/>
+<area shape="rect" href="user__interrupt_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer user interrupt (data ready) config and generation functions." alt="" coords="271,80,383,107"/>
+<area shape="rect" href="flash_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer flash memory interfacing functions." alt="" coords="656,80,716,107"/>
+<area shape="rect" href="led_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer LED control module." alt="" coords="1019,80,1070,107"/>
+<area shape="rect" href="watchdog_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer watchdog timer module." alt="" coords="819,80,907,107"/>
+<area shape="rect" href="timer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer timer module." alt="" coords="932,80,995,107"/>
+<area shape="rect" href="dio_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer DIO interfacing module." alt="" coords="1570,155,1621,181"/>
+<area shape="rect" href="adc_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer ADC module (for temp sensor and Vdd monitoring)" alt="" coords="1095,80,1149,107"/>
+<area shape="rect" href="dfu_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer runtime firmware upgrade module." alt="" coords="109,80,159,107"/>
+<area shape="rect" href="user__spi_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer user SPI (slave SPI) module." alt="" coords="1249,80,1331,107"/>
+<area shape="rect" href="data__capture_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer autonomous IMU data acquisition module." alt="" coords="1576,80,1684,107"/>
+<area shape="rect" href="script_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer script module (loaded from SD card)" alt="" coords="1356,80,1421,107"/>
+<area shape="rect" title=" " alt="" coords="831,155,896,181"/>
+<area shape="rect" title=" " alt="" coords="1330,229,1447,256"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -136,26 +135,18 @@ Functions</h2></td></tr>
 <tr class="memitem:ad76308591db32fe4919c7811ccec7cb7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ad76308591db32fe4919c7811ccec7cb7">MX_GPIO_Init</a> ()</td></tr>
 <tr class="memdesc:ad76308591db32fe4919c7811ccec7cb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPIO Initialization Function.  <a href="main_8c.html#ad76308591db32fe4919c7811ccec7cb7">More...</a><br /></td></tr>
 <tr class="separator:ad76308591db32fe4919c7811ccec7cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63fd813fab9e4e1b718f0b89e39fa26e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a63fd813fab9e4e1b718f0b89e39fa26e">MX_SPI1_Init</a> ()</td></tr>
-<tr class="memdesc:a63fd813fab9e4e1b718f0b89e39fa26e"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI1 Initialization Function (master SPI port to IMU)  <a href="main_8c.html#a63fd813fab9e4e1b718f0b89e39fa26e">More...</a><br /></td></tr>
-<tr class="separator:a63fd813fab9e4e1b718f0b89e39fa26e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ad17703ce0e9b527278fb5783adb44d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a7ad17703ce0e9b527278fb5783adb44d">DMA_Init</a> ()</td></tr>
-<tr class="memdesc:a7ad17703ce0e9b527278fb5783adb44d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init and DMA channels in use and configure DMA interrupts.  <a href="main_8c.html#a7ad17703ce0e9b527278fb5783adb44d">More...</a><br /></td></tr>
+<tr class="memdesc:a7ad17703ce0e9b527278fb5783adb44d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init all DMA channels in use and configure DMA interrupts.  <a href="main_8c.html#a7ad17703ce0e9b527278fb5783adb44d">More...</a><br /></td></tr>
 <tr class="separator:a7ad17703ce0e9b527278fb5783adb44d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41f752b7e6021861e56ecdf56993e9a8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a41f752b7e6021861e56ecdf56993e9a8">DWT_Init</a> ()</td></tr>
-<tr class="memdesc:a41f752b7e6021861e56ecdf56993e9a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init DWT peripheral.  <a href="main_8c.html#a41f752b7e6021861e56ecdf56993e9a8">More...</a><br /></td></tr>
-<tr class="separator:a41f752b7e6021861e56ecdf56993e9a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a> ()</td></tr>
 <tr class="memdesc:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The application entry point.  <a href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4">More...</a><br /></td></tr>
 <tr class="separator:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4e07955fadfeb416e9620ddb42f8fe9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ad4e07955fadfeb416e9620ddb42f8fe9">Error_Handler</a> ()</td></tr>
-<tr class="memdesc:ad4e07955fadfeb416e9620ddb42f8fe9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is executed in case of error occurrence.  <a href="main_8c.html#ad4e07955fadfeb416e9620ddb42f8fe9">More...</a><br /></td></tr>
-<tr class="separator:ad4e07955fadfeb416e9620ddb42f8fe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cafedb28e2070a60a7c2b39043b38d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a0cafedb28e2070a60a7c2b39043b38d8">Main_Error_Handler</a> ()</td></tr>
+<tr class="memdesc:a0cafedb28e2070a60a7c2b39043b38d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is executed in case of error occurrence.  <a href="main_8c.html#a0cafedb28e2070a60a7c2b39043b38d8">More...</a><br /></td></tr>
+<tr class="separator:a0cafedb28e2070a60a7c2b39043b38d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ad7e4dc4b3c39faa7fee4573f1664aee2"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ad7e4dc4b3c39faa7fee4573f1664aee2">g_update_flags</a></td></tr>
-<tr class="separator:ad7e4dc4b3c39faa7fee4573f1664aee2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac1f4630d4e8c615569ebe2ac0631580"><td class="memItemLeft" align="right" valign="top">DMA_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aac1f4630d4e8c615569ebe2ac0631580">g_dma_spi1_rx</a></td></tr>
 <tr class="separator:aac1f4630d4e8c615569ebe2ac0631580"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9dbb1a46106345497ffe77a0cf9c5ee8"><td class="memItemLeft" align="right" valign="top">DMA_HandleTypeDef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a9dbb1a46106345497ffe77a0cf9c5ee8">g_dma_spi1_tx</a></td></tr>
@@ -198,107 +189,28 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Init and DMA channels in use and configure DMA interrupts. </p>
+<p>Init all DMA channels in use and configure DMA interrupts. </p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>Currently use three DMA channels, on DMA peripheral 1: DMA2/3 - IMU SPI port, used for burst reads from IMU DMA5 - User SPI port, Used for buffer burst outputs. Rx not used </p>
+<p>Currently use three DMA channels, on DMA peripheral 1: DMA2/3 - IMU SPI port, used for burst reads from IMU DMA5 - User SPI port, Used for buffer burst outputs. Rx not used</p>
+<p>All DMA channels are configured to generate interrupts upon the completion of a transfer. The user SPI DMA interrupt is used just to check for any error events which might have occurred during the burst read process.</p>
+<p>The IMU DMA interrupts are used to determine when a burst read from the IMU has completed. Both the Tx and Rx channels must be done for a burst read to have completed (Tx should finish last). </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="main_8c_a7ad17703ce0e9b527278fb5783adb44d_cgraph.png" border="0" usemap="#amain_8c_a7ad17703ce0e9b527278fb5783adb44d_cgraph" alt=""/></div>
-<map name="main_8c_a7ad17703ce0e9b527278fb5783adb44d_cgraph" id="main_8c_a7ad17703ce0e9b527278fb5783adb44d_cgraph">
-<area shape="rect" title="Init and DMA channels in use and configure DMA interrupts." alt="" coords="5,5,80,32"/>
-<area shape="rect" href="main_8c.html#ad4e07955fadfeb416e9620ddb42f8fe9" title="This function is executed in case of error occurrence." alt="" coords="128,5,229,32"/>
-<area shape="rect" href="flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773" title="Stores an error code to flash memory." alt="" coords="277,5,380,32"/>
+<map name="main_8c_a7ad17703ce0e9b527278fb5783adb44d_cgraph" id="amain_8c_a7ad17703ce0e9b527278fb5783adb44d_cgraph">
+<area shape="rect" title="Init all DMA channels in use and configure DMA interrupts." alt="" coords="5,5,80,32"/>
+<area shape="rect" href="main_8c.html#a0cafedb28e2070a60a7c2b39043b38d8" title="This function is executed in case of error occurrence." alt="" coords="128,5,264,32"/>
+<area shape="rect" href="flash_8c.html#af425d5b1241befa56dbe794fffae169f" title="Stores an error code to flash memory." alt="" coords="312,5,431,32"/>
 </map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="main_8c_a7ad17703ce0e9b527278fb5783adb44d_icgraph.png" border="0" usemap="#amain_8c_a7ad17703ce0e9b527278fb5783adb44d_icgraph" alt=""/></div>
-<map name="main_8c_a7ad17703ce0e9b527278fb5783adb44d_icgraph" id="main_8c_a7ad17703ce0e9b527278fb5783adb44d_icgraph">
-<area shape="rect" title="Init and DMA channels in use and configure DMA interrupts." alt="" coords="104,5,179,32"/>
+<map name="main_8c_a7ad17703ce0e9b527278fb5783adb44d_icgraph" id="amain_8c_a7ad17703ce0e9b527278fb5783adb44d_icgraph">
+<area shape="rect" title="Init all DMA channels in use and configure DMA interrupts." alt="" coords="104,5,179,32"/>
 <area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a41f752b7e6021861e56ecdf56993e9a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41f752b7e6021861e56ecdf56993e9a8">&#9670;&nbsp;</a></span>DWT_Init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void DWT_Init </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Init DWT peripheral. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>This peripheral is used to count microseconds for the timer module. </p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="main_8c_a41f752b7e6021861e56ecdf56993e9a8_icgraph.png" border="0" usemap="#amain_8c_a41f752b7e6021861e56ecdf56993e9a8_icgraph" alt=""/></div>
-<map name="main_8c_a41f752b7e6021861e56ecdf56993e9a8_icgraph" id="main_8c_a41f752b7e6021861e56ecdf56993e9a8_icgraph">
-<area shape="rect" title="Init DWT peripheral." alt="" coords="104,5,179,32"/>
-<area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="ad4e07955fadfeb416e9620ddb42f8fe9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4e07955fadfeb416e9620ddb42f8fe9">&#9670;&nbsp;</a></span>Error_Handler()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Error_Handler </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>This function is executed in case of error occurrence. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>Errors will force a system reset </p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="main_8c_ad4e07955fadfeb416e9620ddb42f8fe9_cgraph.png" border="0" usemap="#amain_8c_ad4e07955fadfeb416e9620ddb42f8fe9_cgraph" alt=""/></div>
-<map name="main_8c_ad4e07955fadfeb416e9620ddb42f8fe9_cgraph" id="main_8c_ad4e07955fadfeb416e9620ddb42f8fe9_cgraph">
-<area shape="rect" title="This function is executed in case of error occurrence." alt="" coords="5,5,107,32"/>
-<area shape="rect" href="flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773" title="Stores an error code to flash memory." alt="" coords="155,5,257,32"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="main_8c_ad4e07955fadfeb416e9620ddb42f8fe9_icgraph.png" border="0" usemap="#amain_8c_ad4e07955fadfeb416e9620ddb42f8fe9_icgraph" alt=""/></div>
-<map name="main_8c_ad4e07955fadfeb416e9620ddb42f8fe9_icgraph" id="main_8c_ad4e07955fadfeb416e9620ddb42f8fe9_icgraph">
-<area shape="rect" title="This function is executed in case of error occurrence." alt="" coords="295,81,396,108"/>
-<area shape="rect" href="adc_8c.html#adb6cb5368cffd96c7e2cce8c72744ea2" title="ADC1 Initialization Function." alt="" coords="142,5,209,32"/>
-<area shape="rect" href="main_8c.html#a7ad17703ce0e9b527278fb5783adb44d" title="Init and DMA channels in use and configure DMA interrupts." alt="" coords="138,56,213,83"/>
-<area shape="rect" href="main_8c.html#a63fd813fab9e4e1b718f0b89e39fa26e" title="SPI1 Initialization Function (master SPI port to IMU)" alt="" coords="126,107,225,133"/>
-<area shape="rect" href="main_8c.html#adb3d07f85f8bc162c1c66f1ee17ce361" title="System Clock Configuration." alt="" coords="104,157,247,184"/>
-<area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,81,56,108"/>
 </map>
 </div>
 
@@ -325,42 +237,91 @@ Here is the caller graph for this function:</div>
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4_cgraph.png" border="0" usemap="#amain_8c_ae66f6b31b5ad750f1fe042a706a4e3d4_cgraph" alt=""/></div>
-<map name="main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4_cgraph" id="main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4_cgraph">
-<area shape="rect" title="The application entry point." alt="" coords="5,613,56,640"/>
-<area shape="rect" href="adc_8c.html#adb6cb5368cffd96c7e2cce8c72744ea2" title="ADC1 Initialization Function." alt="" coords="151,715,218,741"/>
-<area shape="rect" href="buffer_8c.html#a608864e62e34b7c269cd79d2c7294a48" title="Clears the buffer data structure." alt="" coords="147,56,222,83"/>
-<area shape="rect" href="dfu_8c.html#a5242e31871f00137a8e05029329fcddd" title="Checks if a reboot into the DFU bootloader is needed." alt="" coords="126,107,243,133"/>
-<area shape="rect" href="watchdog_8c.html#ae1d7795593b89a0508b7d5adb1924f69" title="Check if system reset from independent watch dog timeout and sets the appropriate STATUS flag." alt="" coords="105,157,264,184"/>
-<area shape="rect" href="data__capture_8c.html#ab71775102e1565ca2e8fd384d27204b3" title="disables autonomous data capture by disabling DR ISR." alt="" coords="116,5,253,32"/>
-<area shape="rect" href="main_8c.html#a7ad17703ce0e9b527278fb5783adb44d" title="Init and DMA channels in use and configure DMA interrupts." alt="" coords="147,360,222,387"/>
-<area shape="rect" href="main_8c.html#a41f752b7e6021861e56ecdf56993e9a8" title="Init DWT peripheral." alt="" coords="147,309,222,336"/>
-<area shape="rect" href="watchdog_8c.html#a1e202ecb064c61a96112d66e624272f7" title="Enables watch dog reset functionality." alt="" coords="123,208,246,235"/>
-<area shape="rect" href="flash_8c.html#a0573959b49fb264dd25636a6032ef01c" title="Checks for error codes which may have been logged to flash, and sets the status register bit." alt="" coords="104,411,265,437"/>
-<area shape="rect" href="flash_8c.html#a46338bc563a7426b0d9983d549049e87" title="Initialize flash error logging." alt="" coords="337,689,457,716"/>
-<area shape="rect" href="registers_8c.html#a042bb33891e7dcafa8dcf3a696eaa451" title="Populates the firmware date registers automatically." alt="" coords="135,512,234,539"/>
-<area shape="rect" href="registers_8c.html#a7b32151b1c6c1f3adcf8c1b2d245d191" title="Populates the six SN registers automatically." alt="" coords="154,563,215,589"/>
-<area shape="rect" href="imu__spi_8c.html#a814e8222e8a4eda9663f65501d41580a" title="Inits TIM3 for use in PWM mode to drive CS." alt="" coords="131,613,239,640"/>
-<area shape="rect" href="imu__spi_8c.html#a825031cb5959ebd7d20be9f25c64092a" title="Inits TIM4 for use as a IMU spi period timer." alt="" coords="129,664,240,691"/>
-<area shape="rect" href="timer_8c.html#a69df0b9d0c856817c7e0406ddfd1ae01" title="Init TIM2 to operate in 32&#45;bit mode with a 1MHz timebase." alt="" coords="112,968,257,995"/>
-<area shape="rect" href="flash_8c.html#abdfa63ba6e284d347e454e4ac0af459e" title="Load register values from flash memory to SRAM." alt="" coords="129,765,241,792"/>
-<area shape="rect" href="main_8c.html#ad76308591db32fe4919c7811ccec7cb7" title="GPIO Initialization Function." alt="" coords="133,816,236,843"/>
-<area shape="rect" href="main_8c.html#a63fd813fab9e4e1b718f0b89e39fa26e" title="SPI1 Initialization Function (master SPI port to IMU)" alt="" coords="135,259,234,285"/>
-<area shape="rect" href="sd__card_8c.html#ade0e1d4a61790fd47ec542cbf559af68" title="Run SD card script automatic execution process." alt="" coords="134,917,235,944"/>
-<area shape="rect" href="sd__card_8c.html#a625b0dce0e53a68e74b117c8ced97afe" title="Init SD card hardware interface and FATFs driver." alt="" coords="143,1019,227,1045"/>
-<area shape="rect" href="main_8c.html#adb3d07f85f8bc162c1c66f1ee17ce361" title="System Clock Configuration." alt="" coords="113,461,256,488"/>
-<area shape="rect" href="dio_8c.html#ad38b20e2c54a770ce6af80547abbce43" title="Validates and updates the data ready and PPS input configuration based on DIO_INPUT_CONFIG." alt="" coords="110,1069,259,1096"/>
-<area shape="rect" href="dio_8c.html#a643b4c5d55edcd285e5440bc1caf17a4" title="Validates DIO_OUTPUT_CONFIG settings and applies to GPIO." alt="" coords="105,1120,265,1147"/>
-<area shape="rect" href="imu__spi_8c.html#a2e5c87a639e8ca9a6f61d05052df5fb8" title="Processes any changes to IMU_SPI_CONFIG reg and applies." alt="" coords="115,1171,254,1197"/>
-<area shape="rect" href="user__spi_8c.html#ad15c7b76347823955edf42ec381e9793" title="Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register." alt="" coords="112,1221,257,1248"/>
-<area shape="rect" href="main_8c.html#ad4e07955fadfeb416e9620ddb42f8fe9" title="This function is executed in case of error occurrence." alt="" coords="346,461,447,488"/>
-<area shape="rect" href="flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773" title="Stores an error code to flash memory." alt="" coords="528,576,631,603"/>
-<area shape="rect" href="led_8c.html#a33badabbc4771ff785afaea9dcb90adc" title="Turn off a selected LED." alt="" coords="353,5,441,32"/>
-<area shape="rect" href="watchdog_8c.html#a8ea40194cba4ee3987e74a1ec77091fc" title="Feeds the watchdog timer. Should be called periodically from main loop." alt="" coords="341,208,453,235"/>
-<area shape="rect" href="timer_8c.html#a2728000ef526683ed785c3fbf3387409" title="Enables IMU sample timestamp timer." alt="" coords="363,968,430,995"/>
-<area shape="rect" href="timer_8c.html#a48e16631741f22e5a4165516df4d18f7" title="Enables TIM8 as general 1MHz timer." alt="" coords="363,917,430,944"/>
-<area shape="rect" href="sd__card_8c.html#aa982ad2254de265717f1ad2404cf53ad" title="SPI3 Initialization Function (SD card master SPI port)" alt="" coords="359,1019,434,1045"/>
-<area shape="rect" href="dio_8c.html#a96da6e323e19cd740908ac240c9f76d3" title="Parse DIO_CONFIG reg to local config struct." alt="" coords="320,1145,473,1172"/>
-<area shape="rect" href="dio_8c.html#aeb1db1726de7166710062194368f1bcb" title="validates the current DIO config struct settings" alt="" coords="313,1095,480,1121"/>
+<map name="main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4_cgraph" id="amain_8c_ae66f6b31b5ad750f1fe042a706a4e3d4_cgraph">
+<area shape="rect" title="The application entry point." alt="" coords="5,528,56,555"/>
+<area shape="rect" href="adc_8c.html#a3fdaf3b8949082abe85a7e7083087eb7" title="ADC1 Initialization Function." alt="" coords="158,427,231,453"/>
+<area shape="rect" href="buffer_8c.html#aa19700bb3b96fbe87188f15aae57d8ad" title="Clears the buffer data structure." alt="" coords="147,56,243,83"/>
+<area shape="rect" href="data__capture_8c.html#a092ba93a71cecfb33d6ae112eeb2f5c0" title="disables autonomous data capture by disabling DR ISR." alt="" coords="119,5,270,32"/>
+<area shape="rect" href="dfu_8c.html#ac4049fa9d2bc5a43fcd551bf41bfd98f" title="Checks if a reboot into the DFU bootloader is needed." alt="" coords="129,157,260,184"/>
+<area shape="rect" href="dio_8c.html#aa46d515c975148e69d95b5554423a873" title="Validates and updates the data ready input configuration based on DIO_INPUT_CONFIG." alt="" coords="109,208,280,235"/>
+<area shape="rect" href="dio_8c.html#a7698bf63406d963c81947c6cb116cb00" title="Validates DIO_OUTPUT_CONFIG settings and applies to GPIO." alt="" coords="104,259,285,285"/>
+<area shape="rect" href="main_8c.html#a7ad17703ce0e9b527278fb5783adb44d" title="Init all DMA channels in use and configure DMA interrupts." alt="" coords="157,309,232,336"/>
+<area shape="rect" href="flash_8c.html#ae25f4aa30bf9bdd2c89c4bcda9b3b5bc" title="Checks for error codes which may have been logged to flash, and sets the status register bit." alt="" coords="121,361,268,402"/>
+<area shape="rect" href="flash_8c.html#ad20211cdf029b40e6249e15c638f2874" title="Initialize flash error logging." alt="" coords="353,103,496,129"/>
+<area shape="rect" href="imu_8c.html#a3eb970eebf0c8d4db8ea2e423337175e" title="SPI1 Initialization Function (master SPI port to IMU)" alt="" coords="146,629,243,656"/>
+<area shape="rect" href="imu_8c.html#ab2e31bcc2c833ea959f14047d98f40ea" title="Processes any changes to IMU_SPI_CONFIG reg and applies." alt="" coords="113,528,277,555"/>
+<area shape="rect" href="main_8c.html#ad76308591db32fe4919c7811ccec7cb7" title="GPIO Initialization Function." alt="" coords="143,579,246,605"/>
+<area shape="rect" href="reg_8c.html#a0f2c653fad42a4a3f06951e56c3db4d1" title="Initialize the register module by loading all saves values from flash." alt="" coords="160,680,229,707"/>
+<area shape="rect" href="sd__card_8c.html#a25735539a7b8f8e64b129820e24e5d77" title="Init SD card hardware interface and FATFs driver." alt="" coords="145,781,244,808"/>
+<area shape="rect" href="sd__card_8c.html#a42564c9b9fc183f58991cacaebc6bcbd" title="Run SD card script automatic execution process." alt="" coords="111,731,278,757"/>
+<area shape="rect" href="main_8c.html#adb3d07f85f8bc162c1c66f1ee17ce361" title="System Clock Configuration." alt="" coords="123,477,266,504"/>
+<area shape="rect" href="timer_8c.html#a7cc941ce9a1dba3638482250c4e36aa4" title="Initialize all timers for operation." alt="" coords="155,832,234,859"/>
+<area shape="rect" href="usb_8c.html#af1aec7b3c1d6bc30ddc783c304ff04cc" title="Toggle USB PU to force a re&#45;enumeration on the host side." alt="" coords="149,883,240,909"/>
+<area shape="rect" href="user__spi_8c.html#a3381cb39831e32d78aea87ba9c605942" title="Updates the slave SPI (SPI2) config based on the USER_SPI_CONFIG register." alt="" coords="111,933,279,960"/>
+<area shape="rect" href="watchdog_8c.html#a3db49d8c77943197fd2a6c5fa28db4be" title="Check if system reset from independent watch dog timeout and sets the appropriate STATUS flag." alt="" coords="109,984,280,1011"/>
+<area shape="rect" href="watchdog_8c.html#acafeae37710375cb4ea2be670e0dd147" title="Enables watch dog reset functionality." alt="" coords="131,1035,259,1061"/>
+<area shape="rect" href="main_8c.html#a0cafedb28e2070a60a7c2b39043b38d8" title="This function is executed in case of error occurrence." alt="" coords="357,427,493,453"/>
+<area shape="rect" href="flash_8c.html#af425d5b1241befa56dbe794fffae169f" title="Stores an error code to flash memory." alt="" coords="564,267,683,293"/>
+<area shape="rect" href="led_8c.html#ac5d6499055e5e7cd2d5425cbf404c32e" title="Turn off a selected LED." alt="" coords="373,5,476,32"/>
+<area shape="rect" href="dfu_8c.html#ad6c7d5abd728d3d19ad622cfe4367ff6" title="Executes a DFU reboot." alt="" coords="363,153,486,180"/>
+<area shape="rect" href="dio_8c.html#a1dbfdd91d1b8633600bf00e2b6ef501c" title="Validates the DIO_INPUT_CONFIG value." alt="" coords="358,205,491,246"/>
+<area shape="rect" href="dio_8c.html#a96da6e323e19cd740908ac240c9f76d3" title="Parse DIO_CONFIG reg to local config struct." alt="" coords="348,321,501,348"/>
+<area shape="rect" href="dio_8c.html#aeb1db1726de7166710062194368f1bcb" title="validates the current DIO config struct settings" alt="" coords="341,271,508,297"/>
+<area shape="rect" href="imu_8c.html#a594fc6515963d264aa5dcebd333113d6" title="Inits TIM3 for use in PWM mode to drive CS." alt="" coords="371,629,479,656"/>
+<area shape="rect" href="imu_8c.html#a0fa4fc38852200750431eaf31c7847d8" title="Inits TIM4 for use as a IMU spi period timer." alt="" coords="369,579,480,605"/>
+<area shape="rect" href="flash_8c.html#a2fe1dea04eb80abcf236bc42ca5197b6" title="Load register values from flash memory to SRAM." alt="" coords="349,731,500,757"/>
+<area shape="rect" href="reg_8c.html#a5a97e807930ced3ef117034418ce77ba" title="Load SN and date code registers to SRAM." alt="" coords="347,680,502,707"/>
+<area shape="rect" href="reg_8c.html#a3ebca895ecd4473a57471eea92563da3" title="Populates the firmware date registers automatically." alt="" coords="574,705,673,732"/>
+<area shape="rect" href="reg_8c.html#a46941ae03c5cba06f24bbe10ba29eefa" title="Populates the six SN registers automatically." alt="" coords="593,655,654,681"/>
+<area shape="rect" href="sd__card_8c.html#aa982ad2254de265717f1ad2404cf53ad" title="SPI3 Initialization Function (SD card master SPI port)" alt="" coords="387,781,462,808"/>
+<area shape="rect" href="timer_8c.html#a41f752b7e6021861e56ecdf56993e9a8" title="Init DWT peripheral." alt="" coords="387,933,462,960"/>
+<area shape="rect" href="timer_8c.html#a2728000ef526683ed785c3fbf3387409" title="Enables IMU sample timestamp timer." alt="" coords="391,832,458,859"/>
+<area shape="rect" href="timer_8c.html#a48e16631741f22e5a4165516df4d18f7" title="Enables TIM8 as general 1MHz timer." alt="" coords="391,883,458,909"/>
+<area shape="rect" href="timer_8c.html#a610c9ca08bddd3bae993770ce68a19c8" title="Blocking sleep function call." alt="" coords="333,984,516,1011"/>
+<area shape="rect" href="watchdog_8c.html#ac70dc623edb25733ceefcc36acb2e633" title="Feeds the watchdog timer. Should be called periodically from main loop." alt="" coords="366,1035,483,1061"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a0cafedb28e2070a60a7c2b39043b38d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cafedb28e2070a60a7c2b39043b38d8">&#9670;&nbsp;</a></span>Main_Error_Handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Main_Error_Handler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function is executed in case of error occurrence. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>During init, errors are logged, then init continues. This is done to reduce potential for a fault locking the device in a reset loop. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a0cafedb28e2070a60a7c2b39043b38d8_cgraph.png" border="0" usemap="#amain_8c_a0cafedb28e2070a60a7c2b39043b38d8_cgraph" alt=""/></div>
+<map name="main_8c_a0cafedb28e2070a60a7c2b39043b38d8_cgraph" id="main_8c_a0cafedb28e2070a60a7c2b39043b38d8_cgraph">
+<area shape="rect" title="This function is executed in case of error occurrence." alt="" coords="5,5,141,32"/>
+<area shape="rect" href="flash_8c.html#af425d5b1241befa56dbe794fffae169f" title="Stores an error code to flash memory." alt="" coords="189,5,308,32"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a0cafedb28e2070a60a7c2b39043b38d8_icgraph.png" border="0" usemap="#amain_8c_a0cafedb28e2070a60a7c2b39043b38d8_icgraph" alt=""/></div>
+<map name="main_8c_a0cafedb28e2070a60a7c2b39043b38d8_icgraph" id="amain_8c_a0cafedb28e2070a60a7c2b39043b38d8_icgraph">
+<area shape="rect" title="This function is executed in case of error occurrence." alt="" coords="295,81,431,108"/>
+<area shape="rect" href="adc_8c.html#a3fdaf3b8949082abe85a7e7083087eb7" title="ADC1 Initialization Function." alt="" coords="139,5,212,32"/>
+<area shape="rect" href="main_8c.html#a7ad17703ce0e9b527278fb5783adb44d" title="Init all DMA channels in use and configure DMA interrupts." alt="" coords="138,56,213,83"/>
+<area shape="rect" href="imu_8c.html#a3eb970eebf0c8d4db8ea2e423337175e" title="SPI1 Initialization Function (master SPI port to IMU)" alt="" coords="127,107,224,133"/>
+<area shape="rect" href="main_8c.html#adb3d07f85f8bc162c1c66f1ee17ce361" title="System Clock Configuration." alt="" coords="104,157,247,184"/>
+<area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,81,56,108"/>
 </map>
 </div>
 
@@ -404,53 +365,6 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a63fd813fab9e4e1b718f0b89e39fa26e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63fd813fab9e4e1b718f0b89e39fa26e">&#9670;&nbsp;</a></span>MX_SPI1_Init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void MX_SPI1_Init </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>SPI1 Initialization Function (master SPI port to IMU) </p>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="main_8c_a63fd813fab9e4e1b718f0b89e39fa26e_cgraph.png" border="0" usemap="#amain_8c_a63fd813fab9e4e1b718f0b89e39fa26e_cgraph" alt=""/></div>
-<map name="main_8c_a63fd813fab9e4e1b718f0b89e39fa26e_cgraph" id="main_8c_a63fd813fab9e4e1b718f0b89e39fa26e_cgraph">
-<area shape="rect" title="SPI1 Initialization Function (master SPI port to IMU)" alt="" coords="5,5,104,32"/>
-<area shape="rect" href="main_8c.html#ad4e07955fadfeb416e9620ddb42f8fe9" title="This function is executed in case of error occurrence." alt="" coords="152,5,253,32"/>
-<area shape="rect" href="flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773" title="Stores an error code to flash memory." alt="" coords="301,5,404,32"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="main_8c_a63fd813fab9e4e1b718f0b89e39fa26e_icgraph.png" border="0" usemap="#amain_8c_a63fd813fab9e4e1b718f0b89e39fa26e_icgraph" alt=""/></div>
-<map name="main_8c_a63fd813fab9e4e1b718f0b89e39fa26e_icgraph" id="main_8c_a63fd813fab9e4e1b718f0b89e39fa26e_icgraph">
-<area shape="rect" title="SPI1 Initialization Function (master SPI port to IMU)" alt="" coords="104,5,203,32"/>
-<area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
-</map>
-</div>
-
-</div>
-</div>
 <a id="adb3d07f85f8bc162c1c66f1ee17ce361"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adb3d07f85f8bc162c1c66f1ee17ce361">&#9670;&nbsp;</a></span>SystemClock_Config()</h2>
 
@@ -482,10 +396,10 @@ Here is the caller graph for this function:</div>
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="main_8c_adb3d07f85f8bc162c1c66f1ee17ce361_cgraph.png" border="0" usemap="#amain_8c_adb3d07f85f8bc162c1c66f1ee17ce361_cgraph" alt=""/></div>
-<map name="main_8c_adb3d07f85f8bc162c1c66f1ee17ce361_cgraph" id="main_8c_adb3d07f85f8bc162c1c66f1ee17ce361_cgraph">
+<map name="main_8c_adb3d07f85f8bc162c1c66f1ee17ce361_cgraph" id="amain_8c_adb3d07f85f8bc162c1c66f1ee17ce361_cgraph">
 <area shape="rect" title="System Clock Configuration." alt="" coords="5,5,148,32"/>
-<area shape="rect" href="main_8c.html#ad4e07955fadfeb416e9620ddb42f8fe9" title="This function is executed in case of error occurrence." alt="" coords="196,5,297,32"/>
-<area shape="rect" href="flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773" title="Stores an error code to flash memory." alt="" coords="345,5,448,32"/>
+<area shape="rect" href="main_8c.html#a0cafedb28e2070a60a7c2b39043b38d8" title="This function is executed in case of error occurrence." alt="" coords="196,5,332,32"/>
+<area shape="rect" href="flash_8c.html#af425d5b1241befa56dbe794fffae169f" title="Stores an error code to flash memory." alt="" coords="380,5,499,32"/>
 </map>
 </div>
 <div class="dynheader">
@@ -573,29 +487,6 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 <p>SPI handle for slave port (from master controller). Global scope </p>
-
-</div>
-</div>
-<a id="ad7e4dc4b3c39faa7fee4573f1664aee2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7e4dc4b3c39faa7fee4573f1664aee2">&#9670;&nbsp;</a></span>g_update_flags</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">volatile uint32_t g_update_flags</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Register update flags for main loop processing. Global scope </p>
 
 </div>
 </div>

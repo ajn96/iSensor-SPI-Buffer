@@ -1,0 +1,5 @@
+<map id="DWT_Init" name="DWT_Init">
+<area shape="rect" id="node1" title="Init DWT peripheral." alt="" coords="231,5,305,32"/>
+<area shape="rect" id="node2" href="$timer_8c.html#a7cc941ce9a1dba3638482250c4e36aa4" title="Initialize all timers for operation." alt="" coords="104,5,183,32"/>
+<area shape="rect" id="node3" href="$main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
+</map>

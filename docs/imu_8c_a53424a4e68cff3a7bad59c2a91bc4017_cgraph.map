@@ -1,0 +1,4 @@
+<map id="IMU_Reset" name="IMU_Reset">
+<area shape="rect" id="node1" title="Hardware reset connected IMU." alt="" coords="5,5,92,32"/>
+<area shape="rect" id="node2" href="$timer_8c.html#a610c9ca08bddd3bae993770ce68a19c8" title="Blocking sleep function call." alt="" coords="140,5,323,32"/>
+</map>

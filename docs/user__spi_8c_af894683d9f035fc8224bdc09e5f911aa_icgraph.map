@@ -1,0 +1,6 @@
+<map id="User_SPI_Reset" name="User_SPI_Reset">
+<area shape="rect" id="node1" title="Reset user SPI port." alt="" coords="423,31,541,57"/>
+<area shape="rect" id="node2" href="$user__spi_8c.html#ac75f5056b4e9ecb70b28865e0a893ab4" title="Restore SPI functionality after a burst read." alt="" coords="209,5,375,32"/>
+<area shape="rect" id="node4" href="$user__spi_8c.html#ad51e687d5598f38640fb99635774b2bd" title="Configures SPI for a burst buffer read." alt="" coords="214,56,370,83"/>
+<area shape="rect" id="node3" href="$isr_8c.html#a738473a5b43f6c92b80ce1d3d6f77ed9" title="This function handles the user SPI (SPI2) chip select rising edge." alt="" coords="5,5,161,32"/>
+</map>

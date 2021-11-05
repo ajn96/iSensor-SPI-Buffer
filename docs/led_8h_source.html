@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.14</span>
+   &#160;<span id="projectnumber">1.15</span>
    </div>
    <div id="projectbrief">Firmware for the iSensor-SPI-Buffer board to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -76,31 +76,26 @@ $(function() {
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#ifndef INC_LED_H_</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define INC_LED_H_</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;stm32f3xx_hal.h&quot;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="registers_8h.html">registers.h</a>&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="led_8h.html#aadcb6002d2b42fdfe01490f730ab00a6">   18</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code" href="led_8h.html#aadcb6002d2b42fdfe01490f730ab00a6">LED</a></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    Blue = 0,</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    Green = 1</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="led_8h.html#a73f02586b52521918b5c2fc15d541d0c">   22</a></span>&#160;}<a class="code" href="led_8h.html#aadcb6002d2b42fdfe01490f730ab00a6">LED</a>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> <a class="code" href="led_8c.html#a99d3a7743f7abf1c66201c0b1297040a">TurnOnLED</a>(<a class="code" href="led_8h.html#aadcb6002d2b42fdfe01490f730ab00a6">LED</a> light);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> <a class="code" href="led_8c.html#a33badabbc4771ff785afaea9dcb90adc">TurnOffLED</a>(<a class="code" href="led_8h.html#aadcb6002d2b42fdfe01490f730ab00a6">LED</a> light);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">/* @endcond */</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_LED_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="led_8h.html#aadcb6002d2b42fdfe01490f730ab00a6">   15</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code" href="led_8h.html#aadcb6002d2b42fdfe01490f730ab00a6">LED</a></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    Blue = 0,</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    Green = 1</div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="led_8h.html#a73f02586b52521918b5c2fc15d541d0c">   19</a></span>&#160;}<a class="code" href="led_8h.html#aadcb6002d2b42fdfe01490f730ab00a6">LED</a>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">void</span> <a class="code" href="led_8c.html#a0137ee0969bb19e0209f7ffa3e78d1e3">LED_Turn_On</a>(<a class="code" href="led_8h.html#aadcb6002d2b42fdfe01490f730ab00a6">LED</a> light);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">void</span> <a class="code" href="led_8c.html#ac5d6499055e5e7cd2d5425cbf404c32e">LED_Turn_Off</a>(<a class="code" href="led_8h.html#aadcb6002d2b42fdfe01490f730ab00a6">LED</a> light);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">/* @endcond */</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_LED_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aregisters_8h_html_a807211953b57b1a3f715e8a4496f3d2d"><div class="ttname"><a href="registers_8h.html#a807211953b57b1a3f715e8a4496f3d2d">NUM_REG_PAGES</a></div><div class="ttdeci">#define NUM_REG_PAGES</div><div class="ttdef"><b>Definition:</b> registers.h:40</div></div>
+<div class="ttc" id="areg_8h_html"><div class="ttname"><a href="reg_8h.html">reg.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
+<div class="ttc" id="aled_8c_html_a0137ee0969bb19e0209f7ffa3e78d1e3"><div class="ttname"><a href="led_8c.html#a0137ee0969bb19e0209f7ffa3e78d1e3">LED_Turn_On</a></div><div class="ttdeci">void LED_Turn_On(LED light)</div><div class="ttdoc">Turn on a selected LED.</div><div class="ttdef"><b>Definition:</b> led.c:22</div></div>
 <div class="ttc" id="aled_8h_html"><div class="ttname"><a href="led_8h.html">led.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer LED control module.</div></div>
-<div class="ttc" id="aled_8c_html_a0963b05bebaa79e9cc9b76594b1d3e73"><div class="ttname"><a href="led_8c.html#a0963b05bebaa79e9cc9b76594b1d3e73">g_regs</a></div><div class="ttdeci">volatile uint16_t g_regs[NUM_REG_PAGES *REG_PER_PAGE]</div></div>
-<div class="ttc" id="aled_8c_html_a99d3a7743f7abf1c66201c0b1297040a"><div class="ttname"><a href="led_8c.html#a99d3a7743f7abf1c66201c0b1297040a">TurnOnLED</a></div><div class="ttdeci">void TurnOnLED(LED light)</div><div class="ttdoc">Turn on a selected LED.</div><div class="ttdef"><b>Definition:</b> led.c:23</div></div>
-<div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
-<div class="ttc" id="aled_8h_html_aadcb6002d2b42fdfe01490f730ab00a6"><div class="ttname"><a href="led_8h.html#aadcb6002d2b42fdfe01490f730ab00a6">LED</a></div><div class="ttdeci">LED</div><div class="ttdef"><b>Definition:</b> led.h:19</div></div>
-<div class="ttc" id="aled_8c_html_a33badabbc4771ff785afaea9dcb90adc"><div class="ttname"><a href="led_8c.html#a33badabbc4771ff785afaea9dcb90adc">TurnOffLED</a></div><div class="ttdeci">void TurnOffLED(LED light)</div><div class="ttdoc">Turn off a selected LED.</div><div class="ttdef"><b>Definition:</b> led.c:48</div></div>
+<div class="ttc" id="aled_8c_html_ac5d6499055e5e7cd2d5425cbf404c32e"><div class="ttname"><a href="led_8c.html#ac5d6499055e5e7cd2d5425cbf404c32e">LED_Turn_Off</a></div><div class="ttdeci">void LED_Turn_Off(LED light)</div><div class="ttdoc">Turn off a selected LED.</div><div class="ttdef"><b>Definition:</b> led.c:47</div></div>
+<div class="ttc" id="aled_8h_html_aadcb6002d2b42fdfe01490f730ab00a6"><div class="ttname"><a href="led_8h.html#aadcb6002d2b42fdfe01490f730ab00a6">LED</a></div><div class="ttdeci">LED</div><div class="ttdef"><b>Definition:</b> led.h:16</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20

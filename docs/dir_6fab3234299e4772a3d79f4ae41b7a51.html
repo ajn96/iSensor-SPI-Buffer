@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.14</span>
+   &#160;<span id="projectnumber">1.15</span>
    </div>
    <div id="projectbrief">Firmware for the iSensor-SPI-Buffer board to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -76,10 +76,10 @@ $(function() {
 Directory dependency graph for Src:</div>
 <div class="dyncontent">
 <div class="center"><img src="dir_6fab3234299e4772a3d79f4ae41b7a51_dep.png" border="0" usemap="#adir__6fab3234299e4772a3d79f4ae41b7a51__dep" alt="Src"/></div>
-<map name="dir__6fab3234299e4772a3d79f4ae41b7a51__dep" id="dir__6fab3234299e4772a3d79f4ae41b7a51__dep">
+<map name="dir__6fab3234299e4772a3d79f4ae41b7a51__dep" id="adir__6fab3234299e4772a3d79f4ae41b7a51__dep">
 <area shape="rect" href="dir_6fab3234299e4772a3d79f4ae41b7a51.html" title="Src" alt="" coords="27,52,99,100"/>
 <area shape="rect" href="dir_a2104d228f4ce1660fa7790253c871fd.html" title="Inc" alt="" coords="27,148,99,196"/>
-<area shape="rect" href="dir_000002_000003.html" title="25" alt="" coords="64,122,78,137"/>
+<area shape="rect" href="dir_000002_000003.html" title="96" alt="" coords="64,122,78,137"/>
 <area shape="rect" href="dir_344ad9cf7012f4665e17c8bfb6616899.html" title="Core" alt="" coords="16,16,109,111"/>
 </map>
 </div>
@@ -104,8 +104,8 @@ Files</h2></td></tr>
 <tr class="memitem:flash_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash_8c.html">flash.c</a></td></tr>
 <tr class="memdesc:flash_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">iSensor-SPI-Buffer flash memory interfacing functions. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:imu__spi_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu__spi_8c.html">imu_spi.c</a></td></tr>
-<tr class="memdesc:imu__spi_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation for iSensor-SPI-Buffer IMU interfacing module. <br /></td></tr>
+<tr class="memitem:imu_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="imu_8c.html">imu.c</a></td></tr>
+<tr class="memdesc:imu_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation for iSensor-SPI-Buffer IMU interfacing module. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:isr_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="isr_8c.html">isr.c</a></td></tr>
 <tr class="memdesc:isr_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">iSensor-SPI-Buffer interrupt service routines <br /></td></tr>
@@ -116,8 +116,8 @@ Files</h2></td></tr>
 <tr class="memitem:main_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html">main.c</a></td></tr>
 <tr class="memdesc:main_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">iSensor-SPI-Buffer main. Contains STM init functions and application cyclic executive. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:registers_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registers_8c.html">registers.c</a></td></tr>
-<tr class="memdesc:registers_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">iSensor-SPI-Buffer register interfacing module. Called by user SPI and USB CLI <br /></td></tr>
+<tr class="memitem:reg_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="reg_8c.html">reg.c</a></td></tr>
+<tr class="memdesc:reg_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">iSensor-SPI-Buffer register interfacing module. Called by user SPI and USB CLI <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:script_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="script_8c.html">script.c</a></td></tr>
 <tr class="memdesc:script_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">iSensor-SPI-Buffer script module (loaded from SD card or provided via USB CLI) <br /></td></tr>
@@ -140,8 +140,8 @@ Files</h2></td></tr>
 <tr class="memitem:timer_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timer_8c.html">timer.c</a></td></tr>
 <tr class="memdesc:timer_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation for for iSensor-SPI-Buffer timer module. Covers microsecond timer and PPS timer. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:usb__cli_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usb__cli_8c.html">usb_cli.c</a></td></tr>
-<tr class="memdesc:usb__cli_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation file for iSensor-SPI-Buffer USB command line register interface. <br /></td></tr>
+<tr class="memitem:usb_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="usb_8c.html">usb.c</a></td></tr>
+<tr class="memdesc:usb_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation file for iSensor-SPI-Buffer USB command line register interface. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:user__interrupt_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__interrupt_8c.html">user_interrupt.c</a></td></tr>
 <tr class="memdesc:user__interrupt_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">iSensor-SPI-Buffer user interrupt (data ready) config and generation functions <br /></td></tr>

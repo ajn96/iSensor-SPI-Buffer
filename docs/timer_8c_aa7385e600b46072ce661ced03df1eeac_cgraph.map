@@ -1,0 +1,4 @@
+<map id="Timer_Check_PPS_Unlock" name="Timer_Check_PPS_Unlock">
+<area shape="rect" id="node1" title="Check if the PPS signal is unlocked (greater than 1100ms since last PPS strobe)" alt="" coords="5,13,184,39"/>
+<area shape="rect" id="node2" href="$timer_8c.html#a0a5f6200777635cb2ecf7a504b8a602f" title="Gets the current 32&#45;bit value from the IMU sample timestamp timer." alt="" coords="232,5,395,47"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Reg_Factory_Reset" name="Reg_Factory_Reset">
+<area shape="rect" id="node1" title="Load factory default values for all registers, and applies any settings changes." alt="" coords="5,5,143,32"/>
+<area shape="rect" id="node2" href="$data__capture_8c.html#a092ba93a71cecfb33d6ae112eeb2f5c0" title="disables autonomous data capture by disabling DR ISR." alt="" coords="191,5,341,32"/>
+<area shape="rect" id="node3" href="$led_8c.html#ac5d6499055e5e7cd2d5425cbf404c32e" title="Turn off a selected LED." alt="" coords="389,5,492,32"/>
+</map>

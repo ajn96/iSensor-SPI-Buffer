@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.14</span>
+   &#160;<span id="projectnumber">1.15</span>
    </div>
    <div id="projectbrief">Firmware for the iSensor-SPI-Buffer board to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -76,15 +76,15 @@ $(function() {
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#ifndef INC_WATCHDOG_H_</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define INC_WATCHDOG_H_</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;stm32f303xe.h&quot;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="registers_8h.html">registers.h</a>&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">/* Header includes require for prototypes */</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> <a class="code" href="watchdog_8c.html#ae1d7795593b89a0508b7d5adb1924f69">CheckWatchDogStatus</a>();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="watchdog_8c.html#a8ea40194cba4ee3987e74a1ec77091fc">FeedWatchDog</a>();</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> <a class="code" href="watchdog_8c.html#a1e202ecb064c61a96112d66e624272f7">EnableWatchDog</a>(uint32_t timeout_ms);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> <a class="code" href="watchdog_8c.html#a3db49d8c77943197fd2a6c5fa28db4be">Watchdog_Check_Status</a>();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="watchdog_8c.html#ac70dc623edb25733ceefcc36acb2e633">Watchdog_Feed</a>();</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> <a class="code" href="watchdog_8c.html#acafeae37710375cb4ea2be670e0dd147">Watchdog_Enable</a>(uint32_t timeout_ms);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">/* @endcond */</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
 <div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="watchdog_8h.html#aa54da28e233d61266e3a064dd192965f">   26</a></span>&#160;<span class="preprocessor">#define WATCHDOG_BASE_FREQ      40000</span></div>
@@ -97,17 +97,15 @@ $(function() {
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_WATCHDOG_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="areg_8h_html"><div class="ttname"><a href="reg_8h.html">reg.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
 <div class="ttc" id="awatchdog_8h_html"><div class="ttname"><a href="watchdog_8h.html">watchdog.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer watchdog timer module.</div></div>
-<div class="ttc" id="aregisters_8h_html_a807211953b57b1a3f715e8a4496f3d2d"><div class="ttname"><a href="registers_8h.html#a807211953b57b1a3f715e8a4496f3d2d">NUM_REG_PAGES</a></div><div class="ttdeci">#define NUM_REG_PAGES</div><div class="ttdef"><b>Definition:</b> registers.h:40</div></div>
-<div class="ttc" id="awatchdog_8c_html_ae1d7795593b89a0508b7d5adb1924f69"><div class="ttname"><a href="watchdog_8c.html#ae1d7795593b89a0508b7d5adb1924f69">CheckWatchDogStatus</a></div><div class="ttdeci">void CheckWatchDogStatus()</div><div class="ttdoc">Check if system reset from independent watch dog timeout and sets the appropriate STATUS flag.</div><div class="ttdef"><b>Definition:</b> watchdog.c:35</div></div>
-<div class="ttc" id="awatchdog_8c_html_a0963b05bebaa79e9cc9b76594b1d3e73"><div class="ttname"><a href="watchdog_8c.html#a0963b05bebaa79e9cc9b76594b1d3e73">g_regs</a></div><div class="ttdeci">volatile uint16_t g_regs[NUM_REG_PAGES *REG_PER_PAGE]</div></div>
-<div class="ttc" id="awatchdog_8c_html_a8ea40194cba4ee3987e74a1ec77091fc"><div class="ttname"><a href="watchdog_8c.html#a8ea40194cba4ee3987e74a1ec77091fc">FeedWatchDog</a></div><div class="ttdeci">void FeedWatchDog()</div><div class="ttdoc">Feeds the watchdog timer. Should be called periodically from main loop.</div><div class="ttdef"><b>Definition:</b> watchdog.c:25</div></div>
+<div class="ttc" id="awatchdog_8c_html_ac70dc623edb25733ceefcc36acb2e633"><div class="ttname"><a href="watchdog_8c.html#ac70dc623edb25733ceefcc36acb2e633">Watchdog_Feed</a></div><div class="ttdeci">void Watchdog_Feed()</div><div class="ttdoc">Feeds the watchdog timer. Should be called periodically from main loop.</div><div class="ttdef"><b>Definition:</b> watchdog.c:25</div></div>
+<div class="ttc" id="awatchdog_8c_html_a3db49d8c77943197fd2a6c5fa28db4be"><div class="ttname"><a href="watchdog_8c.html#a3db49d8c77943197fd2a6c5fa28db4be">Watchdog_Check_Status</a></div><div class="ttdeci">void Watchdog_Check_Status()</div><div class="ttdoc">Check if system reset from independent watch dog timeout and sets the appropriate STATUS flag.</div><div class="ttdef"><b>Definition:</b> watchdog.c:35</div></div>
+<div class="ttc" id="awatchdog_8c_html_acafeae37710375cb4ea2be670e0dd147"><div class="ttname"><a href="watchdog_8c.html#acafeae37710375cb4ea2be670e0dd147">Watchdog_Enable</a></div><div class="ttdeci">void Watchdog_Enable(uint32_t timeout_ms)</div><div class="ttdoc">Enables watch dog reset functionality.</div><div class="ttdef"><b>Definition:</b> watchdog.c:60</div></div>
 <div class="ttc" id="awatchdog_8h_html_a4bc9f14cd4eb163853137869f68228c0"><div class="ttname"><a href="watchdog_8h.html#a4bc9f14cd4eb163853137869f68228c0">WATCHDOG_RELOAD_KEY</a></div><div class="ttdeci">#define WATCHDOG_RELOAD_KEY</div><div class="ttdef"><b>Definition:</b> watchdog.h:29</div></div>
 <div class="ttc" id="awatchdog_8h_html_a44d6ab64d92657ef31d5fdd310454902"><div class="ttname"><a href="watchdog_8h.html#a44d6ab64d92657ef31d5fdd310454902">WATCHDOG_START_KEY</a></div><div class="ttdeci">#define WATCHDOG_START_KEY</div><div class="ttdef"><b>Definition:</b> watchdog.h:32</div></div>
 <div class="ttc" id="awatchdog_8h_html_aa54da28e233d61266e3a064dd192965f"><div class="ttname"><a href="watchdog_8h.html#aa54da28e233d61266e3a064dd192965f">WATCHDOG_BASE_FREQ</a></div><div class="ttdeci">#define WATCHDOG_BASE_FREQ</div><div class="ttdef"><b>Definition:</b> watchdog.h:26</div></div>
-<div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
 <div class="ttc" id="awatchdog_8h_html_afba5e13764a7ca464de426c8fecd61eb"><div class="ttname"><a href="watchdog_8h.html#afba5e13764a7ca464de426c8fecd61eb">WATCHDOG_UNLOCK_KEY</a></div><div class="ttdeci">#define WATCHDOG_UNLOCK_KEY</div><div class="ttdef"><b>Definition:</b> watchdog.h:35</div></div>
-<div class="ttc" id="awatchdog_8c_html_a1e202ecb064c61a96112d66e624272f7"><div class="ttname"><a href="watchdog_8c.html#a1e202ecb064c61a96112d66e624272f7">EnableWatchDog</a></div><div class="ttdeci">void EnableWatchDog(uint32_t timeout_ms)</div><div class="ttdoc">Enables watch dog reset functionality.</div><div class="ttdef"><b>Definition:</b> watchdog.c:60</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20

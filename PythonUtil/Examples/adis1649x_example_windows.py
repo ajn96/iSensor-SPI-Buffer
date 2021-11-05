@@ -7,10 +7,10 @@ import time
 spi_buf_port = "COM5"
 
 #set the capture time (in seconds) for example app
-capture_time_sec = 2
+capture_time_sec = 10
 
 #set the data rate for the IMU
-data_rate_hz = 1000
+data_rate_hz = 4000
 
 #create ISensorSPIBuffer object
 buf = ISensorSPIBuffer(spi_buf_port)
@@ -79,7 +79,7 @@ else:
         if bufEntry.ValidChecksum == False:
             print("Invalid checksum!")
         timeStamp = bufEntry.Timestamp
-        print(str(bufEntry.Data[-2]) + " " + str(timeStamp))
+        #print(str(bufEntry.Data[-2]) + " " + str(timeStamp))
         delta = timeStamp - lastTimestamp
         if delta > maxDelta:
             maxDelta = delta

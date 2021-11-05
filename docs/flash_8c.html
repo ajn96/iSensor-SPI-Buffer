@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.14</span>
+   &#160;<span id="projectnumber">1.15</span>
    </div>
    <div id="projectbrief">Firmware for the iSensor-SPI-Buffer board to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -69,8 +69,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">flash.c File Reference</div>  </div>
 </div><!--header-->
@@ -78,45 +77,20 @@ $(function() {
 
 <p>iSensor-SPI-Buffer flash memory interfacing functions.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="flash_8h_source.html">flash.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="reg_8h_source.html">reg.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="flash_8h_source.html">flash.h</a>&quot;</code><br />
+<code>#include &quot;stm32f3xx_hal.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for flash.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="flash_8c__incl.png" border="0" usemap="#aflash_8c" alt=""/></div>
-<map name="flash_8c" id="flash_8c">
-<area shape="rect" title="iSensor&#45;SPI&#45;Buffer flash memory interfacing functions." alt="" coords="488,5,548,32"/>
-<area shape="rect" href="flash_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer flash memory interfacing functions." alt="" coords="488,80,548,107"/>
-<area shape="rect" title=" " alt="" coords="387,155,452,181"/>
-<area shape="rect" href="registers_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer register interfacing module." alt="" coords="477,155,559,181"/>
-<area shape="rect" title=" " alt="" coords="282,603,399,629"/>
-<area shape="rect" href="imu__spi_8h.html" title="Implementation for iSensor&#45;SPI&#45;Buffer IMU interfacing module." alt="" coords="389,229,468,256"/>
-<area shape="rect" href="main_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer main." alt="" coords="487,304,549,331"/>
-<area shape="rect" href="buffer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer buffer data structure module." alt="" coords="307,379,371,405"/>
-<area shape="rect" href="data__capture_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer autonomous IMU data acquisition module." alt="" coords="5,453,113,480"/>
-<area shape="rect" href="dfu_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer runtime firmware upgrade module." alt="" coords="955,379,1006,405"/>
-<area shape="rect" href="user__spi_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer user SPI (slave SPI) module." alt="" coords="567,229,650,256"/>
-<area shape="rect" href="timer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer timer module." alt="" coords="396,379,459,405"/>
-<area shape="rect" href="user__interrupt_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer user interrupt (data ready) config and generation functions." alt="" coords="707,379,819,405"/>
-<area shape="rect" href="led_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer LED control module." alt="" coords="214,528,265,555"/>
-<area shape="rect" href="watchdog_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer watchdog timer module." alt="" coords="843,379,931,405"/>
-<area shape="rect" href="dio_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer DIO interfacing module." alt="" coords="182,379,233,405"/>
-<area shape="rect" title=" " alt="" coords="535,379,632,405"/>
-<area shape="rect" href="adc_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer ADC module (for temp sensor and Vdd monitoring)" alt="" coords="1031,379,1085,405"/>
-<area shape="rect" title=" " alt="" coords="881,453,987,480"/>
-<area shape="rect" title=" " alt="" coords="189,453,252,480"/>
-<area shape="rect" href="stm32f3xx__hal__conf_8h.html" title="HAL configuration file." alt="" coords="1413,453,1561,480"/>
-<area shape="rect" title=" " alt="" coords="904,528,1047,555"/>
-<area shape="rect" title=" " alt="" coords="1071,528,1219,555"/>
-<area shape="rect" title=" " alt="" coords="1243,528,1388,555"/>
-<area shape="rect" title=" " alt="" coords="1413,528,1562,555"/>
-<area shape="rect" title=" " alt="" coords="1586,528,1746,555"/>
-<area shape="rect" title=" " alt="" coords="1771,528,1916,555"/>
-<area shape="rect" title=" " alt="" coords="1940,528,2091,555"/>
-<area shape="rect" title=" " alt="" coords="2115,528,2257,555"/>
-<area shape="rect" title=" " alt="" coords="2281,528,2427,555"/>
-<area shape="rect" title=" " alt="" coords="2451,528,2595,555"/>
-<area shape="rect" title=" " alt="" coords="571,528,713,555"/>
-<area shape="rect" title=" " alt="" coords="737,528,880,555"/>
+<map name="flash_8c" id="aflash_8c">
+<area shape="rect" title="iSensor&#45;SPI&#45;Buffer flash memory interfacing functions." alt="" coords="95,5,155,32"/>
+<area shape="rect" href="reg_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer register interfacing module." alt="" coords="20,80,71,107"/>
+<area shape="rect" title=" " alt="" coords="56,229,173,256"/>
+<area shape="rect" href="flash_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer flash memory interfacing functions." alt="" coords="95,80,155,107"/>
+<area shape="rect" title=" " alt="" coords="91,155,157,181"/>
+<area shape="rect" href="main_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer main." alt="" coords="5,155,67,181"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -125,29 +99,24 @@ Functions</h2></td></tr>
 <tr class="memitem:a6f11954101952461e4854186f07ef72b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash_8c.html#a6f11954101952461e4854186f07ef72b">PrepareRegsForFlash</a> ()</td></tr>
 <tr class="memdesc:a6f11954101952461e4854186f07ef72b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears all non-volatile registers in RAM and updates reg signature.  <a href="flash_8c.html#a6f11954101952461e4854186f07ef72b">More...</a><br /></td></tr>
 <tr class="separator:a6f11954101952461e4854186f07ef72b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48f0984b98ef386bfcc84f996210c37a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash_8c.html#a48f0984b98ef386bfcc84f996210c37a">FlashUpdate</a> ()</td></tr>
-<tr class="memdesc:a48f0984b98ef386bfcc84f996210c37a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flash update command handler.  <a href="flash_8c.html#a48f0984b98ef386bfcc84f996210c37a">More...</a><br /></td></tr>
-<tr class="separator:a48f0984b98ef386bfcc84f996210c37a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdfa63ba6e284d347e454e4ac0af459e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash_8c.html#abdfa63ba6e284d347e454e4ac0af459e">LoadRegsFlash</a> ()</td></tr>
-<tr class="memdesc:abdfa63ba6e284d347e454e4ac0af459e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load register values from flash memory to SRAM.  <a href="flash_8c.html#abdfa63ba6e284d347e454e4ac0af459e">More...</a><br /></td></tr>
-<tr class="separator:abdfa63ba6e284d347e454e4ac0af459e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0573959b49fb264dd25636a6032ef01c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash_8c.html#a0573959b49fb264dd25636a6032ef01c">FlashCheckLoggedError</a> ()</td></tr>
-<tr class="memdesc:a0573959b49fb264dd25636a6032ef01c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks for error codes which may have been logged to flash, and sets the status register bit.  <a href="flash_8c.html#a0573959b49fb264dd25636a6032ef01c">More...</a><br /></td></tr>
-<tr class="separator:a0573959b49fb264dd25636a6032ef01c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2248ba2758bb6fde5d3311e13e25773"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773">FlashLogError</a> (uint32_t faultCode)</td></tr>
-<tr class="memdesc:aa2248ba2758bb6fde5d3311e13e25773"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores an error code to flash memory.  <a href="flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773">More...</a><br /></td></tr>
-<tr class="separator:aa2248ba2758bb6fde5d3311e13e25773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46338bc563a7426b0d9983d549049e87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash_8c.html#a46338bc563a7426b0d9983d549049e87">FlashInitErrorLog</a> ()</td></tr>
-<tr class="memdesc:a46338bc563a7426b0d9983d549049e87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize flash error logging.  <a href="flash_8c.html#a46338bc563a7426b0d9983d549049e87">More...</a><br /></td></tr>
-<tr class="separator:a46338bc563a7426b0d9983d549049e87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e2a702707895bee69f8a070f89c7bf1"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash_8c.html#a3e2a702707895bee69f8a070f89c7bf1">CalcRegSig</a> (uint16_t *regs, uint32_t count)</td></tr>
-<tr class="memdesc:a3e2a702707895bee69f8a070f89c7bf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate a signature of a block of RAM. Used for verifying flash memory contents.  <a href="flash_8c.html#a3e2a702707895bee69f8a070f89c7bf1">More...</a><br /></td></tr>
-<tr class="separator:a3e2a702707895bee69f8a070f89c7bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:a0963b05bebaa79e9cc9b76594b1d3e73"><td class="memItemLeft" align="right" valign="top">volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash_8c.html#a0963b05bebaa79e9cc9b76594b1d3e73">g_regs</a> [<a class="el" href="registers_8h.html#a807211953b57b1a3f715e8a4496f3d2d">NUM_REG_PAGES</a> *REG_PER_PAGE]</td></tr>
-<tr class="separator:a0963b05bebaa79e9cc9b76594b1d3e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d42d5b7b027202b23740264dac24df8"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash_8c.html#a2d42d5b7b027202b23740264dac24df8">CalcRegSig</a> (uint16_t *regs, uint32_t count)</td></tr>
+<tr class="memdesc:a2d42d5b7b027202b23740264dac24df8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate a signature of a block of RAM. Used for verifying flash memory contents.  <a href="flash_8c.html#a2d42d5b7b027202b23740264dac24df8">More...</a><br /></td></tr>
+<tr class="separator:a2d42d5b7b027202b23740264dac24df8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f2fc1de168b97346e9e2822dc93190e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash_8c.html#a9f2fc1de168b97346e9e2822dc93190e">Flash_Update</a> ()</td></tr>
+<tr class="memdesc:a9f2fc1de168b97346e9e2822dc93190e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flash update command handler.  <a href="flash_8c.html#a9f2fc1de168b97346e9e2822dc93190e">More...</a><br /></td></tr>
+<tr class="separator:a9f2fc1de168b97346e9e2822dc93190e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fe1dea04eb80abcf236bc42ca5197b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash_8c.html#a2fe1dea04eb80abcf236bc42ca5197b6">Flash_Load_Registers</a> ()</td></tr>
+<tr class="memdesc:a2fe1dea04eb80abcf236bc42ca5197b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load register values from flash memory to SRAM.  <a href="flash_8c.html#a2fe1dea04eb80abcf236bc42ca5197b6">More...</a><br /></td></tr>
+<tr class="separator:a2fe1dea04eb80abcf236bc42ca5197b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae25f4aa30bf9bdd2c89c4bcda9b3b5bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash_8c.html#ae25f4aa30bf9bdd2c89c4bcda9b3b5bc">Flash_Check_Logged_Fault</a> ()</td></tr>
+<tr class="memdesc:ae25f4aa30bf9bdd2c89c4bcda9b3b5bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks for error codes which may have been logged to flash, and sets the status register bit.  <a href="flash_8c.html#ae25f4aa30bf9bdd2c89c4bcda9b3b5bc">More...</a><br /></td></tr>
+<tr class="separator:ae25f4aa30bf9bdd2c89c4bcda9b3b5bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af425d5b1241befa56dbe794fffae169f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash_8c.html#af425d5b1241befa56dbe794fffae169f">Flash_Log_Fault</a> (uint32_t faultCode)</td></tr>
+<tr class="memdesc:af425d5b1241befa56dbe794fffae169f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores an error code to flash memory.  <a href="flash_8c.html#af425d5b1241befa56dbe794fffae169f">More...</a><br /></td></tr>
+<tr class="separator:af425d5b1241befa56dbe794fffae169f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad20211cdf029b40e6249e15c638f2874"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flash_8c.html#ad20211cdf029b40e6249e15c638f2874">Flash_Fault_Log_Init</a> ()</td></tr>
+<tr class="memdesc:ad20211cdf029b40e6249e15c638f2874"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize flash error logging.  <a href="flash_8c.html#ad20211cdf029b40e6249e15c638f2874">More...</a><br /></td></tr>
+<tr class="separator:ad20211cdf029b40e6249e15c638f2874"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>iSensor-SPI-Buffer flash memory interfacing functions. </p>
@@ -155,14 +124,17 @@ Variables</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>4/24/2020 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A. Nolan (<a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x.'+'nol'+'an'+'@an'+'al'+'og.'+'co'+'m'; return false;">alex.<span style="display: none;">.nosp@m.</span>nola<span style="display: none;">.nosp@m.</span>n@ana<span style="display: none;">.nosp@m.</span>log.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a3e2a702707895bee69f8a070f89c7bf1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e2a702707895bee69f8a070f89c7bf1">&#9670;&nbsp;</a></span>CalcRegSig()</h2>
+<a id="a2d42d5b7b027202b23740264dac24df8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d42d5b7b027202b23740264dac24df8">&#9670;&nbsp;</a></span>CalcRegSig()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint16_t CalcRegSig </td>
+          <td class="memname">static uint16_t CalcRegSig </td>
           <td>(</td>
           <td class="paramtype">uint16_t *&#160;</td>
           <td class="paramname"><em>regs</em>, </td>
@@ -179,6 +151,11 @@ Variables</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Calculate a signature of a block of RAM. Used for verifying flash memory contents. </p>
@@ -186,14 +163,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a0573959b49fb264dd25636a6032ef01c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0573959b49fb264dd25636a6032ef01c">&#9670;&nbsp;</a></span>FlashCheckLoggedError()</h2>
+<a id="ae25f4aa30bf9bdd2c89c4bcda9b3b5bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae25f4aa30bf9bdd2c89c4bcda9b3b5bc">&#9670;&nbsp;</a></span>Flash_Check_Logged_Fault()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void FlashCheckLoggedError </td>
+          <td class="memname">void Flash_Check_Logged_Fault </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -207,23 +184,23 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="flash_8c_a0573959b49fb264dd25636a6032ef01c_icgraph.png" border="0" usemap="#aflash_8c_a0573959b49fb264dd25636a6032ef01c_icgraph" alt=""/></div>
-<map name="flash_8c_a0573959b49fb264dd25636a6032ef01c_icgraph" id="flash_8c_a0573959b49fb264dd25636a6032ef01c_icgraph">
-<area shape="rect" title="Checks for error codes which may have been logged to flash, and sets the status register bit." alt="" coords="104,5,265,32"/>
-<area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
+<div class="center"><img src="flash_8c_ae25f4aa30bf9bdd2c89c4bcda9b3b5bc_icgraph.png" border="0" usemap="#aflash_8c_ae25f4aa30bf9bdd2c89c4bcda9b3b5bc_icgraph" alt=""/></div>
+<map name="flash_8c_ae25f4aa30bf9bdd2c89c4bcda9b3b5bc_icgraph" id="flash_8c_ae25f4aa30bf9bdd2c89c4bcda9b3b5bc_icgraph">
+<area shape="rect" title="Checks for error codes which may have been logged to flash, and sets the status register bit." alt="" coords="104,5,251,47"/>
+<area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,13,56,39"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a46338bc563a7426b0d9983d549049e87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46338bc563a7426b0d9983d549049e87">&#9670;&nbsp;</a></span>FlashInitErrorLog()</h2>
+<a id="ad20211cdf029b40e6249e15c638f2874"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad20211cdf029b40e6249e15c638f2874">&#9670;&nbsp;</a></span>Flash_Fault_Log_Init()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void FlashInitErrorLog </td>
+          <td class="memname">void Flash_Fault_Log_Init </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -237,32 +214,63 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="flash_8c_a46338bc563a7426b0d9983d549049e87_cgraph.png" border="0" usemap="#aflash_8c_a46338bc563a7426b0d9983d549049e87_cgraph" alt=""/></div>
-<map name="flash_8c_a46338bc563a7426b0d9983d549049e87_cgraph" id="flash_8c_a46338bc563a7426b0d9983d549049e87_cgraph">
-<area shape="rect" title="Initialize flash error logging." alt="" coords="5,5,125,32"/>
-<area shape="rect" href="flash_8c.html#aa2248ba2758bb6fde5d3311e13e25773" title="Stores an error code to flash memory." alt="" coords="173,5,276,32"/>
+<div class="center"><img src="flash_8c_ad20211cdf029b40e6249e15c638f2874_cgraph.png" border="0" usemap="#aflash_8c_ad20211cdf029b40e6249e15c638f2874_cgraph" alt=""/></div>
+<map name="flash_8c_ad20211cdf029b40e6249e15c638f2874_cgraph" id="flash_8c_ad20211cdf029b40e6249e15c638f2874_cgraph">
+<area shape="rect" title="Initialize flash error logging." alt="" coords="5,5,148,32"/>
+<area shape="rect" href="flash_8c.html#af425d5b1241befa56dbe794fffae169f" title="Stores an error code to flash memory." alt="" coords="196,5,315,32"/>
 </map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="flash_8c_a46338bc563a7426b0d9983d549049e87_icgraph.png" border="0" usemap="#aflash_8c_a46338bc563a7426b0d9983d549049e87_icgraph" alt=""/></div>
-<map name="flash_8c_a46338bc563a7426b0d9983d549049e87_icgraph" id="flash_8c_a46338bc563a7426b0d9983d549049e87_icgraph">
-<area shape="rect" title="Initialize flash error logging." alt="" coords="104,5,224,32"/>
+<div class="center"><img src="flash_8c_ad20211cdf029b40e6249e15c638f2874_icgraph.png" border="0" usemap="#aflash_8c_ad20211cdf029b40e6249e15c638f2874_icgraph" alt=""/></div>
+<map name="flash_8c_ad20211cdf029b40e6249e15c638f2874_icgraph" id="flash_8c_ad20211cdf029b40e6249e15c638f2874_icgraph">
+<area shape="rect" title="Initialize flash error logging." alt="" coords="104,5,247,32"/>
 <area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="aa2248ba2758bb6fde5d3311e13e25773"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2248ba2758bb6fde5d3311e13e25773">&#9670;&nbsp;</a></span>FlashLogError()</h2>
+<a id="a2fe1dea04eb80abcf236bc42ca5197b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fe1dea04eb80abcf236bc42ca5197b6">&#9670;&nbsp;</a></span>Flash_Load_Registers()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void FlashLogError </td>
+          <td class="memname">void Flash_Load_Registers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Load register values from flash memory to SRAM. </p>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>After loading registers from flash, the signature of the loaded registers is compared to the signature stored in flash. If there is a mis-match, the STATUS FLASH_ERROR bit is set. Register values on page 253 - 254 are stored. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="flash_8c_a2fe1dea04eb80abcf236bc42ca5197b6_icgraph.png" border="0" usemap="#aflash_8c_a2fe1dea04eb80abcf236bc42ca5197b6_icgraph" alt=""/></div>
+<map name="flash_8c_a2fe1dea04eb80abcf236bc42ca5197b6_icgraph" id="flash_8c_a2fe1dea04eb80abcf236bc42ca5197b6_icgraph">
+<area shape="rect" title="Load register values from flash memory to SRAM." alt="" coords="221,5,372,32"/>
+<area shape="rect" href="reg_8c.html#a0f2c653fad42a4a3f06951e56c3db4d1" title="Initialize the register module by loading all saves values from flash." alt="" coords="104,5,173,32"/>
+<area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="af425d5b1241befa56dbe794fffae169f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af425d5b1241befa56dbe794fffae169f">&#9670;&nbsp;</a></span>Flash_Log_Fault()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Flash_Log_Fault </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>faultCode</em></td><td>)</td>
@@ -283,33 +291,33 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="flash_8c_aa2248ba2758bb6fde5d3311e13e25773_icgraph.png" border="0" usemap="#aflash_8c_aa2248ba2758bb6fde5d3311e13e25773_icgraph" alt=""/></div>
-<map name="flash_8c_aa2248ba2758bb6fde5d3311e13e25773_icgraph" id="flash_8c_aa2248ba2758bb6fde5d3311e13e25773_icgraph">
-<area shape="rect" title="Stores an error code to flash memory." alt="" coords="491,183,593,209"/>
-<area shape="rect" href="isr_8c.html#a850cefb17a977292ae5eb4cafa9976c3" title="This function handles Pre&#45;fetch fault, memory access fault." alt="" coords="306,56,431,83"/>
-<area shape="rect" href="main_8c.html#ad4e07955fadfeb416e9620ddb42f8fe9" title="This function is executed in case of error occurrence." alt="" coords="318,107,419,133"/>
-<area shape="rect" href="flash_8c.html#a46338bc563a7426b0d9983d549049e87" title="Initialize flash error logging." alt="" coords="115,208,235,235"/>
-<area shape="rect" href="isr_8c.html#a2bffc10d5bd4106753b7c30e86903bea" title="This function handles Hard fault interrupt." alt="" coords="304,208,433,235"/>
-<area shape="rect" href="isr_8c.html#a3150f74512510287a942624aa9b44cc5" title="This function handles Memory management fault." alt="" coords="295,259,443,285"/>
-<area shape="rect" href="isr_8c.html#a1d98923de2ed6b7309b66f9ba2971647" title="This function handles Undefined instruction or illegal state." alt="" coords="299,309,438,336"/>
-<area shape="rect" href="adc_8c.html#adb6cb5368cffd96c7e2cce8c72744ea2" title="ADC1 Initialization Function." alt="" coords="142,5,209,32"/>
-<area shape="rect" href="main_8c.html#a7ad17703ce0e9b527278fb5783adb44d" title="Init and DMA channels in use and configure DMA interrupts." alt="" coords="138,56,213,83"/>
-<area shape="rect" href="main_8c.html#a63fd813fab9e4e1b718f0b89e39fa26e" title="SPI1 Initialization Function (master SPI port to IMU)" alt="" coords="126,107,225,133"/>
-<area shape="rect" href="main_8c.html#adb3d07f85f8bc162c1c66f1ee17ce361" title="System Clock Configuration." alt="" coords="104,157,247,184"/>
-<area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,107,56,133"/>
+<div class="center"><img src="flash_8c_af425d5b1241befa56dbe794fffae169f_icgraph.png" border="0" usemap="#aflash_8c_af425d5b1241befa56dbe794fffae169f_icgraph" alt=""/></div>
+<map name="flash_8c_af425d5b1241befa56dbe794fffae169f_icgraph" id="aflash_8c_af425d5b1241befa56dbe794fffae169f_icgraph">
+<area shape="rect" title="Stores an error code to flash memory." alt="" coords="491,132,609,159"/>
+<area shape="rect" href="isr_8c.html#a850cefb17a977292ae5eb4cafa9976c3" title="This function handles Pre&#45;fetch fault, memory access fault." alt="" coords="306,5,431,32"/>
+<area shape="rect" href="flash_8c.html#ad20211cdf029b40e6249e15c638f2874" title="Initialize flash error logging." alt="" coords="104,56,247,83"/>
+<area shape="rect" href="isr_8c.html#a2bffc10d5bd4106753b7c30e86903bea" title="This function handles Hard fault interrupt." alt="" coords="304,107,433,133"/>
+<area shape="rect" href="main_8c.html#a0cafedb28e2070a60a7c2b39043b38d8" title="This function is executed in case of error occurrence." alt="" coords="301,157,437,184"/>
+<area shape="rect" href="isr_8c.html#a3150f74512510287a942624aa9b44cc5" title="This function handles Memory management fault." alt="" coords="295,208,443,235"/>
+<area shape="rect" href="isr_8c.html#a1d98923de2ed6b7309b66f9ba2971647" title="This function handles Undefined instruction or illegal state." alt="" coords="299,259,438,285"/>
+<area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,157,56,184"/>
+<area shape="rect" href="adc_8c.html#a3fdaf3b8949082abe85a7e7083087eb7" title="ADC1 Initialization Function." alt="" coords="139,107,212,133"/>
+<area shape="rect" href="main_8c.html#a7ad17703ce0e9b527278fb5783adb44d" title="Init all DMA channels in use and configure DMA interrupts." alt="" coords="138,157,213,184"/>
+<area shape="rect" href="imu_8c.html#a3eb970eebf0c8d4db8ea2e423337175e" title="SPI1 Initialization Function (master SPI port to IMU)" alt="" coords="127,208,224,235"/>
+<area shape="rect" href="main_8c.html#adb3d07f85f8bc162c1c66f1ee17ce361" title="System Clock Configuration." alt="" coords="104,259,247,285"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a48f0984b98ef386bfcc84f996210c37a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48f0984b98ef386bfcc84f996210c37a">&#9670;&nbsp;</a></span>FlashUpdate()</h2>
+<a id="a9f2fc1de168b97346e9e2822dc93190e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f2fc1de168b97346e9e2822dc93190e">&#9670;&nbsp;</a></span>Flash_Update()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void FlashUpdate </td>
+          <td class="memname">void Flash_Update </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -320,36 +328,6 @@ Here is the caller graph for this function:</div>
 <p>Flash update command handler. </p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
 <p>Saves all non-volatile registers to flash memory. They will be retrieved on the next system boot. Also saves a signature of the registers, which is used for register contents validation on the next boot. Registers are backed up to flash starting at an offset of 62KB in flash memory </p>
-
-</div>
-</div>
-<a id="abdfa63ba6e284d347e454e4ac0af459e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abdfa63ba6e284d347e454e4ac0af459e">&#9670;&nbsp;</a></span>LoadRegsFlash()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LoadRegsFlash </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Load register values from flash memory to SRAM. </p>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p>After loading registers from flash, the signature of the loaded registers is compared to the signature stored in flash. If there is a mis-match, the STATUS FLASH_ERROR bit is set. Register values on page 253 - 254 are stored. </p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="flash_8c_abdfa63ba6e284d347e454e4ac0af459e_icgraph.png" border="0" usemap="#aflash_8c_abdfa63ba6e284d347e454e4ac0af459e_icgraph" alt=""/></div>
-<map name="flash_8c_abdfa63ba6e284d347e454e4ac0af459e_icgraph" id="flash_8c_abdfa63ba6e284d347e454e4ac0af459e_icgraph">
-<area shape="rect" title="Load register values from flash memory to SRAM." alt="" coords="104,5,216,32"/>
-<area shape="rect" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -378,30 +356,6 @@ Here is the caller graph for this function:</div>
 
 <p>Clears all non-volatile registers in RAM and updates reg signature. </p>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="a0963b05bebaa79e9cc9b76594b1d3e73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0963b05bebaa79e9cc9b76594b1d3e73">&#9670;&nbsp;</a></span>g_regs</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">volatile uint16_t g_regs[<a class="el" href="registers_8h.html#a807211953b57b1a3f715e8a4496f3d2d">NUM_REG_PAGES</a> *REG_PER_PAGE]</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Global register array (from <a class="el" href="registers_8c.html" title="iSensor-SPI-Buffer register interfacing module. Called by user SPI and USB CLI">registers.c</a>) </p>
 
 </div>
 </div>

@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.14</span>
+   &#160;<span id="projectnumber">1.15</span>
    </div>
    <div id="projectbrief">Firmware for the iSensor-SPI-Buffer board to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -68,7 +68,7 @@ $(function() {
 
 <h3><a id="index_p"></a>- p -</h3><ul>
 <li>PAGE_ID
-: <a class="el" href="registers_8h.html#a21480946eca3a18e2ed842c54bfd9d2b">registers.h</a>
+: <a class="el" href="reg_8h.html#a21480946eca3a18e2ed842c54bfd9d2b">reg.h</a>
 </li>
 <li>ParseCommandArgs()
 : <a class="el" href="script_8c.html#ac102053883fd128a64731e1b89e2d5bc">script.c</a>
@@ -78,9 +78,6 @@ $(function() {
 </li>
 <li>ParseReadBuffer()
 : <a class="el" href="sd__card_8c.html#a85638c35dfe6f3becb0836208a037713">sd_card.c</a>
-</li>
-<li>ParseScriptElement()
-: <a class="el" href="script_8c.html#a3fcce12d9c19ab8120644cb4a2dd72fc">script.c</a>
 </li>
 <li>ParseScriptFile()
 : <a class="el" href="sd__card_8c.html#a1689ac486229c2f0a44ee3e69090f3ff">sd_card.c</a>
@@ -97,17 +94,14 @@ $(function() {
 <li>PPS_TickCount
 : <a class="el" href="timer_8c.html#a34e402f1a247cdf0f46ab19996544ad6">timer.c</a>
 </li>
-<li>PrepareDFUBoot()
-: <a class="el" href="dfu_8c.html#a74325989ab8f68d7299d0c5ff0072f99">dfu.c</a>
-</li>
 <li>PrepareRegsForFlash()
 : <a class="el" href="flash_8c.html#a6f11954101952461e4854186f07ef72b">flash.c</a>
 </li>
-<li>ProcessCommand()
-: <a class="el" href="registers_8c.html#a9ca885362e30b509afa7d4138c686ba3">registers.c</a>
-</li>
 <li>ProcessRegWrite()
-: <a class="el" href="registers_8c.html#a2ea4f0af5f4a2eb7d525810686c24c06">registers.c</a>
+: <a class="el" href="reg_8c.html#a2ea4f0af5f4a2eb7d525810686c24c06">reg.c</a>
+</li>
+<li>ProcessSPITransaction()
+: <a class="el" href="isr_8c.html#a9f205735b8aa53aa3809d7a1ad2d81c9">isr.c</a>
 </li>
 <li>ProcessTempReading()
 : <a class="el" href="adc_8c.html#a55995e9dd1e94588c71e49f40dc2dd61">adc.c</a>

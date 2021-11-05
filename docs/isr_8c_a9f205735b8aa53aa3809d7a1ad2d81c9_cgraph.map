@@ -1,0 +1,5 @@
+<map id="ProcessSPITransaction" name="ProcessSPITransaction">
+<area shape="rect" id="node1" title="Process a 16 bit data word from the user SPI." alt="" coords="5,31,164,57"/>
+<area shape="rect" id="node2" href="$reg_8c.html#ae990584c59a18c196de2500b5cc81880" title="Process a register read request (from master)" alt="" coords="212,5,295,32"/>
+<area shape="rect" id="node3" href="$reg_8c.html#a97f4b6010b00c791d0c06284e1049d15" title="Process a register write request (from master)" alt="" coords="212,56,295,83"/>
+</map>

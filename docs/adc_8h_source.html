@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.14</span>
+   &#160;<span id="projectnumber">1.15</span>
    </div>
    <div id="projectbrief">Firmware for the iSensor-SPI-Buffer board to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -76,14 +76,14 @@ $(function() {
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#ifndef INC_ADC_H_</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define INC_ADC_H_</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="registers_8h.html">registers.h</a>&quot;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="stm32f3xx__hal__conf_8h.html">stm32f3xx_hal_conf.h</a>&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">/* Header includes require for prototypes */</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> <a class="code" href="adc_8c.html#adb6cb5368cffd96c7e2cce8c72744ea2">ADCInit</a>();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="adc_8c.html#a88d8b1c45444aeddd983d3add5e8224e">UpdateADC</a>();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> <a class="code" href="adc_8c.html#a3fdaf3b8949082abe85a7e7083087eb7">ADC_Init</a>();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="adc_8c.html#afb90330f1a30b6eece128aaeab497658">ADC_Update</a>();</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">/* @endcond */</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="adc_8h.html#aae5ffe51f62b02abbdb9ae7d644298fe">   25</a></span>&#160;<span class="preprocessor">#define TS_CAL1         ((uint16_t*) ((uint32_t) 0x1FFFF7B8))</span></div>
@@ -102,21 +102,20 @@ $(function() {
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_ADC_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aregisters_8h_html_a807211953b57b1a3f715e8a4496f3d2d"><div class="ttname"><a href="registers_8h.html#a807211953b57b1a3f715e8a4496f3d2d">NUM_REG_PAGES</a></div><div class="ttdeci">#define NUM_REG_PAGES</div><div class="ttdef"><b>Definition:</b> registers.h:40</div></div>
+<div class="ttc" id="areg_8h_html"><div class="ttname"><a href="reg_8h.html">reg.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
 <div class="ttc" id="astm32f3xx__hal__conf_8h_html"><div class="ttname"><a href="stm32f3xx__hal__conf_8h.html">stm32f3xx_hal_conf.h</a></div><div class="ttdoc">HAL configuration file.</div></div>
 <div class="ttc" id="aadc_8h_html"><div class="ttname"><a href="adc_8h.html">adc.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer ADC module (for temp sensor and Vdd monitoring)</div></div>
-<div class="ttc" id="aadc_8c_html_adb6cb5368cffd96c7e2cce8c72744ea2"><div class="ttname"><a href="adc_8c.html#adb6cb5368cffd96c7e2cce8c72744ea2">ADCInit</a></div><div class="ttdeci">void ADCInit()</div><div class="ttdoc">ADC1 Initialization Function.</div><div class="ttdef"><b>Definition:</b> adc.c:39</div></div>
-<div class="ttc" id="aadc_8c_html_a0963b05bebaa79e9cc9b76594b1d3e73"><div class="ttname"><a href="adc_8c.html#a0963b05bebaa79e9cc9b76594b1d3e73">g_regs</a></div><div class="ttdeci">volatile uint16_t g_regs[NUM_REG_PAGES *REG_PER_PAGE]</div></div>
+<div class="ttc" id="aadc_8c_html_afb90330f1a30b6eece128aaeab497658"><div class="ttname"><a href="adc_8c.html#afb90330f1a30b6eece128aaeab497658">ADC_Update</a></div><div class="ttdeci">void ADC_Update()</div><div class="ttdoc">Read and scale ADC values then load to output registers.</div><div class="ttdef"><b>Definition:</b> adc.c:106</div></div>
 <div class="ttc" id="aadc_8h_html_a135151cc09e1094dbb0163c3d696e630"><div class="ttname"><a href="adc_8h.html#a135151cc09e1094dbb0163c3d696e630">ADC_TEMP_READ</a></div><div class="ttdeci">#define ADC_TEMP_READ</div><div class="ttdef"><b>Definition:</b> adc.h:43</div></div>
-<div class="ttc" id="aadc_8c_html_a55995e9dd1e94588c71e49f40dc2dd61"><div class="ttname"><a href="adc_8c.html#a55995e9dd1e94588c71e49f40dc2dd61">ProcessTempReading</a></div><div class="ttdeci">static void ProcessTempReading()</div><div class="ttdoc">Handle end of conversion for a temp sensor value.</div><div class="ttdef"><b>Definition:</b> adc.c:150</div></div>
+<div class="ttc" id="aadc_8c_html_a55995e9dd1e94588c71e49f40dc2dd61"><div class="ttname"><a href="adc_8c.html#a55995e9dd1e94588c71e49f40dc2dd61">ProcessTempReading</a></div><div class="ttdeci">static void ProcessTempReading()</div><div class="ttdoc">Handle end of conversion for a temp sensor value.</div><div class="ttdef"><b>Definition:</b> adc.c:151</div></div>
 <div class="ttc" id="aadc_8h_html_a0689dd86033fd5aeb822d2279ecbf733"><div class="ttname"><a href="adc_8h.html#a0689dd86033fd5aeb822d2279ecbf733">ADC_VDD_READ</a></div><div class="ttdeci">#define ADC_VDD_READ</div><div class="ttdef"><b>Definition:</b> adc.h:37</div></div>
 <div class="ttc" id="aadc_8h_html_a055b4a6a5a51fd9588355c7dd3f1b7c0"><div class="ttname"><a href="adc_8h.html#a055b4a6a5a51fd9588355c7dd3f1b7c0">ADC_VDD_START</a></div><div class="ttdeci">#define ADC_VDD_START</div><div class="ttdef"><b>Definition:</b> adc.h:34</div></div>
-<div class="ttc" id="aadc_8c_html_a22b804736f5648d52f639b2647d4ed13"><div class="ttname"><a href="adc_8c.html#a22b804736f5648d52f639b2647d4ed13">hadc1</a></div><div class="ttdeci">static ADC_HandleTypeDef hadc1</div><div class="ttdef"><b>Definition:</b> adc.c:19</div></div>
-<div class="ttc" id="aadc_8c_html_a57cb7226dfb1ff1a7329f1ac9d4f512d"><div class="ttname"><a href="adc_8c.html#a57cb7226dfb1ff1a7329f1ac9d4f512d">ScaleTempData</a></div><div class="ttdeci">static int16_t ScaleTempData(uint32_t rawTemp)</div><div class="ttdoc">Scale raw ADC temperature data to temp output.</div><div class="ttdef"><b>Definition:</b> adc.c:217</div></div>
-<div class="ttc" id="amain_8c_html_ad4e07955fadfeb416e9620ddb42f8fe9"><div class="ttname"><a href="main_8c.html#ad4e07955fadfeb416e9620ddb42f8fe9">Error_Handler</a></div><div class="ttdeci">void Error_Handler()</div><div class="ttdoc">This function is executed in case of error occurrence.</div><div class="ttdef"><b>Definition:</b> main.c:253</div></div>
-<div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
-<div class="ttc" id="aadc_8c_html_a88d8b1c45444aeddd983d3add5e8224e"><div class="ttname"><a href="adc_8c.html#a88d8b1c45444aeddd983d3add5e8224e">UpdateADC</a></div><div class="ttdeci">void UpdateADC()</div><div class="ttdoc">Read and scale ADC values then load to output registers.</div><div class="ttdef"><b>Definition:</b> adc.c:105</div></div>
-<div class="ttc" id="aadc_8c_html_a7c7436c8ad95d28579575f233c6b3010"><div class="ttname"><a href="adc_8c.html#a7c7436c8ad95d28579575f233c6b3010">GetVdd</a></div><div class="ttdeci">static uint16_t GetVdd(uint32_t VrefMeasurement)</div><div class="ttdoc">Calculate Vdd from VREFINT measurement.</div><div class="ttdef"><b>Definition:</b> adc.c:197</div></div>
+<div class="ttc" id="aadc_8c_html_a22b804736f5648d52f639b2647d4ed13"><div class="ttname"><a href="adc_8c.html#a22b804736f5648d52f639b2647d4ed13">hadc1</a></div><div class="ttdeci">static ADC_HandleTypeDef hadc1</div><div class="ttdef"><b>Definition:</b> adc.c:23</div></div>
+<div class="ttc" id="amain_8c_html_a0cafedb28e2070a60a7c2b39043b38d8"><div class="ttname"><a href="main_8c.html#a0cafedb28e2070a60a7c2b39043b38d8">Main_Error_Handler</a></div><div class="ttdeci">void Main_Error_Handler()</div><div class="ttdoc">This function is executed in case of error occurrence.</div><div class="ttdef"><b>Definition:</b> main.c:233</div></div>
+<div class="ttc" id="amain_8h_html"><div class="ttname"><a href="main_8h.html">main.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer main.</div></div>
+<div class="ttc" id="aadc_8c_html_a57cb7226dfb1ff1a7329f1ac9d4f512d"><div class="ttname"><a href="adc_8c.html#a57cb7226dfb1ff1a7329f1ac9d4f512d">ScaleTempData</a></div><div class="ttdeci">static int16_t ScaleTempData(uint32_t rawTemp)</div><div class="ttdoc">Scale raw ADC temperature data to temp output.</div><div class="ttdef"><b>Definition:</b> adc.c:218</div></div>
+<div class="ttc" id="aadc_8c_html_a3fdaf3b8949082abe85a7e7083087eb7"><div class="ttname"><a href="adc_8c.html#a3fdaf3b8949082abe85a7e7083087eb7">ADC_Init</a></div><div class="ttdeci">void ADC_Init()</div><div class="ttdoc">ADC1 Initialization Function.</div><div class="ttdef"><b>Definition:</b> adc.c:40</div></div>
+<div class="ttc" id="aadc_8c_html_a7c7436c8ad95d28579575f233c6b3010"><div class="ttname"><a href="adc_8c.html#a7c7436c8ad95d28579575f233c6b3010">GetVdd</a></div><div class="ttdeci">static uint16_t GetVdd(uint32_t VrefMeasurement)</div><div class="ttdoc">Calculate Vdd from VREFINT measurement.</div><div class="ttdef"><b>Definition:</b> adc.c:198</div></div>
 <div class="ttc" id="aadc_8h_html_a8b70cdb388ad494425d10a09ed566b44"><div class="ttname"><a href="adc_8h.html#a8b70cdb388ad494425d10a09ed566b44">ADC_TEMP_START</a></div><div class="ttdeci">#define ADC_TEMP_START</div><div class="ttdef"><b>Definition:</b> adc.h:40</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

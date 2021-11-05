@@ -1,0 +1,5 @@
+<map id="Reg_Update_Identifiers" name="Reg_Update_Identifiers">
+<area shape="rect" id="node1" title="Load SN and date code registers to SRAM." alt="" coords="5,31,160,57"/>
+<area shape="rect" id="node2" href="$reg_8c.html#a3ebca895ecd4473a57471eea92563da3" title="Populates the firmware date registers automatically." alt="" coords="208,5,307,32"/>
+<area shape="rect" id="node3" href="$reg_8c.html#a46941ae03c5cba06f24bbe10ba29eefa" title="Populates the six SN registers automatically." alt="" coords="227,56,288,83"/>
+</map>

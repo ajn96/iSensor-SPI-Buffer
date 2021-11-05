@@ -1,0 +1,7 @@
+<map id="IMU_SPI_Init" name="IMU_SPI_Init">
+<area shape="rect" id="node1" title="SPI1 Initialization Function (master SPI port to IMU)" alt="" coords="5,56,103,83"/>
+<area shape="rect" id="node2" href="$imu_8c.html#a594fc6515963d264aa5dcebd333113d6" title="Inits TIM3 for use in PWM mode to drive CS." alt="" coords="165,5,273,32"/>
+<area shape="rect" id="node3" href="$imu_8c.html#a0fa4fc38852200750431eaf31c7847d8" title="Inits TIM4 for use as a IMU spi period timer." alt="" coords="163,56,274,83"/>
+<area shape="rect" id="node4" href="$main_8c.html#a0cafedb28e2070a60a7c2b39043b38d8" title="This function is executed in case of error occurrence." alt="" coords="151,107,287,133"/>
+<area shape="rect" id="node5" href="$flash_8c.html#af425d5b1241befa56dbe794fffae169f" title="Stores an error code to flash memory." alt="" coords="335,107,453,133"/>
+</map>

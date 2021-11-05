@@ -1,0 +1,4 @@
+<map id="User_SPI_Burst_Setup" name="User_SPI_Burst_Setup">
+<area shape="rect" id="node1" title="Configures SPI for a burst buffer read." alt="" coords="5,5,161,32"/>
+<area shape="rect" id="node2" href="$user__spi_8c.html#af894683d9f035fc8224bdc09e5f911aa" title="Reset user SPI port." alt="" coords="209,5,328,32"/>
+</map>

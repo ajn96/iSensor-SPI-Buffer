@@ -1,0 +1,5 @@
+<map id="USB_Reset" name="USB_Reset">
+<area shape="rect" id="node1" title="Toggle USB PU to force a re&#45;enumeration on the host side." alt="" coords="201,31,292,57"/>
+<area shape="rect" id="node2" href="$dfu_8c.html#a4b9e7205fb97cb7aeccc6762dbe52045" title="Set DFU reboot flag in RAM and reset system." alt="" coords="5,5,153,32"/>
+<area shape="rect" id="node3" href="$main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="54,56,105,83"/>
+</map>

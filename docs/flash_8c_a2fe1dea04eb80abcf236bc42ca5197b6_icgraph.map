@@ -1,0 +1,5 @@
+<map id="Flash_Load_Registers" name="Flash_Load_Registers">
+<area shape="rect" id="node1" title="Load register values from flash memory to SRAM." alt="" coords="221,5,372,32"/>
+<area shape="rect" id="node2" href="$reg_8c.html#a0f2c653fad42a4a3f06951e56c3db4d1" title="Initialize the register module by loading all saves values from flash." alt="" coords="104,5,173,32"/>
+<area shape="rect" id="node3" href="$main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="5,5,56,32"/>
+</map>

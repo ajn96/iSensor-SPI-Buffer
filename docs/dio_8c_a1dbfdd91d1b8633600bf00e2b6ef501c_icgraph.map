@@ -1,0 +1,6 @@
+<map id="DIO_Validate_Input_Config" name="DIO_Validate_Input_Config">
+<area shape="rect" id="node1" title="Validates the DIO_INPUT_CONFIG value." alt="" coords="420,23,553,65"/>
+<area shape="rect" id="node2" href="$dio_8c.html#aa46d515c975148e69d95b5554423a873" title="Validates and updates the data ready input configuration based on DIO_INPUT_CONFIG." alt="" coords="201,31,372,57"/>
+<area shape="rect" id="node3" href="$data__capture_8c.html#ad3a366bf6bc8893cac2cd47e1b556d4c" title="Enables autonomous data capture by enabling DR ISR in NVIC." alt="" coords="5,5,153,32"/>
+<area shape="rect" id="node4" href="$main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="54,56,105,83"/>
+</map>

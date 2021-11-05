@@ -1,0 +1,11 @@
+<map id="usb.c" name="usb.c">
+<area shape="rect" id="node1" title="Implementation file for iSensor&#45;SPI&#45;Buffer USB command line register interface." alt="" coords="211,5,265,32"/>
+<area shape="rect" id="node2" href="$usb_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer USB command line register interface." alt="" coords="92,80,147,107"/>
+<area shape="rect" id="node4" href="$main_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer main." alt="" coords="230,155,291,181"/>
+<area shape="rect" id="node6" href="$reg_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer register interfacing module." alt="" coords="171,80,222,107"/>
+<area shape="rect" id="node7" title=" " alt="" coords="388,80,491,107"/>
+<area shape="rect" id="node8" href="$script_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer script module (loaded from SD card)" alt="" coords="247,80,312,107"/>
+<area shape="rect" id="node9" href="$timer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer timer module." alt="" coords="5,80,68,107"/>
+<area shape="rect" id="node3" title=" " alt="" coords="123,155,188,181"/>
+<area shape="rect" id="node5" title=" " alt="" coords="202,229,319,256"/>
+</map>

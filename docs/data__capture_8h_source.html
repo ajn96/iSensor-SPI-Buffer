@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="Analog-Devices-Logo.jpg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">iSensor-SPI-Buffer
-   &#160;<span id="projectnumber">1.14</span>
+   &#160;<span id="projectnumber">1.15</span>
    </div>
    <div id="projectbrief">Firmware for the iSensor-SPI-Buffer board to enable full throughput buffered data capture on Analog Devices IMUs</div>
   </td>
@@ -76,34 +76,30 @@ $(function() {
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#ifndef INC_DATA_CAPTURE_H_</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define INC_DATA_CAPTURE_H_</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">/* Includes */</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="registers_8h.html">registers.h</a>&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="led_8h.html">led.h</a>&quot;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;stm32f3xx_hal.h&quot;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">/* Public function prototypes */</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordtype">void</span> <a class="code" href="data__capture_8c.html#ad3a366bf6bc8893cac2cd47e1b556d4c">Data_Capture_Enable</a>();</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> <a class="code" href="data__capture_8c.html#a092ba93a71cecfb33d6ae112eeb2f5c0">Data_Capture_Disable</a>();</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">/* @endcond */</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">/* @cond DOXYGEN_IGNORE */</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> <a class="code" href="data__capture_8c.html#ac4b2f76f70859603c0d2ba1957afb21b">EnableDataCapture</a>();</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">void</span> <a class="code" href="data__capture_8c.html#ab71775102e1565ca2e8fd384d27204b3">DisableDataCapture</a>();</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">/* @endcond */</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_DATA_CAPTURE_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INC_DATA_CAPTURE_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="adio_8c_html_ad38b20e2c54a770ce6af80547abbce43"><div class="ttname"><a href="dio_8c.html#ad38b20e2c54a770ce6af80547abbce43">UpdateDIOInputConfig</a></div><div class="ttdeci">void UpdateDIOInputConfig()</div><div class="ttdoc">Validates and updates the data ready and PPS input configuration based on DIO_INPUT_CONFIG.</div><div class="ttdef"><b>Definition:</b> dio.c:150</div></div>
-<div class="ttc" id="adata__capture_8c_html_a65a6f223155b319c75cb6c1a54e7cdf5"><div class="ttname"><a href="data__capture_8c.html#a65a6f223155b319c75cb6c1a54e7cdf5">g_wordsPerCapture</a></div><div class="ttdeci">volatile uint32_t g_wordsPerCapture</div><div class="ttdef"><b>Definition:</b> isr.c:41</div></div>
-<div class="ttc" id="aregisters_8h_html_a807211953b57b1a3f715e8a4496f3d2d"><div class="ttname"><a href="registers_8h.html#a807211953b57b1a3f715e8a4496f3d2d">NUM_REG_PAGES</a></div><div class="ttdeci">#define NUM_REG_PAGES</div><div class="ttdef"><b>Definition:</b> registers.h:40</div></div>
-<div class="ttc" id="adata__capture_8c_html_a0963b05bebaa79e9cc9b76594b1d3e73"><div class="ttname"><a href="data__capture_8c.html#a0963b05bebaa79e9cc9b76594b1d3e73">g_regs</a></div><div class="ttdeci">volatile uint16_t g_regs[NUM_REG_PAGES *REG_PER_PAGE]</div></div>
-<div class="ttc" id="adata__capture_8c_html_ac4b2f76f70859603c0d2ba1957afb21b"><div class="ttname"><a href="data__capture_8c.html#ac4b2f76f70859603c0d2ba1957afb21b">EnableDataCapture</a></div><div class="ttdeci">void EnableDataCapture()</div><div class="ttdoc">Enables autonomous data capture by enabling DR ISR in NVIC.</div><div class="ttdef"><b>Definition:</b> data_capture.c:33</div></div>
-<div class="ttc" id="adata__capture_8c_html_ab71775102e1565ca2e8fd384d27204b3"><div class="ttname"><a href="data__capture_8c.html#ab71775102e1565ca2e8fd384d27204b3">DisableDataCapture</a></div><div class="ttdeci">void DisableDataCapture()</div><div class="ttdoc">disables autonomous data capture by disabling DR ISR.</div><div class="ttdef"><b>Definition:</b> data_capture.c:59</div></div>
+<div class="ttc" id="areg_8h_html"><div class="ttname"><a href="reg_8h.html">reg.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
+<div class="ttc" id="atimer_8h_html_a8612b680a1efebe782532fc810863fca"><div class="ttname"><a href="timer_8h.html#a8612b680a1efebe782532fc810863fca">g_PPSInterruptMask</a></div><div class="ttdeci">uint32_t g_PPSInterruptMask</div><div class="ttdef"><b>Definition:</b> timer.c:23</div></div>
+<div class="ttc" id="adio_8h_html"><div class="ttname"><a href="dio_8h.html">dio.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer DIO interfacing module.</div></div>
+<div class="ttc" id="aled_8c_html_a0137ee0969bb19e0209f7ffa3e78d1e3"><div class="ttname"><a href="led_8c.html#a0137ee0969bb19e0209f7ffa3e78d1e3">LED_Turn_On</a></div><div class="ttdeci">void LED_Turn_On(LED light)</div><div class="ttdoc">Turn on a selected LED.</div><div class="ttdef"><b>Definition:</b> led.c:22</div></div>
+<div class="ttc" id="atimer_8h_html"><div class="ttname"><a href="timer_8h.html">timer.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer timer module.</div></div>
+<div class="ttc" id="adata__capture_8c_html_a092ba93a71cecfb33d6ae112eeb2f5c0"><div class="ttname"><a href="data__capture_8c.html#a092ba93a71cecfb33d6ae112eeb2f5c0">Data_Capture_Disable</a></div><div class="ttdeci">void Data_Capture_Disable()</div><div class="ttdoc">disables autonomous data capture by disabling DR ISR.</div><div class="ttdef"><b>Definition:</b> data_capture.c:53</div></div>
 <div class="ttc" id="aled_8h_html"><div class="ttname"><a href="led_8h.html">led.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer LED control module.</div></div>
-<div class="ttc" id="adata__capture_8c_html_a8612b680a1efebe782532fc810863fca"><div class="ttname"><a href="data__capture_8c.html#a8612b680a1efebe782532fc810863fca">g_PPSInterruptMask</a></div><div class="ttdeci">uint32_t g_PPSInterruptMask</div><div class="ttdef"><b>Definition:</b> timer.c:25</div></div>
+<div class="ttc" id="aisr_8h_html_a65a6f223155b319c75cb6c1a54e7cdf5"><div class="ttname"><a href="isr_8h.html#a65a6f223155b319c75cb6c1a54e7cdf5">g_wordsPerCapture</a></div><div class="ttdeci">volatile uint32_t g_wordsPerCapture</div><div class="ttdef"><b>Definition:</b> isr.c:27</div></div>
+<div class="ttc" id="aled_8c_html_ac5d6499055e5e7cd2d5425cbf404c32e"><div class="ttname"><a href="led_8c.html#ac5d6499055e5e7cd2d5425cbf404c32e">LED_Turn_Off</a></div><div class="ttdeci">void LED_Turn_Off(LED light)</div><div class="ttdoc">Turn off a selected LED.</div><div class="ttdef"><b>Definition:</b> led.c:47</div></div>
+<div class="ttc" id="adata__capture_8c_html_ad3a366bf6bc8893cac2cd47e1b556d4c"><div class="ttname"><a href="data__capture_8c.html#ad3a366bf6bc8893cac2cd47e1b556d4c">Data_Capture_Enable</a></div><div class="ttdeci">void Data_Capture_Enable()</div><div class="ttdoc">Enables autonomous data capture by enabling DR ISR in NVIC.</div><div class="ttdef"><b>Definition:</b> data_capture.c:27</div></div>
 <div class="ttc" id="adata__capture_8h_html"><div class="ttname"><a href="data__capture_8h.html">data_capture.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer autonomous IMU data acquisition module.</div></div>
-<div class="ttc" id="aled_8c_html_a99d3a7743f7abf1c66201c0b1297040a"><div class="ttname"><a href="led_8c.html#a99d3a7743f7abf1c66201c0b1297040a">TurnOnLED</a></div><div class="ttdeci">void TurnOnLED(LED light)</div><div class="ttdoc">Turn on a selected LED.</div><div class="ttdef"><b>Definition:</b> led.c:23</div></div>
+<div class="ttc" id="aisr_8h_html_a07af1c87664cfacf9460801271ab0dec"><div class="ttname"><a href="isr_8h.html#a07af1c87664cfacf9460801271ab0dec">g_captureInProgress</a></div><div class="ttdeci">volatile uint32_t g_captureInProgress</div><div class="ttdef"><b>Definition:</b> isr.c:30</div></div>
+<div class="ttc" id="adio_8c_html_aa46d515c975148e69d95b5554423a873"><div class="ttname"><a href="dio_8c.html#aa46d515c975148e69d95b5554423a873">DIO_Update_Input_Config</a></div><div class="ttdeci">void DIO_Update_Input_Config()</div><div class="ttdoc">Validates and updates the data ready input configuration based on DIO_INPUT_CONFIG.</div><div class="ttdef"><b>Definition:</b> dio.c:186</div></div>
 <div class="ttc" id="adio_8h_html_a8fc55dc20edabab3d19c20221f5c28e0"><div class="ttname"><a href="dio_8h.html#a8fc55dc20edabab3d19c20221f5c28e0">DATA_READY_INT_MASK</a></div><div class="ttdeci">#define DATA_READY_INT_MASK</div><div class="ttdef"><b>Definition:</b> dio.h:48</div></div>
-<div class="ttc" id="adata__capture_8c_html_a07af1c87664cfacf9460801271ab0dec"><div class="ttname"><a href="data__capture_8c.html#a07af1c87664cfacf9460801271ab0dec">g_captureInProgress</a></div><div class="ttdeci">volatile uint32_t g_captureInProgress</div><div class="ttdef"><b>Definition:</b> isr.c:44</div></div>
-<div class="ttc" id="aregisters_8h_html"><div class="ttname"><a href="registers_8h.html">registers.h</a></div><div class="ttdoc">Header file for iSensor-SPI-Buffer register interfacing module.</div></div>
-<div class="ttc" id="aled_8c_html_a33badabbc4771ff785afaea9dcb90adc"><div class="ttname"><a href="led_8c.html#a33badabbc4771ff785afaea9dcb90adc">TurnOffLED</a></div><div class="ttdeci">void TurnOffLED(LED light)</div><div class="ttdoc">Turn off a selected LED.</div><div class="ttdef"><b>Definition:</b> led.c:48</div></div>
+<div class="ttc" id="aisr_8h_html"><div class="ttname"><a href="isr_8h.html">isr.h</a></div><div class="ttdoc">Header file for the interrupt service routine module.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20

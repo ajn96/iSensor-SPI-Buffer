@@ -8,7 +8,7 @@ import math
 from spi_buf_cli import ISensorSPIBuffer
 
 #iSensor-SPI-Buffer object under test
-buf = ISensorSPIBuffer("COM5")
+buf = ISensorSPIBuffer("COM14")
 
 class SpiBufTestMethods(unittest.TestCase):
 

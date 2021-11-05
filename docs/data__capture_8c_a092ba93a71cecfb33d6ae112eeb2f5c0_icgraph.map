@@ -1,0 +1,5 @@
+<map id="Data_Capture_Disable" name="Data_Capture_Disable">
+<area shape="rect" id="node1" title="disables autonomous data capture by disabling DR ISR." alt="" coords="191,31,341,57"/>
+<area shape="rect" id="node2" href="$main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="The application entry point." alt="" coords="49,5,99,32"/>
+<area shape="rect" id="node3" href="$reg_8c.html#abd9acef9ca1071004db310b6782af0d0" title="Load factory default values for all registers, and applies any settings changes." alt="" coords="5,56,143,83"/>
+</map>

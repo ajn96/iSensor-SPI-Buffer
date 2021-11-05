@@ -1,0 +1,4 @@
+<map id="Data_Capture_Disable" name="Data_Capture_Disable">
+<area shape="rect" id="node1" title="disables autonomous data capture by disabling DR ISR." alt="" coords="5,5,156,32"/>
+<area shape="rect" id="node2" href="$led_8c.html#ac5d6499055e5e7cd2d5425cbf404c32e" title="Turn off a selected LED." alt="" coords="204,5,307,32"/>
+</map>

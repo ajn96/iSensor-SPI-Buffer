@@ -1,38 +1,5 @@
 <map id="watchdog.h" name="watchdog.h">
-<area shape="rect" id="node1" title="Header file for iSensor&#45;SPI&#45;Buffer watchdog timer module." alt="" coords="794,5,882,32"/>
-<area shape="rect" id="node2" href="$main_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer main." alt="" coords="807,80,869,107"/>
-<area shape="rect" id="node36" href="$watchdog_8c.html" title="iSensor&#45;SPI&#45;Buffer watchdog reset timer module implementation" alt="" coords="893,80,981,107"/>
-<area shape="rect" id="node3" href="$buffer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer buffer data structure module." alt="" coords="694,155,758,181"/>
-<area shape="rect" id="node6" href="$registers_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer register interfacing module." alt="" coords="686,229,769,256"/>
-<area shape="rect" id="node15" href="$imu__spi_8h.html" title="Implementation for iSensor&#45;SPI&#45;Buffer IMU interfacing module." alt="" coords="376,304,455,331"/>
-<area shape="rect" id="node19" href="$script_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer script module (loaded from SD card)" alt="" coords="1027,379,1092,405"/>
-<area shape="rect" id="node21" href="$main_8c.html" title="iSensor&#45;SPI&#45;Buffer main. Contains STM init functions and application cyclic executive." alt="" coords="1198,528,1259,555"/>
-<area shape="rect" id="node24" href="$usb__cli_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer USB command line register interface." alt="" coords="1077,304,1151,331"/>
-<area shape="rect" id="node30" href="$user__spi_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer user SPI (slave SPI) module." alt="" coords="1311,304,1394,331"/>
-<area shape="rect" id="node33" href="$timer_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer timer module." alt="" coords="107,229,169,256"/>
-<area shape="rect" id="node35" href="$stm32f3xx__it_8c.html" title="Interrupt Service Routines." alt="" coords="1127,155,1234,181"/>
-<area shape="rect" id="node4" href="$isr_8h.html" title="Header file for the interrupt service routine module." alt="" coords="315,453,361,480"/>
-<area shape="rect" id="node32" href="$buffer_8c.html" title="iSensor&#45;SPI&#45;Buffer buffer implementation" alt="" coords="598,229,662,256"/>
-<area shape="rect" id="node5" href="$isr_8c.html" title="iSensor&#45;SPI&#45;Buffer interrupt service routines" alt="" coords="315,528,361,555"/>
-<area shape="rect" id="node7" href="$adc_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer ADC module (for temp sensor and Vdd monitoring)" alt="" coords="297,304,352,331"/>
-<area shape="rect" id="node9" href="$data__capture_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer autonomous IMU data acquisition module." alt="" coords="632,379,740,405"/>
-<area shape="rect" id="node10" href="$dio_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer DIO interfacing module." alt="" coords="621,453,671,480"/>
-<area shape="rect" id="node13" href="$flash_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer flash memory interfacing functions." alt="" coords="891,304,951,331"/>
-<area shape="rect" id="node17" href="$led_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer LED control module." alt="" coords="765,304,815,331"/>
-<area shape="rect" id="node20" href="$sd__card_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer SD card interfacing and script execution module." alt="" coords="876,453,955,480"/>
-<area shape="rect" id="node22" href="$registers_8c.html" title="iSensor&#45;SPI&#45;Buffer register interfacing module. Called by user SPI and USB CLI" alt="" coords="757,528,839,555"/>
-<area shape="rect" id="node28" href="$user__interrupt_8h.html" title="Header file for iSensor&#45;SPI&#45;Buffer user interrupt (data ready) config and generation functions." alt="" coords="1175,304,1287,331"/>
-<area shape="rect" id="node8" href="$adc_8c.html" title="Implementation file for iSensor&#45;SPI&#45;Buffer ADC module (for temp sensor and Vdd monitoring)" alt="" coords="245,379,300,405"/>
-<area shape="rect" id="node12" href="$data__capture_8c.html" title="iSensor&#45;SPI&#45;Buffer autonomous IMU data acquisition functions." alt="" coords="696,453,804,480"/>
-<area shape="rect" id="node11" href="$dio_8c.html" title="Implementation file for iSensor&#45;SPI&#45;Buffer DIO interfacing module." alt="" coords="621,528,671,555"/>
-<area shape="rect" id="node14" href="$flash_8c.html" title="iSensor&#45;SPI&#45;Buffer flash memory interfacing functions." alt="" coords="891,379,951,405"/>
-<area shape="rect" id="node16" href="$imu__spi_8c.html" title="Implementation for iSensor&#45;SPI&#45;Buffer IMU interfacing module." alt="" coords="376,379,455,405"/>
-<area shape="rect" id="node18" href="$led_8c.html" title="iSensor&#45;SPI&#45;Buffer LED control module" alt="" coords="815,379,866,405"/>
-<area shape="rect" id="node27" href="$script_8c.html" title="iSensor&#45;SPI&#45;Buffer script module (loaded from SD card or provided via USB CLI)" alt="" coords="1027,453,1092,480"/>
-<area shape="rect" id="node23" href="$sd__card_8c.html" title="iSensor&#45;SPI&#45;Buffer SD card interfacing and script execution module" alt="" coords="876,528,955,555"/>
-<area shape="rect" id="node25" href="$dfu_8c.html" title="Implementation file for iSensor&#45;SPI&#45;Buffer runtime firmware upgrade module." alt="" coords="1266,379,1317,405"/>
-<area shape="rect" id="node26" href="$usb__cli_8c.html" title="Implementation file for iSensor&#45;SPI&#45;Buffer USB command line register interface." alt="" coords="1117,379,1191,405"/>
-<area shape="rect" id="node29" href="$user__interrupt_8c.html" title="iSensor&#45;SPI&#45;Buffer user interrupt (data ready) config and generation functions" alt="" coords="1341,379,1453,405"/>
-<area shape="rect" id="node31" href="$user__spi_8c.html" title="iSensor&#45;SPI&#45;Buffer user (slave) SPI module" alt="" coords="1477,379,1559,405"/>
-<area shape="rect" id="node34" href="$timer_8c.html" title="Implementation for for iSensor&#45;SPI&#45;Buffer timer module. Covers microsecond timer and PPS timer." alt="" coords="5,304,68,331"/>
+<area shape="rect" id="node1" title="Header file for iSensor&#45;SPI&#45;Buffer watchdog timer module." alt="" coords="41,5,129,32"/>
+<area shape="rect" id="node2" href="$main_8c.html" title="iSensor&#45;SPI&#45;Buffer main. Contains STM init functions and application cyclic executive." alt="" coords="5,80,67,107"/>
+<area shape="rect" id="node3" href="$watchdog_8c.html" title="iSensor&#45;SPI&#45;Buffer watchdog reset timer module implementation" alt="" coords="91,80,179,107"/>
 </map>
